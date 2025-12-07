@@ -149,7 +149,10 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
 
 /* --- IMÁGENES --- */
 .page-content img {
+
     width: min(100%, 1100px);
+    width: 100%;
+    max-width: 1200px;
     height: auto;
     max-height: 85vh;
     border-radius: 6px;
@@ -159,6 +162,8 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
     filter: sepia(15%);
     object-fit: contain;
     align-self: center;
+    object-fit: cover;
+
 }
 
 .choices {
@@ -244,6 +249,7 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
     .page-content img {
         margin: 1rem auto 1.5rem;
         max-height: 82vh; /* Permite que la ilustración aproveche mejor la pantalla completa */
+        max-height: 78vh; /* Permite que la ilustración aproveche la pantalla completa */
         width: 100%;
         max-width: 100%;
     }
