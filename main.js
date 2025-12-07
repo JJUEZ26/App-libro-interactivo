@@ -257,7 +257,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function toggleSettingsMenu() { settingsMenu.classList.toggle('visible'); }
     function toggleFullscreen() {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => console.error(err));
+            const fullscreenOptions = { navigationUI: 'hide' };
+            const element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen(fullscreenOptions).catch(err => console.error(err));
+            }
         } else { document.exitFullscreen(); }
     }
     function toggleMute() {
