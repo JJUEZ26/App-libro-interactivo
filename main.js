@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Iniciando Libro Interactivo - Inmersión Total Android");
 
     // Elements
+    const appContainer = document.getElementById('app-container');
     const book = document.getElementById('book');
     const pageWrapper = document.getElementById('page-wrapper'); 
     const increaseFontBtn = document.getElementById('increase-font');
@@ -257,7 +258,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function toggleSettingsMenu() { settingsMenu.classList.toggle('visible'); }
     function toggleFullscreen() {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => console.error(err));
+            const fullscreenOptions = { navigationUI: 'hide' };
+            const element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen(fullscreenOptions).catch(err => console.error(err));
+            }
         } else { document.exitFullscreen(); }
     }
     function toggleMute() {
@@ -316,7 +321,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     muteBtn.addEventListener('click', toggleMute);
     book.addEventListener('click', handleBookClick);
 
-    document.addEventListener('fullscreenchange', () => { setTimeout(() => window.scrollTo(0, 0), 50); });
+    document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = Boolean(document.fullscreenElement);
+        document.documentElement.classList.toggle('is-fullscreen', isFullscreen);
+        document.body.classList.toggle('is-fullscreen', isFullscreen);
+        if (appContainer) {
+            appContainer.classList.toggle('is-fullscreen', isFullscreen);
+        }
+        setTimeout(() => window.scrollTo(0, 0), 50);
+    });
 
     async function initializeApp() {
         loadPreferences();
