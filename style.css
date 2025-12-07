@@ -32,16 +32,17 @@ body, html {
     background-color: var(--main-bg);
     font-family: var(--font-body); color: var(--text-color);
     transition: background-color 0.5s ease, color 0.5s ease;
-    overflow-x: hidden; 
-    overscroll-behavior: none; 
+    overflow-x: hidden;
+    overscroll-behavior: none;
 }
 
 #app-container {
     width: 100%; max-width: 1200px; margin: 0 auto;
     display: flex; flex-direction: column;
     padding: 20px; box-sizing: border-box;
-    align-items: center; height: 100dvh; 
+    align-items: center; height: 100dvh;
     min-height: 100%;
+    background-color: var(--main-bg);
 }
 
 #app-header {
@@ -95,7 +96,10 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
     position: relative; margin-bottom: 20px;
 }
 
-#book { width: 100%; height: 100%; position: relative; }
+#book {
+    width: 100%; height: 100%; position: relative;
+    display: flex; align-items: center; justify-content: center;
+}
 
 #page-wrapper {
     width: 100%; height: 100%;
@@ -127,17 +131,19 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
 
 /* --- CONTENIDO --- */
 .page-content {
-    position: relative; z-index: 2; padding: 0;
+    position: relative; z-index: 2;
     color: var(--text-color); overflow-y: auto; height: 100%;
     scrollbar-width: thin; scrollbar-color: var(--accent-color) transparent;
     display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 1.5rem;
+    padding: clamp(1.5rem, 2vw + 1rem, 3rem) clamp(1.5rem, 2vw + 1rem, 4rem);
+    box-sizing: border-box;
 }
 
 .content-centerer {
-    padding: 3rem 4rem;
     line-height: 1.8;
     font-size: clamp(1.15rem, var(--font-size-dynamic, 1.2rem), 1.65rem);
-    width: 100%; box-sizing: border-box; margin: auto 0;
+    width: 100%; box-sizing: border-box; margin: auto;
     max-width: 1100px;
 }
 
@@ -149,21 +155,16 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
 
 /* --- IMÁGENES --- */
 .page-content img {
-
     width: min(100%, 1100px);
-    width: 100%;
-    max-width: 1200px;
     height: auto;
-    max-height: 85vh;
-    border-radius: 6px;
-    margin: 2rem auto;
+    max-height: calc(100dvh - 140px);
+    border-radius: 10px;
+    margin: 0 auto;
     display: block;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     filter: sepia(15%);
     object-fit: contain;
     align-self: center;
-    object-fit: cover;
-
 }
 
 .choices {
@@ -232,12 +233,15 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
 @media (max-width: 600px) {
     #app-container { padding: 5px; }
     #book-container { margin-bottom: 10px; }
-    
-    .content-centerer { 
-        /* AJUSTE CRÍTICO: Padding igual a izquierda y derecha (24px = 1.5rem) */
-        padding: 1.5rem 1.5rem; 
-        font-size: 1.1rem; 
-        margin: 0; 
+
+    .page-content {
+        padding: 1.25rem 1.5rem;
+        gap: 1rem;
+    }
+
+    .content-centerer {
+        font-size: 1.1rem;
+        margin: 0;
     }
     
     .page-content p { 
@@ -247,11 +251,11 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
     
     /* AJUSTE IMÁGENES MÓVIL */
     .page-content img {
-        margin: 1rem auto 1.5rem;
-        max-height: 82vh; /* Permite que la ilustración aproveche mejor la pantalla completa */
-        max-height: 78vh; /* Permite que la ilustración aproveche la pantalla completa */
+        margin: 0.5rem auto 1rem;
+        max-height: calc(100dvh - 90px); /* Mejor aprovechamiento vertical en pantallas pequeñas */
         width: 100%;
         max-width: 100%;
+        border-radius: 12px;
     }
     
     #app-header { padding-bottom: 0.5rem; }
@@ -259,33 +263,37 @@ button:hover { background: var(--accent-color); color: var(--bg-color); }
 }
 
 /* --- PANTALLA COMPLETA INMERSIVA (ANDROID) --- */
-:fullscreen html, :fullscreen body {
+:fullscreen html, :fullscreen body,
+html.is-fullscreen, body.is-fullscreen,
+:fullscreen #app-container, #app-container.is-fullscreen {
     background-color: var(--bg-color);
 }
 
-:fullscreen #app-container {
-    padding: 0; max-width: 100%; height: 100%;
-    background-color: var(--bg-color);
+:fullscreen #app-container, #app-container.is-fullscreen {
+    padding: 0; max-width: 100%; height: 100vh;
 }
 
-:fullscreen #book {
+:fullscreen #book, html.is-fullscreen #book, body.is-fullscreen #book {
     height: 100%; width: 100%;
 }
 
-::backdrop {
-    background-color: var(--bg-color);
+::backdrop { background-color: var(--bg-color); }
+
+:fullscreen #app-header, :fullscreen #app-footer,
+html.is-fullscreen #app-header, html.is-fullscreen #app-footer,
+body.is-fullscreen #app-header, body.is-fullscreen #app-footer { display: none; }
+
+:fullscreen #book-container, html.is-fullscreen #book-container, body.is-fullscreen #book-container {
+    max-width: 100%; margin: 0; height: 100%;
+    margin-bottom: 0;
 }
 
-:fullscreen #app-header, :fullscreen #app-footer { display: none; }
-:fullscreen #book-container { 
-    max-width: 100%; margin: 0; height: 100%; 
-    margin-bottom: 0; 
-}
-:fullscreen #page-wrapper {
+:fullscreen #page-wrapper, html.is-fullscreen #page-wrapper, body.is-fullscreen #page-wrapper {
     border-radius: 0; border: none; box-shadow: none;
     background-color: var(--bg-color);
 }
-:fullscreen .content-centerer {
+
+:fullscreen .content-centerer, html.is-fullscreen .content-centerer, body.is-fullscreen .content-centerer {
     padding: 3rem 2rem; max-width: 800px; align-self: center;
 }
 

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Iniciando Libro Interactivo - Inmersión Total Android");
 
     // Elements
+    const appContainer = document.getElementById('app-container');
     const book = document.getElementById('book');
     const pageWrapper = document.getElementById('page-wrapper'); 
     const increaseFontBtn = document.getElementById('increase-font');
@@ -320,7 +321,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     muteBtn.addEventListener('click', toggleMute);
     book.addEventListener('click', handleBookClick);
 
-    document.addEventListener('fullscreenchange', () => { setTimeout(() => window.scrollTo(0, 0), 50); });
+    document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = Boolean(document.fullscreenElement);
+        document.documentElement.classList.toggle('is-fullscreen', isFullscreen);
+        document.body.classList.toggle('is-fullscreen', isFullscreen);
+        if (appContainer) {
+            appContainer.classList.toggle('is-fullscreen', isFullscreen);
+        }
+        setTimeout(() => window.scrollTo(0, 0), 50);
+    });
 
     async function initializeApp() {
         loadPreferences();
