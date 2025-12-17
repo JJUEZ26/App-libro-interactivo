@@ -11,9 +11,9 @@
     "id": "pajaro-azul",
     "title": "Pájaro Azul",
     "author": "Charles Bukowski",
+    "description": "Hay un pájaro azul en mi corazón que quiere salir...",
     "cover": "images/bukowski_pajaroazul.png",
-    "storyFile": "stories/pajaro_azul.json",
-    "description": "Hay un pájaro azul en mi corazón que quiere salir..."
+    "storyFile": "stories/pajaro_azul.json"
   },
   {
     "id": "coming-soon-2",
