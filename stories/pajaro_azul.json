@@ -1,0 +1,30 @@
+[
+  {
+    "id": "poema-completo",
+    "bgMusic": "jazz_suave_lluvia.mp3",
+    "effect": "bluebird_pass",
+    "scenes": [
+      "hay un pájaro azul en mi corazón que\nquiere salir\npero soy duro con él,\nle digo quédate ahí dentro, no voy\na permitir que nadie\nte vea.",
+      "hay un pájaro azul en mi corazón que\nquiere salir\npero yo le echo whisky encima y me trago\nel humo de los cigarrillos,\ny las putas y los camareros\ny los dependientes de ultramarinos\nnunca se dan cuenta\nde que está ahí dentro.",
+      "hay un pájaro azul en mi corazón que\nquiere salir\npero soy duro con él,\nle digo quédate ahí abajo, ¿es que quieres\nmontarme un lío?\n¿es que quieres\nmis obras?\n¿es que quieres que se hundan las ventas de mis libros\nen Europa?",
+      "hay un pájaro azul en mi corazón\nque quiere salir\npero soy demasiado listo, sólo le dejo salir\na veces por la noche\ncuando todo el mundo duerme.",
+      "le digo ya sé que estás ahí,\nno te pongas\ntriste.",
+      "luego lo vuelvo a introducir,\ny él canta un poquito\nahí dentro, no le he dejado\nmorir del todo\ny dormimos juntos\nasí\ncon nuestro\npacto secreto",
+      "y es tan tierno como\npara hacer llorar\na un hombre, pero yo no\nlloro,",
+      "¿lloras tú?"
+    ],
+    "choices": [
+      {
+        "text": "Volver al silencio",
+        "page": "fin"
+      }
+    ]
+  },
+  {
+    "id": "fin",
+    "scenes": [
+      "..."
+    ],
+    "choices": []
+  }
+]
