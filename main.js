@@ -41,16 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let pageHistory = [];
     let fontSize = 1.1;
 
-    // Efectos
-    let birdInterval = null;
-
     const readerThemes = ['light', 'sepia', 'bone', 'dark'];
     const libraryThemes = ['light', 'dark'];
     let currentTheme = 'light';
 
     let isTransitioning = false;
     let currentAudio = null;
-    let currentVolume = 1;
+    let currentVolume = 1; // Volumen por defecto
     let totalPagesInStory = 0;
 
     const themeColors = {
@@ -208,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function switchToLibraryView() {
         appMode = 'library';
-        document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
+        document.body.classList.remove('app-mode-reader', 'fullscreen-mode'); // Salir de fullscreen al volver
         document.body.classList.add('app-mode-library');
         libraryView.hidden = false;
         readerView.hidden = true;
@@ -218,14 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (appFooter) appFooter.classList.add('hidden');
         mainTitle.textContent = 'Lecturas Interactivas';
         stopCurrentAudio();
-        
-        // Limpiar efectos especiales al salir
-        if (birdInterval) {
-            clearInterval(birdInterval);
-            birdInterval = null;
-        }
-        const bird = document.querySelector('.flying-bird');
-        if (bird) bird.remove();
     }
 
     function switchToReaderView() {
@@ -237,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         readerView.classList.add('active');
         backToLibraryBtn.classList.remove('hidden');
         navToggle.classList.remove('hidden');
-        fullscreenBtn.classList.remove('hidden');
+        fullscreenBtn.classList.remove('hidden'); // Se muestra siempre ahora, maneja el modo "zen" en iOS
         if (appFooter) appFooter.classList.remove('hidden');
     }
 
@@ -248,8 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         await loadStory(bookData.storyFile);
         if (!story) return;
 
-        // Reiniciar siempre al principio si es el poema (para efectos) o cargar historial si existe
-        // Para este caso, mantenemos la lógica estándar:
         const loadedHistory = loadPageHistory(currentBook.id);
         if (loadedHistory && loadedHistory.length > 0) {
             pageHistory = loadedHistory;
@@ -290,23 +277,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function playPageSound(pageId, soundFileOverride = null) {
+    function playPageSound(pageId) {
         stopCurrentAudio();
-        
-        let soundFile = soundFileOverride;
-        if (!soundFile && story && pageId) {
-            const pageData = story.find(p => p.id === pageId);
-            if (pageData) soundFile = pageData.sound;
-        }
-
-        if (soundFile) {
-            currentAudio = new Audio(`sounds/${soundFile}`);
+        if (!story) return;
+        const pageData = story.find(p => p.id === pageId);
+        if (pageData && pageData.sound) {
+            currentAudio = new Audio(`sounds/${pageData.sound}`);
             currentAudio.loop = true;
-            currentAudio.volume = currentVolume;
+            currentAudio.volume = currentVolume; // Aplica volumen actual
             currentAudio.play().catch(err => console.error('Error al reproducir audio:', err));
         }
     }
 
+    // Actualiza volumen en tiempo real
     volumeSlider.addEventListener('input', (e) => {
         currentVolume = parseFloat(e.target.value);
         if (currentAudio) {
@@ -315,73 +298,22 @@ document.addEventListener('DOMContentLoaded', () => {
         saveVolume();
     });
 
-    /* =========================
-       SISTEMA DE EFECTOS
-       ========================= */
-    function handlePageEffects(effectName) {
-        if (birdInterval) {
-            clearInterval(birdInterval);
-            birdInterval = null;
-        }
-        const existingBird = document.querySelector('.flying-bird');
-        if (existingBird) existingBird.remove();
-
-        if (effectName === 'bluebird_pass') {
-            startBirdEffect();
-        }
-    }
-
-    function startBirdEffect() {
-        const spawnBird = () => {
-            // Asegurarnos de que estamos en modo lectura
-            if (appMode !== 'reader') return;
-
-            const bird = document.createElement('div');
-            bird.className = 'flying-bird';
-            
-            // Posición aleatoria en altura
-            const randomTop = Math.floor(Math.random() * 60) + 10;
-            bird.style.top = `${randomTop}%`;
-            
-            // Tamaño aleatorio
-            const scale = 0.8 + Math.random() * 0.5;
-            bird.style.transform = `scale(${scale})`;
-
-            document.body.appendChild(bird);
-            
-            requestAnimationFrame(() => {
-                bird.classList.add('animate-fly');
-            });
-
-            setTimeout(() => {
-                if(bird.parentNode) bird.parentNode.removeChild(bird);
-            }, 8000);
-        };
-
-        // Primer pájaro a los 2s
-        setTimeout(spawnBird, 2000);
-
-        // Pájaro periódico
-        birdInterval = setInterval(() => {
-            if(Math.random() > 0.4) spawnBird(); 
-        }, 12000);
-    }
-
     function preloadNextImages(currentPageId) {
         if (!story) return;
         const currentPage = story.find(p => p.id === currentPageId);
         if (!currentPage || !currentPage.choices) return;
 
         currentPage.choices.forEach(choice => {
-            // Si es número o string, buscamos
             const nextPage = story.find(p => p.id === choice.page);
             if (nextPage) {
+                // Precargar imágenes
                 if (nextPage.images && nextPage.images.length > 0) {
                     nextPage.images.forEach(imgUrl => {
                         const img = new Image();
                         img.src = imgUrl;
                     });
                 }
+                // Precargar audios (Mejora)
                 if (nextPage.sound) {
                     const audio = new Audio(`sounds/${nextPage.sound}`);
                     audio.preload = 'auto';
@@ -393,13 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPage(pageId) {
         pageWrapper.innerHTML = '';
         if (!story) return;
-
-        // Manejar "volver atrás" si id es -1
-        if (pageId === -1) {
-            switchToLibraryView();
-            return;
-        }
-
         const pageData = story.find(p => p.id === pageId);
         if (!pageData) return;
 
@@ -418,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (pageData.scenes && pageData.scenes.length > 0) {
+            // Añadir clase fade-in-text con retardo escalonado
             const scenesHtml = pageData.scenes
                 .map((s, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${s.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
                 .join('');
@@ -426,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentCenterer.innerHTML = contentHtml;
 
-        if (pageData.choices && pageData.choices.length > 0) {
+        if (pageData.choices && pageData.choices.length > 1) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
             pageData.choices.forEach(choice => {
@@ -449,17 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pageContent.appendChild(pageNumberDiv);
         }
         pageWrapper.appendChild(pageContent);
-        
-        // --- AUDIO ---
-        if (pageData.bgMusic) {
-            playPageSound(null, pageData.bgMusic);
-        } else if (pageData.sound) {
-            playPageSound(null, pageData.sound);
-        }
-
-        // --- EFECTOS ---
-        handlePageEffects(pageData.effect);
-
         preloadNextImages(pageId);
     }
 
@@ -484,13 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToPage(pageId, isGoingBack = false) {
         if (!story || isTransitioning) return;
-        
-        // Manejo especial salir
-        if (pageId === -1) {
-            switchToLibraryView();
-            return;
-        }
-
         if (!story.some(p => p.id === pageId)) return;
 
         isTransitioning = true;
@@ -505,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pageHistory.push(pageId);
             }
             savePageHistory();
+            playPageSound(pageId);
             pageWrapper.classList.remove('page-exit');
             void pageWrapper.offsetWidth;
             pageWrapper.classList.add('page-enter');
@@ -611,13 +520,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     }
 
+    // Lógica inteligente de Fullscreen
     function toggleFullscreen() {
         const doc = document;
+
+        // Si es iOS o si la API nativa no está soportada/permitida en este contexto
+        // usamos el modo "fake" CSS para ocultar la UI del navegador
         if (isIOS()) {
             document.body.classList.toggle('fullscreen-mode');
-            window.scrollTo(0, 1);
+            window.scrollTo(0, 1); // Intento de scroll para ocultar barra URL antigua
             return;
         }
+
+        // Android / Desktop con API nativa
         if (!doc.fullscreenElement) {
             doc.documentElement.requestFullscreen().catch(err => {
                 console.warn('Fullscreen API falló, usando modo CSS:', err);
@@ -628,6 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Escucha cambios nativos para sincronizar la clase CSS
     document.addEventListener('fullscreenchange', () => {
         if (document.fullscreenElement) {
             document.body.classList.add('fullscreen-mode');
