@@ -1,30 +1,56 @@
 [
   {
-    "id": "pajaro-azul",
-    "bgMusic": "jazz_suave_lluvia.mp3",
+    "id": "inicio",
+    "bgMusic": "jazz_bukowski.mp3",
     "effect": "bluebird_pass",
+    "page": 1,
     "scenes": [
-      "hay un pájaro azul en mi corazón que\nquiere salir\npero soy duro con él,\nle digo quédate ahí dentro, no voy\na permitir que nadie\nte vea.",
-      "hay un pájaro azul en mi corazón que\nquiere salir\npero yo le echo whisky encima y me trago\nel humo de los cigarrillos,\ny las putas y los camareros\ny los dependientes de ultramarinos\nnunca se dan cuenta\nde que está ahí dentro.",
-      "hay un pájaro azul en mi corazón que\nquiere salir\npero soy duro con él,\nle digo quédate ahí abajo, ¿es que quieres\nmontarme un lío?\n¿es que quieres\nmis obras?\n¿es que quieres que se hundan las ventas de mis libros\nen Europa?",
-      "hay un pájaro azul en mi corazón\nque quiere salir\npero soy demasiado listo, sólo le dejo salir\na veces por la noche\ncuando todo el mundo duerme.",
+      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón que\nquiere salir",
+      "pero soy duro con él,\nle digo quédate ahí dentro, no voy\na permitir que nadie\nte vea."
+    ],
+    "choices": [
+      {
+        "text": "Pero yo le echo whisky encima...",
+        "page": "vicios"
+      }
+    ]
+  },
+  {
+    "id": "vicios",
+    "bgMusic": "bar_ambience.mp3",
+    "effect": "smoke_overlay",
+    "page": 2,
+    "scenes": [
+      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón que\nquiere salir",
+      "pero yo le echo whisky encima y me trago\nel humo de los cigarrillos,",
+      "y las putas y los camareros\ny los dependientes de ultramarinos\nnunca se dan cuenta\nde que está ahí dentro."
+    ],
+    "choices": [
+      {
+        "text": "Sólo le dejo salir por la noche...",
+        "page": "noche"
+      }
+    ]
+  },
+  {
+    "id": "noche",
+    "bgMusic": "night_rain.mp3",
+    "effect": "rain_subtle",
+    "page": 3,
+    "scenes": [
+      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón\nque quiere salir\npero soy demasiado listo,",
+      "sólo le dejo salir\na veces por la noche\ncuando todo el mundo duerme.",
       "le digo ya sé que estás ahí,\nno te pongas\ntriste.",
-      "luego lo vuelvo a introducir,\ny él canta un poquito\nahí dentro, no le he dejado\nmorir del todo\ny dormimos juntos\nasí\ncon nuestro\npacto secreto",
+      "luego lo vuelvo a introducir,\ny él canta un poquito\nahí dentro, no le he dejado\nmorir del todo",
+      "y dormimos juntos\nasí\ncon nuestro\npacto secreto",
       "y es tan tierno como\npara hacer llorar\na un hombre, pero yo no\nlloro,",
       "¿lloras tú?"
     ],
     "choices": [
       {
-        "text": "Volver al silencio",
-        "page": "fin"
+        "text": "Cerrar el libro en silencio",
+        "page": -1
       }
     ]
-  },
-  {
-    "id": "fin",
-    "scenes": [
-      "..."
-    ],
-    "choices": []
   }
 ]
