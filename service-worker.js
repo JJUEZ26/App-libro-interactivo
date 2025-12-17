@@ -1,14 +1,18 @@
-const CACHE_NAME = 'sombra-venganza-cache-v1';
+const CACHE_NAME = 'sombra-venganza-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/main.js',
-  '/story.json',
+  '/data/books.json',
+  '/stories/frankenstein.json',
+  '/stories/pajaro_azul.json',
   '/images/victor_encubierta.png',
   '/images/victor_conpala.png',
   '/images/victorduda.png',
   '/images/monstruo_rostro.jpg',
+  '/images/cover_bukowski.jpg',
+  '/images/bluebird_icon.png',
   '/images/icon-192x192.png',
   '/images/icon-512x512.png'
 ];
