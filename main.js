@@ -333,57 +333,115 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================
-       SISTEMA DE EFECTOS
+       SISTEMA DE EFECTOS (ACTUALIZADO)
        ========================= */
+    let activeEffectInterval = null; // Variable global para limpiar intervalos
+
     function handlePageEffects(effectName) {
-        if (birdInterval) {
-            clearInterval(birdInterval);
-            birdInterval = null;
+        // 1. Limpieza total de efectos anteriores
+        if (activeEffectInterval) {
+            clearInterval(activeEffectInterval);
+            activeEffectInterval = null;
         }
-        const existingBird = document.querySelector('.flying-bird');
-        if (existingBird) existingBird.remove();
+        
+        // Limpiar pájaros
+        const existingBirds = document.querySelectorAll('.flying-bird');
+        existingBirds.forEach(el => el.remove());
+
+        // Limpiar capas de efectos (humo/lluvia)
+        const existingOverlays = document.querySelectorAll('.effect-overlay');
+        existingOverlays.forEach(el => el.remove());
+
+        // 2. Activar nuevo efecto
+        if (!effectName) return;
 
         if (effectName === 'bluebird_pass') {
             startBirdEffect();
+        } else if (effectName === 'smoke_overlay') {
+            startSmokeEffect();
+        } else if (effectName === 'rain_subtle') {
+            startRainEffect();
         }
     }
 
+    // EFECTO 1: PÁJARO (Ya lo tenías, ajustado)
     function startBirdEffect() {
         const spawnBird = () => {
-            // Asegurarnos de que estamos en modo lectura
             if (appMode !== 'reader') return;
-
             const bird = document.createElement('div');
             bird.className = 'flying-bird';
-            
-            // Posición aleatoria en altura
             const randomTop = Math.floor(Math.random() * 60) + 10;
             bird.style.top = `${randomTop}%`;
-            
-            // Tamaño aleatorio
             const scale = 0.8 + Math.random() * 0.5;
             bird.style.transform = `scale(${scale})`;
-
             document.body.appendChild(bird);
-            
-            requestAnimationFrame(() => {
-                bird.classList.add('animate-fly');
-            });
-
-            setTimeout(() => {
-                if(bird.parentNode) bird.parentNode.removeChild(bird);
-            }, 8000);
+            requestAnimationFrame(() => bird.classList.add('animate-fly'));
+            setTimeout(() => { if(bird.parentNode) bird.parentNode.remove(); }, 8000);
         };
-
-        // Primer pájaro a los 2s
-        setTimeout(spawnBird, 2000);
-
-        // Pájaro periódico
-        birdInterval = setInterval(() => {
+        setTimeout(spawnBird, 1500);
+        activeEffectInterval = setInterval(() => {
             if(Math.random() > 0.4) spawnBird(); 
         }, 12000);
     }
 
+    // EFECTO 2: HUMO (Cigarrillos)
+    function startSmokeEffect() {
+        const overlay = document.createElement('div');
+        overlay.className = 'effect-overlay';
+        document.body.appendChild(overlay);
+
+        const spawnSmoke = () => {
+            if (appMode !== 'reader') return;
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke-particle';
+            // Posición horizontal aleatoria
+            smoke.style.left = Math.random() * 100 + '%';
+            // Duración aleatoria para que no se vea repetitivo
+            smoke.style.animationDuration = (6 + Math.random() * 4) + 's';
+            overlay.appendChild(smoke);
+            
+            // Auto eliminar partícula
+            setTimeout(() => { if(smoke.parentNode) smoke.remove(); }, 10000);
+        };
+
+        // Generar humo constantemente
+        activeEffectInterval = setInterval(spawnSmoke, 800);
+    }
+
+    // EFECTO 3: LLUVIA (Tristeza)
+    function startRainEffect() {
+        const overlay = document.createElement('div');
+        overlay.className = 'effect-overlay';
+        document.body.appendChild(overlay);
+
+        // Crear 50 gotas estáticas iniciales para que ya esté lloviendo
+        for(let i=0; i<30; i++) {
+            createDrop(overlay);
+        }
+        
+        // Mantener la lluvia
+        activeEffectInterval = setInterval(() => {
+             if(document.querySelectorAll('.rain-drop').length < 50) {
+                 createDrop(overlay);
+             }
+        }, 100);
+    }
+
+    function createDrop(container) {
+        const drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        drop.style.left = Math.random() * 100 + '%';
+        // Velocidad aleatoria
+        const duration = 1 + Math.random();
+        drop.style.animationDuration = duration + 's';
+        // Retraso aleatorio
+        drop.style.animationDelay = Math.random() * -2 + 's';
+        
+        container.appendChild(drop);
+    }
+
+    // ... (RESTO DEL CÓDIGO PERMANECE IGUAL) ...
+    
     function preloadNextImages(currentPageId) {
         if (!story) return;
         const currentPage = story.find(p => p.id === currentPageId);
