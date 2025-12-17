@@ -11,7 +11,7 @@ const urlsToCache = [
   '/images/victor_conpala.png',
   '/images/victorduda.png',
   '/images/monstruo_rostro.jpg',
-  '/images/cover_bukowski.jpg',
+  '/images/cover_bukowski_pajaroazul.png',
   '/images/bluebird_icon.png',
   '/images/icon-192x192.png',
   '/images/icon-512x512.png'
