@@ -1,34 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando Lecturas Interactivas");
+    console.log("Iniciando Lecturas Interactivas v2.1 (Modo Seguro)");
 
-    // ELEMENTOS BÁSICOS
-    const appContainer = document.getElementById('app-container');
-    const libraryView = document.getElementById('library-view');
-    const libraryGrid = document.getElementById('library-grid');
-    const readerView = document.getElementById('reader-view');
+    // --- SELECCIÓN DE ELEMENTOS (Con seguridad) ---
+    // Usamos una función auxiliar para no romper el código si falta algo
+    const getEl = (id) => document.getElementById(id);
 
-    const book = document.getElementById('book');
-    const pageWrapper = document.getElementById('page-wrapper');
+    const appContainer = getEl('app-container');
+    const libraryView = getEl('library-view');
+    const libraryGrid = getEl('library-grid');
+    const readerView = getEl('reader-view');
 
-    const mainTitle = document.getElementById('main-title');
-    const backToLibraryBtn = document.getElementById('back-to-library');
+    const book = getEl('book');
+    const pageWrapper = getEl('page-wrapper');
 
-    const increaseFontBtn = document.getElementById('increase-font');
-    const decreaseFontBtn = document.getElementById('decrease-font');
-    const themeSelectorBtn = document.getElementById('theme-selector');
-    const settingsToggle = document.getElementById('settings-toggle');
-    const settingsMenu = document.getElementById('settings-menu');
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const volumeSlider = document.getElementById('volume-slider');
+    const mainTitle = getEl('main-title');
+    const backToLibraryBtn = getEl('back-to-library');
 
-    const navToggle = document.getElementById('nav-toggle');
-    const navModal = document.getElementById('nav-modal');
-    const navClose = document.getElementById('nav-close');
-    const restartBtn = document.getElementById('restart-btn');
-    const historyList = document.getElementById('history-list');
+    const increaseFontBtn = getEl('increase-font');
+    const decreaseFontBtn = getEl('decrease-font');
+    const themeSelectorBtn = getEl('theme-selector');
+    const settingsToggle = getEl('settings-toggle');
+    const settingsMenu = getEl('settings-menu');
+    const fullscreenBtn = getEl('fullscreen-btn');
+    const volumeSlider = getEl('volume-slider');
 
-    const progressBar = document.getElementById('progress-bar');
-    const appFooter = document.getElementById('app-footer');
+    const navToggle = getEl('nav-toggle');
+    const navModal = getEl('nav-modal');
+    const navClose = getEl('nav-close');
+    const restartBtn = getEl('restart-btn');
+    const historyList = getEl('history-list');
+
+    const progressBar = getEl('progress-bar');
+    const appFooter = getEl('app-footer');
 
     // ESTADO GENERAL
     let appMode = 'library';
@@ -41,13 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let pageHistory = [];
     let fontSize = 1.1;
 
+    // Efectos
+    let birdInterval = null;
+
     const readerThemes = ['light', 'sepia', 'bone', 'dark'];
     const libraryThemes = ['light', 'dark'];
     let currentTheme = 'light';
 
     let isTransitioning = false;
     let currentAudio = null;
-    let currentVolume = 1; // Volumen por defecto
+    let currentVolume = 1;
     let totalPagesInStory = 0;
 
     const themeColors = {
@@ -77,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         applyTheme(currentTheme);
 
-        if (savedVolume !== null) {
+        if (savedVolume !== null && volumeSlider) {
             currentVolume = parseFloat(savedVolume);
             volumeSlider.value = currentVolume;
         }
@@ -125,6 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
        BIBLIOTECA
        ========================= */
     async function loadBooks() {
+        if (!libraryGrid) return; // Si no hay grid, no hacemos nada
+        
         try {
             const response = await fetch('data/books.json');
             if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
@@ -132,11 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
             renderLibrary();
         } catch (error) {
             console.error('Error al cargar books.json:', error);
-            libraryGrid.innerHTML = '<p>No se pudieron cargar los libros.</p>';
+            libraryGrid.innerHTML = '<p style="padding: 20px; color: red;">Error cargando la biblioteca. Revisa que data/books.json exista y sea válido.</p>';
         }
     }
 
     function renderLibrary() {
+        if (!libraryGrid) return;
         libraryGrid.innerHTML = '';
         if (!books || books.length === 0) {
             libraryGrid.innerHTML = '<p>Tu biblioteca está vacía.</p>';
@@ -158,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.alt = `Portada de ${bookData.title || 'libro'}`;
                 img.loading = 'lazy';
                 img.className = 'book-cover';
+                img.onerror = function() { this.classList.add('placeholder'); this.src=''; this.alt='Imagen no encontrada'; }; // Fallback imagen
                 coverWrapper.appendChild(img);
             } else {
                 const placeholder = document.createElement('div');
@@ -205,35 +215,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function switchToLibraryView() {
         appMode = 'library';
-        document.body.classList.remove('app-mode-reader', 'fullscreen-mode'); // Salir de fullscreen al volver
+        document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
         document.body.classList.add('app-mode-library');
-        libraryView.hidden = false;
-        readerView.hidden = true;
-        backToLibraryBtn.classList.add('hidden');
-        navToggle.classList.add('hidden');
-        fullscreenBtn.classList.add('hidden');
+        
+        if (libraryView) libraryView.hidden = false;
+        if (readerView) readerView.hidden = true;
+        
+        if (backToLibraryBtn) backToLibraryBtn.classList.add('hidden');
+        if (navToggle) navToggle.classList.add('hidden');
+        if (fullscreenBtn) fullscreenBtn.classList.add('hidden');
         if (appFooter) appFooter.classList.add('hidden');
-        mainTitle.textContent = 'Lecturas Interactivas';
+        if (mainTitle) mainTitle.textContent = 'Lecturas Interactivas';
+        
         stopCurrentAudio();
+        
+        // Limpiar efectos especiales al salir
+        if (birdInterval) {
+            clearInterval(birdInterval);
+            birdInterval = null;
+        }
+        const bird = document.querySelector('.flying-bird');
+        if (bird) bird.remove();
     }
 
     function switchToReaderView() {
         appMode = 'reader';
         document.body.classList.remove('app-mode-library');
         document.body.classList.add('app-mode-reader');
-        libraryView.hidden = true;
-        readerView.hidden = false;
-        readerView.classList.add('active');
-        backToLibraryBtn.classList.remove('hidden');
-        navToggle.classList.remove('hidden');
-        fullscreenBtn.classList.remove('hidden'); // Se muestra siempre ahora, maneja el modo "zen" en iOS
+        
+        if (libraryView) libraryView.hidden = true;
+        if (readerView) {
+            readerView.hidden = false;
+            readerView.classList.add('active');
+        }
+        
+        if (backToLibraryBtn) backToLibraryBtn.classList.remove('hidden');
+        if (navToggle) navToggle.classList.remove('hidden');
+        if (fullscreenBtn) fullscreenBtn.classList.remove('hidden');
         if (appFooter) appFooter.classList.remove('hidden');
     }
 
     async function openBook(bookData) {
         if (!bookData || !bookData.storyFile) return;
         currentBook = bookData;
-        mainTitle.textContent = bookData.title || 'Lectura';
+        if (mainTitle) mainTitle.textContent = bookData.title || 'Lectura';
         await loadStory(bookData.storyFile);
         if (!story) return;
 
@@ -249,10 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
         goToPage(currentStoryId, true);
     }
 
-    backToLibraryBtn.addEventListener('click', () => {
-        switchToLibraryView();
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    });
+    if (backToLibraryBtn) {
+        backToLibraryBtn.addEventListener('click', () => {
+            switchToLibraryView();
+            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        });
+    }
 
     /* =========================
        HISTORIA / LECTOR
@@ -265,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             totalPagesInStory = story.length;
         } catch (error) {
             console.error('Error al cargar historia:', error);
+            alert("No se pudo cargar la historia. Verifica la consola para más detalles.");
             story = null;
         }
     }
@@ -277,26 +305,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function playPageSound(pageId) {
+    function playPageSound(pageId, soundFileOverride = null) {
         stopCurrentAudio();
-        if (!story) return;
-        const pageData = story.find(p => p.id === pageId);
-        if (pageData && pageData.sound) {
-            currentAudio = new Audio(`sounds/${pageData.sound}`);
+        
+        let soundFile = soundFileOverride;
+        if (!soundFile && story && pageId) {
+            const pageData = story.find(p => p.id === pageId);
+            if (pageData) soundFile = pageData.sound;
+        }
+
+        if (soundFile) {
+            currentAudio = new Audio(`sounds/${soundFile}`);
             currentAudio.loop = true;
-            currentAudio.volume = currentVolume; // Aplica volumen actual
-            currentAudio.play().catch(err => console.error('Error al reproducir audio:', err));
+            currentAudio.volume = currentVolume;
+            currentAudio.play().catch(err => console.error('Error al reproducir audio (interacción requerida o archivo no encontrado):', err));
         }
     }
 
-    // Actualiza volumen en tiempo real
-    volumeSlider.addEventListener('input', (e) => {
-        currentVolume = parseFloat(e.target.value);
-        if (currentAudio) {
-            currentAudio.volume = currentVolume;
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            currentVolume = parseFloat(e.target.value);
+            if (currentAudio) {
+                currentAudio.volume = currentVolume;
+            }
+            saveVolume();
+        });
+    }
+
+    /* =========================
+       SISTEMA DE EFECTOS
+       ========================= */
+    function handlePageEffects(effectName) {
+        if (birdInterval) {
+            clearInterval(birdInterval);
+            birdInterval = null;
         }
-        saveVolume();
-    });
+        const existingBird = document.querySelector('.flying-bird');
+        if (existingBird) existingBird.remove();
+
+        if (effectName === 'bluebird_pass') {
+            startBirdEffect();
+        }
+    }
+
+    function startBirdEffect() {
+        const spawnBird = () => {
+            // Asegurarnos de que estamos en modo lectura
+            if (appMode !== 'reader') return;
+
+            const bird = document.createElement('div');
+            bird.className = 'flying-bird';
+            
+            // Posición aleatoria en altura
+            const randomTop = Math.floor(Math.random() * 60) + 10;
+            bird.style.top = `${randomTop}%`;
+            
+            // Tamaño aleatorio
+            const scale = 0.8 + Math.random() * 0.5;
+            bird.style.transform = `scale(${scale})`;
+
+            document.body.appendChild(bird);
+            
+            requestAnimationFrame(() => {
+                bird.classList.add('animate-fly');
+            });
+
+            setTimeout(() => {
+                if(bird.parentNode) bird.parentNode.removeChild(bird);
+            }, 8000);
+        };
+
+        // Primer pájaro a los 2s
+        setTimeout(spawnBird, 2000);
+
+        // Pájaro periódico
+        birdInterval = setInterval(() => {
+            if(Math.random() > 0.4) spawnBird(); 
+        }, 12000);
+    }
 
     function preloadNextImages(currentPageId) {
         if (!story) return;
@@ -306,14 +392,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPage.choices.forEach(choice => {
             const nextPage = story.find(p => p.id === choice.page);
             if (nextPage) {
-                // Precargar imágenes
                 if (nextPage.images && nextPage.images.length > 0) {
                     nextPage.images.forEach(imgUrl => {
                         const img = new Image();
                         img.src = imgUrl;
                     });
                 }
-                // Precargar audios (Mejora)
                 if (nextPage.sound) {
                     const audio = new Audio(`sounds/${nextPage.sound}`);
                     audio.preload = 'auto';
@@ -323,8 +407,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPage(pageId) {
+        if (!pageWrapper) return;
         pageWrapper.innerHTML = '';
         if (!story) return;
+
+        // Manejar "volver atrás" si id es -1
+        if (pageId === -1) {
+            switchToLibraryView();
+            return;
+        }
+
         const pageData = story.find(p => p.id === pageId);
         if (!pageData) return;
 
@@ -343,7 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (pageData.scenes && pageData.scenes.length > 0) {
-            // Añadir clase fade-in-text con retardo escalonado
             const scenesHtml = pageData.scenes
                 .map((s, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${s.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
                 .join('');
@@ -352,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentCenterer.innerHTML = contentHtml;
 
-        if (pageData.choices && pageData.choices.length > 1) {
+        if (pageData.choices && pageData.choices.length > 0) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
             pageData.choices.forEach(choice => {
@@ -375,19 +466,31 @@ document.addEventListener('DOMContentLoaded', () => {
             pageContent.appendChild(pageNumberDiv);
         }
         pageWrapper.appendChild(pageContent);
+        
+        // --- AUDIO ---
+        if (pageData.bgMusic) {
+            playPageSound(null, pageData.bgMusic);
+        } else if (pageData.sound) {
+            playPageSound(null, pageData.sound);
+        }
+
+        // --- EFECTOS ---
+        handlePageEffects(pageData.effect);
+
         preloadNextImages(pageId);
     }
 
     function resetScrollPosition() {
-        if (pageWrapper.querySelector('.page-content')) {
+        if (pageWrapper && pageWrapper.querySelector('.page-content')) {
             pageWrapper.querySelector('.page-content').scrollTop = 0;
         }
-        pageWrapper.scrollTop = 0;
+        if (pageWrapper) pageWrapper.scrollTop = 0;
         document.documentElement.scrollTop = 0;
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
     function updateUI() {
+        if (!progressBar) return;
         if (!story || totalPagesInStory === 0) {
             progressBar.style.width = '0%';
             return;
@@ -399,11 +502,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToPage(pageId, isGoingBack = false) {
         if (!story || isTransitioning) return;
+        
+        if (pageId === -1) {
+            switchToLibraryView();
+            return;
+        }
+
         if (!story.some(p => p.id === pageId)) return;
 
         isTransitioning = true;
-        pageWrapper.classList.remove('page-enter');
-        pageWrapper.classList.add('page-exit');
+        if (pageWrapper) {
+            pageWrapper.classList.remove('page-enter');
+            pageWrapper.classList.add('page-exit');
+        }
 
         setTimeout(() => {
             renderPage(pageId);
@@ -413,10 +524,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 pageHistory.push(pageId);
             }
             savePageHistory();
-            playPageSound(pageId);
-            pageWrapper.classList.remove('page-exit');
-            void pageWrapper.offsetWidth;
-            pageWrapper.classList.add('page-enter');
+            if (pageWrapper) {
+                pageWrapper.classList.remove('page-exit');
+                void pageWrapper.offsetWidth;
+                pageWrapper.classList.add('page-enter');
+            }
             setTimeout(() => { isTransitioning = false; updateUI(); }, 500);
         }, 400);
     }
@@ -436,14 +548,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    book.addEventListener('click', (event) => {
-        if (appMode !== 'reader') return;
-        if (isTransitioning) return;
-        if (event.target.closest('.choices') || event.target.closest('button')) return;
-        const rect = book.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        if (clickX < rect.width * 0.3) goBack(); else goForward();
-    });
+    if (book) {
+        book.addEventListener('click', (event) => {
+            if (appMode !== 'reader') return;
+            if (isTransitioning) return;
+            if (event.target.closest('.choices') || event.target.closest('button')) return;
+            const rect = book.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            if (clickX < rect.width * 0.3) goBack(); else goForward();
+        });
+    }
 
     /* =========================
        NAVEGACIÓN / HISTORIAL
@@ -451,10 +565,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function openNav() {
         if (!story) return;
         updateNavigationList();
-        navModal.classList.add('active');
+        if (navModal) navModal.classList.add('active');
     }
-    function closeNav() { navModal.classList.remove('active'); }
+    function closeNav() { if (navModal) navModal.classList.remove('active'); }
     function updateNavigationList() {
+        if (!historyList) return;
         historyList.innerHTML = '';
         if (!story || !pageHistory.length) return;
         const milestones = pageHistory.filter((pageId, index) => {
@@ -501,10 +616,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeNav();
     }
 
-    navToggle.addEventListener('click', openNav);
-    navClose.addEventListener('click', closeNav);
-    restartBtn.addEventListener('click', restartStory);
-    navModal.addEventListener('click', (ev) => { if (ev.target === navModal) closeNav(); });
+    if (navToggle) navToggle.addEventListener('click', openNav);
+    if (navClose) navClose.addEventListener('click', closeNav);
+    if (restartBtn) restartBtn.addEventListener('click', restartStory);
+    if (navModal) navModal.addEventListener('click', (ev) => { if (ev.target === navModal) closeNav(); });
 
     /* =========================
        AJUSTES: FUENTE / TEMA / FULLSCREEN
@@ -514,25 +629,19 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.style.setProperty('--font-size-dynamic', `${fontSize}rem`);
         saveFontSize();
     }
-    function toggleSettingsMenu() { settingsMenu.classList.toggle('visible'); }
+    function toggleSettingsMenu() { if (settingsMenu) settingsMenu.classList.toggle('visible'); }
 
     function isIOS() {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     }
 
-    // Lógica inteligente de Fullscreen
     function toggleFullscreen() {
         const doc = document;
-
-        // Si es iOS o si la API nativa no está soportada/permitida en este contexto
-        // usamos el modo "fake" CSS para ocultar la UI del navegador
         if (isIOS()) {
             document.body.classList.toggle('fullscreen-mode');
-            window.scrollTo(0, 1); // Intento de scroll para ocultar barra URL antigua
+            window.scrollTo(0, 1);
             return;
         }
-
-        // Android / Desktop con API nativa
         if (!doc.fullscreenElement) {
             doc.documentElement.requestFullscreen().catch(err => {
                 console.warn('Fullscreen API falló, usando modo CSS:', err);
@@ -543,7 +652,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Escucha cambios nativos para sincronizar la clase CSS
     document.addEventListener('fullscreenchange', () => {
         if (document.fullscreenElement) {
             document.body.classList.add('fullscreen-mode');
@@ -554,11 +662,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    increaseFontBtn.addEventListener('click', () => changeFontSize(0.1));
-    decreaseFontBtn.addEventListener('click', () => changeFontSize(-0.1));
-    themeSelectorBtn.addEventListener('click', cycleTheme);
-    settingsToggle.addEventListener('click', toggleSettingsMenu);
-    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    if (increaseFontBtn) increaseFontBtn.addEventListener('click', () => changeFontSize(0.1));
+    if (decreaseFontBtn) decreaseFontBtn.addEventListener('click', () => changeFontSize(-0.1));
+    if (themeSelectorBtn) themeSelectorBtn.addEventListener('click', cycleTheme);
+    if (settingsToggle) settingsToggle.addEventListener('click', toggleSettingsMenu);
+    if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
 
     /* =========================
        INICIALIZACIÓN
