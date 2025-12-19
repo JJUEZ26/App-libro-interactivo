@@ -84,7 +84,7 @@ html {
     width: 100%;
     height: 100%;
     /* Previene rebote en iOS */
-    overscroll-behavior-y: none; 
+    overscroll-behavior-y: none;
 }
 
 body {
@@ -124,57 +124,6 @@ button { font-family: var(--font-body); cursor: pointer; }
 
 @keyframes fadeIn {
     to { opacity: 1; }
-}
-
-/* =========================
-   EFECTOS ESPECIALES (Pájaro Azul)
-   ========================= */
-
-/* El contenedor del pájaro */
-.flying-bird {
-    position: fixed;
-    top: 20%;
-    left: -100px;
-    width: 60px; /* Un poco más grande para que se vea bien */
-    height: 60px;
-    background-image: url('images/bluebird_icon.png'); /* TU IMAGEN AQUÍ */
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 10;
-    opacity: 0.8;
-    pointer-events: none;
-    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
-}
-
-/* La animación de vuelo */
-@keyframes flyAcross {
-    0% { transform: translateX(0) translateY(0) rotate(5deg); opacity: 0; }
-    10% { opacity: 0.9; }
-    90% { opacity: 0.9; }
-    100% { transform: translateX(120vw) translateY(-50px) rotate(-10deg); opacity: 0; }
-}
-
-.animate-fly { animation: flyAcross 7s linear forwards; }
-
-body.theme-dark .flying-bird {
-    filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.4));
-    opacity: 0.8;
-}
-
-/* Efecto latido para el texto "pájaro azul" */
-.blue-highlight {
-    color: #3498db;
-    font-weight: bold;
-    display: inline-block;
-    animation: heartbeat 3s infinite ease-in-out;
-}
-
-body.theme-sepia .blue-highlight { color: #2980b9; }
-body.theme-dark .blue-highlight { color: #5dade2; }
-
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
 }
 
 /* =========================
@@ -581,65 +530,3 @@ body.fullscreen-mode #page-wrapper {
 }
 body.fullscreen-mode .content-centerer { padding: 2rem 1.5rem; max-width: 100%; }
 /* ... (MANTÉN TODO TU CSS ANTERIOR IGUAL) ... */
-
-/* =========================
-   NUEVOS EFECTOS ATMOSFÉRICOS
-   ========================= */
-
-/* Contenedor general de efectos para que no tapen el texto */
-.effect-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1; /* Detrás del texto (que suele ser z-index 2) pero sobre el fondo */
-    overflow: hidden;
-}
-
-/* --- EFECTO HUMO (CIGARRILLOS) --- */
-.smoke-particle {
-    position: absolute;
-    background: radial-gradient(circle, rgba(200, 200, 200, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    bottom: -50px;
-    animation: smokeRise 8s infinite linear;
-    opacity: 0;
-}
-
-@keyframes smokeRise {
-    0% { transform: translateY(0) scale(1) translateX(0); opacity: 0; }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.3; }
-    100% { transform: translateY(-120vh) scale(3) translateX(20px); opacity: 0; }
-}
-
-/* Modo oscuro: humo más sutil y grisáceo */
-body.theme-dark .smoke-particle {
-    background: radial-gradient(circle, rgba(100, 100, 100, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
-}
-
-/* --- EFECTO LLUVIA (LÁGRIMAS) --- */
-.rain-drop {
-    position: absolute;
-    background: rgba(52, 152, 219, 0.6);
-    width: 2px;
-    height: 15px;
-    top: -20px;
-    animation: rainFall 1.5s linear infinite;
-}
-
-@keyframes rainFall {
-    to { transform: translateY(110vh); }
-}
-
-/* Variación para dar profundidad a la lluvia */
-.rain-drop:nth-child(even) {
-    width: 1px;
-    height: 10px;
-    opacity: 0.5;
-    background: rgba(100, 100, 120, 0.5);
-}

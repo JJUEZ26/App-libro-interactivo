@@ -1,0 +1,34 @@
+/* =========================
+   EFECTO: PÁJARO AZUL
+   ========================= */
+
+/* El contenedor del pájaro */
+.flying-bird {
+    position: fixed;
+    top: 20%;
+    left: -100px;
+    width: 60px; /* Un poco más grande para que se vea bien */
+    height: 60px;
+    background-image: url('images/bluebird_icon.png'); /* TU IMAGEN AQUÍ */
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 10;
+    opacity: 0.8;
+    pointer-events: none;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+}
+
+/* La animación de vuelo */
+@keyframes flyAcross {
+    0% { transform: translateX(0) translateY(0) rotate(5deg); opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% { transform: translateX(120vw) translateY(-50px) rotate(-10deg); opacity: 0; }
+}
+
+.animate-fly { animation: flyAcross 7s linear forwards; }
+
+body.theme-dark .flying-bird {
+    filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.4));
+    opacity: 0.8;
+}

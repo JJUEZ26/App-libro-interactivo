@@ -1,0 +1,25 @@
+/* =========================
+   EFECTO: LLUVIA
+   ========================= */
+
+/* --- EFECTO LLUVIA (LÁGRIMAS) --- */
+.rain-drop {
+    position: absolute;
+    background: rgba(52, 152, 219, 0.6);
+    width: 2px;
+    height: 15px;
+    top: -20px;
+    animation: rainFall 1.5s linear infinite;
+}
+
+@keyframes rainFall {
+    to { transform: translateY(110vh); }
+}
+
+/* Variación para dar profundidad a la lluvia */
+.rain-drop:nth-child(even) {
+    width: 1px;
+    height: 10px;
+    opacity: 0.5;
+    background: rgba(100, 100, 120, 0.5);
+}
