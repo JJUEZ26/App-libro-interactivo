@@ -1,0 +1,17 @@
+/* =========================
+   ESTILOS DEL LIBRO: PÁJARO AZUL
+   ========================= */
+.blue-highlight {
+    color: #3498db;
+    font-weight: bold;
+    display: inline-block;
+    animation: heartbeat 3s infinite ease-in-out;
+}
+
+body.theme-sepia .blue-highlight { color: #2980b9; }
+body.theme-dark .blue-highlight { color: #5dade2; }
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
