@@ -16,8 +16,8 @@ function clearExistingEffects() {
 function startBirdEffect(getAppMode) {
     const spawnBird = () => {
         if (getAppMode() !== 'reader') return;
-        const container = document.body || document.documentElement;
-        if (!container) return;
+        const container = document.getElementById('app-container') || document.body || document.documentElement;
+        if (!container || typeof container.appendChild !== 'function') return;
         const bird = document.createElement('div');
         bird.className = 'flying-bird';
         const randomTop = Math.floor(Math.random() * 60) + 10;
