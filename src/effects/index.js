@@ -16,13 +16,15 @@ function clearExistingEffects() {
 function startBirdEffect(getAppMode) {
     const spawnBird = () => {
         if (getAppMode() !== 'reader') return;
+        const container = document.body || document.documentElement;
+        if (!container) return;
         const bird = document.createElement('div');
         bird.className = 'flying-bird';
         const randomTop = Math.floor(Math.random() * 60) + 10;
         bird.style.top = `${randomTop}%`;
         const scale = 0.8 + Math.random() * 0.5;
         bird.style.transform = `scale(${scale})`;
-        document.body.appendChild(bird);
+        container.appendChild(bird);
         requestAnimationFrame(() => bird.classList.add('animate-fly'));
         setTimeout(() => { if (bird.parentNode) bird.parentNode.remove(); }, 8000);
     };
@@ -35,7 +37,9 @@ function startBirdEffect(getAppMode) {
 function startSmokeEffect(getAppMode) {
     const overlay = document.createElement('div');
     overlay.className = 'effect-overlay';
-    document.body.appendChild(overlay);
+    const container = document.body || document.documentElement;
+    if (!container) return;
+    container.appendChild(overlay);
 
     const spawnSmoke = () => {
         if (getAppMode() !== 'reader') return;
@@ -54,7 +58,9 @@ function startSmokeEffect(getAppMode) {
 function startRainEffect(getAppMode) {
     const overlay = document.createElement('div');
     overlay.className = 'effect-overlay';
-    document.body.appendChild(overlay);
+    const container = document.body || document.documentElement;
+    if (!container) return;
+    container.appendChild(overlay);
 
     for (let i = 0; i < 30; i += 1) {
         createDrop(overlay);
