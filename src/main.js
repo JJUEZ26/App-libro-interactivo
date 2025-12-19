@@ -1,3 +1,14 @@
+import { createLibrary } from './books/index.js';
+import { handlePageEffects } from './effects/index.js';
+import {
+    loadPreferences,
+    saveFontSize,
+    saveTheme,
+    saveVolume,
+    savePageHistory,
+    loadPageHistory
+} from './utils/storage.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Iniciando Lecturas Interactivas v2.1 (Modo Seguro)");
 
@@ -63,45 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         dark: '#1a1a1a'
     };
 
-    /* =========================
-       PREFERENCIAS
-       ========================= */
-    function loadPreferences() {
-        const savedFontSize = localStorage.getItem('fontSize');
-        const savedTheme = localStorage.getItem('theme');
-        const savedVolume = localStorage.getItem('volume');
+    const setFontSize = (value) => {
+        fontSize = value;
+    };
 
-        if (savedFontSize) {
-            fontSize = parseFloat(savedFontSize);
-            document.documentElement.style.setProperty('--font-size-dynamic', `${fontSize}rem`);
-        }
+    const setCurrentTheme = (value) => {
+        currentTheme = value;
+    };
 
-        if (savedTheme && (readerThemes.includes(savedTheme) || libraryThemes.includes(savedTheme))) {
-            currentTheme = savedTheme;
-        } else {
-            currentTheme = 'light';
-        }
-        applyTheme(currentTheme);
-
-        if (savedVolume !== null && volumeSlider) {
-            currentVolume = parseFloat(savedVolume);
-            volumeSlider.value = currentVolume;
-        }
-    }
-
-    function saveFontSize() { localStorage.setItem('fontSize', fontSize); }
-    function saveTheme() { localStorage.setItem('theme', currentTheme); }
-    function saveVolume() { localStorage.setItem('volume', currentVolume); }
-
-    function getPageHistoryKey(bookId) { return `pageHistory-${bookId}`; }
-    function savePageHistory() {
-        if (!currentBook) return;
-        localStorage.setItem(getPageHistoryKey(currentBook.id), JSON.stringify(pageHistory));
-    }
-    function loadPageHistory(bookId) {
-        const savedHistory = localStorage.getItem(getPageHistoryKey(bookId));
-        return savedHistory ? JSON.parse(savedHistory) : null;
-    }
+    const setCurrentVolume = (value) => {
+        currentVolume = value;
+    };
 
     /* =========================
        TEMAS
@@ -124,111 +107,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const nextIndex = (index + 1) % palette.length;
         currentTheme = palette[nextIndex];
         applyTheme(currentTheme);
-        saveTheme();
+        saveTheme(currentTheme);
     }
 
     /* =========================
        BIBLIOTECA
        ========================= */
-    async function loadBooks() {
-        if (!libraryGrid) return; // Si no hay grid, no hacemos nada
-        
-        try {
-            const response = await fetch('data/books.json');
-            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-            books = await response.json();
-            renderLibrary();
-        } catch (error) {
-            console.error('Error al cargar books.json:', error);
-            libraryGrid.innerHTML = '<p style="padding: 20px; color: red;">Error cargando la biblioteca. Revisa que data/books.json exista y sea válido.</p>';
-        }
-    }
-
-    function renderLibrary() {
-        if (!libraryGrid) return;
-        libraryGrid.innerHTML = '';
-        if (!books || books.length === 0) {
-            libraryGrid.innerHTML = '<p>Tu biblioteca está vacía.</p>';
-            return;
-        }
-        books.forEach((bookData) => {
-            const hasStory = Boolean(bookData.storyFile);
-            const card = document.createElement('article');
-            card.className = 'book-card';
-            if (!hasStory) card.classList.add('book-card--disabled');
-            card.dataset.bookId = bookData.id;
-
-            const coverWrapper = document.createElement('div');
-            coverWrapper.className = 'book-cover-wrapper';
-
-            if (bookData.cover) {
-                const img = document.createElement('img');
-                img.src = bookData.cover;
-                img.alt = `Portada de ${bookData.title || 'libro'}`;
-                img.loading = 'lazy';
-                img.className = 'book-cover';
-                img.onerror = function() { this.classList.add('placeholder'); this.src=''; this.alt='Imagen no encontrada'; }; // Fallback imagen
-                coverWrapper.appendChild(img);
-            } else {
-                const placeholder = document.createElement('div');
-                placeholder.className = 'book-cover placeholder';
-                placeholder.textContent = 'Próximamente';
-                coverWrapper.appendChild(placeholder);
-            }
-
-            if (!hasStory) {
-                const tag = document.createElement('span');
-                tag.className = 'book-tag';
-                tag.textContent = 'Próximamente';
-                coverWrapper.appendChild(tag);
-            }
-
-            const body = document.createElement('div');
-            body.className = 'book-card-body';
-            const titleEl = document.createElement('h3');
-            titleEl.className = 'book-title';
-            titleEl.textContent = bookData.title || 'Título pendiente';
-
-            const authorEl = document.createElement('p');
-            authorEl.className = 'book-author';
-            authorEl.textContent = bookData.author || '';
-
-            const btn = document.createElement('button');
-            btn.className = 'book-open-btn';
-            btn.textContent = hasStory ? 'Leer' : 'Muy pronto';
-            btn.disabled = !hasStory;
-
-            body.appendChild(titleEl);
-            if (bookData.author) body.appendChild(authorEl);
-            body.appendChild(btn);
-            card.appendChild(coverWrapper);
-            card.appendChild(body);
-            libraryGrid.appendChild(card);
-
-            if (hasStory) {
-                const openHandler = (ev) => { ev.stopPropagation(); openBook(bookData); };
-                card.addEventListener('click', openHandler);
-                btn.addEventListener('click', openHandler);
-            }
-        });
-    }
+    const library = createLibrary({ libraryGrid, openBook });
 
     function switchToLibraryView() {
         appMode = 'library';
         document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
         document.body.classList.add('app-mode-library');
-        
+
         if (libraryView) libraryView.hidden = false;
         if (readerView) readerView.hidden = true;
-        
+
         if (backToLibraryBtn) backToLibraryBtn.classList.add('hidden');
         if (navToggle) navToggle.classList.add('hidden');
         if (fullscreenBtn) fullscreenBtn.classList.add('hidden');
         if (appFooter) appFooter.classList.add('hidden');
         if (mainTitle) mainTitle.textContent = 'Lecturas Interactivas';
-        
+
         stopCurrentAudio();
-        
+
         // Limpiar efectos especiales al salir
         if (birdInterval) {
             clearInterval(birdInterval);
@@ -242,13 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
         appMode = 'reader';
         document.body.classList.remove('app-mode-library');
         document.body.classList.add('app-mode-reader');
-        
+
         if (libraryView) libraryView.hidden = true;
         if (readerView) {
             readerView.hidden = false;
             readerView.classList.add('active');
         }
-        
+
         if (backToLibraryBtn) backToLibraryBtn.classList.remove('hidden');
         if (navToggle) navToggle.classList.remove('hidden');
         if (fullscreenBtn) fullscreenBtn.classList.remove('hidden');
@@ -307,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playPageSound(pageId, soundFileOverride = null) {
         stopCurrentAudio();
-        
+
         let soundFile = soundFileOverride;
         if (!soundFile && story && pageId) {
             const pageData = story.find(p => p.id === pageId);
@@ -328,120 +230,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentAudio) {
                 currentAudio.volume = currentVolume;
             }
-            saveVolume();
+            saveVolume(currentVolume);
         });
     }
 
     /* =========================
        SISTEMA DE EFECTOS (ACTUALIZADO)
        ========================= */
-    let activeEffectInterval = null; // Variable global para limpiar intervalos
-
-    function handlePageEffects(effectName) {
-        // 1. Limpieza total de efectos anteriores
-        if (activeEffectInterval) {
-            clearInterval(activeEffectInterval);
-            activeEffectInterval = null;
-        }
-        
-        // Limpiar pájaros
-        const existingBirds = document.querySelectorAll('.flying-bird');
-        existingBirds.forEach(el => el.remove());
-
-        // Limpiar capas de efectos (humo/lluvia)
-        const existingOverlays = document.querySelectorAll('.effect-overlay');
-        existingOverlays.forEach(el => el.remove());
-
-        // 2. Activar nuevo efecto
-        if (!effectName) return;
-
-        if (effectName === 'bluebird_pass') {
-            startBirdEffect();
-        } else if (effectName === 'smoke_overlay') {
-            startSmokeEffect();
-        } else if (effectName === 'rain_subtle') {
-            startRainEffect();
-        }
-    }
-
-    // EFECTO 1: PÁJARO (Ya lo tenías, ajustado)
-    function startBirdEffect() {
-        const spawnBird = () => {
-            if (appMode !== 'reader') return;
-            const bird = document.createElement('div');
-            bird.className = 'flying-bird';
-            const randomTop = Math.floor(Math.random() * 60) + 10;
-            bird.style.top = `${randomTop}%`;
-            const scale = 0.8 + Math.random() * 0.5;
-            bird.style.transform = `scale(${scale})`;
-            document.body.appendChild(bird);
-            requestAnimationFrame(() => bird.classList.add('animate-fly'));
-            setTimeout(() => { if(bird.parentNode) bird.parentNode.remove(); }, 8000);
-        };
-        setTimeout(spawnBird, 1500);
-        activeEffectInterval = setInterval(() => {
-            if(Math.random() > 0.4) spawnBird(); 
-        }, 12000);
-    }
-
-    // EFECTO 2: HUMO (Cigarrillos)
-    function startSmokeEffect() {
-        const overlay = document.createElement('div');
-        overlay.className = 'effect-overlay';
-        document.body.appendChild(overlay);
-
-        const spawnSmoke = () => {
-            if (appMode !== 'reader') return;
-            const smoke = document.createElement('div');
-            smoke.className = 'smoke-particle';
-            // Posición horizontal aleatoria
-            smoke.style.left = Math.random() * 100 + '%';
-            // Duración aleatoria para que no se vea repetitivo
-            smoke.style.animationDuration = (6 + Math.random() * 4) + 's';
-            overlay.appendChild(smoke);
-            
-            // Auto eliminar partícula
-            setTimeout(() => { if(smoke.parentNode) smoke.remove(); }, 10000);
-        };
-
-        // Generar humo constantemente
-        activeEffectInterval = setInterval(spawnSmoke, 800);
-    }
-
-    // EFECTO 3: LLUVIA (Tristeza)
-    function startRainEffect() {
-        const overlay = document.createElement('div');
-        overlay.className = 'effect-overlay';
-        document.body.appendChild(overlay);
-
-        // Crear 50 gotas estáticas iniciales para que ya esté lloviendo
-        for(let i=0; i<30; i++) {
-            createDrop(overlay);
-        }
-        
-        // Mantener la lluvia
-        activeEffectInterval = setInterval(() => {
-             if(document.querySelectorAll('.rain-drop').length < 50) {
-                 createDrop(overlay);
-             }
-        }, 100);
-    }
-
-    function createDrop(container) {
-        const drop = document.createElement('div');
-        drop.className = 'rain-drop';
-        drop.style.left = Math.random() * 100 + '%';
-        // Velocidad aleatoria
-        const duration = 1 + Math.random();
-        drop.style.animationDuration = duration + 's';
-        // Retraso aleatorio
-        drop.style.animationDelay = Math.random() * -2 + 's';
-        
-        container.appendChild(drop);
+    function getAppMode() {
+        return appMode;
     }
 
     // ... (RESTO DEL CÓDIGO PERMANECE IGUAL) ...
-    
+
     function preloadNextImages(currentPageId) {
         if (!story) return;
         const currentPage = story.find(p => p.id === currentPageId);
@@ -524,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pageContent.appendChild(pageNumberDiv);
         }
         pageWrapper.appendChild(pageContent);
-        
+
         // --- AUDIO ---
         if (pageData.bgMusic) {
             playPageSound(null, pageData.bgMusic);
@@ -533,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // --- EFECTOS ---
-        handlePageEffects(pageData.effect);
+        handlePageEffects(pageData.effect, { getAppMode });
 
         preloadNextImages(pageId);
     }
@@ -560,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToPage(pageId, isGoingBack = false) {
         if (!story || isTransitioning) return;
-        
+
         if (pageId === -1) {
             switchToLibraryView();
             return;
@@ -581,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isGoingBack && !pageHistory.includes(pageId)) {
                 pageHistory.push(pageId);
             }
-            savePageHistory();
+            savePageHistory({ currentBook, pageHistory });
             if (pageWrapper) {
                 pageWrapper.classList.remove('page-exit');
                 void pageWrapper.offsetWidth;
@@ -669,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirmed) return;
         const startId = story[0].id;
         pageHistory = [startId];
-        savePageHistory();
+        savePageHistory({ currentBook, pageHistory });
         goToPage(startId, true);
         closeNav();
     }
@@ -685,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function changeFontSize(delta) {
         fontSize = Math.max(0.8, Math.min(1.8, fontSize + delta));
         document.documentElement.style.setProperty('--font-size-dynamic', `${fontSize}rem`);
-        saveFontSize();
+        saveFontSize(fontSize);
     }
     function toggleSettingsMenu() { if (settingsMenu) settingsMenu.classList.toggle('visible'); }
 
@@ -730,9 +531,17 @@ document.addEventListener('DOMContentLoaded', () => {
        INICIALIZACIÓN
        ========================= */
     async function initializeApp() {
-        loadPreferences();
+        loadPreferences({
+            readerThemes,
+            libraryThemes,
+            applyTheme,
+            volumeSlider,
+            setFontSize,
+            setCurrentTheme,
+            setCurrentVolume
+        });
         switchToLibraryView();
-        await loadBooks();
+        await library.loadBooks();
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
