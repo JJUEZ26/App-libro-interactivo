@@ -17,7 +17,7 @@
   },
   {
     "id": "vicios",
-    "bgMusic": "bar_ambience.mp3",
+    "bgMusic": "jazz_bukowski.mp3",
     "effect": "smoke_overlay",
     "page": 2,
     "scenes": [
@@ -34,7 +34,7 @@
   },
   {
     "id": "noche",
-    "bgMusic": "night_rain.mp3",
+    "bgMusic": "jazz_bukowski.mp3",
     "effect": "rain_subtle",
     "page": 3,
     "scenes": [
