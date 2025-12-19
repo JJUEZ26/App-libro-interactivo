@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isTransitioning = false;
     let currentAudio = null;
+    let currentAudioFile = null;
     let currentVolume = 1;
     let totalPagesInStory = 0;
 
@@ -205,11 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAudio.currentTime = 0;
             currentAudio = null;
         }
+        currentAudioFile = null;
     }
 
     function playPageSound(pageId, soundFileOverride = null) {
-        stopCurrentAudio();
-
         let soundFile = soundFileOverride;
         if (!soundFile && story && pageId) {
             const pageData = story.find(p => p.id === pageId);
@@ -217,7 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (soundFile) {
+            if (currentAudio && currentAudioFile === soundFile) {
+                currentAudio.volume = currentVolume;
+                if (currentAudio.paused) {
+                    currentAudio.play().catch(err => console.error('Error al reproducir audio (interacción requerida o archivo no encontrado):', err));
+                }
+                return;
+            }
+            stopCurrentAudio();
             currentAudio = new Audio(`sounds/${soundFile}`);
+            currentAudioFile = soundFile;
             currentAudio.loop = true;
             currentAudio.volume = currentVolume;
             currentAudio.play().catch(err => console.error('Error al reproducir audio (interacción requerida o archivo no encontrado):', err));
