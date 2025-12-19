@@ -9,7 +9,7 @@
     left: -100px;
     width: 60px; /* Un poco más grande para que se vea bien */
     height: 60px;
-    background-image: url('images/bluebird_icon.png'); /* TU IMAGEN AQUÍ */
+    background-image: url('../../../images/bluebird_icon.png'); /* TU IMAGEN AQUÍ */
     background-size: contain;
     background-repeat: no-repeat;
     z-index: 10;

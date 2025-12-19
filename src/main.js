@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentCenterer.innerHTML = contentHtml;
 
-        if (pageData.choices && pageData.choices.length > 0) {
+        if (pageData.choices && pageData.choices.length > 1) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
             pageData.choices.forEach(choice => {
@@ -331,6 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
             playPageSound(null, pageData.bgMusic);
         } else if (pageData.sound) {
             playPageSound(null, pageData.sound);
+        } else {
+            stopCurrentAudio();
         }
 
         // --- EFECTOS ---
@@ -416,6 +418,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const clickX = event.clientX - rect.left;
             if (clickX < rect.width * 0.3) goBack(); else goForward();
         });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        book.addEventListener('touchstart', (event) => {
+            if (appMode !== 'reader') return;
+            if (isTransitioning) return;
+            const touch = event.changedTouches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        }, { passive: true });
+
+        book.addEventListener('touchend', (event) => {
+            if (appMode !== 'reader') return;
+            if (isTransitioning) return;
+            if (event.target.closest('.choices') || event.target.closest('button')) return;
+            const touch = event.changedTouches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            const absDeltaX = Math.abs(deltaX);
+            const absDeltaY = Math.abs(deltaY);
+            if (absDeltaX < 50 || absDeltaX < absDeltaY) return;
+            if (deltaX < 0) {
+                goForward();
+            } else {
+                goBack();
+            }
+        }, { passive: true });
     }
 
     /* =========================
