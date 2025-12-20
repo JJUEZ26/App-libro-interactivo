@@ -58,15 +58,16 @@
     "bgMusic": "jazz_bukowski.mp3",
     "effect": "bluebird_pass",
     "page": 4,
-    "images": ["images/bukowski_retrato.jpg"],
+    "images": [],
     "scenes": [
-      "Charles Bukowski (1920-1994)",
+      "<img src='images/bukowski_retrato.jpg' class='bio-portrait' alt='Charles Bukowski'>",
+      "<strong>Charles Bukowski (1920-1994)</strong>",
       "Escritor estadounidense y símbolo del 'realismo sucio', conocido por su vida de excesos y su dura fachada ante el mundo.",
       "'El Pájaro Azul' (1992) es quizás su confesión más honesta: un vistazo a la vulnerabilidad y la belleza que mantuvo cautivas en su interior para sobrevivir a un mundo hostil."
     ],
     "choices": [
       {
-        "text": "Cerrar libro",
+        "text": "Ir a la biblioteca",
         "page": -1
       }
     ]
