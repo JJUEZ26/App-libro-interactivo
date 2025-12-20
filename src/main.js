@@ -298,7 +298,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 .join('');
             contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
         }
-
+  if (pageData.audio) {
+            const audioHint = pageData.audioText || 'Escúchalo aquí:';
+            contentHtml += `
+                <div class="audio-block">
+                    <p class="audio-hint">${audioHint}</p>
+                    <audio controls preload="none" src="sounds/${pageData.audio}"></audio>
+                </div>
+            `;
+  }
         contentCenterer.innerHTML = contentHtml;
 
         // BOTONES: Mostrar si hay más de 1, o si la página obliga a mostrarlos
