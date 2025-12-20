@@ -1,0 +1,34 @@
+[
+  {
+    "id": "pecado",
+    "page": 1,
+    "scenes": [
+      "<strong>El remordimiento</strong>",
+      "He cometido el peor de los pecados\nque un hombre puede cometer. No he sido\nfeliz. Que los glaciares del olvido\nme arrastren y me pierdan, despiadados.\n\nMis padres me engendraron para el juego\narriesgado y hermoso de la vida,\npara la tierra, el agua, el aire, el fuego.\nLos defraudé. No fui feliz. Cumplida\n\nno fue su joven voluntad. Mi mente\nse aplicó a las simétricas porfías\ndel arte, que entreteje naderías.\n\nMe legaron valor. No fui valiente.\nNo me abandona. Siempre está a mi lado\nLa sombra de haber sido un desdichado."
+    ],
+    "audio": "borges_el_remordimiento.mp3",
+    "audioText": "Si quieres escucharlo en la voz de Jorge Luis Borges, reproduce aquí:",
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 2,
+    "forceShowChoices": true,
+    "scenes": [
+      "<strong>Jorge Luis Borges (1899-1986)</strong>",
+      "Escritor argentino fundamental del siglo XX, maestro del cuento y del ensayo, célebre por su erudición y por sus laberintos literarios.",
+      "\"El remordimiento\" condensa una confesión íntima: la culpa de no haber alcanzado la felicidad pese a los dones recibidos."
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]
