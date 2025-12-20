@@ -7,12 +7,12 @@
     /* MÁS DENSO Y OSCURO: Usamos negros y grises oscuros en lugar de blancos */
     background: radial-gradient(circle, rgba(20, 20, 20, 0.9) 0%, rgba(80, 80, 80, 0.4) 40%, rgba(0, 0, 0, 0) 70%);
     border-radius: 50%;
-    width: 200px; /* Un poco más grandes las nubes */
-    height: 200px;
+    width: 150px; /* Un poco más grandes las nubes */
+    height: 150px;
     bottom: -80px;
     animation: smokeRise 9s infinite linear; /* Un pelín más lento */
     opacity: 0;
-    filter: blur(8px); /* Difuminado para que parezca humo real */
+    filter: blur(6px); /* Difuminado para que parezca humo real */
 }
 
 @keyframes smokeRise {
