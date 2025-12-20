@@ -18,10 +18,10 @@
   {
     "id": "vicios",
     "bgMusic": "jazz_bukowski.mp3",
-    "effect": "smoke_overlay",
+    "effect": "smoke_overlay, bluebird_pass",
     "page": 2,
     "scenes": [
-      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón que\nquiere salir",
+      "hay un pájaro azul en mi corazón que\nquiere salir",
       "pero yo le echo whisky encima y me trago\nel humo de los cigarrillos,",
       "y las putas y los camareros\ny los dependientes de ultramarinos\nnunca se dan cuenta\nde que está ahí dentro."
     ],
@@ -35,7 +35,7 @@
   {
     "id": "noche",
     "bgMusic": "jazz_bukowski.mp3",
-    "effect": "rain_subtle",
+    "effect": "rain_subtle, bluebird_pass",
     "page": 3,
     "scenes": [
       "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón\nque quiere salir\npero soy demasiado listo,",
