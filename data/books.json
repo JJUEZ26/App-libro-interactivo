@@ -22,6 +22,12 @@
     "description": "Próxima obra de misterio y decisiones.",
     "cover": "",
     "storyFile": ""
+    "id": "jorge-luis-borges-remordimiento",
+    "title": "El remordimiento",
+    "author": "Jorge Luis Borges",
+    "description": "He cometido el peor de los pecados que un hombre puede cometer.",
+    "cover": "images/borges_remordimiento_portada.jpg",
+    "storyFile": "stories/pecado_borges.json"
   },
   {
     "id": "coming-soon-3",
