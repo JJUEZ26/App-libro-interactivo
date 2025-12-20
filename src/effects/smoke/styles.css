@@ -1,27 +1,39 @@
 /* =========================
-   EFECTO: HUMO
+   EFECTO: HUMO (VICIOS)
    ========================= */
 
-/* --- EFECTO HUMO (CIGARRILLOS) --- */
 .smoke-particle {
     position: absolute;
-    background: radial-gradient(circle, rgba(200, 200, 200, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+    /* MÁS DENSO Y OSCURO: Usamos negros y grises oscuros en lugar de blancos */
+    background: radial-gradient(circle, rgba(20, 20, 20, 0.9) 0%, rgba(80, 80, 80, 0.4) 40%, rgba(0, 0, 0, 0) 70%);
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    bottom: -50px;
-    animation: smokeRise 8s infinite linear;
+    width: 200px; /* Un poco más grandes las nubes */
+    height: 200px;
+    bottom: -80px;
+    animation: smokeRise 9s infinite linear; /* Un pelín más lento */
     opacity: 0;
+    filter: blur(8px); /* Difuminado para que parezca humo real */
 }
 
 @keyframes smokeRise {
-    0% { transform: translateY(0) scale(1) translateX(0); opacity: 0; }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.3; }
-    100% { transform: translateY(-120vh) scale(3) translateX(20px); opacity: 0; }
+    0% { 
+        transform: translateY(0) scale(1) translateX(0); 
+        opacity: 0; 
+    }
+    15% { 
+        opacity: 0.85; /* Mucho más visible al principio */
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% { 
+        transform: translateY(-110vh) scale(3.5) translateX(40px); 
+        opacity: 0; 
+    }
 }
 
-/* Modo oscuro: humo más sutil y grisáceo */
+/* En modo oscuro, el humo negro no se ve bien sobre fondo negro, 
+   así que lo hacemos gris claro fantasmal */
 body.theme-dark .smoke-particle {
-    background: radial-gradient(circle, rgba(100, 100, 100, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(150, 150, 150, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
 }
