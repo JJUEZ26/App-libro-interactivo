@@ -5,7 +5,7 @@
     "effect": "bluebird_pass",
     "page": 1,
     "scenes": [
-      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón que\nquiere salir",
+      "hay un pájaro azul en mi corazón que\nquiere salir",
       "pero soy duro con él,\nle digo quédate ahí dentro, no voy\na permitir que nadie\nte vea."
     ],
     "choices": [
@@ -21,7 +21,7 @@
     "effect": "smoke_overlay, bluebird_pass",
     "page": 2,
     "scenes": [
-      "hay un <span class='blue-highlight'>pájaro azul</span> en mi corazón que\nquiere salir",
+      "hay un pájaro azul en mi corazón que\nquiere salir",
       "pero yo le echo whisky encima y me trago\nel humo de los cigarrillos,",
       "y las putas y los camareros\ny los dependientes de ultramarinos\nnunca se dan cuenta\nde que está ahí dentro."
     ],
