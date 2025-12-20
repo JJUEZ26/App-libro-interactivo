@@ -9,7 +9,7 @@
     left: -150px; /* Empieza más afuera para que no aparezca de golpe */
     width: 140px; /* MÁS GRANDE: Aumentado de 60px a 140px */
     height: 140px;
-    background-image: url('../../../images/bluebird_icon.png'); 
+    background-image: url('../../../images/bluebird_flying.gif'); 
     /* SUGERENCIA: Cambia la línea de arriba por la ruta de un GIF real si consigues uno */
     background-size: contain;
     background-repeat: no-repeat;
