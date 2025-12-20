@@ -502,31 +502,69 @@ body.theme-dark .book-open-btn { border-color: #ffab91; color: #ffab91; }
 }
 
 /* =========================
-   PANTALLA COMPLETA & MODO ZEN
+   PANTALLA COMPLETA & MODO ZEN (FIXED)
    ========================= */
 :fullscreen::backdrop { background-color: var(--bg-color); }
 
-/* Modo Pantalla Completa (Activado por API o Manualmente en iOS) */
+/* Activado por API o Manualmente */
 body.fullscreen-mode {
     background-color: var(--bg-color);
-    width: 100vw; height: 100vh; overflow: hidden;
+    width: 100vw; 
+    height: 100vh; 
+    /* Cambiamos overflow: hidden por auto para permitir scroll si el contenido se desborda */
+    overflow: auto; 
 }
+
+/* Contenedor principal en fullscreen: Fix al "congelamiento" */
 body.fullscreen-mode #app-container {
-    position: fixed; inset: 0; width: 100%; height: 100%;
-    margin: 0; padding: 0; max-width: none; z-index: 9999;
-    background-color: var(--bg-color); display: flex; flex-direction: column;
+    /* Quitamos position: fixed que causaba el freeze en algunos móviles */
+    position: relative; 
+    width: 100%; 
+    min-height: 100vh;
+    margin: 0; 
+    padding: 0; 
+    max-width: none; 
+    z-index: 9999;
+    background-color: var(--bg-color); 
+    display: flex; 
+    flex-direction: column;
 }
 
-/* Ocultar header en modo inmersivo */
+/* Ocultar elementos de UI para Modo Inmersivo real */
 body.fullscreen-mode #app-header { display: none; }
+body.fullscreen-mode #app-footer { display: none; } /* Ocultar barra de progreso */
 
-body.fullscreen-mode #reader-view { flex: 1; }
+body.fullscreen-mode #reader-view { flex: 1; display: flex; flex-direction: column; }
+
 body.fullscreen-mode #book-container {
-    width: 100%; height: 100%; margin: 0; max-width: 800px;
+    width: 100%; 
+    flex: 1; /* Ocupa el espacio disponible */
+    margin: 0; 
+    max-width: 100%; /* Ancho completo */
+    padding: 0;
+    /* Respetar notch de iPhone si está en standalone PWA */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
+
 body.fullscreen-mode #page-wrapper {
-    width: 100%; height: 100%; border-radius: 0; border: none; box-shadow: none;
+    width: 100%; 
+    height: 100vh; /* Altura completa de la ventana */
+    border-radius: 0; 
+    border: none; 
+    box-shadow: none; /* Sin sombras = Inmersivo */
+    background: transparent; /* Fondo transparente para fusionarse con el body */
 }
-body.fullscreen-mode .content-centerer { padding: 2rem 1.5rem; max-width: 100%; }
-/* ... (MANTÉN TODO TU CSS ANTERIOR IGUAL) ... */
+
+/* En fullscreen, el contenido debe hacer scroll independientemente */
+body.fullscreen-mode .page-content {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+}
+
+/* Centrar texto en fullscreen pero limitar ancho de lectura */
+body.fullscreen-mode .content-centerer { 
+    padding: 3rem 2rem; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
