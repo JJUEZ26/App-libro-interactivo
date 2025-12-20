@@ -523,14 +523,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleFullscreen() {
         const doc = document;
+        
+        // Detección de iOS
         if (isIOS()) {
-            document.body.classList.toggle('fullscreen-mode');
-            window.scrollTo(0, 1);
+            // En iOS Web, el API fullscreen no funciona igual. 
+            // La "pantalla completa" real se logra instalando la PWA.
+            // Verificamos si ya está en modo "standalone" (instalada)
+            const isStandalone = window.navigator.standalone || (window.matchMedia('(display-mode: standalone)').matches);
+            
+            if (!isStandalone) {
+                alert("Para ver en pantalla completa real en iOS:\n\n1. Pulsa el botón 'Compartir' (cuadrado con flecha).\n2. Busca y selecciona 'Agregar a inicio'.\n\n¡Ábrela desde tu inicio y listo!");
+                return;
+            }
+            
+            // Si ya está instalada, no hacemos nada (ya es fullscreen por defecto)
             return;
         }
+
+        // Para Android y Escritorio
         if (!doc.fullscreenElement) {
             doc.documentElement.requestFullscreen().catch(err => {
-                console.warn('Fullscreen API falló, usando modo CSS:', err);
+                console.warn('Fullscreen API falló, activando modo CSS fallback:', err);
                 document.body.classList.toggle('fullscreen-mode');
             });
         } else {
