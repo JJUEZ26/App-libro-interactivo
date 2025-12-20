@@ -1,21 +1,22 @@
 const CACHE_NAME = 'sombra-venganza-cache-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
+'/index.html',
   '/style.css',
   '/main.js',
   '/data/books.json',
   '/stories/frankenstein.json',
   '/stories/pajaro_azul.json',
+  '/stories/pecado_borges.json',
   '/images/victor_encubierta.png',
   '/images/victor_conpala.png',
   '/images/victorduda.png',
   '/images/monstruo_rostro.jpg',
+  '/images/borges_remordimiento_portada.jpg',
   '/images/cover_bukowski_pajaroazul.png',
   '/images/bluebird_icon.png',
   '/images/icon-192x192.png',
-  '/images/icon-512x512.png'
-];
+  '/images/icon-512x512.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
