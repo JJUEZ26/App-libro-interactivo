@@ -311,7 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentCenterer.innerHTML = contentHtml;
 
-        if (pageData.choices && pageData.choices.length > 1) {
+        // MODIFICADO: Ahora mostramos botones si hay más de 1 opción O si la página fuerza mostrarlos (forceShowChoices)
+        if (pageData.choices && (pageData.choices.length > 1 || (pageData.choices.length > 0 && pageData.forceShowChoices))) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
             pageData.choices.forEach(choice => {
@@ -413,6 +414,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function goForward() {
         if (isTransitioning || !story) return;
         const pageData = story.find(p => p.id === currentStoryId);
+        
+        // MODIFICADO: Si la página requiere decisión explícita (botón), ignoramos el tap de avance automático
+        if (pageData && pageData.forceShowChoices) return;
+
         if (pageData && pageData.choices && pageData.choices.length === 1) {
             goToPage(pageData.choices[0].page);
         }
