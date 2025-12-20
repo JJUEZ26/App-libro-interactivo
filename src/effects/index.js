@@ -61,7 +61,7 @@ function startSmokeEffect(getAppMode) {
     };
 
     // Generar humo más frecuentemente para que sea denso
-    activeEffectInterval = setInterval(spawnSmoke, 200); 
+    activeEffectInterval = setInterval(spawnSmoke, 150); 
 }
 
 function startRainEffect(getAppMode) {
@@ -71,8 +71,8 @@ function startRainEffect(getAppMode) {
     if (!container) return;
     container.appendChild(overlay);
 
-    // MENOS GOTAS: Iniciamos solo con 5 (antes 30)
-    for (let i = 0; i < 5; i += 1) {
+    // MENOS GOTAS: Iniciamos solo con 10 (antes 30)
+    for (let i = 0; i < 10; i += 1) {
         createDrop(overlay);
     }
 
