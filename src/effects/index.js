@@ -72,16 +72,16 @@ function startRainEffect(getAppMode) {
     container.appendChild(overlay);
 
     // MENOS GOTAS: Iniciamos solo con 10 (antes 30)
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i < 15; i += 1) {
         createDrop(overlay);
     }
 
     // Mantenemos pocas gotas en pantalla (máximo 15, antes 50)
     activeEffectInterval = setInterval(() => {
-        if (document.querySelectorAll('.rain-drop').length < 10) {
+        if (document.querySelectorAll('.rain-drop').length < 15) {
             createDrop(overlay);
         }
-    }, 200); // Intervalo más lento de creación
+    }, 150); // Intervalo más lento de creación
 }
 
 function createDrop(container) {
