@@ -10,10 +10,10 @@ import {
 } from './utils/storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando Lecturas Interactivas v2.1 (Modo Seguro)");
+    // Cambiamos la versión en el log para saber si se cargó el nuevo archivo
+    console.log("Iniciando Lecturas Interactivas v3.0 (Fix Definitivo Navegación)");
 
-    // --- SELECCIÓN DE ELEMENTOS (Con seguridad) ---
-    // Usamos una función auxiliar para no romper el código si falta algo
+    // --- SELECCIÓN DE ELEMENTOS ---
     const getEl = (id) => document.getElementById(id);
 
     const appContainer = getEl('app-container');
@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ESTADO GENERAL
     let appMode = 'library';
-    let books = [];
     let currentBook = null;
 
     // Estado de lectura
@@ -55,12 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let pageHistory = [];
     let fontSize = 1.1;
 
-    // Efectos
-    let birdInterval = null;
-
+    let currentTheme = 'light';
     const readerThemes = ['light', 'sepia', 'bone', 'dark'];
     const libraryThemes = ['light', 'dark'];
-    let currentTheme = 'light';
 
     let isTransitioning = false;
     let currentAudio = null;
@@ -75,17 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dark: '#1a1a1a'
     };
 
-    const setFontSize = (value) => {
-        fontSize = value;
-    };
-
-    const setCurrentTheme = (value) => {
-        currentTheme = value;
-    };
-
-    const setCurrentVolume = (value) => {
-        currentVolume = value;
-    };
+    const setFontSize = (value) => fontSize = value;
+    const setCurrentTheme = (value) => currentTheme = value;
+    const setCurrentVolume = (value) => currentVolume = value;
 
     /* =========================
        TEMAS
@@ -121,9 +109,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
         document.body.classList.add('app-mode-library');
 
-        if (libraryView) libraryView.hidden = false;
-        if (readerView) readerView.hidden = true;
+        // 1. Asegurar que la biblioteca sea visible
+        if (libraryView) {
+            libraryView.hidden = false;
+            libraryView.style.display = ''; // Limpiar cualquier estilo inline
+        }
 
+        // 2. FORZAR el ocultamiento del lector quitando la clase conflictiva
+        if (readerView) {
+            readerView.classList.remove('active'); 
+            readerView.hidden = true;
+            readerView.style.display = 'none'; // Doble seguridad
+        }
+
+        // 3. LIMPIEZA TOTAL: Borrar el contenido del libro para que no quede "basura" visual
+        if (pageWrapper) {
+            pageWrapper.innerHTML = '';
+        }
+
+        // Ocultar controles de lectura
         if (backToLibraryBtn) backToLibraryBtn.classList.add('hidden');
         if (navToggle) navToggle.classList.add('hidden');
         if (fullscreenBtn) fullscreenBtn.classList.add('hidden');
@@ -133,12 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
         stopCurrentAudio();
 
         // Limpiar efectos especiales al salir
-        if (birdInterval) {
-            clearInterval(birdInterval);
-            birdInterval = null;
-        }
-        const bird = document.querySelector('.flying-bird');
-        if (bird) bird.remove();
+        handlePageEffects(null, { getAppMode }); 
+        
+        // 4. Resetear scroll
+        window.scrollTo(0, 0);
     }
 
     function switchToReaderView() {
@@ -146,9 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('app-mode-library');
         document.body.classList.add('app-mode-reader');
 
-        if (libraryView) libraryView.hidden = true;
+        if (libraryView) {
+            libraryView.hidden = true;
+            libraryView.style.display = 'none';
+        }
+        
         if (readerView) {
             readerView.hidden = false;
+            readerView.style.display = ''; 
             readerView.classList.add('active');
         }
 
@@ -180,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (backToLibraryBtn) {
         backToLibraryBtn.addEventListener('click', () => {
             switchToLibraryView();
-            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         });
     }
 
@@ -220,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentAudio && currentAudioFile === soundFile) {
                 currentAudio.volume = currentVolume;
                 if (currentAudio.paused) {
-                    currentAudio.play().catch(err => console.error('Error al reproducir audio (interacción requerida o archivo no encontrado):', err));
+                    currentAudio.play().catch(err => console.error('Error audio:', err));
                 }
                 return;
             }
@@ -229,28 +235,19 @@ document.addEventListener('DOMContentLoaded', () => {
             currentAudioFile = soundFile;
             currentAudio.loop = true;
             currentAudio.volume = currentVolume;
-            currentAudio.play().catch(err => console.error('Error al reproducir audio (interacción requerida o archivo no encontrado):', err));
+            currentAudio.play().catch(err => console.error('Error audio:', err));
         }
     }
 
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             currentVolume = parseFloat(e.target.value);
-            if (currentAudio) {
-                currentAudio.volume = currentVolume;
-            }
+            if (currentAudio) currentAudio.volume = currentVolume;
             saveVolume(currentVolume);
         });
     }
 
-    /* =========================
-       SISTEMA DE EFECTOS (ACTUALIZADO)
-       ========================= */
-    function getAppMode() {
-        return appMode;
-    }
-
-    // ... (RESTO DEL CÓDIGO PERMANECE IGUAL) ...
+    function getAppMode() { return appMode; }
 
     function preloadNextImages(currentPageId) {
         if (!story) return;
@@ -260,30 +257,23 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPage.choices.forEach(choice => {
             const nextPage = story.find(p => p.id === choice.page);
             if (nextPage) {
-                if (nextPage.images && nextPage.images.length > 0) {
-                    nextPage.images.forEach(imgUrl => {
-                        const img = new Image();
-                        img.src = imgUrl;
-                    });
-                }
-                if (nextPage.sound) {
-                    const audio = new Audio(`sounds/${nextPage.sound}`);
-                    audio.preload = 'auto';
-                }
+                if (nextPage.images) nextPage.images.forEach(url => { new Image().src = url; });
+                if (nextPage.sound) { new Audio(`sounds/${nextPage.sound}`).preload = 'auto'; }
             }
         });
     }
 
     function renderPage(pageId) {
         if (!pageWrapper) return;
-        pageWrapper.innerHTML = '';
-        if (!story) return;
-
-        // Manejar "volver atrás" si id es -1
+        
+        // Volver a la biblioteca si el ID es -1
         if (pageId === -1) {
             switchToLibraryView();
             return;
         }
+
+        pageWrapper.innerHTML = '';
+        if (!story) return;
 
         const pageData = story.find(p => p.id === pageId);
         if (!pageData) return;
@@ -311,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentCenterer.innerHTML = contentHtml;
 
-        // MODIFICADO: Ahora mostramos botones si hay más de 1 opción O si la página fuerza mostrarlos (forceShowChoices)
+        // BOTONES: Mostrar si hay más de 1, o si la página obliga a mostrarlos
         if (pageData.choices && (pageData.choices.length > 1 || (pageData.choices.length > 0 && pageData.forceShowChoices))) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
@@ -415,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isTransitioning || !story) return;
         const pageData = story.find(p => p.id === currentStoryId);
         
-        // MODIFICADO: Si la página requiere decisión explícita (botón), ignoramos el tap de avance automático
+        // Si hay botones obligatorios, no avanzar con tap
         if (pageData && pageData.forceShowChoices) return;
 
         if (pageData && pageData.choices && pageData.choices.length === 1) {
@@ -453,11 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const absDeltaX = Math.abs(deltaX);
             const absDeltaY = Math.abs(deltaY);
             if (absDeltaX < 50 || absDeltaX < absDeltaY) return;
-            if (deltaX < 0) {
-                goForward();
-            } else {
-                goBack();
-            }
+            if (deltaX < 0) goForward(); else goBack();
         }, { passive: true });
     }
 
@@ -533,9 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function toggleSettingsMenu() { if (settingsMenu) settingsMenu.classList.toggle('visible'); }
 
-    function isIOS() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    }
+    function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; }
 
     function toggleFullscreen() {
         const doc = document;
