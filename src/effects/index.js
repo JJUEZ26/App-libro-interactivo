@@ -26,7 +26,7 @@ function startBirdEffect(getAppMode) {
         bird.style.transform = `scale(${scale})`;
         container.appendChild(bird);
         requestAnimationFrame(() => bird.classList.add('animate-fly'));
-        setTimeout(() => { if (bird.parentNode) bird.parentNode.remove(); }, 8000);
+        setTimeout(() => { if (bird.parentNode) bird.remove(); }, 8000);
     };
     setTimeout(spawnBird, 1500);
     activeEffectInterval = setInterval(() => {
