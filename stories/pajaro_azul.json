@@ -58,6 +58,7 @@
     "bgMusic": "jazz_bukowski.mp3",
     "effect": "bluebird_pass",
     "page": 4,
+    "forceShowChoices": true,
     "images": [],
     "scenes": [
       "<img src='images/bukowski_retrato.jpg' class='bio-portrait' alt='Charles Bukowski'>",
@@ -67,7 +68,7 @@
     ],
     "choices": [
       {
-        "text": "Ir a la biblioteca",
+        "text": "Volver a la biblioteca",
         "page": -1
       }
     ]
