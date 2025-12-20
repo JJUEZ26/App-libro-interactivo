@@ -4,36 +4,41 @@
 
 .smoke-particle {
     position: absolute;
-    /* MÁS DENSO Y OSCURO: Usamos negros y grises oscuros en lugar de blancos */
-    background: radial-gradient(circle, rgba(20, 20, 20, 0.9) 0%, rgba(80, 80, 80, 0.4) 40%, rgba(0, 0, 0, 0) 70%);
+    /* Cambiamos a un humo grisáceo/blanco sutil, más realista para cigarrillos */
+    background: radial-gradient(circle, rgba(150, 150, 150, 0.4) 0%, rgba(200, 200, 200, 0.1) 50%, rgba(255, 255, 255, 0) 80%);
     border-radius: 50%;
-    width: 150px; /* Un poco más grandes las nubes */
-    height: 150px;
-    bottom: -80px;
-    animation: smokeRise 9s infinite linear; /* Un pelín más lento */
+    width: 120px;
+    height: 120px;
+    bottom: -60px;
+    /* Blur alto para que parezca gas y no círculos sólidos */
+    filter: blur(20px);
     opacity: 0;
-    filter: blur(6px); /* Difuminado para que parezca humo real */
+    animation: smokeFloat 12s infinite ease-out;
 }
 
-@keyframes smokeRise {
-    0% { 
-        transform: translateY(0) scale(1) translateX(0); 
-        opacity: 0; 
+@keyframes smokeFloat {
+    0% {
+        transform: translateY(0) scale(0.5) translateX(0);
+        opacity: 0;
     }
-    15% { 
-        opacity: 0.85; /* Mucho más visible al principio */
+    10% {
+        opacity: 0.6; /* Punto de máxima visibilidad */
     }
-    50% {
-        opacity: 0.6;
+    40% {
+        transform: translateY(-40vh) scale(1.5) translateX(-20px);
+        opacity: 0.4;
     }
-    100% { 
-        transform: translateY(-110vh) scale(3.5) translateX(40px); 
-        opacity: 0; 
+    70% {
+        transform: translateY(-80vh) scale(2.5) translateX(20px);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translateY(-120vh) scale(4) translateX(-10px);
+        opacity: 0;
     }
 }
 
-/* En modo oscuro, el humo negro no se ve bien sobre fondo negro, 
-   así que lo hacemos gris claro fantasmal */
+/* Modo oscuro: humo un poco más visible para contrastar */
 body.theme-dark .smoke-particle {
-    background: radial-gradient(circle, rgba(150, 150, 150, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(200, 200, 200, 0.2) 0%, rgba(100, 100, 100, 0.05) 60%, rgba(0, 0, 0, 0) 80%);
 }
