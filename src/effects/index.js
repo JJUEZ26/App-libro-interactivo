@@ -20,18 +20,25 @@ function startBirdEffect(getAppMode) {
         if (!container || typeof container.appendChild !== 'function') return;
         const bird = document.createElement('div');
         bird.className = 'flying-bird';
-        const randomTop = Math.floor(Math.random() * 60) + 10;
+        const randomTop = Math.floor(Math.random() * 50) + 10; // Ajustado para que no salga tan abajo
         bird.style.top = `${randomTop}%`;
-        const scale = 0.8 + Math.random() * 0.5;
+        // Variación de tamaño aleatoria, pero base grande
+        const scale = 0.9 + Math.random() * 0.4; 
         bird.style.transform = `scale(${scale})`;
         container.appendChild(bird);
         requestAnimationFrame(() => bird.classList.add('animate-fly'));
-        setTimeout(() => { if (bird.parentNode) bird.remove(); }, 8000);
+        
+        // Eliminamos el elemento después de que termine la animación larga
+        setTimeout(() => { if (bird.parentNode) bird.remove(); }, 20000);
     };
-    setTimeout(spawnBird, 1500);
+    
+    // Iniciar el primer pájaro
+    setTimeout(spawnBird, 1000);
+    
+    // Intervalo para siguientes pájaros (más espaciado porque van lento)
     activeEffectInterval = setInterval(() => {
-        if (Math.random() > 0.4) spawnBird();
-    }, 12000);
+        if (Math.random() > 0.3) spawnBird();
+    }, 20000);
 }
 
 function startSmokeEffect(getAppMode) {
@@ -46,13 +53,15 @@ function startSmokeEffect(getAppMode) {
         const smoke = document.createElement('div');
         smoke.className = 'smoke-particle';
         smoke.style.left = Math.random() * 100 + '%';
-        smoke.style.animationDuration = (6 + Math.random() * 4) + 's';
+        // Duración aleatoria para variedad
+        smoke.style.animationDuration = (8 + Math.random() * 5) + 's';
         overlay.appendChild(smoke);
 
-        setTimeout(() => { if (smoke.parentNode) smoke.remove(); }, 10000);
+        setTimeout(() => { if (smoke.parentNode) smoke.remove(); }, 14000);
     };
 
-    activeEffectInterval = setInterval(spawnSmoke, 800);
+    // Generar humo más frecuentemente para que sea denso
+    activeEffectInterval = setInterval(spawnSmoke, 400); 
 }
 
 function startRainEffect(getAppMode) {
@@ -62,24 +71,28 @@ function startRainEffect(getAppMode) {
     if (!container) return;
     container.appendChild(overlay);
 
-    for (let i = 0; i < 30; i += 1) {
+    // MENOS GOTAS: Iniciamos solo con 10 (antes 30)
+    for (let i = 0; i < 10; i += 1) {
         createDrop(overlay);
     }
 
+    // Mantenemos pocas gotas en pantalla (máximo 15, antes 50)
     activeEffectInterval = setInterval(() => {
-        if (document.querySelectorAll('.rain-drop').length < 50) {
+        if (document.querySelectorAll('.rain-drop').length < 15) {
             createDrop(overlay);
         }
-    }, 100);
+    }, 400); // Intervalo más lento de creación
 }
 
 function createDrop(container) {
     const drop = document.createElement('div');
     drop.className = 'rain-drop';
     drop.style.left = Math.random() * 100 + '%';
-    const duration = 1 + Math.random();
+    
+    // Duración lenta base + aleatoriedad
+    const duration = 2.5 + Math.random() * 2; 
     drop.style.animationDuration = duration + 's';
-    drop.style.animationDelay = Math.random() * -2 + 's';
+    drop.style.animationDelay = Math.random() * -5 + 's';
 
     container.appendChild(drop);
 }
