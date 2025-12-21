@@ -648,7 +648,7 @@
     ]
   },
   {
-    "id": "p36",
+   "id": "p36",
     "page": 37,
     "bgMusic": "",
     "sound": "",
@@ -664,6 +664,275 @@
         "page": "p37"
       }
     ]
+  },
+  {
+    "id": "p37",
+    "page": 38,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "IV\n\nLa familia entera gozaba de buena salud, pues no se podría calificar de enfermedad el hecho de que Iván Ilich se quejara a veces de tener mal sabor de boca o de que algo le molestaba en el lado izquierdo del vientre.\n\nPero el caso es que esas molestias fueron aumentando y acabaron transformándose, si no en un acceso de dolor, sí en una sensación de peso constante en el costado que le ponía de mal humor. Ese mal humor, que no dejaba de crecer y crecer, empezó a arruinar el encanto de esa vida tan despreocupada y decorosa que la familia Golovín se había creado. Marido y mujer discutían cada vez más a menudo. En poco tiempo el encanto y la despreocupación desaparecieron; en cuanto al decoro, solo a costa de grandes esfuerzos lograron guardar las apariencias. Las trifulcas se sucedían una tras otra.\n\nDe nuevo no les quedaron más que esos islotes, por lo demás poco numerosos, en que ambos cónyuges podían encontrarse sin que les sobrevinieran arrebatos de ira."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p38"
+      }
+    ]
+  },
+  {
+    "id": "p38",
+    "page": 39,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Praskovia Fiódorovna había empezado ya a decir, y no sin motivo, que su marido tenía un carácter insoportable. Con su tendencia natural a las exageraciones afirmaba que siempre había sido así, que había necesitado hacer acopio de toda su bondad para soportarlo a lo largo de esos veinte años. En verdad, era él quien iniciaba ahora las disputas. Empezaba a rezongar cuando se sentaban a la mesa, por lo común en el momento en que echaba mano de la cuchara para tomar la sopa. Tan pronto notaba una desconchadura en una pieza de la vajilla, como se quejaba de que la comida no estaba a la altura o reñía a su hijo por poner los codos en la mesa o criticaba el peinado de su hija. Y de todo echaba las culpas a Praskovia Fiódorovna.\n\nÉsta al principio le replicaba y le decía cosas desagradables, pero en un par de ocasiones, nada más sentarse a la mesa, Iván Ilich había sufrido tal arrebato de ira que la mujer comprendió que se trataba de un estado enfermizo causado por la ingestión de los alimentos, y se resignó. Ya no le contradecía y se limitaba a terminar de comer lo más pronto posible. Atribuía un gran mérito a esa resignación. Tras llegar a la conclusión de que su marido tenía un carácter insoportable y de que la había hecho desgraciada, empezó a sentir compasión de sí misma. Y cuanto más se compadecía, más odiaba a su marido. Llegó casi al extremo de desear su muerte, pero siempre con la boca pequeña, porque sabía que en tal caso se quedaría sin sueldo. Esa circunstancia exacerbaba aún más su irritación.\n\nConsideraba que su infortunio no podía ser mayor, porque ni siquiera esa muerte habría podido salvarla, y se enfurecía, pero nunca daba rienda suelta a esa furia, sino que se la guardaba en su interior, y esa ocultación no hacía más que reforzar la ira de su marido."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p39"
+      }
+    ]
+  },
+  {
+    "id": "p39",
+    "page": 40,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Tras una disputa en la que había tratado a su mujer de un modo particularmente injusto, Iván Ilich había llegado a reconocer, en el momento de las explicaciones, que se irritaba con facilidad, aunque lo atribuyó a una enfermedad; entonces Praskovia Fiódorovna le dijo que si estaba enfermo debía ponerse en tratamiento y le pidió que consultara a un renombrado médico."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p40"
+      }
+    ]
+  },
+  {
+    "id": "p40",
+    "page": 41,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Así lo hizo Iván Ilich. Y todo resultó como había esperado; todo se resolvió como se resuelven siempre tales asuntos: la espera, esa prepotencia afectada y doctoral que Iván Ilich conocía tan bien, pues era la misma que él exhibía en el tribunal; la auscultación, la percusión, las preguntas que exigían respuestas determinadas de antemano y meridianamente inútiles, y ese aire de importancia que parecía insinuar: «Bueno, no tiene usted más que someterse a nuestra voluntad y nosotros nos ocuparemos de todo; sabemos con certeza cómo se arreglan estas cosas, siempre de la misma manera, se trate de quien se trate».\n\nTodo era exactamente igual que en el tribunal. Los mismos aires que se daba él con los acusados, se los daba ahora el renombrado facultativo en su presencia."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p41"
+      }
+    ]
+  },
+  {
+    "id": "p41",
+    "page": 42,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "El médico le dijo: «Esto y lo otro indican que en el interior de su organismo pasa esto y lo otro; en cualquier caso, si el examen de esto y lo otro no lo confirma, habrá que suponer que tiene usted esto y lo otro. Y si suponemos esto y lo otro, entonces…». Y así sucesivamente. A Iván Ilich solo le importaba una cuestión: ¿revestía gravedad su caso o no? Pero el médico se desentendía de esa pregunta tan fuera de lugar. Desde su punto de vista, era algo tan irrelevante que ni siquiera merecía la pena tenerlo en cuenta. Lo único que importaba era la consideración de las probabilidades: un riñón flotante, un catarro intestinal de carácter crónico o una afección del intestino ciego.\n\nLa vida de Iván Ilich no entraba aquí en consideración, solo se trataba de decantarse por el riñón flotante o por el intestino ciego. Y en opinión de Iván Ilich el médico resolvió la cuestión de un modo brillante a favor del intestino ciego, haciendo la salvedad de que el análisis de orina podía proporcionar nuevos indicios y entonces habría que reconsiderar el diagnóstico. La misma actuación, punto por punto, que Iván Ilich había escenificado miles de veces delante de los acusados con no menos maestría. Idéntico magisterio desplegó a la hora de trazar el resumen y, con expresión triunfante, incluso alegre, echó un vistazo por encima de las gafas a su paciente.\n\nA partir de ese resumen Iván Ilich sacó la conclusión de que la cosa era grave y de que esa circunstancia le traía sin cuidado al médico, y probablemente al resto del mundo. Pero para él se trataba de algo serio. Esa constatación fue un duro golpe para Iván Ilich y despertó en él una gran piedad por sí mismo y un odio feroz por ese médico indiferente a una cuestión de tanta importancia."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p42"
+      }
+    ]
+  },
+  {
+    "id": "p42",
+    "page": 43,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pero no hizo ningún comentario. Se levantó, depositó el dinero sobre la mesa y, después de emitir un suspiro, exclamó:\n\n—Supongo que nosotros, los enfermos, solemos hacer preguntas inconvenientes. Pero me gustaría saber si mi caso reviste gravedad.\n\nEl médico le lanzó una mirada severa, con un solo ojo, a través de los lentes, como diciendo: «Si el imputado no se limita a responder a las preguntas que se le formulan, me veré obligado a ordenar su expulsión de la sala».\n\n—Ya le he dicho lo que considero necesario y oportuno —respondió el médico—. Habrá que esperar a ver qué dicen los análisis.\n\nY el médico se inclinó."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p43"
+      }
+    ]
+  },
+  {
+    "id": "p43",
+    "page": 44,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Iván Ilich salió despacio, se sentó con aire abatido en el trineo y volvió a su casa. A lo largo del trayecto no dejó de darle vueltas a las palabras del médico, tratando de trasladar a un lenguaje sencillo sus embarulladas y confusas razones científicas y de adivinar en ellas una respuesta a la cuestión que le acuciaba: ¿era su situación grave, muy grave o no tenía nada? Y le parecía que el sentido de cuanto le había dicho el médico era que estaba muy mal.\n\nTodo lo que veía por las calles se le antojaba triste: los cocheros, las casas, los transeúntes, los comercios. Y le parecía que ese dolor sordo y lacerante, que no le abandonaba ni un segundo, adquiría un significado distinto y más serio después de las confusas palabras del médico. Ahora lo vigilaba con una atención nueva y angustiosa."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p44"
+      }
+    ]
+  },
+  {
+    "id": "p44",
+    "page": 45,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Una vez en casa, se puso a contarle a su mujer cómo había ido la consulta. Praskovia Fiódorovna le escuchaba, pero a mitad del relato entró la hija tocada con un sombrero: se disponía a salir con su madre. Haciendo un esfuerzo se sentó para escuchar aquella aburrida relación, pero no se quedó mucho; en cuanto a la madre, tampoco le escuchó hasta el final.\n\n—Bueno, me alegro mucho —dijo—. Ahora tienes que tomar las medicinas con regularidad. Dame la receta y enviaré a Guerásim a la farmacia.\n\nY fue a vestirse. Iván Ilich había hablado sin tomar aliento delante de su mujer y en el momento en que esta salió de la habitación emitió un profundo suspiro.\n\n—Después de todo —se dijo—, ¿quién sabe? Puede que no sea nada…"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p45"
+      }
+    ]
+  },
+  {
+    "id": "p45",
+    "page": 46,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Empezó a tomar las medicinas, a seguir las prescripciones del médico, que cambiaron después del análisis de orina. No obstante, daba la impresión de que algo no cuadraba con el análisis o con el tratamiento. No se podía culpar al médico, pero el caso es que los resultados no eran ni mucho menos los que le había adelantado. O se había olvidado de alguna cosa o le había mentido o le había ocultado algo.\n\nEn cualquier caso, Iván Ilich siguió observando a rajatabla las prescripciones del médico y en un primer momento encontró en ello algún consuelo. Después de la consulta, sus principales ocupaciones consistieron en el riguroso cumplimiento de las reglas relativas a la higiene personal que el médico le había impuesto, la toma de los medicamentos y una suerte de atención reconcentrada por cualquier síntoma de su dolor y por todas las funciones de su organismo. E Iván Ilich fue interesándose más y más por las enfermedades y la salud de los seres humanos. Cuando se hablaba en su presencia de enfermos, de muertos, de pacientes restablecidos y, sobre todo, de enfermedades que se parecieran a la suya, aguzaba el oído, aunque procuraba ocultar su emoción, hacía preguntas y establecía comparaciones con su propio mal."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p46"
+      }
+    ]
+  },
+  {
+    "id": "p46",
+    "page": 47,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "El dolor no disminuía. Pero Iván Ilich se esforzaba en convencerse de que se sentía mejor. Y conseguía engañarse, hasta el punto de que nada le preocupaba. Pero en cuanto se producía alguna desavenencia con su mujer, le sucedía un contratiempo en el trabajo o perdía a las cartas, notaba enseguida toda la fuerza de su enfermedad. Antes soportaba esos contratiempos diciéndose: «Arreglaré esto en un santiamén, lucharé, alcanzaré el éxito, ganaré la partida».\n\nAhora cualquier desgracia lo desarmaba y lo sumía en la desesperación. Y se decía a sí mismo: «Justo ahora que me sentía un poco mejor y los medicamentos empezaban a hacerme efecto, me sobreviene esta maldita desgracia, esta desdicha…». Y se enfurecía contra esa desgracia o con las personas responsables de su desdicha, esas mismas que lo martirizaban, y se daba cuenta de que su ira lo estaba matando, pero no era capaz de contenerla.\n\nDebería haber entendido que tal irritación contra las circunstancias y las personas reforzaba su enfermedad y que, por tanto, habría sido mejor no prestar atención a los incidentes desagradables, pero él hacía el razonamiento contrario: decía que necesitaba tranquilidad, analizaba todo lo que pudiera destruirla y, en cuanto advertía un suceso capaz de resquebrajarla, se salía de sus casillas.\n\nLa lectura de libros de medicina y la consulta a diversos facultativos contribuyeron a agravar su situación. Ese agravamiento seguía un ritmo tan uniforme que podía engañarse comparando una jornada con otra, ya que las diferencias eran mínimas. Pero cuando consultaba a los médicos tenía la impresión de que su situación empeoraba, y además a marchas forzadas. En cualquier caso, no dejaba de requerir su dictamen."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p47"
+      }
+    ]
+  },
+  {
+    "id": "p47",
+    "page": 48,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Ese mes fue a ver a otra celebridad, que le dijo poco más o menos lo mismo que la primera, aunque formuló las preguntas de otro modo. Sus palabras no hicieron más que redoblar las dudas y el temor de Iván Ilich. Un amigo de un amigo, médico excelente, le ofreció un diagnóstico totalmente distinto y, aunque prometió curarle, lo cierto es que con sus preguntas y suposiciones solo consiguió turbarle aún más y aumentar sus dudas. Un homeópata se decantó por una tercera enfermedad y le dio una medicina que Iván Ilich tomó a escondidas durante una semana.\n\nAl cabo de ese tiempo, al no haber constatado mejoría alguna, perdió su confianza tanto en los medicamentos anteriores como en el nuevo y cayó en un estado de abatimiento aún más profundo. Un día una señora conocida relató la historia de un hombre que se había curado gracias a unos iconos. Para su sorpresa, Iván Ilich la escuchó con atención, plenamente convencido de la veracidad de lo que le estaba contando.\n\nEse incidente le espantó. «¿Es posible que mis facultades mentales se hayan debilitado tanto? —se dijo—. ¡Tonterías! Todo eso no son más que sandeces. No hay que caer en la hipocondría, sino decantarse por un médico y seguir a pies juntillas sus indicaciones. Y eso es lo que voy a hacer. Se acabó. Dejaré de darle vueltas y observaré las prescripciones a rajatabla hasta el verano. Entonces veremos. ¡Basta ya de vacilaciones!…»."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p48"
+      }
+    ]
+  },
+  {
+    "id": "p48",
+    "page": 49,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Era fácil decirlo, pero imposible ponerlo en práctica. El dolor en el costado seguía atormentándolo, parecía como si se hubiera recrudecido, como si se hubiera vuelto constante; tenía un gusto en la boca cada vez más extraño, se figuraba que de su boca salía un olor repugnante, su apetito y sus fuerzas disminuían. No era posible engañarse: en su interior se estaba produciendo algo terrible, nuevo y más decisivo que cualquier otra cosa que le hubiera pasado en la vida.\n\nY el único que lo sabía era él; cuantos le rodeaban no lo entendían o no querían entenderlo y pensaban que todo en el mundo seguía el mismo curso que antes. Esa constatación era lo que más le atormentaba. Sus familiares —sobre todo su mujer y su hija, inmersas en el torbellino de la vida social— no se daban cuenta de nada, bien lo veía él. Lo único que les incomodaba era que se mostrara tan mohíno y exigente, como si ellas tuvieran la culpa de lo que le pasaba. Aunque trataban de ocultarlo, comprendía que se había convertido en un estorbo para ellas, que su mujer había adoptado una postura definida con respecto a su enfermedad y que no había manera de que la modificase, por más que él dijera o hiciese."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p49"
+      }
+    ]
+  },
+  {
+    "id": "p49",
+    "page": 50,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Esto es lo que les decía a sus conocidos:\n\n—¿Saben ustedes que Iván Ilich, como les sucede a todas las personas bondadosas, no puede seguir a rajatabla las prescripciones del médico? Hoy se pone las gotas, sigue su régimen y se acuesta a la hora debida; pero mañana, si no estoy yo pendiente, se olvidará de lo primero, comerá esturión (que tiene terminantemente prohibido) y se quedará jugando al whist hasta la una de la madrugada.\n\n—Pero ¿qué dices? —replicaba Iván Ilich con enfado—. Eso solo ha pasado una vez, en casa de Piotr Ivánovich.\n\n—Y ayer con Shébek.\n\n—De todos modos el dolor no me habría dejado dormir…\n\n—Ya sea por una razón o por otra, el caso es que nunca te curarás y seguirás atormentándonos.\n\nPor lo que Praskovia Fiódorovna decía delante de los demás y delante de su marido a propósito de la enfermedad, cabía deducir que, en su opinión, la culpa de todo la tenía él y que lo único que pretendía era causarle un nuevo quebradero de cabeza."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p50"
+      }
+    ]
+  },
+  {
+    "id": "p50",
+    "page": 51,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Iván Ilich se daba cuenta de que era una reacción involuntaria, pero eso no aliviaba su situación. En el tribunal Iván Ilich notaba o creía notar la misma actitud extraña con respecto a él: tan pronto se figuraba que lo miraban como si estuviera a punto de dejar vacante su plaza como tenía la impresión de que sus amigos empezaban a gastarle alguna broma inocente sobre su hipocondría, como si esa cosa terrible, espantosa e inaudita que se había manifestado en él y que le roía sin descanso, arrastrándolo irremisiblemente hacia lo desconocido, fuera un asunto apropiado para bromear. En ese sentido, el que más le irritaba era Schwartz, con esa jovialidad, esa vitalidad y ese aire *comme il faut* que tanto le recordaba cómo era él diez años antes.\n\nLlegaban los amigos para jugar la partida, tomaban asiento. Abrían un mazo nuevo de cartas y repartían. Iván Ilich ponía todos los diamantes juntos, siete en total. El compañero decía: «Ni un triunfo», cuando en realidad tenía dos diamantes en la mano. ¿Qué más se podía pedir? Hubiera debido sentirse contento, animado, estaban a punto de ganar la partida. Pero de pronto Iván Ilich sentía ese dolor lacerante, ese sabor en la boca, y entonces le parecía absurdo, en tales condiciones, alegrarse por la suerte de un juego de naipes.\n\nEn esto Mijaíl Mijáilovich, su compañero, da un golpe sobre la mesa con su sanguínea mano y, con gran indulgencia y cortesía, en lugar de arramblar con las cartas que les han correspondido en esa baza, se las acerca a Iván Ilich para que este tenga el placer de recogerlas sin hacer un esfuerzo excesivo ni estirar mucho el brazo. «¿Acaso se figura que estoy tan débil que no soy capaz de alargar la mano?», piensa Iván Ilich, y, sin darse cuenta de lo que hace, malgasta sus triunfos en lances innecesarios, hasta que acaban perdiendo la partida por tres puntos; pero lo que más le desagrada es darse cuenta de lo mucho que sufre Mijaíl Mijáilovich, mientras a él todo eso le importa un bledo."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p51"
+      }
+    ]
+  },
+  {
+    "id": "p51",
+    "page": 52,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "¡Qué terrible saber a qué se debe tal indiferencia! Todos advierten que se encuentra mal y le dicen: «Podemos dejarlo ya, si está usted cansado. Es mejor que descanse». ¿Descansar? No, no está nada cansado, así que terminan la partida de rubber. Todos se muestran mohínos y silenciosos. Iván Ilich comprende que es él quien les ha contagiado ese estado de ánimo sombrío, pero no puede hacer nada por disiparlo.\n\nCenan y se marchan, e Iván Ilich se queda solo, con la conciencia de que su vida está envenenada, de que envenena la vida de los demás y de que ese veneno, lejos de debilitarse, va penetrando cada vez más en todo su ser. Sumido en tales consideraciones, lastrado por el dolor físico y aguijoneado además por el miedo, se va a la cama, pero las molestias le impiden conciliar el sueño y se pasa la mayor parte de la noche despierto. A la mañana siguiente tiene que levantarse de nuevo, vestirse, irse al tribunal, hablar, escribir, o, si no acude a su trabajo, quedarse en casa veinticuatro horas seguidas, cada una de las cuales es un tormento. Y debe vivir así, al borde del precipicio, completamente solo, sin una sola persona que le comprenda y se compadezca de él."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p52"
+      }
+    ]
   }
 ]
-
