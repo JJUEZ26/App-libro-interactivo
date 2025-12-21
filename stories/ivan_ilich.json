@@ -584,7 +584,7 @@
     "forceShowChoices": false,
     "images": [],
     "scenes": [
-      ""
+      "Iván Ilich pasaba la mañana en el tribunal y regresaba a casa para comer. En los primeros tiempos su estado de ánimo era bueno, aunque la casa le daba algún quebradero de cabeza. (Cualquier mancha en un mantel o en el tapizado de un mueble, o un cordón arrancado de una cortina le sacaba de sus casillas: tanto trabajo se había tomado en las reformas de la casa que el menor desperfecto le hacía sufrir). Pero, a grandes rasgos, la vida de Iván Ilich transcurría en medio de un ambiente despreocupado, agradable y decoroso, el único que se adecuaba a sus convicciones más íntimas.\n\nSe levantaba a las nueve, bebía su café, leía el periódico, luego se ponía el uniforme y se trasladaba en coche al tribunal. Allí ya estaba todo dispuesto para que se enganchara al yugo del trabajo, y él se ponía manos a la obra sin pérdida de tiempo: los solicitantes, los informes a la cancillería, el papeleo, las audiencias públicas y las reuniones administrativas.\n\nHabía que esforzarse por dejar al margen de todas esas actividades cualquier elemento vivo y palpitante, que tanto contribuyen a perturbar el correcto desenvolvimiento de las causas judiciales: no debían entablarse relaciones más allá de las meramente oficiales, y tales relaciones debían restringirse exclusivamente al ámbito laboral, pues no había ningún otro motivo para establecerlas."
     ],
     "choices": [
       {
@@ -602,13 +602,68 @@
     "forceShowChoices": false,
     "images": [],
     "scenes": [
-      ""
+      "Por ejemplo, iba a verle una persona para solicitar algún tipo de información. En cuanto particular, Iván Ilich no podía tener con él relación de ninguna clase; pero si existía algún vínculo oficial entre él y ese hombre, de esos que pueden precisarse en un papel con membrete, Iván Ilich hacía todo, absolutamente todo lo que estaba en su mano para satisfacerle —dentro de los límites de esa relación—, y además haciendo gala de un trato humano y amistoso, es decir, de una gran cortesía.\n\nAhora bien, en cuanto esa relación de trabajo concluía, cualquier otro tipo de vínculo desaparecía también. Tan grande era la destreza de Iván Ilich para apartar su actividad profesional, sin dejar que interfiriera en su verdadera vida, habilidad consolidada por una larga práctica y por un talento natural, que a veces hasta podía permitirse el lujo, por mero virtuosismo, así como en broma, de mezclar las relaciones humanas y las laborales.\n\nSi llegaba a tales extremos era porque sentía que tenía la fuerza suficiente para, en caso de necesidad, volver a restringirse de nuevo al plano laboral, desentendiéndose del humano. En tales situaciones Iván Ilich ponía de manifiesto no solo ese tono suyo despreocupado, agradable y decoroso, sino también una rara maestría."
     ],
     "choices": [
       {
-        "text": "Volver a la biblioteca",
-        "page": -1
+        "text": "Continuar",
+        "page": "p34"
+      }
+    ]
+  },
+  {
+    "id": "p34",
+    "page": 35,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "En los intervalos fumaba, bebía té, charlaba un poco de política, de cuestiones generales y de juegos de naipes, pero sobre todo de los nombramientos. Y regresaba a casa fatigado, pero con la sensación que se apodera del virtuoso después de haber tocado de manera impecable su parte de primer violín de la orquesta.\n\nUna vez en casa se enteraba de que su mujer y su hija habían ido a algún sitio o tenían visita. En cuanto al hijo, estaba en el instituto, preparaba las lecciones con profesores particulares o estudiaba concienzudamente lo que se enseña en las aulas. Todo iba a las mil maravillas.\n\nDespués de la comida, si no tenían invitados, Iván Ilich leía alguna vez un libro que hubiera dado mucho que hablar, y por la tarde se ocupaba de sus asuntos, es decir, repasaba algunos documentos, consultaba textos legales, confrontaba declaraciones y las clasificaba de acuerdo con los diferentes artículos del código. Esa actividad ni le aburría ni le divertía. Le incomodaba cuando le impedía jugar al whist, pero si no había ninguna partida a la vista, le parecía mejor que estar solo o en compañía de su mujer.\n\nLas pequeñas comidas a las que invitaba a hombres y mujeres de elevada posición social constituían un gran motivo de satisfacción para Iván Ilich, así como el ambiente en que se desarrollaban esas reuniones, idéntico al de cualquier otro ágape en el que participaran personas de tal rango, de la misma manera que su salón se parecía a todos los salones."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p35"
+      }
+    ]
+  },
+  {
+    "id": "p35",
+    "page": 36,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Un día hasta llegaron a organizar una velada con baile. Iván Ilich se lo pasó muy bien y todo salió a pedir de boca, pero al final estalló una terrible discusión entre marido y mujer por culpa de las tartas y los bombones: contraviniendo los deseos de Praskovia Fiódorovna, que tenía otros planes, Iván Ilich decidió encargar todos los dulces en una pastelería cara, y lo hizo en tal cantidad que sobraron muchos, lo que desató la indignación de su mujer, sobre todo cuando vio la cuenta, que ascendía nada menos que a cuarenta y cinco rublos.\n\nTan desagradable y tremenda había sido la trifulca que Praskovia Fiódorovna había llegado a llamarle «estúpido» y «pesado». Él, por su parte, se había llevado las manos a la cabeza y en un arrebato de ira había hecho alguna mención al divorcio. Pero la velada había sido muy animada. Se había dado cita lo mejor de la sociedad e Iván Ilich había bailado con la princesa Trúfonova, hermana de la distinguida fundadora de la sociedad de beneficencia «Alivia mi pena»."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p36"
+      }
+    ]
+  },
+  {
+    "id": "p36",
+    "page": 37,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Las satisfacciones ligadas a su actividad profesional alimentaban su amor propio; las relacionadas con la sociedad exacerbaban su vanidad; pero las verdaderas alegrías de Iván Ilich eran las que le proporcionaba el whist. Él mismo reconocía que, por más desdichas y desastres que encallaran en su vida, siempre le quedaba un placer que, como una vela, brillaba con más fuerza que los demás: una buena partida de whist con jugadores de primer nivel, de esos que no se soliviantan, siempre en número de cuatro (cuando participaban cinco resultaba muy aburrido quedarse fuera, por más que uno fingiera que no le importaba), y jugar con cabeza y seriedad (a condición de que a uno le entraran buenas cartas) y más tarde cenar y tomarse un vaso de vino.\n\nTras una velada de ese tipo, sobre todo después de una pequeña victoria (las grandes siempre resultan enojosas), Iván Ilich se iba a la cama con un estado de ánimo inmejorable. Así discurría su vida. El círculo de sus conocidos se contaba entre lo más granado de la sociedad, recibían tanto a personas importantes como a hombres jóvenes.\n\nMarido, mujer e hija compartían la misma opinión sobre las gentes que frecuentaban y, sin necesidad de ponerse de acuerdo, sabían guardar las distancias o desembarazarse de cualquier conocido o pariente desastrado que se presentara en la salita con platos japoneses en las paredes y se deshiciera en muestras de afecto. Pronto dejaron de revolotear a su alrededor los amigos de ese tipo, y la casa de los Golovín solo acogió a lo más selecto de la sociedad.\n\nLos jóvenes cortejaban a Lizanka, y un juez de instrucción apellidado Petríschev, hijo de Dmitri Ivánovich Petríschev y único heredero de su fortuna, redobló tanto sus atenciones que Iván Ilich le había preguntado ya a Praskovia Fiódorovna si no sería una buena idea organizar una excursión en troika o preparar una función de aficionados. Así discurría su vida. Todo seguía un curso uniforme, sin cambios; todo iba a las mil maravillas."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p37"
       }
     ]
   }
+]
 ]
