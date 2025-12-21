@@ -3,7 +3,7 @@
     "id": "pecado",
     "page": 1,
     "audio": "borges_el_remordimiento.mp3",
-    "audioText": "Escucha al autor recitar su propia condena:",
+    "audioText": "Escucha el poema desde la voz de su autor:",
     "karaokeLines": [
       { 
         "text": "He cometido el peor de los pecados<br>que un hombre puede cometer. No he sido feliz.", 
@@ -59,8 +59,9 @@
     "forceShowChoices": true,
     "scenes": [
       "<strong>Jorge Luis Borges (1899-1986)</strong>",
-      "Escritor argentino fundamental del siglo XX. \"El remordimiento\" (1975) fue escrito días después de la muerte de su madre, Leonor Acevedo, figura central en su vida.",
-      "Es una confesión íntima y devastadora: la culpa de no haber alcanzado la felicidad, el único mandato que los padres imponen a los hijos."
+      "Fue uno de los escritores más influyentes de la literatura argentina y universal del siglo XX. Lector apasionado desde la infancia, dedicó su vida a los libros, las palabras y las ideas, incluso cuando la ceguera fue apagando su vista.",
+"\"El remordimiento\" (1975) fue escrito poco después de la muerte de su madre, Leonor Acevedo, una presencia decisiva en su vida personal y literaria. En este poema, Borges se aparta del juego intelectual que suele caracterizar su obra y se muestra vulnerable: un Borges humano, que reflexiona sobre su vida y se culpa por no haber sido feliz."
+
     ],
     "choices": [
       {
