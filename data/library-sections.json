@@ -1,0 +1,52 @@
+{
+  "featuredBookId": "frankenstein",
+  "sections": [
+    {
+      "id": "poemas",
+      "title": "Poemas",
+      "subtitle": "Lecturas breves para empezar el día con emoción.",
+      "bookIds": ["pajaro-azul", "jorge-luis-borges-remordimiento", "ya_no_sera"]
+    },
+    {
+      "id": "novelas-filosoficas",
+      "title": "Novelas con tintes filosóficos",
+      "subtitle": "Historias que invitan a pensar y a sentir.",
+      "bookIds": ["ivan_ilich.json"],
+      "placeholderCount": 2
+    },
+    {
+      "id": "adaptaciones-ineditas",
+      "title": "Adaptaciones inéditas con bifurcaciones",
+      "subtitle": "Elige rutas y descubre finales alternativos.",
+      "bookIds": ["frankenstein"]
+    },
+    {
+      "id": "filosofia",
+      "title": "Filosofía",
+      "subtitle": "Espacio listo para nuevas ideas.",
+      "bookIds": [],
+      "placeholderCount": 4
+    },
+    {
+      "id": "viajes-interiores",
+      "title": "Viajes interiores",
+      "subtitle": "Explora la introspección y la memoria.",
+      "bookIds": [],
+      "placeholderCount": 3
+    },
+    {
+      "id": "misterio-calido",
+      "title": "Misterio cálido",
+      "subtitle": "Suspenso ligero para leer de noche.",
+      "bookIds": [],
+      "placeholderCount": 3
+    },
+    {
+      "id": "fantasia-urbana",
+      "title": "Fantasía urbana",
+      "subtitle": "Lo fantástico en la vida cotidiana.",
+      "bookIds": [],
+      "placeholderCount": 3
+    }
+  ]
+}

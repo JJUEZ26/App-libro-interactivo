@@ -22,7 +22,8 @@ export function initApp() {
     const elements = {
         appContainer: getEl('app-container'),
         libraryView: getEl('library-view'),
-        libraryGrid: getEl('library-grid'),
+        libraryHero: getEl('library-hero'),
+        librarySections: getEl('library-sections'),
         readerView: getEl('reader-view'),
         book: getEl('book'),
         pageWrapper: getEl('page-wrapper'),
@@ -48,7 +49,11 @@ export function initApp() {
     setRenderDependencies({ elements, goToPage });
     setNavigationDependencies({ elements, renderPage, resetScrollPosition, switchToLibraryView });
 
-    const library = createLibrary({ libraryGrid: elements.libraryGrid, openBook });
+    const library = createLibrary({
+        libraryHero: elements.libraryHero,
+        librarySections: elements.librarySections,
+        openBook
+    });
 
     if (elements.backToLibraryBtn) {
         elements.backToLibraryBtn.addEventListener('click', () => {
