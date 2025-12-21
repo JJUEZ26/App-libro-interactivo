@@ -24,12 +24,12 @@
     "storyFile": "stories/pecado_borges.json"
   },
   {
-    "id": "coming-soon-3",
-    "title": "Historia en construcción III",
-    "author": "",
-    "description": "Otro relato interactivo en desarrollo.",
-    "cover": "",
-    "storyFile": ""
+    "id": "ya_no_sera",
+    "title": "Ya no será",
+    "author": "Idea Vilariño",
+    "cover": "images/idea_vilarino_portada.jpg",
+    "storyFile": "stories/idea_vilarino_ya_no_sera.json",
+    "theme": "sepia"
   },
   {
     "id": "coming-soon-4",
