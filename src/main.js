@@ -10,7 +10,7 @@ import {
 } from './utils/storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando Lecturas Interactivas v4.0 (Modo Karaoke)");
+    console.log("Iniciando Lecturas Interactivas v4.1 (Control Manual Karaoke)");
 
     // --- SELECCIÓN DE ELEMENTOS ---
     const getEl = (id) => document.getElementById(id);
@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function stopCurrentAudio() {
-        // Detener sincronización de karaoke si existe
         if (karaokeInterval) {
             clearInterval(karaokeInterval);
             karaokeInterval = null;
@@ -215,59 +214,109 @@ document.addEventListener('DOMContentLoaded', () => {
         currentAudioFile = null;
     }
 
-    function playPageSound(pageId, soundFileOverride = null) {
+    // Lógica principal de audio
+    function playPageSound(pageId, soundFileOverride = null, autoPlay = true) {
         let soundFile = soundFileOverride;
         if (!soundFile && story && pageId) {
             const pageData = story.find(p => p.id === pageId);
-            if (pageData) soundFile = pageData.sound || pageData.audio; // Verificar ambos campos
+            if (pageData) soundFile = pageData.sound || pageData.audio;
         }
 
         if (soundFile) {
+            // Si ya está sonando el mismo archivo
             if (currentAudio && currentAudioFile === soundFile) {
                 currentAudio.volume = currentVolume;
-                if (currentAudio.paused) {
+                if (autoPlay && currentAudio.paused) {
                     currentAudio.play().catch(err => console.error('Error audio:', err));
                 }
                 return;
             }
+
             stopCurrentAudio();
             currentAudio = new Audio(`sounds/${soundFile}`);
             currentAudioFile = soundFile;
-            // Si es karaoke no lo loopeamos, si es ambiente si. Asumimos ambiente si no hay karaoke.
+            
             const pageData = story.find(p => p.id === pageId);
             const isKaraoke = pageData && pageData.karaokeLines;
             
+            // Loop solo si NO es karaoke
             currentAudio.loop = !isKaraoke; 
             currentAudio.volume = currentVolume;
-            currentAudio.play().catch(err => console.error('Error audio:', err));
+
+            // Listener para actualizar el botón de play cuando termine
+            currentAudio.addEventListener('ended', () => {
+                 updatePlayButtonState(false);
+            });
+
+            if (autoPlay) {
+                currentAudio.play().then(() => {
+                    updatePlayButtonState(true);
+                }).catch(err => console.error('Error audio:', err));
+            } else {
+                updatePlayButtonState(false);
+            }
         }
     }
 
-    // Función para manejar el karaoke
+    function updatePlayButtonState(isPlaying) {
+        const btn = document.getElementById('karaoke-play-btn');
+        if (!btn) return;
+        
+        // Iconos SVG simples
+        const iconPlay = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>`;
+        const iconPause = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg>`;
+        
+        btn.innerHTML = isPlaying ? iconPause : iconPlay;
+        btn.setAttribute('aria-label', isPlaying ? 'Pausar' : 'Reproducir');
+    }
+
+    function toggleKaraokeAudio() {
+        if (!currentAudio) return;
+        
+        if (currentAudio.paused) {
+            currentAudio.play();
+            updatePlayButtonState(true);
+        } else {
+            currentAudio.pause();
+            updatePlayButtonState(false);
+        }
+    }
+
+    // Función para manejar el karaoke (Sync Visual)
     function startKaraokeSync() {
         if (karaokeInterval) clearInterval(karaokeInterval);
         
         karaokeInterval = setInterval(() => {
-            if (!currentAudio || currentAudio.paused) return;
+            if (!currentAudio) return; // Si no hay audio, no hacemos nada
             
+            // Aunque esté pausado, queremos poder hacer click y ver el highlight correcto
             const time = currentAudio.currentTime;
             const domLines = document.querySelectorAll('.karaoke-line');
             
+            let anyActive = false;
+
             domLines.forEach((p) => {
                 const start = parseFloat(p.dataset.start);
                 const end = parseFloat(p.dataset.end);
                 
                 if (time >= start && time < end) {
                     if (!p.classList.contains('active')) {
+                        // Limpiar otros activos primero por si acaso
+                        domLines.forEach(l => l.classList.remove('active'));
                         p.classList.add('active');
-                        // Scroll suave automático para centrar la línea activa
+                        // Scroll suave automático
                         p.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                } else {
-                    p.classList.remove('active');
-                }
+                    anyActive = true;
+                } 
             });
-        }, 100); // Chequear cada 100ms
+
+            if(!anyActive) {
+                 // Opcional: limpiar todos si estamos fuera de rango
+                 // domLines.forEach(l => l.classList.remove('active'));
+            }
+
+        }, 100); 
     }
 
     if (volumeSlider) {
@@ -322,34 +371,40 @@ document.addEventListener('DOMContentLoaded', () => {
             contentHtml += `<div class="images-container">${imgsHtml}</div>`;
         }
 
-        // --- LÓGICA DE ESCENAS VS KARAOKE ---
+        // --- RENDERIZADO KARAOKE ---
         if (pageData.karaokeLines) {
-            // Renderizado Especial Karaoke
             if (pageData.audioText) {
                 contentHtml += `<p class="audio-hint">${pageData.audioText}</p>`;
             }
+            
+            // 1. Agregar el botón de Play manual
+            contentHtml += `
+                <div class="audio-controls-container">
+                    <button id="karaoke-play-btn" class="karaoke-btn" aria-label="Reproducir">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                    </button>
+                    <span class="audio-instruction">Pulsa para escuchar</span>
+                </div>
+            `;
+
             contentHtml += `<div class="karaoke-container">`;
             pageData.karaokeLines.forEach(line => {
-                contentHtml += `<p class="karaoke-line" data-start="${line.start}" data-end="${line.end}">${line.text}</p>`;
+                // Importante: añadimos cursor pointer en CSS para indicar click
+                contentHtml += `<p class="karaoke-line clickable" data-start="${line.start}" data-end="${line.end}">${line.text}</p>`;
             });
             contentHtml += `</div>`;
-        } else if (pageData.scenes && pageData.scenes.length > 0) {
-            // Renderizado Normal
+        } 
+        // --- RENDERIZADO NORMAL ---
+        else if (pageData.scenes && pageData.scenes.length > 0) {
             const scenesHtml = pageData.scenes
                 .map((s, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${s.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
                 .join('');
             contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
         }
-        
-        // Bloque de audio manual si existe (para control visual)
-        if (pageData.audio) {
-             // Si quieres ocultar el reproductor nativo y usar solo tu botón de sonido global, quita esto. 
-             // Pero es útil para debug o control manual.
-             // contentHtml += `<div class="audio-block"><audio controls src="sounds/${pageData.audio}"></audio></div>`;
-        }
 
         contentCenterer.innerHTML = contentHtml;
 
+        // --- CHOICES ---
         if (pageData.choices && (pageData.choices.length > 1 || (pageData.choices.length > 0 && pageData.forceShowChoices))) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
@@ -358,7 +413,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.textContent = choice.text;
                 btn.addEventListener('click', (ev) => {
                     ev.stopPropagation();
-                    goToPage(choice.page);
+                    // Si el botón dice "Volver a escuchar", reiniciamos el audio
+                    if (choice.page === 'pecado' || choice.text.toLowerCase().includes('escuchar')) {
+                        if(currentAudio) {
+                            currentAudio.currentTime = 0;
+                            currentAudio.play();
+                            updatePlayButtonState(true);
+                            // Scroll al inicio del poema
+                            const firstLine = document.querySelector('.karaoke-line');
+                            if(firstLine) firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else {
+                        goToPage(choice.page);
+                    }
                 });
                 choicesDiv.appendChild(btn);
             });
@@ -374,14 +441,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         pageWrapper.appendChild(pageContent);
 
-        // --- AUDIO ---
+        // --- CONFIGURACIÓN DE EVENTOS DEL DOM ---
+        
+        // Listener para el botón Play/Pause
+        const playBtn = document.getElementById('karaoke-play-btn');
+        if (playBtn) {
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleKaraokeAudio();
+            });
+        }
+
+        // Listener para CADA línea de karaoke (salto temporal)
+        const lines = document.querySelectorAll('.karaoke-line');
+        lines.forEach(line => {
+            line.addEventListener('click', () => {
+                const start = parseFloat(line.dataset.start);
+                if (currentAudio) {
+                    currentAudio.currentTime = start; // Saltar al tiempo
+                    if (currentAudio.paused) {
+                        currentAudio.play(); // Reproducir si estaba pausado
+                        updatePlayButtonState(true);
+                    }
+                }
+            });
+        });
+
+        // --- LÓGICA DE AUDIO (INICIALIZACIÓN) ---
         if (pageData.bgMusic) {
-            playPageSound(null, pageData.bgMusic);
+            playPageSound(null, pageData.bgMusic, true);
         } else if (pageData.sound) {
-            playPageSound(null, pageData.sound);
+            playPageSound(null, pageData.sound, true);
         } else if (pageData.audio) {
-            playPageSound(null, pageData.audio);
-            // Iniciar sync si es karaoke
+            // Karaoke: Cargar pero NO reproducir automáticamente
+            playPageSound(null, pageData.audio, false); 
+            // Iniciar sincronización visual (funcionará cuando el usuario de play)
             if (pageData.karaokeLines) {
                 startKaraokeSync();
             }
@@ -467,7 +561,12 @@ document.addEventListener('DOMContentLoaded', () => {
         book.addEventListener('click', (event) => {
             if (appMode !== 'reader') return;
             if (isTransitioning) return;
-            if (event.target.closest('.choices') || event.target.closest('button')) return;
+            // Evitar navegar si se hace click en controles o líneas clicables
+            if (event.target.closest('.choices') || 
+                event.target.closest('button') || 
+                event.target.closest('.karaoke-line') ||
+                event.target.closest('.audio-controls-container')) return;
+            
             const rect = book.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             if (clickX < rect.width * 0.3) goBack(); else goForward();
@@ -486,7 +585,11 @@ document.addEventListener('DOMContentLoaded', () => {
         book.addEventListener('touchend', (event) => {
             if (appMode !== 'reader') return;
             if (isTransitioning) return;
-            if (event.target.closest('.choices') || event.target.closest('button')) return;
+            if (event.target.closest('.choices') || 
+                event.target.closest('button') || 
+                event.target.closest('.karaoke-line') ||
+                event.target.closest('.audio-controls-container')) return;
+            
             const touch = event.changedTouches[0];
             const deltaX = touch.clientX - touchStartX;
             const deltaY = touch.clientY - touchStartY;
