@@ -10,8 +10,7 @@ import {
 } from './utils/storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Cambiamos la versión en el log para saber si se cargó el nuevo archivo
-    console.log("Iniciando Lecturas Interactivas v3.0 (Fix Definitivo Navegación)");
+    console.log("Iniciando Lecturas Interactivas v4.0 (Modo Karaoke)");
 
     // --- SELECCIÓN DE ELEMENTOS ---
     const getEl = (id) => document.getElementById(id);
@@ -63,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentAudioFile = null;
     let currentVolume = 1;
     let totalPagesInStory = 0;
+    
+    // Variable para el intervalo del karaoke
+    let karaokeInterval = null;
 
     const themeColors = {
         light: '#fdf6e3',
@@ -109,25 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
         document.body.classList.add('app-mode-library');
 
-        // 1. Asegurar que la biblioteca sea visible
         if (libraryView) {
             libraryView.hidden = false;
-            libraryView.style.display = ''; // Limpiar cualquier estilo inline
+            libraryView.style.display = ''; 
         }
 
-        // 2. FORZAR el ocultamiento del lector quitando la clase conflictiva
         if (readerView) {
             readerView.classList.remove('active'); 
             readerView.hidden = true;
-            readerView.style.display = 'none'; // Doble seguridad
+            readerView.style.display = 'none';
         }
 
-        // 3. LIMPIEZA TOTAL: Borrar el contenido del libro para que no quede "basura" visual
         if (pageWrapper) {
             pageWrapper.innerHTML = '';
         }
 
-        // Ocultar controles de lectura
         if (backToLibraryBtn) backToLibraryBtn.classList.add('hidden');
         if (navToggle) navToggle.classList.add('hidden');
         if (fullscreenBtn) fullscreenBtn.classList.add('hidden');
@@ -135,11 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainTitle) mainTitle.textContent = 'Lecturas Interactivas';
 
         stopCurrentAudio();
-
-        // Limpiar efectos especiales al salir
         handlePageEffects(null, { getAppMode }); 
-        
-        // 4. Resetear scroll
         window.scrollTo(0, 0);
     }
 
@@ -207,6 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function stopCurrentAudio() {
+        // Detener sincronización de karaoke si existe
+        if (karaokeInterval) {
+            clearInterval(karaokeInterval);
+            karaokeInterval = null;
+        }
+
         if (currentAudio) {
             currentAudio.pause();
             currentAudio.currentTime = 0;
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let soundFile = soundFileOverride;
         if (!soundFile && story && pageId) {
             const pageData = story.find(p => p.id === pageId);
-            if (pageData) soundFile = pageData.sound;
+            if (pageData) soundFile = pageData.sound || pageData.audio; // Verificar ambos campos
         }
 
         if (soundFile) {
@@ -233,10 +233,41 @@ document.addEventListener('DOMContentLoaded', () => {
             stopCurrentAudio();
             currentAudio = new Audio(`sounds/${soundFile}`);
             currentAudioFile = soundFile;
-            currentAudio.loop = true;
+            // Si es karaoke no lo loopeamos, si es ambiente si. Asumimos ambiente si no hay karaoke.
+            const pageData = story.find(p => p.id === pageId);
+            const isKaraoke = pageData && pageData.karaokeLines;
+            
+            currentAudio.loop = !isKaraoke; 
             currentAudio.volume = currentVolume;
             currentAudio.play().catch(err => console.error('Error audio:', err));
         }
+    }
+
+    // Función para manejar el karaoke
+    function startKaraokeSync() {
+        if (karaokeInterval) clearInterval(karaokeInterval);
+        
+        karaokeInterval = setInterval(() => {
+            if (!currentAudio || currentAudio.paused) return;
+            
+            const time = currentAudio.currentTime;
+            const domLines = document.querySelectorAll('.karaoke-line');
+            
+            domLines.forEach((p) => {
+                const start = parseFloat(p.dataset.start);
+                const end = parseFloat(p.dataset.end);
+                
+                if (time >= start && time < end) {
+                    if (!p.classList.contains('active')) {
+                        p.classList.add('active');
+                        // Scroll suave automático para centrar la línea activa
+                        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+        }, 100); // Chequear cada 100ms
     }
 
     if (volumeSlider) {
@@ -266,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPage(pageId) {
         if (!pageWrapper) return;
         
-        // Volver a la biblioteca si el ID es -1
         if (pageId === -1) {
             switchToLibraryView();
             return;
@@ -292,24 +322,34 @@ document.addEventListener('DOMContentLoaded', () => {
             contentHtml += `<div class="images-container">${imgsHtml}</div>`;
         }
 
-        if (pageData.scenes && pageData.scenes.length > 0) {
+        // --- LÓGICA DE ESCENAS VS KARAOKE ---
+        if (pageData.karaokeLines) {
+            // Renderizado Especial Karaoke
+            if (pageData.audioText) {
+                contentHtml += `<p class="audio-hint">${pageData.audioText}</p>`;
+            }
+            contentHtml += `<div class="karaoke-container">`;
+            pageData.karaokeLines.forEach(line => {
+                contentHtml += `<p class="karaoke-line" data-start="${line.start}" data-end="${line.end}">${line.text}</p>`;
+            });
+            contentHtml += `</div>`;
+        } else if (pageData.scenes && pageData.scenes.length > 0) {
+            // Renderizado Normal
             const scenesHtml = pageData.scenes
                 .map((s, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${s.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
                 .join('');
             contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
         }
-  if (pageData.audio) {
-            const audioHint = pageData.audioText || 'Escúchalo aquí:';
-            contentHtml += `
-                <div class="audio-block">
-                    <p class="audio-hint">${audioHint}</p>
-                    <audio controls preload="none" src="sounds/${pageData.audio}"></audio>
-                </div>
-            `;
-  }
+        
+        // Bloque de audio manual si existe (para control visual)
+        if (pageData.audio) {
+             // Si quieres ocultar el reproductor nativo y usar solo tu botón de sonido global, quita esto. 
+             // Pero es útil para debug o control manual.
+             // contentHtml += `<div class="audio-block"><audio controls src="sounds/${pageData.audio}"></audio></div>`;
+        }
+
         contentCenterer.innerHTML = contentHtml;
 
-        // BOTONES: Mostrar si hay más de 1, o si la página obliga a mostrarlos
         if (pageData.choices && (pageData.choices.length > 1 || (pageData.choices.length > 0 && pageData.forceShowChoices))) {
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
@@ -339,13 +379,17 @@ document.addEventListener('DOMContentLoaded', () => {
             playPageSound(null, pageData.bgMusic);
         } else if (pageData.sound) {
             playPageSound(null, pageData.sound);
+        } else if (pageData.audio) {
+            playPageSound(null, pageData.audio);
+            // Iniciar sync si es karaoke
+            if (pageData.karaokeLines) {
+                startKaraokeSync();
+            }
         } else {
             stopCurrentAudio();
         }
 
-        // --- EFECTOS ---
         handlePageEffects(pageData.effect, { getAppMode });
-
         preloadNextImages(pageId);
     }
 
@@ -377,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Buscar página por ID
         if (!story.some(p => p.id === pageId)) return;
 
         isTransitioning = true;
@@ -412,10 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function goForward() {
         if (isTransitioning || !story) return;
         const pageData = story.find(p => p.id === currentStoryId);
-        
-        // Si hay botones obligatorios, no avanzar con tap
         if (pageData && pageData.forceShowChoices) return;
-
         if (pageData && pageData.choices && pageData.choices.length === 1) {
             goToPage(pageData.choices[0].page);
         }
@@ -455,9 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    /* =========================
-       NAVEGACIÓN / HISTORIAL
-       ========================= */
     function openNav() {
         if (!story) return;
         updateNavigationList();
@@ -485,6 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageData.scenes && pageData.scenes.length > 0) {
                 const clean = pageData.scenes[0].replace(/<[^>]*>?/gm, '');
                 preview = clean.substring(0, 60) + (clean.length > 60 ? '…' : '');
+            } else if (pageData.karaokeLines && pageData.karaokeLines.length > 0) {
+                preview = "Lectura interactiva de poema...";
             }
             li.innerHTML = `<span class="history-title">${title} <span class="history-tag">Volver aquí</span></span>
                             <span class="history-preview">${preview}</span>`;
@@ -517,9 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (restartBtn) restartBtn.addEventListener('click', restartStory);
     if (navModal) navModal.addEventListener('click', (ev) => { if (ev.target === navModal) closeNav(); });
 
-    /* =========================
-       AJUSTES: FUENTE / TEMA / FULLSCREEN
-       ========================= */
     function changeFontSize(delta) {
         fontSize = Math.max(0.8, Math.min(1.8, fontSize + delta));
         document.documentElement.style.setProperty('--font-size-dynamic', `${fontSize}rem`);
@@ -531,24 +569,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleFullscreen() {
         const doc = document;
-        
-        // Detección de iOS
         if (isIOS()) {
-            // En iOS Web, el API fullscreen no funciona igual. 
-            // La "pantalla completa" real se logra instalando la PWA.
-            // Verificamos si ya está en modo "standalone" (instalada)
             const isStandalone = window.navigator.standalone || (window.matchMedia('(display-mode: standalone)').matches);
-            
             if (!isStandalone) {
                 alert("Para ver en pantalla completa real en iOS:\n\n1. Pulsa el botón 'Compartir' (cuadrado con flecha).\n2. Busca y selecciona 'Agregar a inicio'.\n\n¡Ábrela desde tu inicio y listo!");
                 return;
             }
-            
-            // Si ya está instalada, no hacemos nada (ya es fullscreen por defecto)
             return;
         }
 
-        // Para Android y Escritorio
         if (!doc.fullscreenElement) {
             doc.documentElement.requestFullscreen().catch(err => {
                 console.warn('Fullscreen API falló, activando modo CSS fallback:', err);
@@ -575,9 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (settingsToggle) settingsToggle.addEventListener('click', toggleSettingsMenu);
     if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
 
-    /* =========================
-       INICIALIZACIÓN
-       ========================= */
     async function initializeApp() {
         loadPreferences({
             readerThemes,
