@@ -33,16 +33,16 @@
       { 
         "text": "Mi mente se aplicó a las simétricas porfías<br>del arte, que entretejen naderías.", 
         "start": 27.0, 
-        "end": 34.5 
+        "end": 34.0 
       },
       { 
         "text": "Me legaron valor. No fui valiente.", 
-        "start": 34.5, 
-        "end": 38.5 
+        "start": 34.0, 
+        "end": 38.0 
       },
       { 
         "text": "No me abandona. Siempre está a mi lado<br>La sombra de haber sido un desdichado.", 
-        "start": 38.5, 
+        "start": 38.0, 
         "end": 44.0 
       }
     ],
@@ -63,6 +63,10 @@
       "Es una confesión íntima y devastadora: la culpa de no haber alcanzado la felicidad, el único mandato que los padres imponen a los hijos."
     ],
     "choices": [
+      {
+        "text": "Volver a escuchar",
+        "page": "pecado"
+      },
       {
         "text": "Volver a la biblioteca",
         "page": -1
