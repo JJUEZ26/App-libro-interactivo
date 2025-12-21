@@ -495,31 +495,115 @@ body.theme-dark .book-open-btn { border-color: #ffab91; color: #ffab91; }
 .history-preview { font-size: 0.9rem; opacity: 0.8; }
 
 /* =========================
-   ESTILOS PARA KARAOKE (NUEVO)
+   ESTILOS PARA KARAOKE (MEJORADOS)
    ========================= */
+.audio-controls-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 0.8rem;
+    position: relative; /* Para manejar z-index si necesario */
+    padding-top: 1rem;
+}
+
+/* Botón de Play Elegante */
+.karaoke-btn {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    background-color: var(--bg-color); /* Asegura que no sea transparente contra el texto */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Ajuste del ícono SVG dentro del botón */
+.karaoke-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor; /* Usa el color de texto definido */
+    stroke: currentColor;
+    stroke-width: 0;
+}
+
+.karaoke-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Texto "Fantasmal" Pulsante */
+.audio-instruction {
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    color: var(--text-color);
+    opacity: 0.4;
+    font-style: italic;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    animation: ghostlyPulse 2.5s infinite ease-in-out;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    cursor: default;
+}
+
+/* Animación de pulso lento y transparencia */
+@keyframes ghostlyPulse {
+    0% { opacity: 0.2; transform: scale(0.98); text-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { opacity: 0.5; transform: scale(1.02); text-shadow: 0 0 5px rgba(139, 94, 60, 0.2); }
+    100% { opacity: 0.2; transform: scale(0.98); text-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
+/* Clase para ocultar el texto suavemente cuando se reproduce */
+.audio-instruction.faded {
+    opacity: 0 !important;
+    pointer-events: none; /* Ya no detecta mouse */
+    animation: none; /* Detiene la animación */
+}
+
+/* Recuperar visibilidad al pasar el mouse cerca (si está faded) */
+.audio-controls-container:hover .audio-instruction.faded {
+    opacity: 0.3 !important;
+    transition-delay: 0.2s;
+}
+
 .karaoke-container {
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
+    gap: 1.5rem;
     text-align: center;
-    padding: 1rem 0 3rem;
-    margin-top: 2rem;
+    padding: 0 0 3rem;
 }
 
 .karaoke-line {
     font-size: 1.35rem;
     line-height: 1.6;
     color: var(--text-color);
-    opacity: 0.3; /* Atenuado por defecto */
-    transition: all 0.5s ease;
+    opacity: 0.35; 
+    transition: all 0.4s ease;
     margin: 0;
-    text-indent: 0 !important; /* Sobrescribir el estilo de párrafo normal */
+    text-indent: 0 !important; 
     transform-origin: center;
+    cursor: pointer; 
+}
+
+.karaoke-line.clickable:hover {
+    opacity: 0.6;
+    transform: scale(1.01);
 }
 
 .karaoke-line.active {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.06);
     font-weight: 700;
     color: var(--accent-color);
 }
