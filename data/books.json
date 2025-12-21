@@ -34,7 +34,7 @@
   {
     "id": "ivan_ilich.json",
     "title": "La muerte de Iván Ilich",
-    "author": "",
+    "author": "images/ivan_ilich_portada.png",
     "description": "probando por que no aparece esto.",
     "cover": "",
     "storyFile": "stories/ivan_ilich.json"
