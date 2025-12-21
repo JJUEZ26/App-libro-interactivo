@@ -1,195 +1,304 @@
 [
   {
     "id": 1,
+    "page": 1,
     "bgMusic": "audio/ambiente_palacio.mp3",
     "effect": "fade_in",
     "images": ["images/palacio_justicia.jpg"],
     "sound": "",
     "scenes": [
-      "En el gran edificio del Palacio de Justicia, durante un receso de la vista del proceso Melvinski, los magistrados y el fiscal se reunieron en el despacho de Iván Yegórovich Shébek y se pusieron a comentar el célebre caso Krasovski. [1]",
-      "Fiódor Vasílievich defendía acaloradamente que la sala no era competente para juzgarlo, Iván Yegórovich insistía en su punto de vista, mientras Piotr Ivánovich, que desde un principio se había desentendido de la discusión, hojeaba La Gaceta, que acababan de entregarles. [1]",
-      "—¡Señores! —dijo—. ¡Iván Ilich ha muerto! [6]",
-      "—No es posible. [6]",
-      "—Mire, léalo usted mismo —replicó a Fiódor Ivánovich, entregándole el ejemplar recién impreso, que aún olía a tinta fresca. [6]"
+      "En el gran edificio del Palacio de Justicia, durante un receso de la vista del proceso Melvinski, los magistrados y el fiscal se reunieron en el despacho de Iván Yegórovich Shébek y se pusieron a comentar el célebre caso Krasovski.",
+      "Fiódor Vasílievich defendía acaloradamente que la sala no era competente para juzgarlo, Iván Yegórovich insistía en su punto de vista, mientras Piotr Ivánovich, que desde un principio se había desentendido de la discusión, hojeaba La Gaceta, que acababan de entregarles.",
+      "—¡Señores! —dijo—. ¡Iván Ilich ha muerto!",
+      "—No es posible.",
+      "—Mire, léalo usted mismo —replicó a Fiódor Ivánovich, entregándole el ejemplar recién impreso, que aún olía a tinta fresca."
+    ],
+    "choices": [
+      {
+        "text": "Leer el obituario",
+        "page": 2
+      }
     ]
   },
   {
     "id": 2,
+    "page": 2,
     "bgMusic": "audio/clima_tenso.mp3",
     "effect": "none",
     "images": ["images/obituario.png"],
     "sound": "",
     "scenes": [
-      "En un recuadro orlado de negro estaba escrito: «Praskovia Fiódorovna Goloviná comunica con profundo pesar a parientes y amigos el deceso de su amado consorte Iván Ilich Golovín, miembro del Tribunal de Apelación, acaecido el 4 de febrero de 1882. Los funerales se celebrarán el viernes, a la una de la tarde». [6]",
-      "Iván Ilich era colega de los señores allí reunidos, y todos lo tenían en alta estima. Hacía ya varias semanas que estaba enfermo, según decían de una afección incurable. Su plaza aún no estaba vacante, pero corría el rumor de que, en caso de que falleciera, Alekséiev podría ocupar su puesto, mientras a este lo sustituiría Vínnikov o Shtábel. [7]"
+      "En un recuadro orlado de negro estaba escrito: «Praskovia Fiódorovna Goloviná comunica con profundo pesar a parientes y amigos el deceso de su amado consorte Iván Ilich Golovín, miembro del Tribunal de Apelación, acaecido el 4 de febrero de 1882. Los funerales se celebrarán el viernes, a la una de la tarde».",
+      "Iván Ilich era colega de los señores allí reunidos, y todos lo tenían en alta estima. Hacía ya varias semanas que estaba enfermo, según decían de una afección incurable. Su plaza aún no estaba vacante, pero corría el rumor de que, en caso de que falleciera, Alekséiev podría ocupar su puesto, mientras a este lo sustituiría Vínnikov o Shtábel."
+    ],
+    "choices": [
+      {
+        "text": "Siguiente",
+        "page": 3
+      }
     ]
   },
   {
     "id": 3,
+    "page": 3,
     "bgMusic": "audio/murmullo_oficina.mp3",
     "effect": "none",
     "images": [],
     "sound": "",
     "scenes": [
-      "En suma, al enterarse de la muerte de Iván Ilich, el primer pensamiento de cada uno de los presentes fue calibrar en qué medida ese deceso podía favorecer su propio traslado o promoción o el de alguno de sus conocidos. [7]",
-      "«Lo más probable es que me ofrezcan la plaza de Shtábel o Vínnikov —pensaba Fiódor Vasílievich—. Hace tiempo que me lo han prometido. Una promoción así supondría un aumento de ochocientos rublos, sin contar las dietas.» [8]",
-      "«Es el momento de solicitar el traslado de mi cuñado de Kaluga —pensó Piotr Ivánovich—. Mi mujer se alegrará mucho. Ya no podrá decirme que nunca hago nada por sus parientes.» [8]"
+      "En suma, al enterarse de la muerte de Iván Ilich, el primer pensamiento de cada uno de los presentes fue calibrar en qué medida ese deceso podía favorecer su propio traslado o promoción o el de alguno de sus conocidos.",
+      "«Lo más probable es que me ofrezcan la plaza de Shtábel o Vínnikov —pensaba Fiódor Vasílievich—. Hace tiempo que me lo han prometido. Una promoción así supondría un aumento de ochocientos rublos, sin contar las dietas.»",
+      "«Es el momento de solicitar el traslado de mi cuñado de Kaluga —pensó Piotr Ivánovich—. Mi mujer se alegrará mucho. Ya no podrá decirme que nunca hago nada por sus parientes.»"
+    ],
+    "choices": [
+      {
+        "text": "Continuar conversación",
+        "page": 4
+      }
     ]
   },
   {
     "id": 4,
+    "page": 4,
     "bgMusic": "audio/dialogo_frio.mp3",
     "effect": "none",
     "images": [],
     "sound": "",
     "scenes": [
-      "—Ya me figuraba yo que no volvería a levantarse de la cama —dijo Piotr Ivánovich en voz alta—. Qué pena. [8]",
-      "—Pero ¿qué es lo que tenía exactamente? [9]",
-      "—Los médicos no han sido capaces de determinarlo. Quiero decir que ofrecieron diagnósticos diferentes. Cuando lo vi por última vez, tuve la impresión de que se estaba restableciendo. [9]",
-      "—Pues yo no he ido por su casa desde las fiestas. Siempre lo dejaba para el día siguiente. [9]",
-      "—¿Y qué, tenía bienes? [9]",
-      "—Creo que su mujer disponía de algún dinero, pero no mucho. [9]"
+      "—Ya me figuraba yo que no volvería a levantarse de la cama —dijo Piotr Ivánovich en voz alta—. Qué pena.",
+      "—Pero ¿qué es lo que tenía exactamente?",
+      "—Los médicos no han sido capaces de determinarlo. Quiero decir que ofrecieron diagnósticos diferentes. Cuando lo vi por última vez, tuve la impresión de que se estaba restableciendo.",
+      "—Pues yo no he ido por su casa desde las fiestas. Siempre lo dejaba para el día siguiente.",
+      "—¿Y qué, tenía bienes?",
+      "—Creo que su mujer disponía de algún dinero, pero no mucho."
+    ],
+    "choices": [
+      {
+        "text": "Salir del despacho",
+        "page": 5
+      }
     ]
   },
   {
     "id": 5,
+    "page": 5,
     "bgMusic": "audio/tristeza_social.mp3",
     "effect": "sepia_filter",
     "images": ["images/ciudad_rusa.jpg"],
     "sound": "",
     "scenes": [
-      "Charlaron un rato sobre las grandes distancias que había que atravesar para ir de un lado a otro de la ciudad y después volvieron a la sala. [10]",
-      "Más allá de los barruntos sobre los traslados y posibles promociones que de esa muerte podrían derivarse, el deceso de un conocido cercano no suscitó en ninguno de ellos, como suele ser el caso, más que un sentimiento de alegría, pues había sido otro quien había pasado a mejor vida. [10]",
-      "«Es él quien ha muerto, no yo», pensaron o sintieron todos. En cuanto a los conocidos íntimos, no pudieron por menos de considerar que estaban obligados a cumplir con los enojosos deberes que les imponía el decoro... [11]"
+      "Charlaron un rato sobre las grandes distancias que había que atravesar para ir de un lado a otro de la ciudad y después volvieron a la sala.",
+      "Más allá de los barruntos sobre los traslados y posibles promociones que de esa muerte podrían derivarse, el deceso de un conocido cercano no suscitó en ninguno de ellos, como suele ser el caso, más que un sentimiento de alegría, pues había sido otro quien había pasado a mejor vida.",
+      "«Es él quien ha muerto, no yo», pensaron o sintieron todos. En cuanto a los conocidos íntimos, no pudieron por menos de considerar que estaban obligados a cumplir con los enojosos deberes que les imponía el decoro..."
+    ],
+    "choices": [
+      {
+        "text": "Ir al velorio",
+        "page": 6
+      }
     ]
   },
   {
     "id": 6,
+    "page": 6,
     "bgMusic": "audio/carruaje.mp3",
     "effect": "none",
     "images": ["images/casa_ivan.jpg"],
     "sound": "audio/puerta_abriendose.mp3",
     "scenes": [
-      "Piotr Ivánovich, sin echar siquiera una cabezadita, se puso el frac y se dirigió en coche a casa de la viuda. [12]",
-      "Delante de la puerta principal del edificio se habían detenido un coche particular y dos de punto. Abajo, en la antecámara, a un lado del perchero, apoyada en la pared, se alzaba la tapa del ataúd, revestida de brocado, con sus borlas y su galón lustrado con unos polvillos. [12]",
-      "Un colega de Piotr Ivánovich llamado Schwartz bajaba del piso de arriba; al reparar en el recién llegado, ya en el peldaño superior, se detuvo y le guiñó el ojo, como diciéndole: «Menuda la que ha armado Iván Ilich; menos mal que nosotros no somos así». [13]"
+      "Piotr Ivánovich, sin echar siquiera una cabezadita, se puso el frac y se dirigió en coche a casa de la viuda.",
+      "Delante de la puerta principal del edificio se habían detenido un coche particular y dos de punto. Abajo, en la antecámara, a un lado del perchero, apoyada en la pared, se alzaba la tapa del ataúd, revestida de brocado, con sus borlas y su galón lustrado con unos polvillos.",
+      "Un colega de Piotr Ivánovich llamado Schwartz bajaba del piso de arriba; al reparar en el recién llegado, ya en el peldaño superior, se detuvo y le guiñó el ojo, como diciéndole: «Menuda la que ha armado Iván Ilich; menos mal que nosotros no somos así»."
+    ],
+    "choices": [
+      {
+        "text": "Subir",
+        "page": 7
+      }
     ]
   },
   {
     "id": 7,
+    "page": 7,
     "bgMusic": "audio/silencio_funerario.mp3",
     "effect": "blur_edges",
     "images": ["images/schwartz.png"],
     "sound": "",
     "scenes": [
-      "El rostro de Schwartz, con patillas a la inglesa, así como su enjuta figura, enfundada en el frac, irradiaba, como de costumbre, una elegancia solemne, que tan poco cuadraba con su carácter liviano... [13]",
-      "Piotr Ivánovich entendió la razón: sin duda quería ponerse de acuerdo con él sobre el lugar donde iban a organizar la partida de whist esa tarde. Una vez arriba, las señoras se dirigieron a la habitación de la viuda, mientras Schwartz... alzó las cejas para indicar a Piotr Ivánovich la habitación de la derecha, donde yacía el cadáver. [14, 15]"
+      "El rostro de Schwartz, con patillas a la inglesa, así como su enjuta figura, enfundada en el frac, irradiaba, como de costumbre, una elegancia solemne, que tan poco cuadraba con su carácter liviano...",
+      "Piotr Ivánovich entendió la razón: sin duda quería ponerse de acuerdo con él sobre el lugar donde iban a organizar la partida de whist esa tarde. Una vez arriba, las señoras se dirigieron a la habitación de la viuda, mientras Schwartz... alzó las cejas para indicar a Piotr Ivánovich la habitación de la derecha, donde yacía el cadáver."
+    ],
+    "choices": [
+      {
+        "text": "Entrar a la habitación",
+        "page": 8
+      }
     ]
   },
   {
     "id": 8,
+    "page": 8,
     "bgMusic": "audio/sacristan_cantando.mp3",
     "effect": "heavy_atmosphere",
     "images": ["images/velorio_habitacion.jpg"],
     "sound": "",
     "scenes": [
-      "Como suele suceder en tales casos, Piotr Ivánovich entró sin saber muy bien lo que debía hacer allí dentro. Lo único de lo que estaba seguro era de que en esas situaciones nunca está de más persignarse. [15]",
-      "Un sacristán con levita, de aire resuelto y enérgico, leía en voz alta con una expresión que no admitía réplica. Guerásim, el mozo de comedor, pasó por delante de Piotr Ivánovich con pasos ligeros, esparciendo alguna cosa por el suelo. Nada más verlo, Piotr Ivánovich percibió un insinuante olor a cadáver en descomposición. [16, 17]"
+      "Como suele suceder en tales casos, Piotr Ivánovich entró sin saber muy bien lo que debía hacer allí dentro. Lo único de lo que estaba seguro era de que en esas situaciones nunca está de más persignarse.",
+      "Un sacristán con levita, de aire resuelto y enérgico, leía en voz alta con una expresión que no admitía réplica. Guerásim, el mozo de comedor, pasó por delante de Piotr Ivánovich con pasos ligeros, esparciendo alguna cosa por el suelo. Nada más verlo, Piotr Ivánovich percibió un insinuante olor a cadáver en descomposición."
+    ],
+    "choices": [
+      {
+        "text": "Mirar al difunto",
+        "page": 9
+      }
     ]
   },
   {
     "id": 9,
+    "page": 9,
     "bgMusic": "audio/requiem_bajo.mp3",
     "effect": "none",
     "images": ["images/rostro_difunto.jpg"],
     "sound": "",
     "scenes": [
-      "Piotr Ivánovich... se detuvo y se puso a observar al difunto, que yacía como todos los muertos, con una especial pesadez, los rígidos miembros hundidos en el acolchado del ataúd... destacando la frente amarillenta, como de cera, con las sienes hundidas cubiertas de ralos mechones y la nariz prominente. [18]",
-      "Había cambiado mucho, estaba aún más delgado que la última vez... aunque el rostro era más hermoso y, sobre todo, más expresivo que de vivo. Era como si dijera que había hecho lo que tenía que hacer, y además de una manera correcta. [19]"
+      "Piotr Ivánovich... se detuvo y se puso a observar al difunto, que yacía como todos los muertos, con una especial pesadez, los rígidos miembros hundidos en el acolchado del ataúd... destacando la frente amarillenta, como de cera, con las sienes hundidas cubiertas de ralos mechones y la nariz prominente.",
+      "Había cambiado mucho, estaba aún más delgado que la última vez... aunque el rostro era más hermoso y, sobre todo, más expresivo que de vivo. Era como si dijera que había hecho lo que tenía que hacer, y además de una manera correcta."
+    ],
+    "choices": [
+      {
+        "text": "Salir con Schwartz",
+        "page": 10
+      }
     ]
   },
   {
     "id": 10,
+    "page": 10,
     "bgMusic": "audio/alivio_ligero.mp3",
     "effect": "none",
     "images": [],
     "sound": "audio/susurro.mp3",
     "scenes": [
-      "Schwartz le esperaba en la habitación contigua... Bastó una mirada a la figura jovial, pulcra y elegante de Schwartz para que Piotr Ivánovich recuperara el buen ánimo. Comprendió que Schwartz estaba por encima de tales sucesos... [20]",
-      "Esto es lo que le decía su aspecto: «Los funerales de Iván Ilich en ningún caso son motivo suficiente para alterar el orden del día... nada conseguirá impedir que esta misma tarde oigamos cómo cruje el envoltorio de un mazo de cartas al abrirse». [21]"
+      "Schwartz le esperaba en la habitación contigua... Bastó una mirada a la figura jovial, pulcra y elegante de Schwartz para que Piotr Ivánovich recuperara el buen ánimo. Comprendió que Schwartz estaba por encima de tales sucesos...",
+      "Esto es lo que le decía su aspecto: «Los funerales de Iván Ilich en ningún caso son motivo suficiente para alterar el orden del día... nada conseguirá impedir que esta misma tarde oigamos cómo cruje el envoltorio de un mazo de cartas al abrirse»."
+    ],
+    "choices": [
+      {
+        "text": "Aparece la viuda",
+        "page": 11
+      }
     ]
   },
   {
     "id": 11,
+    "page": 11,
     "bgMusic": "audio/viuda_tema.mp3",
     "effect": "vignette",
     "images": ["images/praskovia_viuda.jpg"],
     "sound": "",
     "scenes": [
-      "Praskovia Fiódorovna, una mujer baja y gorda que... se iba ensanchando desde los hombros hacia abajo, vestida de luto riguroso... salió de sus aposentos. [22]",
-      "—El oficio va a empezar de un momento a otro. Hagan el favor de pasar. [23]",
-      "Praskovia Fiódorovna, al reconocer a Piotr Ivánovich, suspiró, se acercó a él, le cogió de la mano y dijo: —Sé que era usted un verdadero amigo de Iván Ilich… [23]"
+      "Praskovia Fiódorovna, una mujer baja y gorda que... se iba ensanchando desde los hombros hacia abajo, vestida de luto riguroso... salió de sus aposentos.",
+      "—El oficio va a empezar de un momento a otro. Hagan el favor de pasar.",
+      "Praskovia Fiódorovna, al reconocer a Piotr Ivánovich, suspiró, se acercó a él, le cogió de la mano y dijo: —Sé que era usted un verdadero amigo de Iván Ilich…"
+    ],
+    "choices": [
+      {
+        "text": "Seguirla",
+        "page": 12
+      }
     ]
   },
   {
     "id": 12,
+    "page": 12,
     "bgMusic": "audio/camino_interior.mp3",
     "effect": "none",
     "images": [],
     "sound": "",
     "scenes": [
-      "Piotr Ivánovich emitió un suspiro aún más profundo y apenado, y Praskovia Fiódorovna se lo agradeció apretándole el brazo. Al entrar en una salita tapizada de cretona rosa, iluminada por la tenue luz de una lámpara, se sentaron al lado de una mesa, ella en un sofá y Piotr Ivánovich en un puf muy bajo de muelles desvencijados, que se desbarató todo bajo su peso. [24]"
+      "Piotr Ivánovich emitió un suspiro aún más profundo y apenado, y Praskovia Fiódorovna se lo agradeció apretándole el brazo. Al entrar en una salita tapizada de cretona rosa, iluminada por la tenue luz de una lámpara, se sentaron al lado de una mesa, ella en un sofá y Piotr Ivánovich en un puf muy bajo de muelles desvencijados, que se desbarató todo bajo su peso."
+    ],
+    "choices": [
+      {
+        "text": "Sentarse",
+        "page": 13
+      }
     ]
   },
   {
     "id": 13,
+    "page": 13,
     "bgMusic": "audio/comedia_tragica.mp3",
     "effect": "none",
     "images": ["images/el_puf.png"],
     "sound": "audio/crujido_muelle.mp3",
     "scenes": [
-      "Al bordear la mesa para tomar asiento en el sofá... a la viuda se le enganchó el encaje negro de su mantilla en una de las entalladuras de la mesa. Piotr Ivánovich se levantó para ayudarla y los muelles del puf, liberados de su peso, se estiraron y le dieron un empujón. [25, 26]",
-      "Praskovia Fiódorovna intentó desenganchar la puntilla por sí misma, y Piotr Ivánovich volvió a sentarse, aplastando el rebelde puf; pero al no lograr la viuda su objetivo, Piotr Ivánovich volvió a ponerse en pie, y de nuevo el puf se soliviantó y hasta emitió un crujido. [26]"
+      "Al bordear la mesa para tomar asiento en el sofá... a la viuda se le enganchó el encaje negro de su mantilla en una de las entalladuras de la mesa. Piotr Ivánovich se levantó para ayudarla y los muelles del puf, liberados de su peso, se estiraron y le dieron un empujón.",
+      "Praskovia Fiódorovna intentó desenganchar la puntilla por sí misma, y Piotr Ivánovich volvió a sentarse, aplastando el rebelde puf; pero al no lograr la viuda su objetivo, Piotr Ivánovich volvió a ponerse en pie, y de nuevo el puf se soliviantó y hasta emitió un crujido."
+    ],
+    "choices": [
+      {
+        "text": "Escuchar a la viuda",
+        "page": 14
+      }
     ]
   },
   {
     "id": 14,
+    "page": 14,
     "bgMusic": "audio/asuntos_practicos.mp3",
     "effect": "smoke_overlay",
     "images": [],
     "sound": "audio/encendedor.mp3",
     "scenes": [
-      "—Fume si quiere —dijo Praskovia Fiódorovna... Piotr Ivánovich encendió un cigarrillo y escuchó las detalladas preguntas que le hizo al criado sobre los diferentes precios de los terrenos, antes de decantarse por uno concreto. [27]",
-      "—Mentiría si afirmara que el dolor me impide ocuparme de asuntos prácticos. Al contrario, si hay algo que pueda procurarme no ya algún sosiego, sino cierta distracción, son todos estos trámites concernientes a mi difunto marido. [28]"
+      "—Fume si quiere —dijo Praskovia Fiódorovna... Piotr Ivánovich encendió un cigarrillo y escuchó las detalladas preguntas que le hizo al criado sobre los diferentes precios de los terrenos, antes de decantarse por uno concreto.",
+      "—Mentiría si afirmara que el dolor me impide ocuparme de asuntos prácticos. Al contrario, si hay algo que pueda procurarme no ya algún sosiego, sino cierta distracción, son todos estos trámites concernientes a mi difunto marido."
+    ],
+    "choices": [
+      {
+        "text": "Preguntar por el final",
+        "page": 15
+      }
     ]
   },
   {
     "id": 15,
+    "page": 15,
     "bgMusic": "audio/horror_creciente.mp3",
     "effect": "red_flash",
     "images": ["images/grito_ivan.jpg"],
     "sound": "audio/grito_lejano.mp3",
     "scenes": [
-      "—En los últimos días sufrió muchísimo. [29]",
-      "—¿Tanto? —preguntó Piotr Ivánovich. [29]",
-      "—Unos padecimientos atroces. Se pasó gritando no ya los últimos minutos, sino las últimas horas. Tres días y tres noches seguidos gritando, sin concederse un respiro. Fue insoportable. Todavía no entiendo cómo no me volví loca. [29, 30]",
-      "«Tres días y tres noches de terribles sufrimientos y después la muerte. Lo mismo puede sucederme a mí en cualquier momento, en este mismo instante», pensó, lleno de espanto. [31]",
-      "Pero inmediatamente... vino en su ayuda la socorrida idea de que era a Iván Ilich a quien le había pasado todo eso, no a él; que a él no podía pasarle ni le pasaría nada parecido. [31, 32]"
+      "—En los últimos días sufrió muchísimo.",
+      "—¿Tanto? —preguntó Piotr Ivánovich.",
+      "—Unos padecimientos atroces. Se pasó gritando no ya los últimos minutos, sino las últimas horas. Tres días y tres noches seguidos gritando, sin concederse un respiro. Fue insoportable. Todavía no entiendo cómo no me volví loca.",
+      "«Tres días y tres noches de terribles sufrimientos y después la muerte. Lo mismo puede sucederme a mí en cualquier momento, en este mismo instante», pensó, lleno de espanto.",
+      "Pero inmediatamente... vino en su ayuda la socorrida idea de que era a Iván Ilich a quien le había pasado todo eso, no a él; que a él no podía pasarle ni le pasaría nada parecido."
+    ],
+    "choices": [
+      {
+        "text": "Irse",
+        "page": 16
+      }
     ]
   },
   {
     "id": 16,
+    "page": 16,
     "bgMusic": "audio/conclusion_fria.mp3",
     "effect": "fade_out",
     "images": ["images/final_capitulo.jpg"],
     "sound": "audio/monedas.mp3",
     "scenes": [
-      "La viuda, por lo visto, consideró oportuno ir al grano... lo que quería saber era qué debía hacer para obtener algún dinero del Estado por la muerte de su marido. [33, 34]",
-      "Piotr Ivánovich trató de encontrarlo, pero... dijo que, en su opinión, no había manera de conseguir más dinero. Entonces Praskovia Fiódorovna suspiró y sin grandes disimulos se puso a buscar la manera de desembarazarse de su interlocutor. [2]",
-      "Piotr Ivánovich, al darse cuenta, apagó el cigarrillo, se puso en pie, le estrechó la mano a la dueña de la casa y se retiró a la antecámara. [2]"
+      "La viuda, por lo visto, consideró oportuno ir al grano... lo que quería saber era qué debía hacer para obtener algún dinero del Estado por la muerte de su marido.",
+      "Piotr Ivánovich trató de encontrarlo, pero... dijo que, en su opinión, no había manera de conseguir más dinero. Entonces Praskovia Fiódorovna suspiró y sin grandes disimulos se puso a buscar la manera de desembarazarse de su interlocutor.",
+      "Piotr Ivánovich, al darse cuenta, apagó el cigarrillo, se puso en pie, le estrechó la mano a la dueña de la casa y se retiró a la antecámara."
     ],
     "choices": [
-      { "text": "Fin del primer encuentro", "page": -1 }
+      {
+        "text": "Fin del primer encuentro",
+        "page": -1
+      }
     ]
   }
 ]
