@@ -6,7 +6,7 @@ export const state = {
     pageHistory: [],
     fontSize: 1.1,
     currentTheme: 'light',
-    readerThemes: ['light', 'sepia', 'bone', 'dark'],
+    readerThemes: ['light', 'dark', 'sepia', 'bone'],
     libraryThemes: ['light', 'dark'],
     isTransitioning: false,
     currentAudio: null,
