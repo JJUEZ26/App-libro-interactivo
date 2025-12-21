@@ -10,7 +10,7 @@ import {
 } from './utils/storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando Lecturas Interactivas v4.1 (Control Manual Karaoke)");
+    console.log("Iniciando Lecturas Interactivas v4.2 (Corrección Audio & Estilos)");
 
     // --- SELECCIÓN DE ELEMENTOS ---
     const getEl = (id) => document.getElementById(id);
@@ -239,13 +239,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const pageData = story.find(p => p.id === pageId);
             const isKaraoke = pageData && pageData.karaokeLines;
             
-            // Loop solo si NO es karaoke
+            // Si es karaoke, NO hacemos loop. Si es música de fondo, sí.
             currentAudio.loop = !isKaraoke; 
             currentAudio.volume = currentVolume;
 
-            // Listener para actualizar el botón de play cuando termine
+            // Al terminar el audio...
             currentAudio.addEventListener('ended', () => {
                  updatePlayButtonState(false);
+                 // NO hay lógica de autoplay aquí para evitar bucles indeseados.
+                 // Simplemente se detiene y muestra el icono de Play.
             });
 
             if (autoPlay) {
@@ -262,12 +264,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('karaoke-play-btn');
         if (!btn) return;
         
-        // Iconos SVG simples
-        const iconPlay = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>`;
-        const iconPause = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg>`;
+        // Iconos SVG Sólidos y Claros (Material Design Style)
+        const iconPlay = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>`;
+        const iconPause = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>`;
         
         btn.innerHTML = isPlaying ? iconPause : iconPlay;
         btn.setAttribute('aria-label', isPlaying ? 'Pausar' : 'Reproducir');
+        
+        // Manejar visibilidad del texto de instrucción
+        const instructionText = document.querySelector('.audio-instruction');
+        if (instructionText) {
+            if (isPlaying) {
+                instructionText.classList.add('faded');
+            } else {
+                // Opcional: si quieres que vuelva a aparecer al pausar, quita la clase.
+                // Si prefieres que se quede oculto hasta pasar el mouse, no hagas nada.
+                // instructionText.classList.remove('faded'); 
+            }
+        }
     }
 
     function toggleKaraokeAudio() {
@@ -311,11 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } 
             });
 
-            if(!anyActive) {
-                 // Opcional: limpiar todos si estamos fuera de rango
-                 // domLines.forEach(l => l.classList.remove('active'));
-            }
-
+            // No limpiamos si no hay activo para mantener el último resaltado si se pausa justo al final
         }, 100); 
     }
 
@@ -373,15 +383,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- RENDERIZADO KARAOKE ---
         if (pageData.karaokeLines) {
+            // Texto descriptivo (ej: "Escucha al autor...")
             if (pageData.audioText) {
-                contentHtml += `<p class="audio-hint">${pageData.audioText}</p>`;
+                // Lo integramos, pero quizás prefieras que sea el texto 'fantasmal' del botón
+                // Por ahora lo dejamos como un párrafo aparte si existe en el JSON
+                 contentHtml += `<p class="audio-hint">${pageData.audioText}</p>`;
             }
             
-            // 1. Agregar el botón de Play manual
+            // 1. Controles de Audio mejorados
             contentHtml += `
                 <div class="audio-controls-container">
                     <button id="karaoke-play-btn" class="karaoke-btn" aria-label="Reproducir">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                     </button>
                     <span class="audio-instruction">Pulsa para escuchar</span>
                 </div>
@@ -389,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             contentHtml += `<div class="karaoke-container">`;
             pageData.karaokeLines.forEach(line => {
-                // Importante: añadimos cursor pointer en CSS para indicar click
                 contentHtml += `<p class="karaoke-line clickable" data-start="${line.start}" data-end="${line.end}">${line.text}</p>`;
             });
             contentHtml += `</div>`;
