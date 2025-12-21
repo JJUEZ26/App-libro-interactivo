@@ -64,15 +64,16 @@
     ]
   },
   {
-    "id": "biografia",
-    "page": 2,
-    "forceShowChoices": true,
-    "isPortrait": true,
-    "images": ["images/idea_vilarino_retrato.jpg"],
-    "scenes": [
-      "<strong>Idea Vilariño (1920-2009)</strong>",
-      "Poeta, ensayista y crítica literaria uruguaya, perteneciente a la Generación del 45.",
-      "Sus poemas, austeros y directos, a menudo giran en torno al amor, la soledad y la muerte. Este poema en particular suele asociarse a su intensa y tormentosa relación con el escritor Juan Carlos Onetti."
+   "id": "biografia",
+  "page": 2,
+  "forceShowChoices": true,
+  "isPortrait": true,
+  "images": ["images/idea_vilarino_retrato.jpg"],
+  "scenes": [
+    "<strong>Idea Vilariño (1920-2009)</strong>",
+    "Poeta, ensayista y crítica literaria uruguaya, una de las voces más intensas de la Generación del 45.",
+    "Su escritura es sobria y directa: pocos adornos, mucha verdad. En sus poemas aparecen el amor, la pérdida, la soledad y la muerte, dicha con una lucidez que no busca consuelo.",
+    "“Ya no” pertenece a esa zona de su obra donde el lenguaje se vuelve casi seco, como si cada verso fuera lo único que se puede decir cuando ya no queda nada que explicar. A veces se lo vincula con su relación con Juan Carlos Onetti, aunque el poema trasciende lo biográfico y funciona como una despedida universal."
     ],
     "choices": [
       {
