@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+    /* PALETAS LECTOR */
+    --primary-color-light: #fdf6e3;
+    --secondary-color-light: #3a2e28;
+    --accent-color-light: #8b5e3c;
+    --main-bg-light: #e8e0d5;
+
+    --primary-color-sepia: #f4ecd8;
+    --secondary-color-sepia: #5d4037;
+    --accent-color-sepia: #d84315;
+    --main-bg-sepia: #d7ccc8;
+
+    --primary-color-bone: #f2f0e9;
+    --secondary-color-bone: #4a453a;
+    --accent-color-bone: #8c857b;
+    --main-bg-bone: #dcdbd4;
+
+    --primary-color-dark: #1e1e1e;
+    --secondary-color-dark: #e0e0e0;
+    --accent-color-dark: #ffab91;
+    --main-bg-dark: #121212;
+
+    --font-body: 'Cormorant Garamond', serif;
+    --font-title: 'IM Fell English', serif;
+
+    /* Colores dinámicos lector */
+    --bg-color: var(--primary-color-light);
+    --text-color: var(--secondary-color-light);
+    --accent-color: var(--accent-color-light);
+    --main-bg: var(--main-bg-light);
+
+    --font-size-dynamic: 1.2rem;
+
+    /* Colores de la INTERFAZ */
+    --ui-bg-light: #ffffff;
+    --ui-card-light: #ffffff;
+    --ui-text-light: #3a2e28;
+
+    --ui-bg-dark: #050505;
+    --ui-card-dark: #181818;
+    --ui-text-dark: #f5f5f5;
+}
+
+/* Temas aplicados al <body> */
+body.theme-light {
+    --bg-color: var(--primary-color-light);
+    --text-color: var(--secondary-color-light);
+    --accent-color: var(--accent-color-light);
+    --main-bg: var(--main-bg-light);
+}
+
+body.theme-sepia {
+    --bg-color: var(--primary-color-sepia);
+    --text-color: var(--secondary-color-sepia);
+    --accent-color: var(--accent-color-sepia);
+    --main-bg: var(--main-bg-sepia);
+}
+
+body.theme-bone {
+    --bg-color: var(--primary-color-bone);
+    --text-color: var(--secondary-color-bone);
+    --accent-color: var(--accent-color-bone);
+    --main-bg: var(--main-bg-bone);
+}
+
+body.theme-dark {
+    --bg-color: var(--primary-color-dark);
+    --text-color: var(--secondary-color-dark);
+    --accent-color: var(--accent-color-dark);
+    --main-bg: var(--main-bg-dark);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+    width: 100%;
+    height: 100%;
+    overscroll-behavior-y: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: var(--font-body);
+    background-color: #ffffff;
+    color: #3a2e28;
+    overflow-x: hidden;
+}
+
+body.theme-dark {
+    background-color: #050505;
+    color: var(--ui-text-dark);
+}
+
+button { font-family: var(--font-body); cursor: pointer; }

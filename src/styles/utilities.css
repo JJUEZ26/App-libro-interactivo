@@ -1,0 +1,26 @@
+.hidden { display: none !important; }
+
+/* Transición suave para texto */
+.fade-in-text {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@media (max-width: 900px) {
+    .content-centerer { padding: 2rem 2rem; }
+    .library-hero { padding: 1.2rem 1.4rem; }
+}
+@media (max-width: 600px) {
+    #app-header { padding-inline: 0.75rem; }
+    #library-view { padding-inline: 0.75rem; }
+    #book-container { padding-inline: 8px; }
+    .content-centerer { padding: 1.5rem 1.5rem; font-size: 1.1rem; margin: 0; }
+    .page-content p { text-indent: 0; }
+    .page-content img { margin: 1.5rem 0; max-height: 70vh; width: 100%; object-fit: contain; }
+    #main-title { font-size: 1.4rem; }
+    .karaoke-line { font-size: 1.2rem; }
+}
