@@ -1,0 +1,84 @@
+[
+  {
+    "id": "ya_no",
+    "page": 1,
+    "audio": "idea_vilarino_ya_no.mp3",
+    "audioText": "Una despedida definitiva:",
+    "karaokeLines": [
+      { 
+        "text": "Ya no será, ya no.<br>No viviremos juntos, no criaré a tu hijo.", 
+        "start": 0.5, 
+        "end": 8.0 
+      },
+      { 
+        "text": "No coseré tu ropa, no te tendré de noche,<br>no te besaré al irme.", 
+        "start": 8.0, 
+        "end": 14.5 
+      },
+      { 
+        "text": "Nunca sabrás quién fui,<br>por qué me amaron otros.", 
+        "start": 14.5, 
+        "end": 20.0 
+      },
+      { 
+        "text": "No llegaré a saber por qué ni cómo nunca,<br>ni si era de verdad lo que dijiste que era.", 
+        "start": 20.0, 
+        "end": 28.0 
+      },
+      { 
+        "text": "Ni quién fuiste, ni qué fui para ti,<br>ni cómo hubiera sido vivir juntos,", 
+        "start": 28.0, 
+        "end": 35.0 
+      },
+      { 
+        "text": "querernos, esperarnos, estar.", 
+        "start": 35.0, 
+        "end": 40.0 
+      },
+      { 
+        "text": "Ya no soy más que yo para siempre y tú ya<br>no serás para mí más que tú.", 
+        "start": 40.0, 
+        "end": 46.5 
+      },
+      { 
+        "text": "Ya no estás en un día futuro.<br>No sabré dónde vives, con quién, ni si te acuerdas.", 
+        "start": 46.5, 
+        "end": 54.0 
+      },
+      { 
+        "text": "No me abrazarás nunca como esa noche, nunca.", 
+        "start": 54.0, 
+        "end": 59.0 
+      },
+      { 
+        "text": "No volveré a tocarte. No te veré morir.", 
+        "start": 59.0, 
+        "end": 65.0 
+      }
+    ],
+    "choices": [
+      {
+        "text": "Sobre la autora",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 2,
+    "forceShowChoices": true,
+    "isPortrait": true,
+    "images": ["images/idea_vilarino_retrato.jpg"],
+    "scenes": [
+      "<strong>Idea Vilariño (1920-2009)</strong>",
+      "Poeta, ensayista y crítica literaria uruguaya, perteneciente a la Generación del 45.",
+      "Sus poemas, austeros y directos, a menudo giran en torno al amor, la soledad y la muerte. Este poema en particular suele asociarse a su intensa y tormentosa relación con el escritor Juan Carlos Onetti."
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]
