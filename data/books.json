@@ -34,9 +34,9 @@
   {
     "id": "ivan_ilich.json",
     "title": "La muerte de Iván Ilich",
-    "author": "images/ivan_ilich_portada.png",
-    "description": "probando por que no aparece esto.",
-    "cover": "",
+    "author": "Lev Tolstói",
+    "description": "",
+    "cover": "images/ivan_ilich_portada.png",
     "storyFile": "stories/ivan_ilich.json"
   }
 ]
