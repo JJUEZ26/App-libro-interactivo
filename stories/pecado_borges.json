@@ -65,10 +65,6 @@
     ],
     "choices": [
       {
-        "text": "Volver a escuchar",
-        "page": "pecado"
-      },
-      {
         "text": "Volver a la biblioteca",
         "page": -1
       }
