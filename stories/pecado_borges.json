@@ -57,8 +57,9 @@
     "id": "biografia",
     "page": 2,
     "forceShowChoices": true,
+    "images": [],
     "scenes": [
-      "<strong>Jorge Luis Borges (1899-1986)</strong>",
+      "<img src='images/biografia_borges.png' class='bio-portrait' alt='jorge borges'>",
       "Fue uno de los escritores más influyentes de la literatura argentina y universal del siglo XX. Lector apasionado desde la infancia, dedicó su vida a los libros, las palabras y las ideas, incluso cuando la ceguera fue apagando su vista.",
 "\"El remordimiento\" (1975) fue escrito poco después de la muerte de su madre, Leonor Acevedo, una presencia decisiva en su vida personal y literaria. En este poema, Borges se aparta del juego intelectual que suele caracterizar su obra y se muestra vulnerable: un Borges humano, que reflexiona sobre su vida y se culpa por no haber sido feliz."
 
