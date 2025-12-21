@@ -306,3 +306,131 @@
     ]
   }
 ]
+[
+  {
+    "id": "p17",
+    "page": 18,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Al principio Iván Ilich albergó la esperanza de desembarazarse de todos los inconvenientes de esa nueva situación observando la misma actitud ligera y decorosa hacia la vida que le había ayudado hasta entonces. Trató de desentenderse del humor de su mujer y siguió observando el mismo género de vida despreocupado y agradable: invitaba a los amigos a jugar una partida en su casa, procuraba ir al casino o visitar a alguno de sus conocidos.\n\nPero en una ocasión su mujer, llena de furor, empezó a insultarle con palabras gruesas, y recurrió a la misma medida cada vez que él no satisfacía sus exigencias, con el firme propósito, por lo visto, de no cesar en su empeño hasta que se sometiera y aceptara quedarse en casa, aburriéndose como ella.\n\nIván Ilich se horrorizó. Comprendió que la vida conyugal —al menos con su esposa—, lejos de garantizar una vida agradable y de buen tono, a menudo la destruía, y que, por tanto, se hacía imprescindible protegerse de tales perturbaciones. Una vez llegado a esa conclusión, se puso a buscar los medios para lograrlo. Su profesión era lo único que infundía respeto a Praskovia Fiódorovna, de modo que Iván Ilich, tomando como armas el trabajo y las obligaciones inherentes al cargo, se dispuso a entablar batalla contra ella para preservar su independencia."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p18"
+      }
+    ]
+  },
+  {
+    "id": "p18",
+    "page": 19,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Con el nacimiento del niño, los diversos intentos que hicieron para alimentarlo y los fracasos con que se saldaron; con las enfermedades reales e imaginarias de la madre y del recién nacido, en las que se le exigía que se implicara, pero de las que era incapaz de comprender nada, la necesidad de crearse un mundo propio fuera del ámbito familiar se hizo aún más acuciante para Iván Ilich.\n\nA medida que su mujer se fue volviendo más irritable y exigente, Iván Ilich fue trasladando el centro de gravedad de su vida al trabajo. Se fue aficionando más y más a sus ocupaciones y se hizo más ambicioso que antes.\n\nMuy pronto, al cabo de un año de matrimonio, Iván Ilich comprendió que la vida conyugal, aunque comportaba ciertas ventajas, era en realidad muy complicada y penosa, y que por tanto, para cumplir con su deber, es decir, para llevar una vida decorosa, aprobada por la sociedad, había que trazar un plan bien definido, lo mismo que en el trabajo. Y a ello se aplicó."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p19"
+      }
+    ]
+  },
+  {
+    "id": "p19",
+    "page": 20,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "De la vida familiar solo exigía las satisfacciones que podía ofrecerle —una mesa puesta, un ama de casa, un lecho—, y, sobre todo, ese respeto por las formas exteriores sancionadas por la opinión pública. En cuanto a lo demás, buscaba placer y alegría, y se sentía muy agradecido si los encontraba. Si se topaba con resistencias y malas caras, se refugiaba inmediatamente en el mundo del trabajo, que había protegido y preservado de los demás, y en él encontraba motivos de satisfacción.\n\nA Iván Ilich se le consideraba un buen funcionario, y al cabo de tres años lo nombraron sustituto del fiscal. Las nuevas obligaciones, la importancia del cargo, la posibilidad de llevar a juicio y de meter en la cárcel a quien se le antojara, la notoriedad que alcanzaron sus intervenciones y los éxitos que cosechó con ellas contribuyeron a que se sintiera cada vez más atraído por su labor.\n\nNacieron otros hijos. La mujer se volvió aún más gruñona e irascible, pero la actitud que Iván Ilich había adoptado con respecto a la vida familiar le hacía casi inmune a su mal humor."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p20"
+      }
+    ]
+  },
+  {
+    "id": "p20",
+    "page": 21,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Después de desempeñar sus funciones siete años en la misma ciudad, a Iván Ilich lo nombraron fiscal en otra provincia. Se trasladaron al nuevo destino, que no gustó nada a Praskovia Fiódorovna, y una vez allí se vieron cortos de dinero porque, aunque el sueldo era más alto que antes, la vida estaba más cara. Para colmo de males, dos de los hijos murieron, lo que contribuyó a que la vida familiar se le antojara aún más desagradable a Iván Ilich.\n\nPraskovia Fiódorovna le culpaba de todas las desgracias que les habían acaecido en su nuevo lugar de residencia. La mayoría de los temas de conversación entre marido y mujer, sobre todo los relativos a la educación de los hijos, los remitía a cuestiones que les recordaban peleas anteriores, y a cada instante podían estallar nuevas disputas. Lo único que les quedaba eran breves arrebatos amorosos, que enseguida se desvanecían. Eran como islotes a los que se agarraban de vez en cuando, antes de lanzarse de nuevo al mar de la hostilidad disimulada, que se manifestaba en un alejamiento mutuo."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p21"
+      }
+    ]
+  },
+  {
+    "id": "p21",
+    "page": 22,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Ese alejamiento habría podido entristecer a Iván Ilich si hubiera considerado que las cosas habrían podido ser de otra manera, pero ahora estimaba que esa situación no solo era normal, sino que el fin de su vida familiar no podía ser otro. Ese fin consistía en liberarse cada vez más de tales escenas desagradables y en convertirlas en algo inocuo y decoroso.\n\nPara lograr ese objetivo, procuraba pasar cada vez menos tiempo con su familia, y cuando se veía en la obligación de estar con ellos, se esforzaba por asegurar su posición mediante la presencia de personas extrañas. Pero lo principal para Iván Ilich era el trabajo. En el ámbito judicial concentraba todos sus intereses. Y esa actividad le absorbía por entero.\n\nLa conciencia de su poder, la posibilidad de aniquilar a quien le viniera en gana, la solemnidad que acompañaba sus entradas en el tribunal, incluso en un plano meramente externo, los encuentros con sus subordinados, los éxitos que alcanzaba delante de sus superiores e inferiores y, sobre todo, la maestría con que instruía las causas, de la que era plenamente consciente, todo eso, unido a las conversaciones con los amigos, las comidas y las partidas de whist, le llenaba de alegría y daba sentido a su existencia."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p22"
+      }
+    ]
+  },
+  {
+    "id": "p22",
+    "page": 23,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "En suma, podría afirmarse que la vida de Iván Ilich se desenvolvía como él consideraba que debía hacerlo: de una forma agradable y decorosa.\n\nAsí pasaron otros siete años. La hija mayor había cumplido ya los dieciséis, un tercer niño murió, y solo quedó el muchacho que cursaba bachillerato, motivo de continua disputas entre los cónyuges. Iván Ilich hubiera querido inscribirlo en la Escuela de Jurisprudencia, pero Praskovia Fiódorovna, por llevarle la contraria, lo había mandado al instituto. La hija se había educado en casa con resultados más que positivos. Tampoco el hijo era mal estudiante."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p23"
+      }
+    ]
+  },
+  {
+    "id": "p23",
+    "page": 24,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      ""
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]
