@@ -1,3 +1,5 @@
+import { initBeetle } from '../effects/beetle/index.js';
+3.  Busca la función donde se renderiza la librería (probablemente se llame `renderLibrary` o similar, o al final del `init`).
 import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
