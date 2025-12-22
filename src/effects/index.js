@@ -1,7 +1,11 @@
+import { initBeetle } from './beetle/index.js';
+
 let activeEffectInterval = null;
 let activeSmokeInterval = null;
 let activeRainInterval = null;
 let activeBirdInterval = null;
+let activeBeetleTimeout = null;
+let activeBeetleCleanup = null;
 
 function clearExistingEffects() {
     // Limpiamos intervalos individualmente
@@ -105,6 +109,66 @@ function startRainEffect(getAppMode) {
             createDrop();
         }
     }, 300);
+}
+
+function getBeetleHideTarget() {
+    const rawCandidates = [
+        ...document.querySelectorAll('.book-card'),
+        ...document.querySelectorAll('.library-hero-card')
+    ];
+
+    const candidates = rawCandidates.filter((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth;
+    });
+
+    if (candidates.length === 0) return null;
+
+    const target = candidates[Math.floor(Math.random() * candidates.length)];
+    const rect = target.getBoundingClientRect();
+
+    return {
+        x: rect.left + rect.width * (0.2 + Math.random() * 0.6),
+        y: rect.top + rect.height * (0.65 + Math.random() * 0.25)
+    };
+}
+
+export function startLibraryBeetle({ getAppMode }) {
+    stopLibraryBeetle();
+
+    const scheduleNext = () => {
+        if (getAppMode() !== 'library') return;
+        const delay = 12000 + Math.random() * 22000;
+
+        activeBeetleTimeout = setTimeout(() => {
+            if (getAppMode() !== 'library') {
+                scheduleNext();
+                return;
+            }
+
+            activeBeetleCleanup = initBeetle({
+                getHideTarget: getBeetleHideTarget,
+                maxLifetimeMs: 18000 + Math.random() * 20000,
+                onCleanup: () => {
+                    activeBeetleCleanup = null;
+                    if (getAppMode() === 'library') scheduleNext();
+                }
+            });
+        }, delay);
+    };
+
+    scheduleNext();
+}
+
+export function stopLibraryBeetle() {
+    if (activeBeetleTimeout) {
+        clearTimeout(activeBeetleTimeout);
+        activeBeetleTimeout = null;
+    }
+    if (activeBeetleCleanup) {
+        activeBeetleCleanup();
+        activeBeetleCleanup = null;
+    }
 }
 
 export function handlePageEffects(effectString, { getAppMode }) {

@@ -1,5 +1,5 @@
 import { getAppMode, state } from '../app/state.js';
-import { handlePageEffects } from '../effects/index.js';
+import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
 import { stopCurrentAudio } from '../reader/audio.js';
 
@@ -41,6 +41,7 @@ export function switchToLibraryView() {
 
     stopCurrentAudio();
     handlePageEffects(null, { getAppMode });
+    startLibraryBeetle({ getAppMode });
     window.scrollTo(0, 0);
 }
 
@@ -64,6 +65,7 @@ export function switchToReaderView() {
     if (elements?.navToggle) elements.navToggle.classList.remove('hidden');
     if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.remove('hidden');
     if (elements?.appFooter) elements.appFooter.classList.remove('hidden');
+    stopLibraryBeetle();
 }
 
 export async function openBook(bookData) {
