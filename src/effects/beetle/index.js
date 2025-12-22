@@ -1,6 +1,6 @@
 // SVG del escarabajo como string para inyectarlo fácilmente
 const beetleSVG = `
-<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; overflow: visible;">
     <defs>
         <mask id="chitin-texture">
             <rect x="0" y="0" width="500" height="500" fill="white" />
@@ -54,14 +54,31 @@ const beetleSVG = `
 `;
 
 export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
-    // 1. Evitar duplicados
-    if (document.getElementById('beetle-container')) return;
+    console.log('🪲 [Beetle] Intentando inicializar...');
+
+    // 1. Evitar duplicados y errores de retorno
+    if (document.getElementById('beetle-container')) {
+        console.log('🪲 [Beetle] Ya existe uno, abortando.');
+        return () => {}; // Devolver función vacía para que no explote el caller
+    }
 
     // 2. Crear el contenedor
     const container = document.createElement('div');
     container.id = 'beetle-container';
     container.innerHTML = beetleSVG;
+    
+    // --- ESTILOS DE SEGURIDAD (JS) ---
+    // Esto garantiza que se vea aunque falle la conexión con el archivo CSS
+    container.style.position = 'fixed';
+    container.style.width = '120px';
+    container.style.height = '120px';
+    container.style.zIndex = '9999';
+    container.style.pointerEvents = 'auto';
+    container.style.cursor = 'pointer';
+    // ----------------------------------
+
     document.body.appendChild(container);
+    console.log('🪲 [Beetle] Añadido al DOM correctamente.');
 
     // 3. Variables de estado
     const initialPoint = getRandomPoint();
@@ -72,7 +89,7 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
     let targetY = y;
     let speed = 0;
     let maxSpeed = 3;
-    let state = 'idle'; // 'idle', 'moving', 'hesitating', 'fleeing'
+    let state = 'idle'; 
     let timer = 0;
     let hideTarget = null;
     let isHiding = false;
@@ -94,16 +111,20 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
         if (isHiding) return;
         isHiding = true;
         container.classList.add('hiding');
-        container.style.zIndex = '1';
+        // Transición manual por si el CSS falla
+        container.style.transition = 'opacity 0.6s ease';
+        container.style.opacity = '0';
+        
         hideTimeout = setTimeout(() => {
             cleanup();
         }, 600);
     }
 
     container.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evitar clickar cosas debajo
+        e.stopPropagation();
         if (state === 'fleeing') return;
 
+        console.log('🪲 [Beetle] ¡Click detectado! Huyendo.');
         state = 'fleeing';
         container.classList.add('fleeing', 'walking');
 
@@ -116,26 +137,23 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
             return;
         }
         
-        // Calcular dirección opuesta al centro de la pantalla o un borde aleatorio
-        // Para asegurar que huya lejos, elegimos un punto muy fuera de la pantalla
         const angle = Math.random() * Math.PI * 2;
         const fleeDist = Math.max(window.innerWidth, window.innerHeight) * 2;
         
         targetX = x + Math.cos(angle) * fleeDist;
         targetY = y + Math.sin(angle) * fleeDist;
         
-        maxSpeed = 12; // ¡Velocidad de pánico!
+        maxSpeed = 12;
     });
 
     // 5. Bucle de animación
     function update() {
-        if (!document.body.contains(container)) return; // Seguridad si se borra
+        if (!document.body.contains(container)) return; 
 
         const dx = targetX - x;
         const dy = targetY - y;
         const dist = Math.sqrt(dx*dx + dy*dy);
 
-        // --- LÓGICA DE ESTADOS ---
         if (state === 'idle') {
             container.classList.remove('walking');
             timer--;
@@ -144,19 +162,15 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
                 targetX = pt.x;
                 targetY = pt.y;
                 state = 'moving';
-                maxSpeed = 2 + Math.random() * 3; // Velocidad variable
+                maxSpeed = 2 + Math.random() * 3;
             }
         } 
         else if (state === 'moving') {
             container.classList.add('walking');
-
-            // Probabilidad de detenerse a dudar (si no está huyendo)
             if (Math.random() < 0.02) {
                 state = 'hesitating';
                 timer = 20 + Math.random() * 40;
             }
-
-            // Llegada
             if (dist < 10) {
                 state = 'idle';
                 timer = 60 + Math.random() * 120;
@@ -170,53 +184,41 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
             if (timer <= 0) state = 'moving';
         }
         else if (state === 'fleeing') {
-            // No para, solo corre
             if (hideTarget && dist < 30) {
                 startHiding();
                 return;
             }
             if (!hideTarget && dist < 50) {
-                // Si llegó muy lejos, se destruye
                 cleanup();
                 return;
             }
         }
 
-        // --- FÍSICA DE MOVIMIENTO ---
         if (state !== 'idle' && state !== 'hesitating') {
-            // Calcular ángulo
             let targetRotation = Math.atan2(dy, dx) * 180 / Math.PI;
             let diff = targetRotation - rotation;
-            
-            // Normalizar giro (-180 a 180)
             while (diff > 180) diff -= 360;
             while (diff < -180) diff += 360;
 
-            // Velocidad de giro
             const turnSpeed = state === 'fleeing' ? 0.3 : 0.1;
             rotation += diff * turnSpeed;
 
-            // Ruido en la dirección (jitter) si no huye
             if (state !== 'fleeing') rotation += (Math.random() - 0.5) * 4;
 
-            // Aceleración
             if (Math.abs(diff) < 90) {
                 speed = Math.min(speed + 0.2, maxSpeed);
             } else {
-                speed *= 0.9; // Frenar en giros cerrados
+                speed *= 0.9;
             }
 
             x += Math.cos(rotation * Math.PI/180) * speed;
             y += Math.sin(rotation * Math.PI/180) * speed;
         }
 
-        // Aplicar transform (centrando el div de 120px)
         container.style.transform = `translate(${x - 60}px, ${y - 60}px) rotate(${rotation}deg)`;
-
         requestID = requestAnimationFrame(update);
     }
 
-    // Iniciar
     update();
 
     // 6. Función de limpieza
@@ -236,5 +238,5 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
         }, maxLifetimeMs);
     }
 
-    return cleanup; // Devolvemos la función por si queremos matarlo manualmente
+    return cleanup;
 }
