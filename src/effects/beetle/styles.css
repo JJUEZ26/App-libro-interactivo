@@ -1,0 +1,71 @@
+/* Contenedor del escarabajo - Flotando sobre todo */
+#beetle-container {
+    position: fixed; /* Fixed para que se mueva por toda la ventana independiente del scroll */
+    width: 120px;
+    height: auto;
+    z-index: 9999; /* Por encima de todo */
+    pointer-events: auto; /* Permitir clicks */
+    cursor: pointer; /* Manita para indicar interactividad */
+    transform-origin: center center;
+    will-change: transform;
+    filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.4));
+    transition: opacity 0.5s ease;
+}
+
+/* El SVG interno */
+#beetle-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+/* --- ANIMACIONES INTERNAS --- */
+
+/* Temblor de antenas */
+#beetle-container #antennae {
+    animation: antennaTwitch 0.15s ease-in-out infinite alternate;
+    transform-origin: 350px 300px;
+}
+@keyframes antennaTwitch {
+    0% { transform: rotate(-3deg); }
+    100% { transform: rotate(6deg); }
+}
+
+/* Vaivén del cuerpo (solo al caminar) */
+#beetle-container.walking #body {
+    animation: bodyBob 0.2s ease-in-out infinite alternate;
+    transform-origin: center center;
+}
+@keyframes bodyBob {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-3px) rotate(-1.5deg); }
+}
+
+/* Movimiento de patas */
+#beetle-container .leg-group {
+    transform-box: fill-box;
+    transform-origin: top right;
+}
+#beetle-container #legs-near .leg-group { transform-origin: top left; }
+
+#beetle-container.walking .tripod-a {
+    animation: legCycle 0.2s linear infinite;
+}
+
+#beetle-container.walking .tripod-b {
+    animation: legCycle 0.2s linear infinite reverse;
+}
+
+@keyframes legCycle {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(18deg) translateY(-6px); }
+    50% { transform: rotate(22deg) translateY(0); }
+    75% { transform: rotate(5deg) translateY(-2px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* Clase para cuando huye despavorido */
+#beetle-container.fleeing {
+    transition: transform 0.5s linear; /* Movimiento más fluido al huir */
+}
