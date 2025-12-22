@@ -86,3 +86,11 @@ export async function openBook(bookData) {
     switchToReaderView();
     if (goToPageRef) goToPageRef(state.currentStoryId, true);
 }
+// --- LÓGICA DEL ESCARABAJO ---
+// 30% de probabilidad de aparecer al entrar a la librería
+if (Math.random() < 0.3) {
+    // Pequeño retraso para no asustar al usuario inmediatamente
+    setTimeout(() => {
+        initBeetle();
+    }, 2000);
+}
