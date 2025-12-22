@@ -138,14 +138,20 @@ export function startLibraryBeetle({ getAppMode }) {
 
     const scheduleNext = () => {
         if (getAppMode() !== 'library') return;
+        
+        // MODIFICADO: Tiempo reducido para pruebas (2 a 5 segundos)
+        // Original: 12000 + Math.random() * 22000
         const delay = 2000 + Math.random() * 3000;
+
+        console.log(`[Escarabajo] Programado para aparecer en ${(delay/1000).toFixed(1)} segundos`);
 
         activeBeetleTimeout = setTimeout(() => {
             if (getAppMode() !== 'library') {
-                scheduleNext();
+                // Si cambiamos de pantalla durante la espera, no reprogramamos inmediatamente
                 return;
             }
 
+            console.log('[Escarabajo] Iniciando animación...');
             activeBeetleCleanup = initBeetle({
                 getHideTarget: getBeetleHideTarget,
                 maxLifetimeMs: 18000 + Math.random() * 20000,
