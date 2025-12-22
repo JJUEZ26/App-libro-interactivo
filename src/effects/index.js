@@ -138,7 +138,7 @@ export function startLibraryBeetle({ getAppMode }) {
 
     const scheduleNext = () => {
         if (getAppMode() !== 'library') return;
-        const delay = 12000 + Math.random() * 22000;
+        const delay = 2000 + Math.random() * 3000;
 
         activeBeetleTimeout = setTimeout(() => {
             if (getAppMode() !== 'library') {
