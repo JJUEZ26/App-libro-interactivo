@@ -55,7 +55,7 @@ const beetleSVG = `
 </svg>
 `;
 
-export function initBeetle() {
+export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
     // 1. Evitar duplicados
     if (document.getElementById('beetle-container')) return;
 
@@ -66,15 +66,20 @@ export function initBeetle() {
     document.body.appendChild(container);
 
     // 3. Variables de estado
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
-    let rotation = 0;
+    const initialPoint = getRandomPoint();
+    let x = initialPoint.x;
+    let y = initialPoint.y;
+    let rotation = Math.random() * 360;
     let targetX = x;
     let targetY = y;
     let speed = 0;
     let maxSpeed = 3;
     let state = 'idle'; // 'idle', 'moving', 'hesitating', 'fleeing'
     let timer = 0;
+    let hideTarget = null;
+    let isHiding = false;
+    let hideTimeout = null;
+    let lifetimeTimeout = null;
     let requestID;
 
     // Función auxiliar para puntos aleatorios
@@ -87,12 +92,31 @@ export function initBeetle() {
     }
 
     // 4. Lógica de click para HUIR
+    function startHiding() {
+        if (isHiding) return;
+        isHiding = true;
+        container.classList.add('hiding');
+        container.style.zIndex = '1';
+        hideTimeout = setTimeout(() => {
+            cleanup();
+        }, 600);
+    }
+
     container.addEventListener('click', (e) => {
         e.stopPropagation(); // Evitar clickar cosas debajo
         if (state === 'fleeing') return;
 
         state = 'fleeing';
         container.classList.add('fleeing', 'walking');
+
+        const hideSpot = getHideTarget ? getHideTarget() : null;
+        if (hideSpot) {
+            hideTarget = hideSpot;
+            targetX = hideSpot.x;
+            targetY = hideSpot.y;
+            maxSpeed = 12;
+            return;
+        }
         
         // Calcular dirección opuesta al centro de la pantalla o un borde aleatorio
         // Para asegurar que huya lejos, elegimos un punto muy fuera de la pantalla
@@ -149,7 +173,11 @@ export function initBeetle() {
         }
         else if (state === 'fleeing') {
             // No para, solo corre
-            if (dist < 50) {
+            if (hideTarget && dist < 30) {
+                startHiding();
+                return;
+            }
+            if (!hideTarget && dist < 50) {
                 // Si llegó muy lejos, se destruye
                 cleanup();
                 return;
@@ -196,9 +224,18 @@ export function initBeetle() {
     // 6. Función de limpieza
     function cleanup() {
         if (requestID) cancelAnimationFrame(requestID);
+        if (hideTimeout) clearTimeout(hideTimeout);
+        if (lifetimeTimeout) clearTimeout(lifetimeTimeout);
         if (container && container.parentNode) {
             container.parentNode.removeChild(container);
         }
+        if (onCleanup) onCleanup();
+    }
+
+    if (maxLifetimeMs) {
+        lifetimeTimeout = setTimeout(() => {
+            startHiding();
+        }, maxLifetimeMs);
     }
 
     return cleanup; // Devolvemos la función por si queremos matarlo manualmente

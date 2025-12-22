@@ -12,6 +12,11 @@
     transition: opacity 0.5s ease;
 }
 
+#beetle-container.hiding {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* El SVG interno */
 #beetle-container svg {
     width: 100%;
