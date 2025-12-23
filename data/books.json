@@ -38,5 +38,13 @@
     "description": "",
     "cover": "images/ivan_ilich_portada.png",
     "storyFile": "stories/ivan_ilich.json"
+  },
+  {
+    "id": "el extranjero camus",
+    "title": "El extranjero",
+    "author": "Albert Camus",
+    "description": "",
+    "cover": "images/ivan_ilich_portada.png",
+    "storyFile": "stories/el_extranjero.json"
   }
 ]
