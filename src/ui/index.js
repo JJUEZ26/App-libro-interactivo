@@ -1,58 +1,117 @@
-import { state, themeColors } from '../app/state.js';
-import { saveFontSize, saveTheme } from '../utils/storage.js';
+import { getAppMode, state } from '../app/state.js';
+import { handlePageEffects } from '../effects/index.js';
+import { loadPageHistory } from '../utils/storage.js';
+import { stopCurrentAudio } from '../reader/audio.js';
+// 1. Importamos la función del escarabajo
+import { initBeetle } from '../effects/beetle/index.js';
 
-export function applyTheme(themeName) {
-    document.body.classList.remove('theme-light', 'theme-sepia', 'theme-bone', 'theme-dark');
-    const className = `theme-${themeName}`;
-    document.body.classList.add(className);
+let elements = null;
+let loadStoryRef = null;
+let goToPageRef = null;
 
-    const metaThemeColor = document.querySelector('meta[name=theme-color]');
-    if (metaThemeColor && themeColors[themeName]) {
-        metaThemeColor.setAttribute('content', themeColors[themeName]);
-    }
+export function setLibraryDependencies({ elements: elementsRef, loadStory, goToPage }) {
+    elements = elementsRef;
+    loadStoryRef = loadStory;
+    goToPageRef = goToPage;
 }
 
-export function cycleTheme() {
-    const palette = state.appMode === 'reader' ? state.readerThemes : state.libraryThemes;
-    let index = palette.indexOf(state.currentTheme);
-    if (index === -1) index = 0;
-    const nextIndex = (index + 1) % palette.length;
-    state.currentTheme = palette[nextIndex];
-    applyTheme(state.currentTheme);
-    saveTheme(state.currentTheme);
+// Función auxiliar para borrar el escarabajo si existe
+function removeBeetle() {
+    const beetle = document.getElementById('beetle-container');
+    if (beetle) beetle.remove();
 }
 
-export function changeFontSize(delta) {
-    state.fontSize = Math.max(0.8, Math.min(1.8, state.fontSize + delta));
-    document.documentElement.style.setProperty('--font-size-dynamic', `${state.fontSize}rem`);
-    saveFontSize(state.fontSize);
-}
+export function switchToLibraryView() {
+    state.appMode = 'library';
+    document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
+    document.body.classList.add('app-mode-library');
 
-export function toggleSettingsMenu(settingsMenu) {
-    if (settingsMenu) settingsMenu.classList.toggle('visible');
-}
-
-function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-}
-
-export function toggleFullscreen() {
-    const doc = document;
-    if (isIOS()) {
-        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-        if (!isStandalone) {
-            alert("Para ver en pantalla completa real en iOS:\n\n1. Pulsa el botón 'Compartir' (cuadrado con flecha).\n2. Busca y selecciona 'Agregar a inicio'.\n\n¡Ábrela desde tu inicio y listo!");
-            return;
-        }
-        return;
+    if (elements?.libraryView) {
+        elements.libraryView.hidden = false;
+        elements.libraryView.style.display = '';
     }
 
-    if (!doc.fullscreenElement) {
-        doc.documentElement.requestFullscreen().catch((err) => {
-            console.warn('Fullscreen API falló, activando modo CSS fallback:', err);
-            document.body.classList.toggle('fullscreen-mode');
-        });
+    if (elements?.readerView) {
+        elements.readerView.classList.remove('active');
+        elements.readerView.hidden = true;
+        elements.readerView.style.display = 'none';
+    }
+
+    if (elements?.pageWrapper) {
+        elements.pageWrapper.innerHTML = '';
+    }
+
+    if (elements?.backToLibraryBtn) elements.backToLibraryBtn.classList.add('hidden');
+    if (elements?.navToggle) elements.navToggle.classList.add('hidden');
+    if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
+    if (elements?.appFooter) elements.appFooter.classList.add('hidden');
+    if (elements?.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
+
+    stopCurrentAudio();
+    handlePageEffects(null, { getAppMode });
+    window.scrollTo(0, 0);
+
+    // --- LÓGICA DEL ESCARABAJO ---
+    // Intentamos invocar al escarabajo con un 30% de probabilidad
+    if (Math.random() < 0.3) { 
+        setTimeout(() => {
+            // Verificación de seguridad: ¿Seguimos en la biblioteca?
+            // Esto evita que aparezca si el usuario entró y salió rápido de un libro.
+            if (state.appMode === 'library') {
+                initBeetle();
+            }
+        }, 1500); // Espera 1.5s para dar un susto sorpresa
+    }
+    // -----------------------------
+}
+
+export function switchToReaderView() {
+    // --- LIMPIEZA ---
+    // Si el usuario abre un libro, el escarabajo debe desaparecer inmediatamente
+    removeBeetle();
+    // ----------------
+
+    state.appMode = 'reader';
+    document.body.classList.remove('app-mode-library');
+    document.body.classList.add('app-mode-reader');
+
+    if (elements?.libraryView) {
+        elements.libraryView.hidden = true;
+        elements.libraryView.style.display = 'none';
+    }
+
+    if (elements?.readerView) {
+        elements.readerView.hidden = false;
+        elements.readerView.style.display = '';
+        elements.readerView.classList.add('active');
+    }
+
+    if (elements?.backToLibraryBtn) elements.backToLibraryBtn.classList.remove('hidden');
+    if (elements?.navToggle) elements.navToggle.classList.remove('hidden');
+    if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.remove('hidden');
+    if (elements?.appFooter) elements.appFooter.classList.remove('hidden');
+}
+
+export async function openBook(bookData) {
+    // --- LIMPIEZA EXTRA ---
+    // Aseguramos que se borre también al llamar a openBook
+    removeBeetle();
+    // ----------------------
+
+    if (!bookData || !bookData.storyFile) return;
+    state.currentBook = bookData;
+    if (elements?.mainTitle) elements.mainTitle.textContent = bookData.title || 'Lectura';
+    if (loadStoryRef) await loadStoryRef(bookData.storyFile);
+    if (!state.story) return;
+
+    const loadedHistory = loadPageHistory(state.currentBook.id);
+    if (loadedHistory && loadedHistory.length > 0) {
+        state.pageHistory = loadedHistory;
+        state.currentStoryId = state.pageHistory[state.pageHistory.length - 1];
     } else {
-        doc.exitFullscreen();
+        state.currentStoryId = state.story[0].id;
+        state.pageHistory = [state.currentStoryId];
     }
+    switchToReaderView();
+    if (goToPageRef) goToPageRef(state.currentStoryId, true);
 }
