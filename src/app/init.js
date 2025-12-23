@@ -8,6 +8,7 @@ import {
     goForward,
     goToPage,
     openNav,
+    previewScrubber,
     restartStory,
     setNavigationDependencies
 } from '../reader/navigation.js';
@@ -41,7 +42,10 @@ export function initApp() {
         navClose: getEl('nav-close'),
         restartBtn: getEl('restart-btn'),
         historyList: getEl('history-list'),
+        progressBarContainer: getEl('progress-bar-container'),
         progressBar: getEl('progress-bar'),
+        progressSlider: getEl('progress-slider'),
+        progressTooltip: getEl('progress-tooltip'),
         appFooter: getEl('app-footer')
     };
 
@@ -136,6 +140,31 @@ export function initApp() {
         elements.navModal.addEventListener('click', (event) => {
             if (event.target === elements.navModal) closeNav();
         });
+    }
+
+    if (elements.progressSlider) {
+        const setScrubbingState = (isScrubbing) => {
+            if (!elements.progressBarContainer) return;
+            elements.progressBarContainer.classList.toggle('scrubbing', isScrubbing);
+        };
+
+        elements.progressSlider.addEventListener('input', (event) => {
+            const value = parseInt(event.target.value, 10);
+            previewScrubber(value);
+        });
+
+        elements.progressSlider.addEventListener('change', (event) => {
+            if (!state.story || state.isTransitioning) return;
+            const value = parseInt(event.target.value, 10);
+            const target = state.story[value - 1];
+            if (!target) return;
+            goToPage(target.id);
+        });
+
+        elements.progressSlider.addEventListener('pointerdown', () => setScrubbingState(true));
+        elements.progressSlider.addEventListener('pointerup', () => setScrubbingState(false));
+        elements.progressSlider.addEventListener('pointercancel', () => setScrubbingState(false));
+        elements.progressSlider.addEventListener('blur', () => setScrubbingState(false));
     }
 
     document.addEventListener('fullscreenchange', () => {

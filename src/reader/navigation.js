@@ -22,11 +22,43 @@ function updateUI() {
     if (!elements?.progressBar) return;
     if (!state.story || state.totalPagesInStory === 0) {
         elements.progressBar.style.width = '0%';
+        if (elements?.progressSlider) {
+            elements.progressSlider.disabled = true;
+            elements.progressSlider.value = 0;
+        }
+        updateScrubberTooltip(0, 0);
         return;
     }
     const uniqueVisited = new Set(state.pageHistory);
     const progress = (uniqueVisited.size / state.totalPagesInStory) * 100;
     elements.progressBar.style.width = `${progress}%`;
+    syncScrubberWithCurrentPage();
+}
+
+function syncScrubberWithCurrentPage() {
+    if (!elements?.progressSlider || !state.story) return;
+    const totalPages = state.totalPagesInStory;
+    const currentIndex = state.story.findIndex((page) => page.id === state.currentStoryId);
+    const sliderValue = currentIndex >= 0 ? currentIndex + 1 : 1;
+    elements.progressSlider.disabled = false;
+    elements.progressSlider.min = 1;
+    elements.progressSlider.max = totalPages;
+    elements.progressSlider.value = sliderValue;
+    updateScrubberTooltip(sliderValue, totalPages);
+}
+
+function updateScrubberTooltip(value, totalPages) {
+    if (!elements?.progressTooltip) return;
+    const safeTotal = totalPages > 0 ? totalPages : 1;
+    const safeValue = Math.min(Math.max(value, 1), safeTotal);
+    const percent = safeTotal > 1 ? ((safeValue - 1) / (safeTotal - 1)) * 100 : 0;
+    elements.progressTooltip.textContent = `Página ${safeValue} de ${safeTotal}`;
+    elements.progressTooltip.style.left = `${percent}%`;
+}
+
+export function previewScrubber(value) {
+    if (!state.story || !state.totalPagesInStory) return;
+    updateScrubberTooltip(value, state.totalPagesInStory);
 }
 
 export function goToPage(pageId, isGoingBack = false) {
