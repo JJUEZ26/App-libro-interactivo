@@ -94,7 +94,7 @@
 #app-footer { width: 100%; max-width: 900px; margin: 0 auto 10px; }
 #progress-bar-container {
     width: 100%;
-    height: 10px;
+    height: 14px;
     background-color: rgba(0, 0, 0, 0.08);
     margin-top: 12px;
     border-radius: 999px;
@@ -106,12 +106,32 @@
     background-color: rgba(0, 0, 0, 0.12);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
-#progress-bar {
+#progress-bar-read {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 85%, transparent) 0%, var(--accent-color) 100%);
-    transition: width 0.5s ease;
+    background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent-color) 60%, transparent) 0%,
+        color-mix(in srgb, var(--accent-color) 80%, transparent) 100%
+    );
+    transition: width 0.4s ease;
     border-radius: 999px;
+    opacity: 0.45;
+}
+
+#progress-marker {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    border: 2px solid var(--bg-color);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    transform: translate(-50%, -50%);
+    transition: left 0.25s ease, transform 0.25s ease;
+    z-index: 2;
 }
 
 #progress-slider {
@@ -124,6 +144,7 @@
     appearance: none;
     cursor: grab;
     opacity: 0.6;
+    z-index: 3;
 }
 #progress-slider:active { cursor: grabbing; }
 #progress-slider:focus { outline: none; }
@@ -190,11 +211,16 @@
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
     white-space: nowrap;
+    z-index: 4;
 }
 #progress-bar-container:hover #progress-tooltip,
 #progress-bar-container.scrubbing #progress-tooltip {
     opacity: 0.95;
     transform: translateX(-50%) translateY(-2px);
+}
+
+#progress-bar-container.scrubbing #progress-marker {
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 /* =========================

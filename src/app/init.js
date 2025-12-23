@@ -43,7 +43,8 @@ export function initApp() {
         restartBtn: getEl('restart-btn'),
         historyList: getEl('history-list'),
         progressBarContainer: getEl('progress-bar-container'),
-        progressBar: getEl('progress-bar'),
+        progressBarRead: getEl('progress-bar-read'),
+        progressMarker: getEl('progress-marker'),
         progressSlider: getEl('progress-slider'),
         progressTooltip: getEl('progress-tooltip'),
         appFooter: getEl('app-footer')
