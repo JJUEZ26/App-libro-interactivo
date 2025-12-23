@@ -70,6 +70,8 @@ export function initBeetle({ getHideTarget, onCleanup, maxLifetimeMs } = {}) {
     // --- ESTILOS DE SEGURIDAD (JS) ---
     // Esto garantiza que se vea aunque falle la conexión con el archivo CSS
     container.style.position = 'fixed';
+    container.style.top = '0';
+    container.style.left = '0';
     container.style.width = '120px';
     container.style.height = '120px';
     container.style.zIndex = '9999';

@@ -1,6 +1,8 @@
 /* Contenedor del escarabajo - Flotando sobre todo */
 #beetle-container {
     position: fixed; /* Fixed para que se mueva por toda la ventana independiente del scroll */
+    top: 0;
+    left: 0;
     width: 120px;
     height: auto;
     z-index: 9999; /* Por encima de todo */
