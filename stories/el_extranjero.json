@@ -1,0 +1,182 @@
+[
+  {
+    "id": "p1",
+    "page": 1,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "El Extranjero\nPor\nAlbert Camus"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p2"
+      }
+    ]
+  },
+  {
+    "id": "p2",
+    "page": 2,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "PRIMERA PARTE\nI\nHoy ha muerto mamá. O quizá ayer. No lo sé. Recibí un telegrama del\nasilo: «Falleció su madre. Entierro mañana. Sentidas condolencias.» Pero no\nquiere decir nada. Quizá haya sido ayer.\nEl asilo de ancianos está en Marengo, a ochenta kilómetros de Argel.\nTomaré el autobús a las dos y llegaré por la tarde. De esa manera podré\nvelarla, y regresaré mañana por la noche. Pedí dos días de licencia a mi patrón\ny no pudo negármelos ante una excusa semejante. Pero no parecía satisfecho.\nLlegué a decirle: «No es culpa mía.» No me respondió. Pensé entonces que no\ndebía haberle dicho esto. Al fin y al cabo, no tenía por qué excusarme. Más\nbien le correspondía a él presentarme las condolencias. Pero lo hará sin duda\npasado mañana, cuando me vea de luto. Por ahora, es un poco como si mamá\nno estuviera muerta. Después del entierro, por el contrario, será un asunto\narchivado y todo habrá adquirido aspecto más oficial.\nTomé el autobús a las dos. Hacía mucho calor. Comí en el restaurante de\nCeleste como de costumbre. Todos se condolieron mucho de mí, y Celeste me\ndijo: «Madre hay una sola.» Cuando partí, me acompañaron hasta la puerta.\nMe sentía un poco aturdido pues fue necesario que subiera hasta la habitación\nde Manuel para pedirle prestados una corbata negra y un brazal. El perdió a su\ntío hace unos meses.\nCorrí para alcanzar el autobús. Me sentí adormecido sin duda por la prisa y\nla carrera, añadidas a los barquinazos, al olor a gasolina y a la reverberación\ndel camino y del cielo. Dormí casi todo el trayecto. Y cuando desperté, estaba\napoyado contra un militar que me sonrió y me preguntó si venía de lejos. Dije\n«sí» para no tener que hablar más.\nEl asilo está a dos kilómetros del pueblo. Hice el camino a pie. Quise ver a\nmamá en seguida. Pero el portero me dijo que era necesario ver antes al\ndirector. Como estaba ocupado, esperé un poco. Mientras tanto, el portero me\nestuvo hablando, y en seguida vi al director. Me recibió en su despacho. Era\nun viejecito condecorado con la Legión de Honor. Me miró con sus ojos\nclaros. Después me estrechó la mano y la retuvo tanto tiempo que yo no sabía\ncómo retirarla. Consultó un legajo y me dijo: «La señora de Meursault entró\naquí hace tres años. Usted era su único sostén.» Creí que me reprochaba\nalguna cosa y empecé a darle explicaciones. Pero me interrumpió: «No tiene\nusted por qué justificarse, hijo mío. He leído el legajo de su madre. Usted no"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p3"
+      }
+    ]
+  },
+  {
+    "id": "p3",
+    "page": 3,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "podía subvenir a sus necesidades. Ella necesitaba una enfermera. Su salario es\nmodesto. Y, al fin de cuentas, era más feliz aquí.» Dije: «Sí, señor director.» El\nagregó: «Sabe usted, aquí tenía amigos, personas de su edad. Podía compartir\nrecuerdos de otros tiempos. Usted es joven y ella debía de aburrirse con\nusted.»\nEra verdad. Cuando mamá estaba en casa pasaba el tiempo en silencio,\nsiguiéndome con la mirada. Durante los primeros días que estuvo en el asilo\nlloraba a menudo. Pero era por la fuerza de la costumbre. Al cabo de unos\nmeses habría llorado si se la hubiera retirado del asilo. Siempre por la fuerza\nde la costumbre. Un poco por eso en el último año casi no fui a verla. Y\ntambién porque me quitaba el domingo, sin contar el esfuerzo de ir hasta el\nautobús, tomar los billetes y hacer dos horas de camino.\nEl director me habló aún. Pero casi no le escuchaba. Luego me dijo:\n«Supongo que usted quiere ver a su madre.» Me levanté sin decir nada, y salió\ndelante de mí. En la escalera me explicó: «La hemos llevado a nuestro\npequeño depósito. Para no impresionar a los otros. Cada vez que un\npensionista muere, los otros se sienten nerviosos durante dos o tres días. Y\ndificulta el servicio.» Atravesamos un patio en donde había muchos ancianos,\ncharlando en pequeños grupos. Callaban cuando pasábamos. Y reanudaban las\nconversaciones detrás de nosotros. Hubiérase dicho un sordo parloteo de\ncotorras. En la puerta de un pequeño edificio el director me abandonó: «Le\ndejo a usted, señor Meursault. Estoy a su disposición en mi despacho. En\nprincipio, el entierro está fijado para las diez de la mañana. Hemos pensado\nque así podría usted velar a la difunta. Una última palabra: según parece, su\nmadre expresó a menudo a sus compañeros el deseo de ser enterrada\nreligiosamente. He tomado a mi cargo hacer lo necesario. Pero quería informar\na usted.» Le di las gracias. Mamá, sin ser atea, jamás había pensado en la\nreligión mientras vivió.\nEntré. Era una sala muy clara, blanqueada a la cal, con techo de vidrio.\nEstaba amueblada con sillas y caballetes en forma de X. En el centro de la\nsala, dos caballetes sostenían un féretro cerrado con la tapa. Sólo se veían los\ntornillos relucientes, hundidos apenas, destacándose sobre las tapas pintadas\nde nogalina. Junto al féretro estaba una enfermera árabe, con blusa blanca y un\npañuelo de color vivo en la cabeza.\nEn ese momento el portero entró por detrás de mí. Debió de haber corrido.\nTartamudeó un poco: «La hemos tapado, pero voy a destornillar el cajón para\nque usted pueda verla.» Se aproximaba al féretro cuando lo paré. Me dijo:\n«¿No quiere usted?» Respondí: «No.» Se detuvo, y yo estaba molesto porque\nsentía que no debí haber dicho esto. Al cabo de un instante me miró y me\npreguntó: «¿Por qué?», pero sin reproche, como si estuviera informándose.\nDije: «No sé.» Entonces, retorciendo el bigote blanco, declaró, sin mirarme:"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p4"
+      }
+    ]
+  },
+  {
+    "id": "p4",
+    "page": 4,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "«Comprendo.» Tenía ojos hermosos, azul claro, y la tez un poco roja. Me dio\nuna silla y se sentó también, un poco a mis espaldas. La enfermera se levantó\ny se dirigió hacia la salida. El portero me dijo: «Tiene un chancro.» Como no\ncomprendía, miré a la enfermera y vi que llevaba, por debajo de los ojos, una\nvenda que le rodeaba la cabeza. A la altura de la nariz la venda estaba chata.\nEn su rostro sólo se veía la blancura del vendaje.\nCuando hubo salido, el portero habló: «Lo voy a dejar solo.» No sé qué\nademán hice, pero se quedó, de pie detrás de mí. Su presencia a mis espaldas\nme molestaba. Llenaba la habitación una hermosa luz de media tarde. Dos\nabejorros zumbaban contra el techo de vidrio. Y sentía que el sueño se\napoderaba de mí. Sin volverme hacia él, dije al portero: «¿Hace mucho tiempo\nque está usted aquí?» Inmediatamente respondió: «Cinco años», como si\nhubiese estado esperando mi pregunta.\nCharló mucho en seguida. Se habría que dado muy asombrado si alguien le\nhubiera dicho que acabaría de portero en el asilo de Marengo. Tenía sesenta y\ncuatro años y era parisiense. Le interrumpí en ese momento: «¡Ah! ¿Usted no\nes de aquí?» Luego recordé que antes de llevarme a ver al director me había\nhablado de mamá. Me había dicho que era necesario enterrarla cuanto antes\nporque en la llanura hacía calor, sobre todo en esta región. Entonces me había\ninformado que había vivido en París y que le costaba mucho olvidarlo. En\nParís se retiene al muerto tres, a veces cuatro días. Aquí no hay tiempo;\ntodavía no se ha hecho uno a la idea cuando hay que salir corriendo detrás del\ncoche fúnebre. Su mujer le había dicho: «Cállate, no son cosas para contarle al\nseñor.» El viejo había enrojecido y había pedido disculpas. Yo intervine para\ndecir: «Pero no, pero no…» Me pareció que lo que contaba era apropiado e\ninteresante.\nEn el pequeño depósito me informó que había ingresado en el asilo como\nindigente. Como se sentía válido, se había ofrecido para el puesto de portero.\nLe hice notar que en resumidas cuentas era pensionista. Me dijo que no. Ya me\nhabía llamado la atención la manera que tenía de decir: «ellos», «los otros» y,\nmás raramente, «los viejos», al hablar de los pensionistas, algunos de los\ncuales no tenían más edad que él. Pero, naturalmente, no era la misma cosa. Él\nera portero y, en cierta medida, tenía derechos sobre ellos.\nLa enfermera entró en ese momento. La tarde había caído bruscamente. La\nnoche habíase espesado muy rápidamente sobre el vidrio del techo. El portero\noprimió el conmutador y quedé cegado por el repentino resplandor de la luz.\nMe invitó a dirigirme al refectorio para cenar. Pero no tenía hambre. Me\nofreció entonces traerme una taza de café con leche. Como me gusta mucho el\ncafé con leche, acepté, y un momento después regresó con una bandeja. Bebí.\nTuve deseos de fumar. Pero dudé, porque no sabía si podía hacerlo delante de\nmamá. Reflexioné. No tenía importancia alguna. Ofrecí un cigarrillo al portero"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p5"
+      }
+    ]
+  },
+  {
+    "id": "p5",
+    "page": 5,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "y fumamos.\nEn un momento dado, me dijo: «Sabe usted, los amigos de su señora madre\nvan a venir a velarla también. Es la costumbre. Tengo que ir a buscar sillas y\ncafé negro.» Le pregunté si se podía apagar una de las lámparas. El resplandor\nde la luz contra las paredes blancas me fatigaba. Me dijo que no era posible.\nLa instalación estaba hecha así: o todo o nada. Después no le presté mucha\natención. Salió, volvió, dispuso las sillas. Sobre una de ellas apiló tazas en\ntorno de una cafetera. Luego se sentó enfrente de mí, del otro lado de mamá.\nTambién estaba la enfermera, en el fondo, vuelta de espaldas. Yo no veía lo\nque hacía. Pero por el movimiento de los brazos me pareció que tejía. La\ntemperatura era agradable, el café me había recalentado y por la puerta abierta\nentraba el aroma de la noche y de las flores. Creo que dormité un poco.\nMe despertó un roce. Como había tenido los ojos cerrados, la habitación\nme pareció aún más deslumbrante de blancura. Delante de mí no había ni la\nmás mínima sombra, y cada objeto, cada ángulo, todas las curvas, se dibujaban\ncon una pureza que hería los ojos. En ese momento entraron los amigos de\nmamá. Eran una decena en total, y se deslizaban en silencio en medio de\naquella luz enceguecedora. Se sentaron sin que crujiera una silla. Los veía\ncomo no he visto a nadie jamás, y ni un detalle de los rostros o de los trajes se\nme escapaba. Sin embargo, no los oía y me costaba creer en su realidad. Casi\ntodas las mujeres llevaban delantal, y el cordón que les ceñía la cintura hacía\nresaltar aún más sus abultados vientres. Nunca había notado hasta qué punto\npodían tener vientre las mujeres ancianas. Casi todos los hombres eran\nflaquísimos y llevaban bastón. Me llamaba la atención no ver los ojos en los\nrostros, sino solamente un resplandor sin brillo en medio de un nido de\narrugas. Cuando se hubieron sentado, casi todos me miraron e inclinaron la\ncabeza con modestia, los labios sumidos en la boca desdentada, sin que\npudiera saber si me saludaban o si se trataba de un tic. Creo más bien que me\nsaludaban. Advertí en ese momento que estaban todos cabeceando, sentados\nenfrente de mí, en torno del portero. Por un momento tuve la ridícula\nimpresión de que estaban allí para juzgarme.\nPoco después una de las mujeres se echó a llorar. Estaba en segunda fila,\noculta por una de sus compañeras, y no la veía bien. Lloraba con pequeños\ngritos, regularmente; me parecía que no se detendría jamás. Los demás\nparecían no oírla. Se mostraban abatidos, tristes y silenciosos. Miraban el\nféretro o a sus bastones, o a cualquier cosa, pero no miraban a nada más. La\nmujer seguía llorando. Yo estaba muy asombrado porque no la conocía.\nHubiera querido no oírla más. Sin embargo, no me atrevía a decírselo. El\nportero se inclinó hacia ella y le habló, pero sacudió la cabeza, murmuró algo,\ny continuó llorando con la misma regularidad. El portero vino entonces hacia\nmi lado. Se sentó cerca de mí. Después de un rato bastante largo me informó"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p6"
+      }
+    ]
+  },
+  {
+    "id": "p6",
+    "page": 6,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "que la vieja se llamaba Pérez y que había estado muy ligada a mamá. En el asilo\nla llamaban «su prometida». Eso me hizo reír. Le pregunté si era muy vieja. Me\nrespondió que tenía sesenta y cuatro años. Luego no hablamos más. El aslo\nentró al cabo de un rato en la oscuridad. Me levanté. Pérez continuaba\nllorando. Seguía llorando también cuando me dejaron a solas con ella.\nMiraba la cama de hierro donde yacía su amiga y la cabeza le temblaba en las\nmanos. Yo vi que tenía una úlcera en la boca y una espinilla negra en la cien.\nMe impactó pensar que esas venillas de la cien estaban llenas de sangre\nparecida a la mía y que seguían teniendo vida. Esperé así hasta la noche. El\nportero me dijo entonces que debía dejar la sala para que cenaran los pensionistas.\nNo quería alejarme de la difunta y me fui a pasear por la sala delante de los\nancianos. Antes de salir, el portero me dijo: «¿Le ayudo a vestirse?» Le dije que\nno. Apreciaba que no me hubiera hecho esa propuesta delante de otros. En la\necorchada noche corría un frescor agradable. Me entretuve paseándome\nlentamente por el patio. El asilo daba a un pequeño jardín. Hacia la medianoche\nalguien me llamó. Le pregunté qué quería. Me dijo: «El velador quiere que lo\nvea.» Volví a la sala. El velador era un niño. Estaba contento y me dijo: «¿Sabe\nque mamá está mejor?» Le expliqué que no era mi madre. «Ah, sí», me dijo.\nEstuvo un momento callado y, al cabo, añadió: «Mamá dice que usted da\naprobación.» Esta vez no reí. Busqué otra vez la cama y me quedé una hora\nreviviendo exactamente la misma escena antes de comprender que cuando me\nhabían conducido por primera vez la vieja Pérez no había llegado todavía.\nEntonces decidí volver a casa para descansar un poco.\nCaminé despacio. El velador me acompañó. Tenía una cara de tortuga y su\nmirada parecía contener un reproche. Me invitó a rezar. Le dije que yo no\ncreía. Pero me obligó. Se puso de rodillas y, entonces, comprendí que no me\ninvitaba, sino que me obligaba a rezar. Me arrodillé también. Hasta entonces\nno me había enterado de lo que hacía: estaba bien arrodillarme. Vi a la vieja\nPerez. Al principio no la había visto tan vagamente. Describía círculos, la\nespalda doblada, y se detenía de vez en cuando para secarse los ojos con el\npañuelo. Pero veía mal y la confundí en un principio con la silla. Nos\nlevantamos al mismo tiempo que ella\nAhora ya no me impulsaba a orar, sino que me mostró su asiento. Me senté\nsin quitar los ojos del féretro. Puso una mano sobre mi\nhombro y me dijo que se marchaba. Asentí. Me preguntó: «¿Vendrá usted\nmañana?» Asentí otra vez. Entonces salió muy lentamente, empujando la silla.\nDe nuevo me quedé solo. Sentí que alguien me acariciaba el rostro. Un soplo\ndulce, una voz parecía murmurar: «Vamos, vamos.» No era nadie. Era el\nlenguaje nocturno de la sala. Hice mi cama sobre la sil\nOtro día, era domingo, no oía más que campanas cerca de mi cama. Se\npaseaban los pájaros. Le expliqué al portero que no podía ir a misa y que no\nhabía ido nunca. Me preguntó: «¿Por qué?», sin reproche, como si se\nextrañara. Aparte de la disposición a mi cargo de que me mandaran un\nconduelo con los demás, por la mañana me dijeron que querían presentarme a\nun anciano. Ya se habían reunido los habitantes de la casa, y el director me\nexhibió a un personaje, un viejo flaco, de un metro ochenta de estatura,\nfisnomía singular y orejas colgantes. Apenas tenía dientes, y el labio inferior le\ncayó y le torcía la boca a la izquierda. Le llamaban Pérez, y fue él quien\nacompañó a mamá cuando la llevaban a la tumba.\nCuando se iba, la enfermera me dijo que los pensionistas se levantaban a las\ncuatro. Eran las dos. Saqué un poco el brazo, lo tanteé y, cuando lo retiré, vi\nque estaba cubierto de pelo negro. Me desperté a medias y, entonces, me di\ncuenta de que un mocoso de diez años dormía detrás de mí, la cabeza sobre la\nmía. Me tomó del cuello y me dijo: «Te ahogo.» Me volví de golpe y lo tiré.\nQuiso entrar la vieja Pérez en ese momento. Me obligaron a devolverlo,\ndiciéndole que no tuve la culpa. Pero eso los obligaba a alejarse un momento.\nEsperé a mi tía, y esta vez se lo llevé a la sala. Ya no lo perdí de vista, a\npesar de que me cansaba estar sentado. Entonces le pregunté al portero si me\nvería mal que dejara la habitación. Me dijo que no. Entonces me fui. Hice un\npaseo interminable por las mismas calles. Me senté en un banco. Me aburría\nun poco y me quedé a leer el periódico. Me hice mal a la cabeza, de nuevo.\nBuscaba el collar de los faldones sobre el hombro para la bufanda. Más tarde\nentré a la iglesia: vi los bancos de los vecinos, y mucho brillo. El aire que\nsalía del agua bendita me espantaba. Cuando volví, ya estaba dormida. La\nvieja se levantó para dejarme el sitio, y me pedía ir hacia mi cama. La brisa era\nmuy agradable. Dije que iba a fumar. Apoyé la nuca contra la pared y cerré\nlos ojos. Sentí la mano de la vieja en la mía. Pero no me hizo\ndespierto. Oía ahora el ruido de los pianos. Me parecía que las trompetas\nestaban a punto de estallar. Me sacó de quicio. Me senté, me levanté, me\ndejé caer, me dormí y volví a despertarme, pero no supe por qué. Alguien me\nbesó en la frente, y oí: «Hija mía.» Era la vieja Pérez. Comenzaba a\nasonadas. Hice un gesto de rabia y me desperté. Un silbido que me golpeó en\nla oreja se prolongaba, se prolongaba, se prolongaba... cuando el chirrido me\nsacó de la sombría locura. Golpeé la pared con el puño hasta que se me\nquemaron las manos.\nMe habían mandado a una hora debido a los vidrios. Su vecina del costado\nno me había enviado ni una palabra. Me pusieron a hablar, y de pronto me\natreví a decirles: «Bueno, pero no será por falta de empeño.» Luego me\nsorprendí de mi tono. Todavía me preguntaba si un día no me despertaría\nsentado en una silla de la habitación, y vería a mi padre que se había ido por\nla noche, sin ninguna nota de despedida.\nEse domingo me dormí mal y, al despertar, me dolía la cabeza. Pensé que\nsería buenísimo ser viejo, tener sesenta años. Entonces me quedé dormido\nrendido de la jornada."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p7"
+      }
+    ]
+  },
+  {
+    "id": "p7",
+    "page": 7,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "De nuevo me desperté porque una luz me golpeó los ojos. Me moví un poco y\nnoté que uno de los hombres que me escoltaban a mi lado se movía también.\nComprendí que querían echarme. Me levanté y me dirigí a la puerta. Había\nsentido bajo mis párpados una llovizna, y me di cuenta de que, desde algún\nlugar, caía sobre mí una mezcla de aire fresco y de arena. Era un lugar\noscuro. Una mujer hablaba cerca. Reconocí la voz de la vieja Pérez. Me hice\nluz gracias al encendedor. Entonces me di cuenta de que estaba en un cuarto\nmuy pequeño y muy limpio. Sobre la cama, un colchón. Junto a la puerta, un\npequeño banco. Si encendía el encendedor, veía, por una ventana muy alta, el\ncielo. La mujer hablaba todavía. Decía que no había otra salida que la puerta.\nEntonces volví hacia atrás. Me di cuenta de que me encontraba en la parte\ndelantera, en un lugar que no conocía y que, sin embargo, me resultaba\nfamiliar. Me senté. Me asombraba el orden. Al cabo de un momento, el\nhombre puso el brazo alrededor de mi cuello y me dijo que lo siguiera. Era un\nlugar extraño. Después tuve la sensación de que me llevaban. Me quedé\ncallado. Pasamos delante de una puerta y franqueamos un patio, cruzamos una\nplaza donde los árboles eran más pequeños. Llegamos a una calle. Me\nsorprendió que hacía tanto ruido. La mujer hablaba siempre. Se lamentaba y\nlloraba. Los hombres seguían empujándome. Había un leve perfume de aceite\ny de pomada. El sol era aún más caustico que el día anterior. Las ventanas\nestaban cerradas. Los árboles parecían azotados por el viento. Cuando me\ndieron un empujón, me puse a caminar y entré en la sala de audiencia. Todo\nesto me parecía familiar porque ya había entrado allí. La sala tenía un piso\nde mosaico verde. El banco de los testigos estaba a la izquierda. El juez,\nsentado debajo de un retrato del rey, me miraba con interés. En ese momento\nvi que Raimundo estaba allí también. Miraba al suelo. Lo vi. Me miró. Una\nmujer que me pareció elegante y bonita se acercó al juez y le habló. El juez\nbajó los ojos y dijo: «Que entren». Y entró un hombre que se llamaba\nChamplain. Siempre a la derecha. Me dijo que se llamaba así. Me pareció\nextraño que le hubiera puesto ese nombre. Luego le dije: «Buena suerte.»\nMiré a los demás. Eran todas personas que yo conocía. Uno era Manuel. Tenía\nlos ojos rojos. Me dio la impresión de que el juez había hecho un gesto,\npero no estoy seguro. El guardián me preguntó si quería sentarme. Le dije:\n«No». Vi entonces a los jurados. Eran cinco hombres. Delante de mí había un\nbarranco que separaba el piso de mosaico verde y la tarima de madera donde\nestaba el público. Este espacio vacío me daba la impresión de una\npunzante tristeza.\nEsa mañana, cuando el guardián me vino a despertar, me dijo: «Es un día\nimportante.» Me levanté y me lavé. Tenía el cuerpo duro. Al afeitarme, me\ncorté, y me quemó. Tenía que asearme, porque, según el guardián, iba a recibir\na toda la prensa."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p8"
+      }
+    ]
+  },
+  {
+    "id": "p8",
+    "page": 8,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "aquella pálida fisonomía. El hombre de la funeraria nos indicó nuestros\nlugares. El sacerdote caminaba delante; luego el coche; en torno de él, los\ncuatro hombres. Detrás, el director, yo y, cerrando la marcha, la enfermera\ndelegada y Pérez.\nEl cielo estaba lleno de sol. Comenzaba a pesar sobre la tierra y el calor\naumentaba rápidamente. No sé por qué habíamos esperado tanto tiempo antes\nde ponernos en marcha. Tenía calor con mi traje oscuro El viejecito, que se\nhabía cubierto, se quitó nuevamente el sombrero. Me había vuelto un poco\nhacia su lado y le miraba cuando el director me habló de él. Me dijo que a\nmenudo mi madre y Pérez iban a pasear por la tarde hasta el pueblo,\nacompañados por una enfermera. Miré el campo a mi alrededor. A través de\nlas líneas de cipreses que aproximaban las colinas al cielo, de aquella tierra\nrojiza y verde, de aquellas casas, pocas y bien dibujadas, comprendía a mi\nmadre. La tarde, en esta región, debía de ser como una tregua melancólica.\nHoy, el sol desbordante que hacía estremecer el paisaje, lo tornaba inhumano y\ndeprimente.\nNos pusimos en marcha. En ese momento noté que Pérez renqueaba\nligeramente. Poco a poco el coche tomaba velocidad y el anciano perdía\nterreno. Uno de los hombres que rodeaban el coche también se había dejado\npasar y caminaba ahora a mi altura. Me sorprendía la rapidez con qué el sol se\nelevaba en el cielo. Advertí que hacía ya tiempo que el campo resonaba con el\ncanto de los insectos y el crujir de la hierba. El sudor me corría por las\nmejillas. Como no tenía sombrero, me abanicaba con el pañuelo. El empleado\nde pompas fúnebres me dijo entonces algo que no oí. Al mismo tiempo se\nenjugaba el cráneo con un pañuelo que tenía en la mano izquierda, mientras\nque con la derecha levantaba el borde de la gorra. Le dije: «¿Cómo?» Repitió\nseñalando al cielo: «Está sofocante.» Dije: «Sí.» Poco después me preguntó:\n«¿Es su madre la que va ahí?» Otra vez dije: «Sí.» «¿Era vieja?» Respondí:\n«Más o menos», pues no sabía la edad exacta. En seguida se calló. Me di\nvuelta y vi al viejo Pérez a unos cincuenta metros detrás de nosotros. Se\napresuraba columpiando el sombrero al vaivén del brazo Mire también al\ndirector. Caminaba con mucha dignidad, sin un gesto inútil. Algunas gotas de\nsudor le perlaban la frente pero no las enjugaba.\nMe pareció que el cortejo marchaba un poco más de prisa. A mi alrededor\ncontinuaba siempre el mismo campo luminoso colmado de sol. El resplandor\ndel cielo era insostenible. En un momento dado pasamos por una parte del\ncamino que había sido arreglada recientemente: El sol había hecho estallar el\nalquitrán. Los pies se hundían en él y dejaban abierta su carne brillante. Por\nencima del coche, la galera luciente del cochero parecía haber sido amasada\ncon ese fango negro. Yo estaba un poco perdido entre el cielo azul y blanco y\nla monotonía de aquellos colores, negro viscoso del alquitrán abierto, negro"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p9"
+      }
+    ]
+  },
+  {
+    "id": "p9",
+    "page": 9,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "opaco de las ropas, negro lustroso del coche. Todo esto, el sol, el olor del\ncuero y del estiércol del coche, el del barniz y el del incienso y la fatiga de una\nnoche de insomnio, me turbaba la mirada y las ideas. Me volví una vez más:\nPérez me pareció muy lejos, perdido en una nube de calor; luego, no lo divisé\nmás. Lo busqué con la mirada y vi que había dejado el camino y tomado a\ncampo traviesa. Comprobé también que el camino doblaba delante de mí.\nComprendí que Pérez, que conocía la región, cortaba campo para alcanzarnos.\nAl dar la vuelta se nos había reunido. Luego lo perdimos. Volvió a tomar a\ncampo traviesa, y así varias veces. Yo sentía la sangre que me golpeaba en las\nsienes.\nTodo ocurrió en seguida con tanta precipitación, certidumbre y naturalidad,\nque no recuerdo nada más. Sólo una cosa: a la entrada del pueblo la enfermera\ndelegada me habló. Tenía una voz singular, que no correspondía a su rostro;\nuna voz melodiosa y trémula. Me dijo: «Si uno anda despacio, corre el riesgo\nde una insolación. Pero si anda demasiado aprisa, transpira y, en la iglesia,\npesca un resfriado.» Tenía razón. No había escapatoria. Todavía retengo\nalgunas imágenes de aquel día: por ejemplo, el rostro de Pérez cuando se nos\nreunió cerca del pueblo por última vez. Gruesas lágrimas de nerviosidad y de\npena le chorreaban por las mejillas. Pero las arrugas no las dejaban caer. Se\nextendían, se juntaban y formaban un barniz de agua sobre el rostro marchito.\nHubo también la iglesia y los aldeanos en las aceras, los geranios rojos en las\ntumbas del cementerio, el desvanecimiento de Pérez (habríase dicho un títere\ndislocado), la tierra color de sangre que rodaba sobre el féretro de mamá, la\ncarne blanca de las raíces que se mezclaban, gente aún, voces, el pueblo, la\nespera delante de un café el incesante ronquido del motor, y mi alegría cuando\nel autobús entró en el nido de luces de Argel y pensé que iba a acostarme y a\ndormir durante doce horas.\nII\nCuando me desperté comprendí por qué el patrón tenía aspecto\ndescontento cuando le pedí los dos días de licencia: hoy es sábado. Por decirlo\nasí, lo había olvidado, pero se me ocurrió la idea al levantarme. Naturalmente,\nel patrón pensó que con el domingo tendría cuatro días de licencia, y eso no\npodía gustarle. Pero, por una parte, no es culpa mía que hayan enterrado a\nmamá ayer en vez de hoy, y, por otra parte, hubiera tenido el sábado y el\ndomingo de todos modos. Por supuesto, esto no me impide comprender a mi\npatrón.\nMe costó levantarme porque la jornada de ayer me había cansado."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p10"
+      }
+    ]
+  },
+  {
+    "id": "p10",
+    "page": 10,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Mientras me afeitaba me pregunté qué podía hacer y resolví ir a bañarme.\nTomé el tranvía para ir al establecimiento de baños del puerto. Allí me\nzambullí en la entrada. Había muchos jóvenes. En el agua encontré a María\nCardona, antigua dactilógrafa de mi oficina, a la que había deseado en otro\ntiempo. Creo que ella también. Pero se había marchado poco después y no\ntuvimos ocasión. La ayudé a subir a una balsa y rocé sus senos en ese\nmovimiento. Yo estaba todavía en el agua cuando ella ya se había colocado\nboca abajo sobre la balsa. Se volvió hacia mí. Tenía los cabellos sobre los ojos\ny reía. Me icé a su lado sobre la balsa. El tiempo estaba espléndido y, como\nbromeando, dejé ir la cabeza hacia atrás y la posé sobre su vientre. No dijo\nnada y quedé así. Me daba en los ojos todo el cielo, azul y dorado. Bajo la\nnuca sentía latir suavemente el vientre de María. Nos quedamos largo rato\nsobre la balsa, medio dormidos. Cuando el sol estuvo demasiado fuerte se\nzambulló y la seguí. La alcancé, pasé la mano alrededor de su cintura y\nnadamos juntos. Ella reía siempre. En el muelle mientras nos secábamos me\ndijo: «Soy más morena que tú.» Le pregunté si quería ir al cine esa noche.\nVolvió a reír y me dijo que quería ver una película de Fernandel. Cuando nos\nhubimos vestido pareció muy asombrada al verme con corbata negra y me\npreguntó si estaba de luto. Le dije que mamá había muerto. Como quisiera\nsaber cuándo, respondí: «Ayer.» Se estremeció un poco, pero no dijo nada.\nEstuve a punto de decirle que no era mi culpa, pero me detuve porque pensé\nque ya lo había dicho a mi patrón. Todo esto no significaba nada. De todos\nmodos uno siempre es un poco culpable.\nPor la noche María había olvidado todo. La película era graciosa a ratos y,\nluego, demasiado tonta, en verdad. Ella apretaba su pierna contra la mía. Yo le\nacariciaba los senos. Hacia el fin de la función, la besé, pero mal. Al salir vino\na mi casa.\nCuando me desperté, María se había marchado. Me había explicado que\ntenía que ir a casa de su tía. Pensé que era domingo y me fastidió: no me gusta\nel domingo. Me di vuelta en la cama, busqué en la almohada el olor a sal que\nhabían dejado allí los cabellos de María, y dormí hasta las diez. Luego estuve\nfumando cigarrillos hasta mediodía, siempre acostado. No quería almorzar en\nel restaurante de Celeste como de costumbre, porque indudablemente me\nhubieran formulado preguntas, cosa que no me gusta. Cocí unos huevos y los\ncomí solos, sin pan, porque no tenía más y no quería bajar a comprarlo.\nDespués del almuerzo me aburrí un poco y erré por el departamento.\nResultaba cómodo cuando mamá estaba allí. Ahora es demasiado grande para\nmí, y he debido trasladar a mi cuarto la mesa del comedor. No vivo más que en\nesta habitación, entre sillas de paja un poco hundidas, el ropero cuyo espejo\nestá amarillento, el tocador y la cama de bronce. El resto está abandonado. Un\npoco más tarde, por hacer algo, cogí un periódico viejo y lo leí. Recorté un"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p11"
+      }
+    ]
+  }
+]
