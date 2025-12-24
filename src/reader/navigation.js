@@ -19,9 +19,7 @@ export function setNavigationDependencies({
 }
 
 function updateUI() {
-    if (!elements?.progressBarRead) return;
     if (!state.story || state.totalPagesInStory === 0) {
-        elements.progressBarRead.style.width = '0%';
         if (elements?.progressSlider) {
             elements.progressSlider.disabled = true;
             elements.progressSlider.value = 0;
@@ -29,9 +27,6 @@ function updateUI() {
         updateScrubberIndicator(0, 0);
         return;
     }
-    const uniqueVisited = new Set(state.pageHistory);
-    const progress = (uniqueVisited.size / state.totalPagesInStory) * 100;
-    elements.progressBarRead.style.width = `${progress}%`;
     syncScrubberWithCurrentPage();
 }
 
@@ -48,13 +43,12 @@ function syncScrubberWithCurrentPage() {
 }
 
 function updateScrubberIndicator(value, totalPages) {
-    if (!elements?.progressTooltip && !elements?.progressMarker) return;
+    if (!elements?.progressPageLabel && !elements?.progressMarker) return;
     const safeTotal = totalPages > 0 ? totalPages : 1;
     const safeValue = Math.min(Math.max(value, 1), safeTotal);
     const percent = safeTotal > 1 ? ((safeValue - 1) / (safeTotal - 1)) * 100 : 0;
-    if (elements?.progressTooltip) {
-        elements.progressTooltip.textContent = `Página ${safeValue} de ${safeTotal}`;
-        elements.progressTooltip.style.left = `${percent}%`;
+    if (elements?.progressPageLabel) {
+        elements.progressPageLabel.textContent = `Página ${safeValue} / ${safeTotal}`;
     }
     if (elements?.progressMarker) {
         elements.progressMarker.style.left = `${percent}%`;
