@@ -14,6 +14,7 @@ import {
 } from '../reader/navigation.js';
 import { loadPreferences, saveVolume } from '../utils/storage.js';
 import { applyTheme, changeFontSize, cycleTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
+import { ChatFeature } from '../ui/ChatModule.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
 
@@ -192,6 +193,8 @@ export function initApp() {
     if (elements.fullscreenBtn) {
         elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
     }
+
+    new ChatFeature();
 
     async function initializeApp() {
         loadPreferences({
