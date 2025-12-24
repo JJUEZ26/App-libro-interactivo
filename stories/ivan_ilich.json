@@ -1573,23 +1573,6 @@
     "choices": [
       {
         "text": "Continuar",
-        "page": "p185"
-      },
-        
-  {
-    "id": "p185",
-    "page": 86,
-    "bgMusic": "",
-    "sound": "",
-    "effect": "",
-    "forceShowChoices": false,
-    "images": [],
-    "scenes": [
-      "La mujer regresó a altas horas de la noche. Entró de puntillas, pero él la sintió: abrió los ojos, pero se apresuró a cerrarlos de nuevo. Praskovia Fiódorovna ordenó a Guerásim que se marchara para quedarse a solas con su marido, pero este abrió los ojos y dijo: —No. Vete. —¿Sufres mucho? —Da lo mismo. —Toma un poco de opio. Iván Ilich aceptó tomarse la medicina. Praskovia Fiódorovna salió. Hasta las tres más o menos estuvo sumido en un estado de doloroso sopor. Tenía la impresión de que alguien quisiera meterlo sin contemplaciones en un saco estrecho, negro y profundo, que lo empujaban una y otra vez, pero no conseguían que pasara por el agujero. Y esa operación, tan terrible para él, le acarreaba un enorme sufrimiento. Presa del miedo, se debatía, colaboraba, hacía lo posible por vencer ese obstáculo. De pronto se precipitaba dentro y caía. En ese preciso instante se despertó."
-    ],
-    "choices": [
-      {
-        "text": "Continuar",
         "page": "p86"
       }
     ]
@@ -1957,4 +1940,3 @@
 ]
 
     
-
