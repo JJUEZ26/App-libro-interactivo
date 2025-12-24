@@ -1187,7 +1187,6 @@
       }
     ]
   },
-[
   {
     "id": "p66",
     "page": 67,
@@ -1574,11 +1573,11 @@
     "choices": [
       {
         "text": "Continuar",
-        "page": "p86"
+        "page": "p185"
       },
         
   {
-    "id": "p85",
+    "id": "p185",
     "page": 86,
     "bgMusic": "",
     "sound": "",
