@@ -639,6 +639,388 @@
       {
         "text": "Continuar",
         "page": "p86"
+      },
+        
+  {
+    "id": "p85",
+    "page": 86,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "La mujer regresó a altas horas de la noche. Entró de puntillas, pero él la sintió: abrió los ojos, pero se apresuró a cerrarlos de nuevo. Praskovia Fiódorovna ordenó a Guerásim que se marchara para quedarse a solas con su marido, pero este abrió los ojos y dijo: —No. Vete. —¿Sufres mucho? —Da lo mismo. —Toma un poco de opio. Iván Ilich aceptó tomarse la medicina. Praskovia Fiódorovna salió. Hasta las tres más o menos estuvo sumido en un estado de doloroso sopor. Tenía la impresión de que alguien quisiera meterlo sin contemplaciones en un saco estrecho, negro y profundo, que lo empujaban una y otra vez, pero no conseguían que pasara por el agujero. Y esa operación, tan terrible para él, le acarreaba un enorme sufrimiento. Presa del miedo, se debatía, colaboraba, hacía lo posible por vencer ese obstáculo. De pronto se precipitaba dentro y caía. En ese preciso instante se despertó."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p86"
       }
     ]
+  },
+  {
+    "id": "p86",
+    "page": 87,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Guerásim seguía sentado al pie del lecho y dormitaba, libre de preocupaciones y cuidados. Él estaba echado, con las piernas descarnadas, embutidas en las medias, apoyadas en los hombros del criado. La misma vela con la pantalla y el mismo dolor ininterrumpido. —Vete, Guerásim —susurró. —No se preocupe, me quedaré un poco más. —No, vete. Bajó las piernas, se echó de costado, sobre el brazo, y sintió pena de sí mismo. Esperó solo a que Guerásim pasara a la habitación contigua e, incapaz de contenerse más, se echó a llorar como un niño. Lloraba por su impotencia, por su espantosa soledad, por la crueldad de los hombres, por la crueldad de Dios, por la ausencia de Dios. « ¿Por qué has hecho todo esto? ¿Por qué me has llevado a esta situación? ¿Por qué me has enviado unos tormentos tan horribles? ¿Por qué…?» . No esperaba ninguna respuesta, y lloraba precisamente porque no podía haberla."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p87"
+      }
+    ]
+  },
+  {
+    "id": "p87",
+    "page": 88,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Volvieron a recrudecerse los dolores, pero no se movió, no llamó a nadie. Solo se decía: « ¡Venga, más, sigue golpeando! Pero ¿por qué? ¿Qué te he hecho y o? ¿Por qué?» . Luego se tranquilizó, dejó de llorar e incluso de respirar y se volvió todo atención, como si estuviera a la escucha, pero no de esas voces que se expresan mediante sonidos, sino de la voz del alma, del curso de los pensamientos que le asaltaban. —¿Qué es lo que quieres? —Fue la primera noción clara, capaz de expresarse en palabras, que oyó—. ¿Qué es lo que necesitas? ¿Qué es lo que necesitas? —se repitió—. ¿Qué? No sufrir. Vivir —respondió. Y de nuevo se sumió en tal estado de concentración que ni siquiera el dolor consiguió distraerle. —¿Vivir? Pero ¿cómo? —preguntó la voz de su alma. —Sí, vivir como he vivido antes: de un modo agradable y placentero. —¿Y es que antes vivías de un modo agradable y placentero? —preguntó la voz."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p88"
+      }
+    ]
+  },
+  {
+    "id": "p88",
+    "page": 89,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "E Iván Ilich se puso a repasar con la imaginación los mejores momentos de su placentera vida. Pero, por extraño que pueda parecer, tales momentos se le antojaban ahora completamente distintos de lo que había juzgado hasta entonces. Todos, salvo los primeros recuerdos de infancia. En esa época sí que había habido algo realmente agradable, algo con lo que habría sido posible vivir si hubiera regresado a ella. Pero el hombre que había vivido esos momentos agradables ya no existía: era como el recuerdo de otra persona. Desde que se inició ese proceso que había acabado convirtiéndole en la persona que era ahora, todas las cosas que antaño se le habían antojado alegres se fundieron bajo su mirada y se transformaron en algo insignificante y a menudo repugnante. Y cuanto más se alejaba de la infancia, cuanto más se acercaba al presente, más insignificantes y dudosas le parecían esas alegrías."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p89"
+      }
+    ]
+  },
+  {
+    "id": "p89",
+    "page": 90,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Todo había comenzado en la Escuela de Jurisprudencia. Allí todavía había algunas cosas buenas de verdad: la alegría, la amistad, las esperanzas. Pero ya en los cursos superiores esos momentos agradables se fueron haciendo cada vez más raros. Luego, en los tiempos en que desempeñó su primer cargo en la oficina del gobernador, volvieron a aparecer esos momentos buenos: eran los recuerdos de su amor por una mujer. Más tarde todo se entreveraba y los momentos buenos se iban haciendo más escasos. Y más y más disminuían a medida que avanzaba en el tiempo. El matrimonio… tan imprevisto y tan decepcionante, y el mal aliento de su mujer, y la sensualidad y la hipocresía. Y esa labor estéril, y las preocupaciones por el dinero, y así un año, dos, diez, veinte: siempre lo mismo. Y cuanto más se acercaba al presente, más muerto le parecía todo. Como si hubiese estado bajando todo el tiempo por una montaña figurándose que estaba subiendo. Así había sido. Según la opinión ajena había estado subiendo, pero en realidad la vida se le había escapado un día y otro bajo los pies… Y ya estaba todo hecho. ¡Solo le quedaba morir!"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p90"
+      }
+    ]
+  },
+  {
+    "id": "p90",
+    "page": 91,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pero ¿qué había pasado? ¿Por qué? No podía ser. No podía ser que la vida fuera tan absurda y repugnante. Y si en verdad era tan absurda y repugnante, ¿por qué morir, y además sufriendo? Había algo que no cuadraba. « ¿Cabe la posibilidad de que no hay a vivido como debería haberlo hecho? — Se le pasó de pronto por la cabeza—. Pero ¿cómo es posible? Si he hecho siempre lo que correspondía en cada momento» , se dijo, rechazando sin más la única solución al enigma de la vida y de la muerte, como si fuera algo completamente imposible. « Y ahora ¿qué es lo que quieres? ¿Vivir? Pero ¿cómo? Vivir como vives en el tribunal, cuando el ujier anuncia: “¡Se abre la sesión!…”. Se abre la sesión, se abre la sesión —repitió para sus adentros. ¡Ahí está el tribunal! ¡Pero yo no soy culpable! —gritó con rabia—. ¿De qué?» . Dejó de llorar y, volviendo la cara a la pared, se puso a pensar en una misma cosa: ¿qué sentido, qué razón tenía todo ese horror? Pero, por más que reflexionaba, no hallaba ninguna respuesta. Y cuando le venía la idea —algo que le sucedía a menudo— de que todo había sucedido porque no había vivido como debería haberlo hecho, enseguida se acordaba de lo irreprochable que había sido su vida y rechazaba tan extraña idea."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p91"
+      }
+    ]
+  },
+  {
+    "id": "p91",
+    "page": 92,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pasaron dos semanas más. Iván Ilich ya no se levantaba del sofá. No quería quedarse en la cama, por eso pasaba el día echado en el sofá, casi siempre de cara a la pared, soportando en soledad los mismos sufrimientos insoslayables, dándole vueltas en soledad al mismo pensamiento insoslayable. ¿Qué era eso? ¿Era posible que fuera de verdad la muerte? Y una voz interior le respondía: sí, es verdad. ¿Y por qué razón le acosaban tantos tormentos? Y la misma voz le respondía: por nada, porque sí. Más allá de esas cuestiones no había nada. Desde el inicio mismo de la enfermedad, desde el momento de la primera visita de Iván Ilich al médico, su vida se había caracterizado por la alternancia de dos estados de ánimo opuestos: por un lado, la desesperación y la espera de una muerte incomprensible y atroz; por otro, la esperanza y la obsesiva observación de la actividad de su propio cuerpo. Tan pronto se perdía en consideraciones sobre el riñón o el intestino, que de vez en cuando no cumplían con las funciones que les estaban encomendadas, como no se ocupaba de otra cosa que de esa muerte incomprensible y atroz, de la que no había modo alguno de escapar."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p92"
+      }
+    ]
+  },
+  {
+    "id": "p92",
+    "page": 93,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Desde el principio mismo de la enfermedad, esos dos estados de ánimo se habían alternado. Pero, a medida que esta avanzaba, más dudosas y fantasiosas se fueron haciendo las reflexiones relativas al riñón y más real la conciencia de su inminente fin. Le bastaba con pensar en la persona que había sido tres meses antes y la que era ahora, recordar su ininterrumpida marcha ladera abajo, para que cualquier posible esperanza quedara hecha añicos. En los últimos tiempos, sumido en esa soledad completa, tumbado de cara al respaldo del sofá, esa soledad en medio de una ciudad populosa, entre numerosos conocidos y familiares —una soledad que en ningún otro lugar podría haber sido más completa: ni en el fondo del mar, ni en rincón alguno de la tierra—, en los últimos tiempos, sumido en esa soledad terrible, Iván Ilich había vivido exclusivamente con la imaginación, recreando su pasado."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p93"
+      }
+    ]
+  },
+  {
+    "id": "p93",
+    "page": 94,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Uno tras otro se representaba diversos acontecimientos de su vida. Siempre empezaba con los más cercanos en el tiempo, pero acababa remontándose a los más remotos, a los años de infancia, donde se detenía. Se acordaba de la mermelada de ciruela que le dieron a comer un día, y a continuación de las ciruelas francesas, crudas y arrugadas de su infancia, de su sabor especial y del aflujo de saliva cuando se llegaba al hueso, y, acompañando ese sabor, surgía toda una retahíla de recuerdos relacionados con aquella época: el aya, su hermano, los juguetes. « No debería hacerlo… Cuánto me hace sufrir» , se decía Iván Ilich, y pasaba de nuevo al presente. Se fijaba entonces en un botón del respaldo del sofá, en algunos pliegues del cuero. « Un cuero muy caro y poco resistente. Por su culpa tuvimos una discusión. Recuerdo otro cuero y otra discusión, cuando rompimos la cartera de papá y nos castigaron, y mamá nos llevó unas empanadillas.» Y de nuevo se detenía en la infancia y de nuevo esas imágenes le torturaban, y entonces trataba de apartarlas de su cabeza y de pensar en otra cosa."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p94"
+      }
+    ]
+  },
+  {
+    "id": "p94",
+    "page": 95,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Y otra vez, al socaire de ese flujo de recuerdos, surgían en su cabeza consideraciones de otro orden, y se ponía a pensar en el avance y el agravamiento de su enfermedad. Y cuanto más se remontaba en el tiempo, más vida encontraba. Y cuanto mayor bien hallaba, mayor era también la vida. Uno y otra se confundían. « Igual que los sufrimientos se han hecho cada vez más agudos, la vida no ha hecho más que empeorar» , pensó. Había un puntito luminoso allá, muy atrás, al inicio de la vida, luego se volvía todo cada vez más negro y todo pasaba más y más deprisa. « Es inversamente proporcional al cuadrado de la distancia que me separa de la muerte» , pensó Iván Ilich. Y la imagen de una piedra que caía con velocidad creciente se le grabó en el corazón. La vida, una serie de sufrimientos cada vez mayores, volaba más y más deprisa hacia su fin, hacia el sufrimiento más espantoso. « Estoy volando…» . Se estremecía, se agitaba, trataba de oponerse, pero sabía que ninguna resistencia era posible, y otra vez, con ojos cansados y a de tanto mirar, aunque era incapaz de apartar la vista de lo que tenía delante, contemplaba el respaldo del sofá y esperaba esa caída terrible, el choque final y la destrucción."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p95"
+      }
+    ]
+  },
+  {
+    "id": "p95",
+    "page": 96,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "« Ninguna resistencia es posible —se decía—. Si al menos pudiera entender la razón de todo esto. Pero eso es también imposible. Podría explicarme algo si estuviera en condiciones de decir que no he vivido como hubiera debido hacerlo. Pero eso no puedo admitirlo» , se dijo, recordando su respeto por la ley, la corrección y el decoro que habían presidido su vida. « Imposible reconocer una cosa así —se decía, apenas con un esbozo de sonrisa, como si alguien pudiera ver ese gesto y sacar una impresión equivocada—. ¡No hay explicación! El sufrimiento, la muerte… ¿Por qué?» ."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p96"
+      }
+    ]
+  },
+  {
+    "id": "p96",
+    "page": 97,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Así pasaron dos semanas, en cuyo transcurso se produjo ese acontecimiento tan deseado por Iván Ilich y su mujer: Petríschev pidió formalmente la mano de su hija. Sucedió por la tarde. Al día siguiente Praskovia Fiódorovna entró en la habitación de su marido sin saber muy bien cómo anunciarle que Fiódor Petróvich se había declarado, pero esa misma noche Iván Ilich había sufrido un nuevo empeoramiento. Praskovia Fiódorovna se lo encontró en el sofá de siempre, pero en una postura distinta. Estaba echado de espaldas, gemía y miraba al frente con ojos inmóviles. Ella empezó a hablar de medicinas, pero él entonces se quedó mirándola y Praskovia Fiódorovna dejó la frase a la mitad, tan grande era la rabia hacia ella que se reflejaba en esos ojos. —Por el amor de Dios, déjame morir en paz —dijo. Ella hizo intención de retirarse, pero en ese momento entró la hija y se acercó para darle los buenos días. Iván Ilich la miró igual que a su mujer, y a las preguntas sobre su salud respondió secamente que pronto los liberaría a todos de su presencia. Las dos mujeres guardaron silencio, se quedaron un rato en su compañía y luego se marcharon. —¿Es que tenemos nosotras la culpa? —preguntó Liza a su madre—. ¡Parece que le hemos hecho algo! Me da pena de papá, pero ¿por qué nos atormenta?"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p97"
+      }
+    ]
+  },
+  {
+    "id": "p97",
+    "page": 98,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "A la hora acostumbrada llegó el médico. Iván Ilich solo le contestaba con monosílabos, sin apartar de él su mirada llena de odio. Al final añadió: —Sabe usted perfectamente que no puede hacer nada por ay udarme, así que déjeme en paz. —Podemos aliviarle los sufrimientos —dijo el médico. —Ni siquiera eso puede hacer. Déjeme en paz. El médico pasó a la sala e informó a Praskovia Fiódorovna de que el enfermo estaba muy mal y de que el opio era el único medio de calmar sus padecimientos, que debían de ser espantosos. Añadió que sus sufrimientos físicos eran terribles, sin duda; pero más terribles aún eran los morales, y que estos eran la principal causa de su tormento. Sus tormentos morales consistían en que, esa noche, al contemplar el rostro soñoliento, bondadoso y de pómulos salientes de Guerásim, le había venido de pronto a la cabeza la siguiente idea: « ¿Y si en realidad toda mi vida, mi vida consciente, no ha sido “como habría debido ser”?» . Se le ocurrió pensar que lo que hasta entonces había considerado una completa imposibilidad, es decir, que no había vivido como debería haberlo hecho, podía ser verdad. Y se dijo que esos leves intentos de lucha contra todo lo que la gente encumbrada consideraba bueno, que esos leves intentos de los que se había desentendido a las primeras de cambio, podían también ser verdaderos, y que todas las demás cosas podían no ser como deberían haber sido. Su trabajo, su modo de vida, su familia, los intereses mundanos y profesionales: todo eso podía no ser como debería haber sido. Trató de defender ante sí mismo cada una de esas cosas. Y de repente reparó en la fragilidad de lo que estaba defendiendo. No había nada que defender."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p98"
+      }
+    ]
+  },
+  {
+    "id": "p98",
+    "page": 99,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "« Y si eso es así —se dijo— y voy a abandonar la vida con la conciencia de haber destruido todo lo que me ha sido dado, sin haber sido capaz de poner remedio a nada, ¿qué será de mí?» . Se echó de espaldas y se puso a repasar toda su vida de modo completamente distinto. Esa mañana, cuando vio al criado, y después a su mujer y a su hija, y más tarde al médico, cada uno de los gestos y palabras de esas personas le habían confirmado la terrible verdad que se le había revelado en el transcurso de la noche. En ellos se veía a sí mismo, veía todo aquello por lo que había vivido, y se daba perfecta cuenta de que nada había sido como habría debido ser, de que todo había sido un engaño gigantesco y espantoso que le había ocultado tanto la vida como la muerte. Esa conciencia aumentaba, decuplicaba sus sufrimientos físicos. Gemía, se debatía, se arrancaba la ropa. Tenía la impresión de que algo le sofocaba y le oprimía. Y también por eso los odiaba a todos. Le administraron una fuerte dosis de opio y se quedó dormido; pero a la hora de la comida todo volvió a empezar. Echaba de la habitación a cuantos iban a verle, no paraba de dar vueltas en el sofá. En un determinado momento entró su mujer y le dijo: —Jean, querido, hazlo por mí (¿por mí?). No puede perjudicarte y a menudo ayuda. No es nada. Y a veces la salud… Él puso los ojos como platos. —¿Qué? ¿Los sacramentos? ¿Para qué? ¡No es necesario! Sin embargo… Ella se echó a llorar."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p99"
+      }
+    ]
+  },
+  {
+    "id": "p99",
+    "page": 100,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "—¿Sí, amigo mío? Llamaré a nuestro sacerdote, que es muy amable. —Muy bien, estupendo —profirió él. Cuando llegó el religioso y lo confesó, Iván Ilich se sosegó, tuvo la impresión de que sus dudas perdían parte de su pujanza y, en consecuencia, también sus sufrimientos, y por un instante albergó ciertas esperanzas. De nuevo se puso a pensar en el intestino ciego, en la posibilidad de que volviera a funcionar con normalidad. Comulgó con lágrimas en los ojos. Cuando volvieron a tumbarlo después de comulgar, por un momento se sintió mejor, y de nuevo recobró la esperanza de vivir. Se puso a pensar en la operación que le habían propuesto. « Vivir, quiero vivir» , se decía. Su mujer vino a saludarle. Pronunció las mismas frases de siempre y a continuación añadió: —¿No es verdad que te encuentras mejor? Sin mirarla, Iván Ilich respondió que sí"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p100"
+      }
+    ]
+  },
+  {
+    "id": "p100",
+    "page": 101,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "La ropa de Praskovia Fiódorovna, su constitución física, la expresión de su rostro, el tono de su voz, todo le decía lo mismo: « Nada es como debería ser. Todo aquello por lo que has vivido y sigues viviendo es una mentira y un engaño que te están ocultando la vida y la muerte» . Y en cuanto esas palabras le vinieron a la cabeza, sintió una oleada de odio, acompañada de un lacerante dolor físico y de la clara conciencia de que el fin era inminente e inevitable. Se produjo una novedad en su estado: ahora las punzadas eran tan fuertes que se retorcía como si le estuvieran traspasando con un hierro, se le cortaba la respiración. La expresión de su rostro cuando pronunció aquel « sí» había sido terrible. Después de articular esa palabra, mirándola directamente a la cara, se puso boca abajo con una rapidez inesperada, dada su debilidad, y empezó a gritar: —¡Marchaos, marchaos, dejadme en paz"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p101"
+      }
+    ]
+  },
+[
+  {
+    "id": "p101",
+    "page": 102,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "XII Fue entonces cuando comenzó ese grito, que duró tres días seguidos sin interrupción, tan terrible que no era posible escucharlo a dos puertas de distancia sin quedar horrorizado. En el instante en que había respondido a su mujer, había comprendido que estaba perdido, que no había punto de retorno, que había llegado el final, el final de los finales, y que las dudas no se habían resuelto y quedarían sin resolver. —¡Oh, oh, oh! —gritaba con distintas entonaciones—. Había empezado a gritar: « No quiero» , y había seguido solo con la última letra. A lo largo de esos tres días, en cuyo transcurso no existió el tiempo para él, Iván Ilich se debatió en ese saco negro en el que lo había metido aquella fuerza invisible e irresistible. Se agitaba como lo hace el condenado a muerte en manos del verdugo, sabiendo que no hay escapatoria posible. Y a cada instante sentía que, a pesar de los esfuerzos que hacía por oponerse, se acercaba más y más a ese desenlace que tanto le aterrorizaba."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p102"
+      }
+    ]
+  },
+  {
+    "id": "p102",
+    "page": 103,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Comprendía que su tormento consistía no solo en que lo hubieran arrojado a ese agujero oscuro, sino, aún más, en que no acababa de entrar del todo en él. Se lo impedía el convencimiento de que su vida había sido ejemplar. Esa justificación de su vida era lo que le mantenía encadenado, le impedía avanzar y le atormentaba más que ninguna otra cosa. De pronto una fuerza le golpeó en el pecho y en el costado, su respiración se hizo aún más afanosa, se hundió en el agujero, y una vez allí, en lo más hondo, brilló una lucecita. Era la misma sensación que había tenido a veces viajando en tren: creía ir hacia delante cuando en verdad iba hacia atrás, y de repente se daba cuenta de la verdadera dirección. « Sí, nada ha sido como debería haber sido —se dijo—, pero no importa. De todos modos, se puede hacer lo que se debe. No obstante ¿en qué consistirá eso?» , se preguntó, y de improviso dejó de gritar."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p103"
+      }
+    ]
+  },
+  {
+    "id": "p103",
+    "page": 104,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Tal novedad se produjo al final del tercer día, una hora antes de morir. En ese mismo momento el hijo se deslizó sin hacer ruido en la habitación de su padre y se acercó al lecho. El moribundo seguía gritando desesperado y agitaba los brazos. Una de las manos fue a caer sobre la cabeza del muchacho. Y este se la cogió, la apretó contra sus labios y se echó a llorar.\n\nEn ese preciso instante Iván Ilich se precipitó en el fondo del agujero, vio la luz y descubrió que su vida no había sido como habría debido ser, pero que aún estaba a tiempo de remediarlo. Se preguntó cómo debería haber sido, y a continuación guardó silencio y se quedó escuchando. Entonces se dio cuenta de que alguien le estaba besando la mano. Abrió los ojos y vio a su hijo. Y sintió pena de él. También se acercó su mujer. Iván Ilich la miró. Con la boca abierta y las lágrimas cayéndole por la nariz y las mejillas, lo contemplaba con expresión desesperada. Iván Ilich sintió pena también de ella."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p104"
+      }
+    ]
+  },
+  {
+    "id": "p104",
+    "page": 105,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "« Sí, los estoy atormentando —pensó—. Les da pena, pero estarán mejor cuando haya muerto.» Hizo intención de pronunciar esas palabras, pero no tuvo fuerzas para articularlas. « Además, ¿para qué hablar? Lo que hay que hacer es actuar» , pensó. Señaló al hijo con la mirada y le dijo a su mujer: —Llévatelo… Me da pena… También de ti… Quiso añadir la palabra « disculpa» , pero en lugar de eso dijo « culpa» , y, como ya no tenía fuerzas para corregirse, hizo un gesto con la mano, sabiendo que quien debía entenderlo lo entendería.\n\nDe pronto le quedó claro que aquello que le atormentaba y de lo que no conseguía desembarazarse salía de una vez por todas, y lo hacía por dos lados, por diez lados, por todos los lados. Le daba pena de ellos, tenía que intentar que no sufrieran. Liberarlos y liberarse a sí mismo de esos sufrimientos. « Qué bien y qué sencillo —pensó—. ¿Y el dolor? —se preguntó—. ¿Adónde se ha ido? Eh, dolor, ¿dónde estás?» . Se quedó a la escucha. « Sí, allí está. Bueno, que venga.»"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p105"
+      }
+    ]
+  },
+  {
+    "id": "p105",
+    "page": 106,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "« ¿Y la muerte? ¿Dónde está?» . Buscó ese temor a la muerte que le había acompañado a lo largo de toda su vida y no lo encontró. ¿Dónde estaba? ¿Qué muerte era esa? Ya no albergaba ningún temor porque la muerte no existía. En su lugar había surgido una luz. —¡Entonces es así! —exclamó de pronto en voz alta—. ¡Qué alegría! Todo sucedió en un instante, pero el significado de ese instante ya no cambió más. No obstante, para los presentes su agonía se prolongó aún dos horas. Su pecho emitía una especie de gorgoteo; su cuerpo demacrado se estremecía. Después los gorgoteos y los estertores se fueron espaciando. —¡Ha terminado! —dijo alguien a su lado. Él oyó esas palabras y las repitió en su alma. « La muerte ha terminado —se dijo—. Ya no existe.» Tomó una bocanada de aire, se detuvo en mitad de la aspiración, extendió los miembros y se murió."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p106"
+      }
+    ]
+  }
+]
+
+    
   
