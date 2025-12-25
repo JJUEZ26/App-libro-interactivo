@@ -268,5 +268,311 @@
         "page": "p16"
       }
     ]
+  },
+  {
+    "id": "p16",
+    "page": 16,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Debo a los dioses el haber tenido buenos abuelos, buenos padres, una buena hermana; buenos maestros, buenos familiares, parientes y amigos casi todos buenos; el no haber faltado en nada a mi deber con ninguno de ellos, aun cuando, debido a mi carácter, hubiera podido, dada la ocasión, hacerlo; es, pues, un beneficio de los dioses el no haberse producido un concurso de circunstancias capaz de hacerme hoy avergonzar; no haber sido educado largo tiempo en casa de la concubina de mi abuelo; haber conservado sin mancillar la flor de mi juventud; no haber usado de una prematura virilidad; más aún, haber traspasado el tiempo oportuno; haberme supeditado a un príncipe, mi padre, que debía destruir en mí toda vanidad y hacerme comprender que se puede vivir en la corte sin tener necesidad de una guardia personal, de vestidos lujosos, de lámparas, de estatuas y otras cosas parejas y de tal pompa; y que, por el contrario, cabe muy bien ceñirse casi a la condición de un simple particular, sin proceder por ello indigna o negligentemente con relación a los deberes que impone la soberanía del Estado;"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p17"
+      }
+    ]
+  },
+  {
+    "id": "p17",
+    "page": 17,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "haberme cabido en suerte un hermano, capaz por su carácter de incitarme al cuidado de mí mismo y que, al mismo tiempo, me encantaba con su trato y su cariño; haber tenido hijos, ni ineptos ni contrahechos; no haber avanzado demasiado en la retórica, en la poesía y en los otros estudios que acaso me habrían absorbido, si yo hubiese observado que adelantaba en ellos; haberme anticipado a los deseos de mis maestros, colocándolos en el grado de dignidad que me parecía deseaban, sin abandonarme a la esperanza de poder más tarde, dada su joven edad, efectuar mi deseo; haber conocido a Apolonio, Rústico, Máximo; haberme representado, claramente y a menudo, el sistema de una vida conforme a la naturaleza, de suerte que, en cuanto concierne a los dioses, a sus comunicaciones, socorros e inspiraciones, nada me impedía, desde entonces, vivir acorde con la naturaleza; y, si aún estoy lejos de ello, es por mi culpa y por haber desatendido las advertencias, mejor aún, las lecciones, de los dioses;"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p18"
+      }
+    ]
+  },
+  {
+    "id": "p18",
+    "page": 18,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "la resistencia indefectible de mi cuerpo a tal género de vida; no haber estado en contacto, ni con Benedicta ni con Teodoto; y más tarde, acosado por las luchas amorosas, haber jurado; aunque enojado a menudo contra Rústico, no haber hecho nada de que deba arrepentirme; el que mi madre, destinada a morir joven, pasó a lo menos cerca de mí sus postreros años; que, cuantas veces quise socorrer a un hombre indigente o que tenía por otra razón necesidad de ayuda, nunca oí que no hubiera dinero disponible; y no haber experimentado yo mismo la necesidad del socorro ajeno; haber tenido una tal consorte, tan obediente, tan apasionada, y tan sencilla; haber tenido en abundancia maestros capacitados para mis hijos; haber recibido, entre sueños, la revelación de diversos remedios, y especialmente para mis vómitos de sangre y mis vahídos de cabeza, y una especie de oráculo, a este propósito, en Gaeta; el no haber caído, cuando empecé a gustar la filosofía, en manos de un sofista, ni haberme dedicado al análisis de autores, o a resolver silogismos o a perder el tiempo en la física celeste.\n\nTodas estas gracias provienen necesariamente de los dioses benéficos y de la fortuna."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p19"
+      }
+    ]
+  },
+  {
+    "id": "p16",
+    "page": 16,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Apenas amanezca, hazte en tu interior esta cuenta: hoy tropezaré con algún entremetido, con algún ingrato, con algún insolente, con un doloso, un envidioso, un egoísta. Todos estos vicios les sobrevinieron por ignorancia del bien y del mal. Pero yo, habiendo observado que la naturaleza del bien es lo bello, y que la del mal es lo torpe, y que la condición del pecador mismo es tal que no deja de ser mi pariente, participante, no de mi misma sangre o prosapia, pero sí de una misma inteligencia y de una partícula de la divinidad, no puedo recibir afrenta de ninguno de ellos, porque ninguno podría mancharme con su infamia. No puedo tampoco enojarme contra mi pariente ni aborrecerle, que hemos sido creados para ayudarnos mutuamente, como lo hacen los pies, las manos, los párpados, los dos órdenes de dientes, el superior y el inferior. Obrar, pues, como adversarios los unos de los otros es ir contra la naturaleza: y es tratar a alguien de adversario el hecho de indignarse o apartarse de él."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p17"
+      }
+    ]
+  },
+  {
+    "id": "p17",
+    "page": 17,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Todo mi ser se reduce a esto: la carne, el espíritu, la facultad rectora. Renuncia, pues, a los libros, no te distraigas más tiempo: esto no te es lícito; pero, pensando que eres mortal, desprecia la carne: ella no es más que fango, sangre, huesos, un manojo de nervios, una red de venas y arterias. Mira lo que viene a ser tu espíritu: viento, y no siempre el mismo, que a cada instante lo expeles para aspirarlo de nuevo. Queda, pues, en tercer lugar, la recta razón. Hazte así la cuenta: eres viejo; no permitas que se le esclavice, que sea agitado, como títere movido por hilos, a merced de instintos egoístas, que se irrite contra el destino presente, o que tema el futuro."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p18"
+      }
+    ]
+  },
+  {
+    "id": "p18",
+    "page": 18,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Las obras de los dioses se presentan rebosantes de una providencia; las de la Fortuna, no dejan de depender de la misma naturaleza o de una trama y concatenación de los acontecimientos regidos por la providencia. Todo dimana de ella. Además, cuanto acontece es necesario y contribuye a la utilidad común del universo, del cual tú eres una parte. A más de esto, para cada una de las partes de la naturaleza, el bien es lo que lleva consigo la condición de la naturaleza universal y lo que se ordena a su conservación. Y el mundo se conserva, sea por la transformación de los cuerpos mixtos, sea por la de los elementos. Bástente estos pensamientos, como principios perpetuos. En cuanto a tu sed de lectura, deséchala, para poder morir, no refunfuñando, sino realmente resignado y con el corazón reconocido a los dioses."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p19"
+      }
+    ]
+  },
+  {
+    "id": "p19",
+    "page": 19,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Recuerda cuánto tiempo has diferido la ejecución de estas máximas, cuántas veces has obtenido moratorias de los dioses, sin aprovecharlas. Conviene, pues, que ahora por fin comprendas de qué universo eres parte y de qué soberano del mundo eres emanación, y que tu vida está circunscrita en un tiempo acotado. Si no aprovechares de este momento para serenar tus apetitos, pasará, y tú pasarás con él, y no volverá otra vez.\n\nAfánate fijamente, a cada hora, como romano y como varón, en hacer lo que tuvieres entre manos, con precisa y sincera gravedad, con amor, libertad y justicia, procurando desasirte de cualquier otra preocupación. Lo conseguirás si ejecutas cada acción de tu vida como si fuere la última, despojada de toda irreflexión y de toda apasionada repugnancia al señorío de la razón, sin falsedad, ni egoísmo, ni displicencia ante las disposiciones del destino."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p20"
+      }
+    ]
+  },
+  {
+    "id": "p20",
+    "page": 20,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Ya ves cuán pocos son los principios que debes poseer para vivir una vida próspera y temerosa de los dioses. Que los dioses no exigirán otra cosa a quien observare estos preceptos.\n\n¡Ultrájate, ultrájate a ti misma, alma mía! Y no encontrarás luego la ocasión de adquirirte el honor que a ti misma debes. Breve es la vida de todos. La tuya se te pasó casi toda, y no te aprecias cuando, por el contrario, mides tu felicidad por lo que acontece en las almas ajenas.\n\nNo te distraigan los incidentes exteriores. Desocúpate para aprender algo más de bueno, y cesa de andar girando como una devanadera. Conviene asimismo precaverte de otra clase de extravío. Que desvarían los que, a causa de tantos quehaceres, se hastían de la vida y no tienen blanco alguno al que dirijan todos sus esfuerzos y, en una palabra, sus ideas."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p21"
+      }
+    ]
+  },
+  {
+    "id": "p21",
+    "page": 21,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "No es fácil tropezar con un hombre que sea desgraciado por dejar de entrometerse en lo que ocurre en el alma de los demás. Pero los que no escudriñan los movimientos de su propia alma, fuerza es que sean desgraciados.\n\nEs menester tener siempre presentes estos principios: cuál es la naturaleza del universo y cuál es la mía; qué relación existe entre ésta y aquélla; qué parte del universo soy yo y quién es él mismo; y que nadie te impida hablar y obrar siempre conforme con la naturaleza, de quien eres parte.\n\nComo filósofo ha juzgado Teofrasto, cuando en aquella comparación que hacía de las faltas entre sí, afirma —como haría cualquiera que comparase, regido por el sentido común— que las faltas cometidas por concupiscencia son más graves que las cometidas por ira. En efecto, el hombre montado en cólera experimenta cierta pena y una secreta angustia de corazón, al desviarse de la razón."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p22"
+      }
+    ]
+  },
+  {
+    "id": "p22",
+    "page": 22,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pero el que peca por concupiscencia, vencido por el deleite, aparenta una cierta debilidad y afeminamiento al incurrir en estas faltas. Con razón, pues, y como filósofo digno de tal nombre, Teofrasto sostiene que los desórdenes cometidos por placer son más censurables que los cometidos con dolor. Ciertamente, en el último caso, el culpable parece ser un hombre provocado por la justicia y forzado a inflamarse en cólera; en el primer caso, por el contrario, es él mismo quien ha decidido ser injusto, arrastrado a obrar así por el capricho de la concupiscencia.\n\nConforma siempre tus acciones, palabras y pensamientos a la idea de que puedes salir a cada instante de la vida; por más que, si hay dioses, despedirse de los hombres nada quiere decir, pues éstos no sabrían hundirte en la desgracia."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p23"
+      }
+    ]
+  },
+  {
+    "id": "p23",
+    "page": 23,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Y si no los hay, o bien si no se cuidan de las cosas humanas, ¿a qué vivir en un mundo vacío de dioses o falto de providencia? Pero la verdad es que ellos existen y miran por las cosas humanas y, a fin de que no venga el hombre a incurrir en los verdaderos males, es a él mismo a quien han conferido plena autoridad. Si algo, fuera de estos males, nos fuera nocivo, hubiésense ellos desvelado para que cada uno de nosotros pudiera preservarse de ello.\n\nPero, lo que no empeora al hombre, ¿cómo podría empeorarle la vida? La naturaleza universal no hubiera dejado de proveer para este mal ni por ignorancia ni de propósito, como sin arbitrio para precaverlo o corregirlo; ni por impotencia ni por incapacidad hubiera cometido ella el grave delito de repartir los bienes en la misma medida que los males, a los buenos y a los malos, indistintamente. Pero la muerte y la vida, la gloria y la oscuridad, el dolor y el placer, la riqueza y la pobreza, todo está repartido en la misma medida, a los hombres buenos y a los malos, sin ser por ello ni cosas honestas ni torpes; luego, en rigor, no son ni bienes ni males verdaderos."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p24"
+      }
+    ]
+  },
+  {
+    "id": "p24",
+    "page": 24,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "¡Con cuánta velocidad se pasa todo: en el mundo, los cuerpos, y en la posteridad, su memoria! ¡De qué condición son todos los objetos sensibles y, con particularidad, lo que nos halaga por el placer o nos espanta por el dolor o resuena, por la vanidad, a todos los vientos! ¡Cómo aparece todo vil, despreciable, basto, destructible, muerto, a las mentes capaces de percibirlo! ¿Qué son aquellos de cuyo modo de opinar y hablar depende la reputación? ¿Qué es la muerte? Que, si se la mira aisladamente y se abstraen, por análisis de los conceptos, los fantasmas que la imaginación abulta, no se verá en ella más que un efecto de la naturaleza. Ahora bien: es evidentemente pueril temer los efectos de la naturaleza. Y no sólo la muerte es efecto de la naturaleza, sino aún conveniencia de la misma. ¿Cómo se une el hombre con Dios y por qué parte de sí mismo, y, sobre todo, cómo está dispuesta esta parte del hombre?"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p25"
+      }
+    ]
+  },
+  {
+    "id": "p25",
+    "page": 25,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Nada más infeliz que el hombre que lo inquiere todo girando de aquí para allá, que escruta, como dice el poeta, «las profundidades de la tierra», que indaga por conjeturas lo que acontece en el alma ajena, sin acabar de entender que le bastaría sólo aplicarse al dios que habita en su interior y venerarle como es debido. Este culto consiste en conservarse puro de pasiones; de temeridad y de disgusto por aquello que procede de los dioses y de los hombres. Porque lo que viene de los dioses es digno de respeto, por ser obra de sí virtuosa; y lo que viene de los hombres nos es caro a causa del parentesco, si bien a veces no deja de ser, en cierto sentido, objeto de compasión, por su ignorancia del bien y del mal, ceguera no menor que la que nos impide poder discernir lo blanco de lo negro."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p26"
+      }
+    ]
+  },
+  {
+    "id": "p26",
+    "page": 26,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Aunque debieras vivir tres mil años y aun diez veces otros tantos, acuérdate siempre que no se pierde otra vida que la que se vive y que sólo se vive la que se pierde. Así, la más larga vida y la más corta vienen a reducirse a lo mismo. El momento presente que se vive es igual para todos; el que se pierde, lo es también, y este que se pierde llega a parecemos indivisible. Y es que no se pierde el pasado ni el futuro; pues lo que no poseemos, ¿cómo podría arrebatársenos?\n\nConviene tener siempre en la mente estas dos cosas: la una, que todo, desde una eternidad, se presenta con un mismo semblante y gira en la misma órbita, de modo que poco importa contemplar el mismo espectáculo cien o doscientos años, o un tiempo ilimitado; la otra, que el anciano y el que muere prematuramente experimentan la misma pérdida, puesto que sólo se nos priva del presente, que es lo único que poseemos, visto que no se puede perder lo que no se posee."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p27"
+      }
+    ]
+  },
+  {
+    "id": "p27",
+    "page": 27,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "«Todo es opinión». Evidentes son estas palabras enderezadas a Mónimo el cínico; evidente también la utilidad de dicha máxima, si sabemos valernos de su agudeza, sin franquear el límite de su verdad.\n\nSe deshonra el alma del hombre particularmente cuando, por lo que a sí toca, viene a hacerse como un divieso o una excrecencia en el cuerpo del mundo; porque irritarse con alguno de los acontecimientos que sobrevienen es como un absceso de la naturaleza universal, de la cual participan las naturalezas de todos los otros seres. El alma se deshonra asimismo cuando se muestra adversa a alguno de los otros hombres, o se comporta con él con intención de hacerle mal, como acontece con las almas poseídas de ira."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p28"
+      }
+    ]
+  },
+  {
+    "id": "p28",
+    "page": 28,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Lo tercero, se deshonra cuando se da por vencida del dolor o el placer. Lo cuarto, cuando disimula, finge y altera la verdad por obra o de palabra. Lo quinto, cuando lanza su actividad o sus apetitos sin blanco fijo, y lo ejecuta todo al azar, y sin continuidad, siendo así que aun las más pequeñas acciones debieran tender a un fin propuesto: y el fin de los seres racionales es obedecer a la razón y a la ley de la naturaleza, la más augusta de las ciudades y gobiernos.\n\nEl tiempo de la vida humana es un punto: la sustancia, fluente; la sensación, oscurecida; toda la constitución del cuerpo, corruptible; el alma, inquieta; el destino, enigmático; la fama, indefinible; en resumen, todas las cosas propias del cuerpo son a manera de un río; las del alma, sueño y vaho; la vida, una lucha, un destierro; la fama de la posteridad, olvido. ¿Qué hay, pues, que nos pueda llevar a salvamento? Una sola y única cosa: la filosofía."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p29"
+      }
+    ]
+  },
+  {
+    "id": "p29",
+    "page": 29,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Y ésta consiste en conservar el dios interior sin ultraje ni daño, para que triunfe de placeres y dolores, para que no obre al acaso, y se mantenga lejos de toda falsedad y disimulo, al margen de que se haga o no se haga esto o aquello; además, para que acepte la parte que le tocare en los varios sucesos accidentales e integrantes de su parte, como procedentes de aquel origen de quien procede él mismo; y, en particular, para que aguarde la muerte en actitud plácida, no viendo en ella otra cosa más que la disolución de los elementos de que consta todo ser viviente. Si no hay nada temible para los mismos elementos en esta transformación incesante de uno en otro, ¿por qué temer la transformación y disolución de todas las otras cosas? Esto es conforme con la naturaleza: y nada es malo de cuanto a ella se acomoda."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "END"
+      }
+    ]
   }
 ]
