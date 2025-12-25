@@ -8,6 +8,9 @@ export class ChatFeature {
             ...options
         };
         this.messages = [];
+        this.conversationHistory = [];
+        this.libraryCatalog = [];
+        this.libraryCatalogPromise = this.loadLibraryCatalog();
         this.messageElements = new Map();
         this.isOpen = false;
         this.recognition = null;
@@ -79,11 +82,27 @@ export class ChatFeature {
                 font-weight: 600;
             }
 
+            .ai-chat-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
             .ai-chat-close {
                 border: none;
                 background: transparent;
                 color: #e2e8f0;
                 font-size: 18px;
+                cursor: pointer;
+            }
+
+            .ai-chat-reset {
+                border: 1px solid rgba(148, 163, 184, 0.35);
+                background: transparent;
+                color: #e2e8f0;
+                font-size: 12px;
+                padding: 4px 8px;
+                border-radius: 999px;
                 cursor: pointer;
             }
 
@@ -183,12 +202,21 @@ export class ChatFeature {
         header.className = 'ai-chat-header';
         const title = document.createElement('h3');
         title.textContent = 'Asistente de lectura';
+        const headerActions = document.createElement('div');
+        headerActions.className = 'ai-chat-header-actions';
+        const resetButton = document.createElement('button');
+        resetButton.className = 'ai-chat-reset';
+        resetButton.type = 'button';
+        resetButton.textContent = 'Nuevo chat';
+        resetButton.setAttribute('aria-label', 'Iniciar un chat nuevo');
         const closeButton = document.createElement('button');
         closeButton.className = 'ai-chat-close';
         closeButton.setAttribute('aria-label', 'Cerrar chat');
         closeButton.textContent = '✕';
+        headerActions.appendChild(resetButton);
+        headerActions.appendChild(closeButton);
         header.appendChild(title);
-        header.appendChild(closeButton);
+        header.appendChild(headerActions);
 
         this.messagesContainer = document.createElement('div');
         this.messagesContainer.className = 'ai-chat-messages';
@@ -239,6 +267,7 @@ export class ChatFeature {
             }
         });
         this.micButton.addEventListener('click', () => this.startVoiceRecognition());
+        resetButton.addEventListener('click', () => this.resetConversation());
     }
 
     togglePanel() {
@@ -302,6 +331,8 @@ export class ChatFeature {
         try {
             const answer = await this.sendToAI(question);
             this.updateMessage(loadingId, { text: answer, status: 'done' });
+            this.conversationHistory.push({ role: 'user', content: question });
+            this.conversationHistory.push({ role: 'assistant', content: answer });
             if (this.options.enableTTS) this.speak(answer);
         } catch (error) {
             const fallback = 'Lo siento, hubo un problema al contactar con la IA.';
@@ -311,13 +342,17 @@ export class ChatFeature {
     }
 
     async sendToAI(userQuestion) {
-        const bookContext = this.getBookContext();
+        await this.libraryCatalogPromise;
+        const context = this.getChatContext();
+        const conversationHistory = this.getConversationHistoryPayload();
         const res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 prompt: userQuestion,
-                context: bookContext
+                context,
+                conversationHistory,
+                libraryCatalog: this.libraryCatalog
             })
         });
 
@@ -331,6 +366,55 @@ export class ChatFeature {
             throw new Error('Respuesta inválida del servidor.');
         }
         return data.answer;
+    }
+
+    resetConversation() {
+        this.messages = [];
+        this.conversationHistory = [];
+        this.messageElements.clear();
+        this.messagesContainer.innerHTML = '';
+        this.statusLine.textContent = 'Chat reiniciado. ¿En qué puedo ayudarte?';
+        this.scrollToBottom();
+    }
+
+    async loadLibraryCatalog() {
+        try {
+            const response = await fetch('data/books.json');
+            if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+            const books = await response.json();
+            this.libraryCatalog = (Array.isArray(books) ? books : []).map((book) => ({
+                id: book.id || '',
+                title: book.title || 'Sin título',
+                author: book.author || 'Autor desconocido',
+                tags: this.normalizeTags(book.tags),
+                description: book.description || '',
+                era: book.era || book.year || ''
+            }));
+        } catch (error) {
+            console.warn('No se pudo cargar el catálogo de libros:', error);
+            this.libraryCatalog = [];
+        }
+    }
+
+    normalizeTags(tags) {
+        if (!tags) return [];
+        if (Array.isArray(tags)) return tags.filter(Boolean);
+        if (typeof tags === 'string') {
+            return tags
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter(Boolean);
+        }
+        return [];
+    }
+
+    getConversationHistoryPayload() {
+        const maxMessages = 12;
+        const trimmedHistory = this.conversationHistory.slice(-maxMessages);
+        return trimmedHistory.map((item) => ({
+            role: item.role,
+            content: String(item.content || '').trim()
+        })).filter((item) => item.content);
     }
 
     getCurrentPageText() {
@@ -378,47 +462,32 @@ export class ChatFeature {
         return null;
     }
 
-    getBookContext() {
+    getChatContext() {
         const storyData = state.storyData || state.story || {};
-        const title = storyData.title || 'Desconocido';
-        const author = storyData.author || 'Desconocido';
+        const currentBook = state.currentBook || null;
         const currentPageText = this.getCurrentPageText();
+        const page = state.appMode === 'reader' ? 'book' : 'home';
 
-        const globalPieces = [];
+        const excerpt = currentPageText
+            ? currentPageText.replace(/\s+/g, ' ').trim().slice(0, 1200)
+            : '';
 
-        // TODO: Ajustar estas propiedades según mi implementación real de state.storyData.
-        if (typeof storyData.content === 'string') {
-            globalPieces.push(storyData.content);
-        }
-        if (Array.isArray(storyData.pages)) {
-            storyData.pages.forEach((page) => {
-                if (Array.isArray(page.scenes)) globalPieces.push(page.scenes.join(' '));
-                if (typeof page.text === 'string') globalPieces.push(page.text);
-                if (Array.isArray(page.karaokeLines)) {
-                    globalPieces.push(page.karaokeLines.map((line) => line.text).join(' '));
-                }
-            });
-        }
-        if (Array.isArray(state.story)) {
-            state.story.forEach((page) => {
-                if (Array.isArray(page.scenes)) globalPieces.push(page.scenes.join(' '));
-                if (typeof page.text === 'string') globalPieces.push(page.text);
-                if (Array.isArray(page.karaokeLines)) {
-                    globalPieces.push(page.karaokeLines.map((line) => line.text).join(' '));
-                }
-            });
-        }
+        const bookDetails = currentBook
+            ? {
+                id: currentBook.id || '',
+                title: currentBook.title || storyData.title || 'Desconocido',
+                author: currentBook.author || storyData.author || 'Desconocido',
+                era: currentBook.era || currentBook.year || '',
+                tags: this.normalizeTags(currentBook.tags),
+                description: currentBook.description || ''
+            }
+            : null;
 
-        let globalText = globalPieces.join('\n').replace(/\s+/g, ' ').trim();
-        if (globalText.length > 8000) {
-            globalText = `${globalText.slice(0, 8000)}...`;
-        }
-
-        const currentTextBlock = currentPageText
-            ? currentPageText
-            : '[No se detectó claramente la página actual; responde usando solo el texto global.]';
-
-        return `Título del libro: ${title}\nAutor: ${author}\n\nTEXTO PRINCIPAL (PÁGINA ACTUAL):\n${currentTextBlock}\n\nTEXTO GLOBAL (RESUMEN LARGO, TRUNCADO):\n${globalText || 'No se pudo obtener texto global.'}`;
+        return {
+            page,
+            currentBook: bookDetails,
+            currentBookExcerpt: excerpt
+        };
     }
 
     setupSpeechRecognition() {
