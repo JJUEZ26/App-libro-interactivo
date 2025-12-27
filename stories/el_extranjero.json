@@ -2321,4 +2321,598 @@
       }
     ]
   },
-  
+  {
+    "id": "p131",
+    "page": 131,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "IV\n\nAun en el banquillo de los acusados es siempre interesante oír hablar de uno mismo. Durante los alegatos del Procurador y del abogado puedo decir que se habló mucho de mí y quizá más de mí que de mi crimen. ¿Eran muy diferentes, por otra parte, esos alegatos? El abogado levantaba los brazos y defendía mi culpabilidad, pero con excusas. El Procurador tendía las manos y denunciaba mi culpabilidad, pero sin excusas. Una cosa, empero, me molestaba vagamente. Pese a mis preocupaciones estaba a veces tentado de intervenir y el abogado me decía entonces: «Cállese, conviene más para la defensa.» En cierto modo parecían tratar el asunto prescindiendo de mí. Todo se desarrollaba sin mi intervención. Mi suerte se decidía sin pedirme la opinión. De vez en cuando sentía deseos de interrumpir a todos y decir: «Pero, al fin y al caso, ¿quién es el acusado? Es importante ser el acusado. Y yo tengo algo que decir.» Pero pensándolo bien no tenía nada que decir. Por otra parte, debo reconocer que el interés que uno encuentra en atraer la atención de la gente no dura mucho. Por ejemplo, el alegato del Procurador me fatigó muy pronto. Sólo me llamaron la atención o despertaron mi interés fragmentos, gestos o tiradas enteras, pero separadas del conjunto."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p132"
+      }
+    ]
+  },
+  {
+    "id": "p132",
+    "page": 132,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Si he comprendido bien, el fondo de su pensamiento es que yo había premeditado el crimen. Por lo menos, trató de demostrarlo. Como él mismo decía: «Lo probaré, señores, y lo probaré doblemente. Bajo la deslumbrante claridad de los hechos, en primer término, y en seguida, en la oscura iluminación que me proporcionará la psicología de esta alma criminal.»\n\nResumió los hechos a partir de la muerte de mamá. Recordó mi insensibilidad, mi ignorancia sobre la edad de mamá, el baño del día siguiente con una mujer, el cine, Fernandel, y, por fin, el retorno con María. Necesité tiempo para comprenderle en ese momento porque decía «su amante» y para mí ella era María. Después se refirió a la historia de Raimundo. Me pareció que su manera de ver los hechos no carecía de claridad. Lo que decía era plausible. De acuerdo con Raimundo yo había escrito la carta que debía atraer a la amante y entregarla a los malos tratos de un hombre de «dudosa moralidad.» Yo había provocado en la playa a los adversarios de Raimundo. Este había resultado herido. Yo le había pedido el revólver. Había vuelto sólo para utilizarlo. Había abatido al árabe, tal como lo tenía proyectado. Había disparado una vez. Había esperado. Y «para estar seguro de que el trabajo estaba bien hecho», había disparado aún cuatro balas, serenamente, con el blanco asegurado, de una manera, en cierto modo, premeditada."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p133"
+      }
+    ]
+  },
+  {
+    "id": "p133",
+    "page": 133,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "«Y bien, señores», dijo el Abogado General: «Acabo de reconstruir delante de ustedes el hilo de acontecimientos que condujo a este hombre a matar con pleno conocimiento de causa. Insisto en esto», dijo, «pues no se trata de un asesinato común, de un acto irreflexivo que ustedes podrían considerar atenuado por las circunstancias. Este hombre, señores, este hombre es inteligente. Ustedes le han oído, ¿no es cierto? Sabe contestar. Conoce el valor de las palabras. Y no es posible decir que ha actuado sin darse cuenta de lo que hacía.»"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p134"
+      }
+    ]
+  },
+  {
+    "id": "p134",
+    "page": 134,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Yo escuchaba y oía que se me juzgaba inteligente. Pero no comprendía bien cómo las cualidades de un hombre común podían convertirse en cargos aplastantes contra un culpable. Por lo menos, era esto lo que me chocaba y no escuché más al Procurador hasta el momento en que le oí decir: «¿Acaso ha demostrado por lo menos arrepentimiento? Jamás, señores. Ni una sola vez en el curso de la instrucción este hombre ha parecido conmovido por su abominable crimen.» En ese momento se volvió hacia mí, me señaló con el dedo, y continuó abrumándome sin que pudiera comprender bien por qué. Sin duda no podía dejar de reconocer que tenía razón. No lamentaba mucho mi acto. Pero tanto encarnizamiento me asombraba. Hubiese querido tratar de explicarle cordialmente, casi con cariño, que nunca había podido sentir verdadero pesar por cosa alguna. Estaba absorbido siempre por lo que iba a suceder, por hoy o por mañana. Pero, naturalmente, en el estado en que se me había puesto, no podía hablar a nadie en este tono. No tenía derecho de mostrarme afectuoso, ni de tener buena voluntad. Y traté de escuchar otra vez porque el Procurador se puso a hablar de mi alma."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p135"
+      }
+    ]
+  },
+  {
+    "id": "p135",
+    "page": 135,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Decía que se había acercado a ella y que no había encontrado nada, señores jurados. Decía que, en realidad, yo no tenía alma en absoluto y que no me era accesible ni lo humano, ni uno solo de los principios morales que custodian el corazón de los hombres. «Sin duda», agregó, «no podríamos reprochárselo. No podemos quejarnos de que le falte aquello que no es capaz de adquirir. Pero cuando se trata de este Tribunal la virtud enteramente negativa de la tolerancia debe convertirse en la menos fácil pero más elevada de la justicia. Sobre todo cuando el vacío de un corazón, tal como se descubre en este hombre, se transforma en un abismo en el que la sociedad puede sucumbir»."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p136"
+      }
+    ]
+  },
+  {
+    "id": "p136",
+    "page": 136,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Habló entonces de mi actitud para con mamá. Repitió lo que había dicho en las audiencias anteriores. Pero estuvo mucho más largo que cuando hablaba del crimen; tan largo que finalmente no sentí más que el calor de la mañana. Por lo menos hasta el momento en que el Abogado General se detuvo y, después de un momento de silencio, volvió a comenzar con voz muy baja y muy penetrante: «Este mismo Tribunal, señores, va a juzgar mañana el más abominable de los crímenes: la muerte de un padre.» Según él, la imaginación retrocedía ante este atroz atentado. Osaba esperar que la justicia de los hombres castigaría sin debilidad. Pero, no temía decirlo el horror que le inspiraba este crimen cedía casi frente al que sentía delante de mi insensibilidad. Siempre según él, un hombre que mataba moralmente a su madre se sustraía de la sociedad de los hombres por el mismo título que el que levantaba la mano asesina sobre el autor de sus días. En todos los casos, el primero preparaba los actos del segundo y, en cierto modo, los anunciaba y los legitimaba. «Estoy persuadido, señores», agregó alzando la voz, «de que no encontrarán ustedes demasiado audaz mi pensamiento si digo que el hombre que está sentado en este banco es también culpable de la muerte que este Tribunal deberá juzgar mañana. Debe ser castigado en consecuencia.» Aquí el Procurador se enjugó el rostro brillante de sudor. Dijo en fin que su deber era penoso, pero que lo cumpliría firmemente. Declaró que yo no tenía nada que hacer en una sociedad cuyas reglas más esenciales desconocía y que no podía invocar al corazón humano cuyas reacciones elementales ignoraba. «Os pido la cabeza de este hombre», dijo, «y os la pido con el corazón tranquilo. Pues si en el curso de mi ya larga carrera me ha tocado reclamar penas capitales, nunca tanto como hoy he sentido este penoso deber compensado, equilibrado, iluminado por la conciencia de un imperioso y sagrado mandamiento y por el horror que siento delante del rostro de un hombre en el que no leo más que monstruosidades.»"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p137"
+      }
+    ]
+  },
+  {
+    "id": "p137",
+    "page": 137,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Cuando el Procurador volvió a sentarse hubo un momento de silencio bastante largo. Yo me sentía aturdido por el calor y el asombro. El Presidente tosió un poco, y con voz muy baja me preguntó si no tenía nada que agregar. Me levanté y como tenía deseos de hablar, dije, un poco al azar por otra parte, que no había tenido intención de matar al árabe. El Presidente contestó que era una afirmación, que hasta aquí no había comprendido bien mi sistema de defensa y que, antes de oír a mi abogado le complacería que precisara los motivos que habían inspirado mi acto. Mezclando un poco las palabras y dándome cuenta del ridículo, dije rápidamente que había sido a causa del sol. En la sala hubo risas. El abogado se encogió de hombros e inmediatamente después le concedieron la palabra. Pero declaro que era tarde, que tenía para varias horas y que pedía la suspensión de la audiencia hasta la tarde. El Tribunal consintió."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p138"
+      }
+    ]
+  },
+  {
+    "id": "p138",
+    "page": 138,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Por la tarde los grandes ventiladores seguían agitando la espesa atmósfera de la sala y los pequeños abanicos multicolores de los jurados se movían todos en al mismo sentido. Me pareció que el alegato del abogado no debía terminar jamás. Sin embargo en un momento dado, escuché que decía: «es cierto que yo maté.» Luego continuó en el mismo tono, diciendo «yo» cada vez que hablaba de mí. Yo estaba muy asombrado. Me incliné hacia un gendarme y le pregunté por qué. Me dijo que me callara y después de un momento agregó: «Todos los abogados hacen eso.» Pensé que era apartarme un poco más del asunto, reducirme a cero y, en cierto sentido, sustituirme. Pero creo que estaba ya muy lejos de la sala de audiencias. Por otra parte, el abogado me pareció ridículo. Alegó muy rápidamente la provocación y luego también habló de mi alma. Pero me pareció que tenía mucho menos talento que el Procurador."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p139"
+      }
+    ]
+  },
+  {
+    "id": "p139",
+    "page": 139,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "«También yo», dijo, «me he acercado a esta alma, pero, al contrarío del eminente representante del Ministerio Público, he encontrado algo, y puedo decir que he leído en ella como en un libro abierto». Había leído que yo era un hombre honrado, trabajador asiduo, incansable, fiel a la casa que me empleaba, querido por todos y compasivo con las desgracias ajenas. Para él yo era un hijo modelo que había sostenido a su madre tanto tiempo como había podido. Finalmente había esperado que una casa de retiro daría a la anciana las comodidades que mis medios no me permitían procurarle. «Me asombra, señores», agregó, «que se haya hecho tanto ruido alrededor del asilo. Pues, en fin, si fuera necesario dar una prueba de la utilidad y de la grandeza de estas instituciones, habría que decir que es el Estado mismo quien las subvenciona.»\n\nPero no habló del entierro, y advertí que faltaba en su alegato. Como consecuencia de todas estas largas frases, de todos estos días y horas interminables durante los cuales se había hablado de mi alma, tuve la impresión de que todo se volvía un agua incolora en la que encontraba el vértigo."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p140"
+      }
+    ]
+  },
+  {
+    "id": "p140",
+    "page": 140,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Al final, sólo recuerdo que desde la calle y a través de las salas y de los estrados, mientras el abogado seguía hablando, oí sonar la corneta de un vendedor de helados. Fui asaltado por los recuerdos de una vida que ya no me pertenecía más, pero en la que había encontrado las más pobres y las más firmes de mis alegrías: los olores de verano, el barrio que amaba, un cierto cielo de la tarde, la risa y los vestidos de María. Me subió entonces a la garganta toda la inutilidad de lo que estaba haciendo en ese lugar, y no tuve sino una urgencia: que terminaran cuanto antes para volver a la celda a dormir.\n\nApenas oí gritar al abogado, para concluir, que los jurados no querrían enviar a la muerte a un trabajador honrado, perdido por un minuto de extravío, y aducir las circunstancias atenuantes de un crimen cuyo castigo más seguro era el remordimiento eterno que arrastraba ya. El Tribunal suspendió la audiencia y el abogado volvió a sentarse con aspecto agotado. Pero sus colegas se acercaron a él para estrecharle la mano. Oí decir: «¡Magnífico, querido amigo!» Uno de ellos hasta pidió mi aprobación: «¿No es cierto?», me dijo. Asentí, pero el cumplido no era sincero porque yo estaba demasiado cansado."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p141"
+      }
+    ]
+  },
+  {
+    "id": "p141",
+    "page": 141,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Afuera declinaba el día y el calor era menos intenso. Por ciertos ruidos de la calle, que oía, adivinaba la suavidad de la tarde. Estábamos todos allí esperando. Y lo que esperábamos juntos en realidad sólo me concernía a mí. Volví a mirar a la sala. Todo estaba como en el primer día. Encontré la mirada del periodista de la chaqueta gris y de la mujer autómata. Lo que me hizo pensar que durante todo el proceso no había buscado a María con la mirada. No la había olvidado, pero tenía demasiado que hacer. La vi entre Celeste y Raimundo. Me hizo un pequeño ademán como si dijera: «¡Por fin!», y vi sonreír su rostro un poco ansioso. Pero sentía cerrado el corazón y ni siquiera pude responder a su sonrisa."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p142"
+      }
+    ]
+  },
+  {
+    "id": "p142",
+    "page": 142,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "El Tribunal volvió. Rápidamente leyeron una serie de preguntas a los jurados. Oí «culpable de muerte…», «provocación…», «circunstancias atenuantes». Los jurados salieron y se me llevó a la pequeña habitación en la que ya había esperado. El abogado vino a reunírseme; estaba muy voluble y me habló con más confianza y cordialidad; como no lo había hecho nunca. Creía que todo iría bien y que saldría con algunos años de prisión o de trabajos forzados. Le pregunté si había perspectivas de casación en caso de fallo desfavorable. Me dijo que no. Su táctica había sido no proponer conclusiones para no indisponer al Jurado. Me explicó que no se casaba un fallo como éste por nada. Me pareció evidente y admití sus razones. Si se consideraba el asunto fríamente era perfectamente lógico. En caso contrario, habría demasiado papelerío inútil. «De todos modos», me dijo el abogado, «queda la apelación. Pero estoy seguro de que el fallo será favorable»."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p143"
+      }
+    ]
+  },
+  {
+    "id": "p143",
+    "page": 143,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Esperamos mucho tiempo, creo que cerca de tres cuartos de hora. Al cabo, un campanilleo sonó. El abogado me dejó, diciendo: «El presidente del Jurado va a leer las respuestas. Sólo le llamarán cuando se pronuncie el fallo.» Se oyó golpear las puertas. La gente corría por las escaleras y yo no sabía si estaban próximas o alejadas. Luego oí una voz sorda que leía algo en la sala. Cuando volvió a sonar el campanilleo, la puerta del lugar de los acusados se abrió y el silencio de la sala subió hacía, mí, el silencio y la singular sensación que sentí al comprobar que el joven periodista había apartado la mirada. No miré en dirección a María. No tuve tiempo porque el Presidente me dijo en forma extraña que, en nombre del pueblo francés, se me cortaría la cabeza en una plaza pública. Me pareció reconocer entonces el sentimiento que leía en todos los rostros. Creo que era consideración. Los gendarmes se mostraban muy suaves conmigo. El abogado me tomó la mano. Yo no pensaba más en nada. El Presidente me preguntó si no tenía nada que agregar. Reflexioné. Dije: «No.» Entonces me llevaron."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p144"
+      }
+    ]
+  },
+  {
+    "id": "p144",
+    "page": 144,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "V\n\nPor tercera vez he rehusado recibir al capellán. No tengo nada que decirle, no tengo ganas de hablar, demasiado pronto tendré que verle. En este momento me interesa escapar del engranaje, saber si lo inevitable puede tener salida. Me han cambiado de celda. Desde ésta, cuando me tiendo, veo el cielo, y no veo más que el cielo. Todos los días transcurren mirando en su rostro el declinar de los colores que llevan del día a la noche. Acostado, pongo las manos debajo de la cabeza y espero. No sé cuántas veces me he preguntado si habrá ejemplos de condenados a muerte que se hayan librado del engranaje implacable, desaparecido antes de la ejecución, roto el cordón de los agentes. Me he reprochado ahora el no haber prestado suficiente atención a los relatos de ejecuciones. Uno siempre debería de interesarse por estos temas. No se sabe nunca lo que puede ocurrir. Como todo el mundo, yo había leído informaciones en los periódicos. Pero existían, sin duda, obras especiales que nunca tuve curiosidad de consultar. Quizá en ellas habría encontrado relatos de evasiones. Me hubiera enterado de que, en un caso por lo menos, la rueda se había detenido; de que en su precipitación irresistible, el azar y la posibilidad, por una vez, al menos, habían cambiado alguna cosa. ¡Una sola vez! En cierto sentido, creo que esto me hubiera bastado. Mi corazón habría hecho el resto."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p145"
+      }
+    ]
+  },
+  {
+    "id": "p145",
+    "page": 145,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Los periódicos hablaban a menudo de una deuda para con la sociedad que, según ellos, era necesario pagar. Pero esto no habla a la imaginación. Lo que interesa es la posibilidad de evasión, un salto fuera del rito implacable, una loca carrera que ofrece todas las posibilidades de esperanza. Naturalmente, la esperanza consistía en ser abatido de un balazo en la esquina de una calle, en plena carrera. Pero, bien considerado todo, ese lujo no me estaba permitido, todo me lo prohibía, el engranaje me enganchaba nuevamente.\n\nA pesar de mi buena voluntad no podía aceptar esta certidumbre insolente. Pues, al fin y al cabo, existía una desproporción ridícula entre el fallo que la había creado y su desarrollo imperturbable a partir del momento en que el fallo había sido pronunciado. El hecho de haber sido leída la sentencia a las veinte en lugar de a las diecisiete, el hecho de que hubiera podido ser otra de que había sido dictada por hombres que cambian la ropa interior, de que había sido dada en nombre de una noción tan imprecisa como la del pueblo francés (o alemán o chino), me parecía que todo quitaba mucha seriedad a la decisión. Empero, me veía obligado a reconocer que, a partir del momento en que había sido dictada, sus efectos se volvían tan reales y tan serios como la presencia del muro contra el que aplastaba mi cuerpo en toda su extensión."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p146"
+      }
+    ]
+  },
+  {
+    "id": "p146",
+    "page": 146,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Recordé en esos momentos una historia que mamá me contaba a propósito de mi padre. Yo no le había conocido. Todo lo que había de concreto sobre este hombre era quizá lo que me decía mamá. Había ido a ver ejecutar a un asesino. Se sentía enfermo con la simple perspectiva de ir. Fue, sin embargo, y al regreso había estado vomitando parte de la mañana. Mi padre me producía un poco de repugnancia entonces Ahora comprendo que era tan natural. ¡Como no advertí que no había nada más importante que una ejecución capital y que en cierto sentido, era aún la única cosa realmente interesante para un hombre! Si alguna vez saliera de esta cárcel, iría a ver todas las ejecuciones capitales. Creo que me hacía mal pensar en tal posibilidad. Pues ante la idea de verme libre una mañana temprano, detrás de un cordón de agentes, de alguna manera del otro lado, ante la idea de ser el espectador que viene a ver y que podrá vomitar después, una ola de alegría envenenada me subía al corazón.\n\nPero no era razonable. Hacía mal en abandonarme a estas suposiciones, porque un instante después sentía un frío tan atroz que me encogía bajo la manta. Los dientes me castañeteaban sin que pudiera evitarlo."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p147"
+      }
+    ]
+  },
+  {
+    "id": "p147",
+    "page": 147,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pero, naturalmente, no siempre se puede ser razonable. Otras veces, por ejemplo, hacía proyectos de ley. Reformaba las penas. Me había dado cuenta de que lo esencial era dar una posibilidad al condenado. Una sola entre mil bastaba para arreglar muchas cosas. Y me parecía que podía encontrarse alguna combinación química cuya absorción mataría al paciente (el paciente, pensaba yo) nueve veces sobre diez. La condición sería que él lo sabría. Pues, pensándolo bien, considerando las cosas con calma, comprobaba que lo defectuoso de la cuchilla era que no dejaba ninguna posibilidad, absolutamente ninguna. En suma, la muerte del paciente había sido resuelta de una vez por todas. Era un asunto archivado, una combinación definitiva, un acuerdo decidido sobre el cual no se podía volver a discutir. Si por alguna eventualidad inesperada, el golpe fallaba, se volvía a empezar. En consecuencia, lo fastidioso era que el condenado tenía que desear el buen funcionamiento de la máquina.\n\nHe dicho que es el lado defectuoso. Es verdad, en un sentido. Pero en otro sentido me veía obligado a reconocer que ahí estaba todo el secreto de una buena organización. En suma: el condenado estaba obligado a colaborar moralmente. Por su propio interés todo debía marchar sin tropiezos."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p148"
+      }
+    ]
+  },
+  {
+    "id": "p148",
+    "page": 148,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Me veía obligado a comprobar también que hasta aquí había tenido sobre estos temas ideas que no eran acertadas. Durante mucho tiempo (no sé por qué) creí que para ir a la guillotina era necesario subir a un cadalso, trepar por escalones. Creo que fue por la Revolución de 1789, quiero decir, por todo lo que me habían enseñado o hecho ver sobre estos temas. Pero una mañana recordé que había visto una fotografía publicada por los periódicos con motivo de una ejecución de resonancia. En realidad, la máquina estaba colocada en el suelo mismo, en la forma más simple del mundo. Era mucho más angosta de lo que yo creía. Era bastante curioso que no lo hubiese advertido antes. La máquina me había llamado la atención en el clisé por su aspecto de obra de precisión, concluida y reluciente. Uno se forma siempre ideas exageradas de lo que no conoce.\n\nAhora debía comprobar, por el contrario, que todo era muy sencillo; la máquina está al mismo nivel del hombre que camina hacia ella. El hombre se reúne con ella tal como camina al encuentro de una persona. En cierto sentido, también esto era fastidioso. La subida al cadalso, con el ascenso en pleno cielo, permitía a la imaginación aferrarse. Mientras que aquí la mecánica aplastaba todo: mataban a uno discretamente, con un poco de vergüenza y mucho de precisión."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p149"
+      }
+    ]
+  },
+  {
+    "id": "p149",
+    "page": 149,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Había también dos cosas sobre las que reflexionaba todo el tiempo: el alba y la apelación. Sin embargo, razonaba y trataba de no pensar más en ellas. Me tendía, miraba al cielo y me esforzaba por interesarme. Se volvía verde: era la noche. Hacía aún un esfuerzo para desviar el curso de mis pensamientos. Oía el corazón. No podía imaginar que aquel leve ruido que me acompañaba desde hacía tanto tiempo pudiese cesar nunca. Nunca he tenido verdadera imaginación. Sin embargo, trataba de construir el segundo determinado en que el latir del corazón no se prolongaría más en mi cabeza. Pero en vano. El alba o la apelación estaban allí. Concluía por decirme que era más razonable no contenerme."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p150"
+      }
+    ]
+  },
+  {
+    "id": "p150",
+    "page": 150,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Sabía que vendrían al alba. En suma, pasé las noches esperando el alba. Nunca me ha gustado ser sorprendido. Cuando me sucede algo, prefiero estar prevenido. Concluí, pues, por no dormir sino un poco de día y durante todo el transcurso de las noches esperé pacientemente que la luz naciera sobre el vidrio del cielo. Lo más difícil era la hora incierta en la que, como yo sabía, acostumbraban operar. Después de medianoche, esperaba y acechaba. Mis oídos nunca habían percibido tantos ruidos, ni distinguido sonidos tan tenues. Puedo decir, por otra parte, que en cierto modo tuve suerte durante este período pues jamás oí paso alguno.\n\nMamá decía a menudo que nunca se es completamente desgraciado. Yo le daba razón en la cárcel, cuando el cielo se coloreaba y un nuevo día deslizábase en la celda. Porque también hubiera podido oír pasos y mi corazón habría podido estallar. Aun si el menor roce me arrojaba contra la puerta; aun así, con el oído pegado a la madera, esperaba desesperadamente hasta oír mi propia respiración, espantado de encontrarla ronca y tan parecida al estertor de un perro, al fin de cuentas el corazón no estallaba y había ganado otra vez veinticuatro horas."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p151"
+      }
+    ]
+  },
+  {
+    "id": "p151",
+    "page": 151,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Durante el día tenía la apelación. Creo que saqué el mejor partido de esta idea. Calculaba los resultados y obtenía el mayor rendimiento de mis reflexiones. Tomaba siempre la peor posibilidad: la apelación era rechazada. «Y bien, tendré que morir.» Antes que otros, es evidente. Pero todo el mundo sabe que la vida no vale la pena de ser vivida. En el fondo, no ignoraba que morir a los treinta años o a los setenta importa poco, pues, naturalmente, en ambos casos, otros hombres y otras mujeres vivían y así durante miles de años. En suma, nada podía ser más claro. Era siempre yo quien moriría, ahora o dentro de veinte años. En este punto, me molestaba un poco en el razonamiento el salto terrible que sentía dentro de mí pensando en veinte años de vida por venir. Pero lo reprimía imaginando cómo serían mis pensamientos dentro de veinte años, cuando a pesar de todo llegase el momento. Desde que uno debe morir, es evidente que no importa cómo ni cuándo.\n\nPor consiguiente (y lo difícil era no perder de vista todo lo que éste «por consiguiente» representaba en el razonar), por consiguiente, debía aceptar el rechazo de la apelación."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p152"
+      }
+    ]
+  },
+  {
+    "id": "p152",
+    "page": 152,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "En ese momento, únicamente en ese momento, tenía por así decir el derecho, me concedía en cierto modo el permiso de considerar la segunda hipótesis: me indultaban. Era fastidioso tener que dominar la fogosidad del impulso de la sangre y del cuerpo que me hacía arder los ojos con una alegría insensata. Era necesario dedicarme a ahogar el grito, a analizarlo. Era necesario mantenerme natural aun en esta hipótesis, para hacer más plausible la resignación frente a la primera. Cuando lo conseguía había ganado una hora de calma. En cualquier caso valía la pena considerarlo.\n\nEn un momento así me negué una vez más a recibir al capellán. Estaba acostado y por cierta rubia claridad del cielo adivinaba la proximidad de la tarde de verano. Acababa de rechazar la apelación y podía sentir las olas de sangre circular regularmente dentro de mí. No tenía necesidad de ver al capellán. Por primera vez después de mucho tiempo pensé en María. Hacía muchos días que no me escribía. Esa tarde reflexioné y me dije que quizá se habría cansado de ser la amante de un condenado a muerte. También se me ocurrió la idea de que quizá estuviese enferma o muerta. Estaba dentro del orden de las cosas. ¿Cómo habría podido saberlo yo puesto que fuera de nuestros cuerpos, ahora separados, nada nos ligaba ni nos recordaba el uno al otro? Por otra parte, a partir de ese momento, el recuerdo de María me hubiera sido indiferente. Muerta, no me interesaba más. Me parecía cosa normal, tal como comprendía que la gente me olvidara después de mi muerte. No tenía nada más que hacer conmigo. Ni siquiera podía decir que fuera duro pensar así. En el fondo no existe idea a la que uno no concluya por acostumbrarse."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p153"
+      }
+    ]
+  },
+  {
+    "id": "p153",
+    "page": 153,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "En ese preciso momento entró el capellán. Cuando lo vi, sentí un ligero estremecimiento. Él lo notó y me dijo que no tuviera miedo. Le dije que su costumbre era venir a otra hora. Me respondió que era una visita amistosa que no tenía nada que ver con la apelación, de la que no sabía nada. Se sentó en el camastro y me invitó a acercarme más a él. Me negué. A pesar de todo, me parecía muy amable.\n\nQuedó un momento sentado, con los antebrazos en las rodillas, la cabeza baja, mirándose las manos. Eran finas y musculosas; me hacían pensar en dos ágiles animalitos. Las frotó lentamente, una contra la otra. Luego quedó así, con la cabeza siempre baja, durante tanto tiempo que en cierto momento tuve la impresión de que lo había olvidado."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p154"
+      }
+    ]
+  },
+  {
+    "id": "p154",
+    "page": 154,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Pero levantó la cabeza bruscamente y me miró de frente: «¿Por qué», me dijo, «rehúsa usted mis visitas?» Contesté que no creía en Dios. Quiso saber si estaba bien seguro y le dije que yo mismo no tenía para qué preguntármelo; me parecía una cuestión sin importancia. Se echó entonces hacia atrás y se recostó contra el muro, con las manos en los muslos. Casi sin que pareciera hablarme, observó que a veces uno creía estar seguro cuando, en realidad, no lo estaba.\n\nYo no decía nada. Me miró y me preguntó: «¿Qué piensa usted?» Contesté que quizá fuera así. Quizá no estaba seguro de lo que me interesaba realmente, pero en todo caso, estaba completamente seguro de lo que no me interesaba. Y, justamente, lo que él me decía no me interesaba."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p155"
+      }
+    ]
+  },
+  {
+    "id": "p155",
+    "page": 155,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Volvió la mirada y, siempre sin cambiar de posición, me preguntó si no hablaba así por exceso de desesperación. Le expliqué que no estaba desesperado. Simplemente tema miedo, era bien natural. «Entonces Dios le ayudará.» Hizo notar. «Todos cuantos he conocido en su caso han vuelto a Él.» Reconocí que estaban en su derecho. Probaba también que tenían tiempo para hacerlo. En cuanto a mí no quería que me ayudaran y precisamente no tenía tiempo para interesarme en lo que no me interesaba.\n\nEn ese instante sus manos hicieron un ademán de impaciencia, pero se enderezó y arregló los pliegues de la sotana. Cuando hubo terminado, se dirigió a mí llamándome «amigo mío»; si me hablaba así no era porque estuviese condenado a muerte; según su opinión estábamos todos condenados a muerte. Pero le interrumpí diciéndole que no era la misma cosa y que, por otra parte, en ningún caso podía ser consuelo. «Es cierto», asintió, «pero usted morirá más tarde si no muere pronto. El mismo problema se le planteará entonces. ¿Cómo afrontará usted la terrible prueba?» Repuse que la afrontaría exactamente como la afrontaba en este momento.\n\nAnte estas palabras se levantó y me miró directamente a los ojos. Es un juego que conozco bien. Me divertía a menudo haciéndolo con Manuel o Celeste y, generalmente, eran ellos quienes apartaban la mirada. También el capellán conocía bien el juego; lo comprendí en seguida. Su mirada no vaciló. Y su voz tampoco vaciló cuando me dijo: «¿No tiene usted, pues, esperanza alguna y vive pensando que va a morir por entero?» «Sí», le respondí."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p156"
+      }
+    ]
+  },
+  {
+    "id": "p156",
+    "page": 156,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Bajó entonces la cabeza y volvió a sentarse. Me dijo que me compadecía. Juzgaba imposible que un hombre pudiese soportar esto. Yo sentí solamente que él comenzaba a aburrirme. Me aparté a mi vez y fui hacia la claraboya. Me apoyé con el hombro contra la pared. Sin seguirlo bien, oí que comenzaba a interrogarme otra vez. Hablaba con voz inquieta y apremiante. Comprendí que estaba emocionado y le escuché con más atención.\n\nMe decía que tenía la certeza de que la apelación sería resuelta favorablemente, pero que yo cargaba con el peso de un pecado del que debía librárseme. Según él, la justicia de los hombres no significaba nada y la justicia de Dios, todo. Hice notar que era la primera la que me había condenado. Me contestó que, mientras tanto, esa justicia no había lavado mi pecado. Le dije que no sabía qué era un pecado. Se me había hecho saber, solamente, qué era culpable. Era culpable, pagaba, no se me podía pedir más.\n\nEn ese momento se levantó de nuevo y pensé que en una celda tan estrecha no podía moverse aunque quisiera. Sólo podía sentarse o levantarse. Yo tenía los ojos clavados en el suelo. Dio un paso hacia mí y se detuvo, como si no osara avanzar. Miraba al cielo a través de los barrotes. «Se engaña usted, hijo mío», me dijo, «podrían pedirle más. Se lo pedirían quizá». —«¿Y qué, pues?» —«Podrían pedirle que viera.» —«¿Que viera qué?» El sacerdote miró alrededor y respondió con voz que me pareció súbitamente muy vencida: «Sé que todas estas piedras sudan dolor. Nunca las he mirado sin angustia. Pero, desde lo hondo del corazón, sé que los más desdichados de ustedes han visto surgir de su oscuridad un rostro divino. Se le pide a usted que vea ese rostro.»"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p157"
+      }
+    ]
+  },
+  {
+    "id": "p157",
+    "page": 157,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Me animé un poco. Dije que hacía meses que miraba estas murallas. No existía en el mundo nada ni nadie que conociera mejor. Quizá, hace mucho tiempo, había buscado allí un rostro. Pero ese rostro tenía el color del sol y la llama del deseo: era el de María. Lo había buscado en vano. Ahora, se acabó. Y, en todo caso, no había visto surgir nada de este sudor de piedra.\n\nEl capellán me miró con cierta tristeza. Yo estaba ahora completamente pegado a la muralla y el día me corría sobre la frente. Dijo algunas palabras que no oí y me preguntó rápidamente si le permitía besarme. «No», contesté. Se volvió, caminó hacia la pared y la palpó lentamente con la mano. «¿Ama usted esta tierra hasta ese punto?», murmuró. No respondí nada.\n\nQuedó vuelto bastante tiempo. Su presencia me pesaba y me molestaba. Iba a decirle que se marchara, que me dejara, cuando gritó de golpe en una especie de estallido, volviéndose hacia mí: «¡No, no puedo creerle! ¡Estoy seguro de que ha llegado usted a desear otra vida!» Le contesté que naturalmente era así, pero no tenía más importancia que desear ser rico, nadar muy rápido, o tener una boca mejor hecha. Era del mismo orden. Me interrumpió y quiso saber cómo veía yo esa otra vida. Entonces, le grité: «¡Una vida en la que pudiera recordar ésta!», e inmediatamente le dije que era suficiente. Quería aún hablarme de Dios, pero me adelanté hacia él y traté de explicarle por última vez que me quedaba poco tiempo. No quería perderlo con Dios. Ensayó cambiar de tema preguntándome por qué le llamaba «señor» y no «padre». Esto me irritó y le contesté que no era mi padre: que él estaba con los otros."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p158"
+      }
+    ]
+  },
+  {
+    "id": "p158",
+    "page": 158,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "«No, hijo mío», dijo poniéndome la mano sobre el hombro. «Estoy con usted. Pero no puede darse cuenta porque tiene el corazón ciego. Rogaré por usted.»\n\nEntonces, no sé por qué, algo se rompió dentro de mí. Me puse a gritar a voz en cuello y le insulté y le dije que no rogara y que más le valía arder que desaparecer. Le había tomado por el cuello de la sotana. Vaciaba sobre él todo el fondo de mi corazón con impulsos en que se mezclaban el gozo y la cólera. Parecía estar tan seguro, ¿no es cierto? Sin embargo, ninguna de sus certezas valía lo que un cabello de mujer. Ni siquiera estaba seguro de estar vivo, puesto que vivía como un muerto. Me parecía tener las manos vacías. Pero estaba seguro de mí, seguro de todo, más seguro que él, seguro de mi vida y de esta muerte que iba a llegar. Sí, no tenía más que esto. Pero, por lo menos, poseía esta verdad, tanto como ella me poseía a mí."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p159"
+      }
+    ]
+  },
+  {
+    "id": "p159",
+    "page": 159,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Yo había tenido razón, tenía todavía razón, tenía siempre razón. Había vivido de tal manera y hubiera podido vivir de tal otra. Había hecho esto y no había hecho aquello. No había hecho tal cosa en tanto que había hecho esta otra. ¿Y después? Era como si durante toda la vida hubiese esperado este minuto… y esta brevísima alba en la que quedaría justificado. Nada, nada tenía importancia, y yo sabía bien por qué. También él sabía por qué. Desde lo hondo de mi porvenir, durante toda esta vida absurda que había llevado, subía hacia mí un soplo oscuro a través de los años que aún no habían llegado, y este soplo igualaba a su paso todo lo que me proponían entonces, en los años no más reales que los que estaba viviendo."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p160"
+      }
+    ]
+  },
+  {
+    "id": "p160",
+    "page": 160,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "¡Qué me importaban la muerte de los otros, el amor de una madre! ¡Qué me importaban su Dios, las vidas que uno elige, los destinos que uno escoge, desde que un único destino debía de escogerme a mí y conmigo a millares de privilegiados que, como él, se decían hermanos míos! ¿Comprendía, comprendía pues? Todo el mundo era privilegiado. No había más que privilegiados. También a los otros los condenarían un día. También a él lo condenarían. ¿Qué importaba si acusado de una muerte lo ejecutaban por no haber llorado en el entierro de su madre? El perro de Salamano valía tanto como su mujer. La mujercita autómata era tan culpable como la parisiense que se había casado con Masson, o como María, que había deseado casarse conmigo. ¿Qué importaba que Raimundo fuese compañero mío tanto como Celeste, que valía más que él? ¿Qué importaba que María diese hoy su boca a un nuevo Meursault? Comprendía, pues, este Condenado, que desde lo hondo de mi porvenir… Me ahogaba gritando todo esto. Pero ya me quitaban al capellán de entre las manos y los guardianes me amenazaban. Sin embargo, él los calmó y me miró en silencio. Tenía los ojos llenos de lágrimas. Se volvió y desapareció."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p161"
+      }
+    ]
+  },
+  {
+    "id": "p161",
+    "page": 161,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "En cuanto salió, recuperé la calma. Me sentía agotado y me arrojé sobre el camastro. Creo que dormí porque me desperté con las estrellas sobre el rostro. Los ruidos del campo subían hasta mí. Olores a noche, a tierra y a sal me refrescaban las sienes. La maravillosa paz de este verano adormecido penetraba en mí como una marea. En ese momento y en el límite de la noche, aullaron las sirenas. Anunciaban partidas hacia un mundo que ahora me era para siempre indiferente. Por primera vez desde hacía mucho tiempo pensé en mamá. Me pareció que comprendía por qué, al final de su vida, había tenido un «novio», por qué había jugado a comenzar otra vez. Allá, allá también, en torno de ese asilo en el que las vidas se extinguían, la noche era como una tregua melancólica. Tan cerca de la muerte, mamá debía de sentirse allí liberada y pronta para revivir todo. Nadie, nadie tenía derecho de llorar por ella. Y yo también me sentía pronto a revivir todo. Como si esta tremenda cólera me hubiese purgado del mal, vaciado de esperanza, delante de esta noche cargada de presagios y de estrellas, me abría por primera vez a la tierna indiferencia del mundo. Al encontrarlo tan semejante a mí, tan fraternal, en fin, comprendía que había sido feliz y que lo era todavía. Para que todo sea consumado, para que me sienta menos solo, me quedaba esperar que el día de mi ejecución haya muchos espectadores y que me reciban con gritos de odio."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p162"
+      }
+    ]
+  },
+  {
+    "id": "p162",
+    "page": 162,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "FIN"
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p163"
+      }
+    ]
+  },
+  {
+    "id": "p164",
+    "page": 164,
+    "bgMusic": "",
+    "sound": "",
+    "effect": "",
+    "forceShowChoices": false,
+    "images": [],
+    "scenes": [
+      "Sobre el autor:\n\nAlbert Camus (1913-1960) fue un novelista, ensayista y dramaturgo francés nacido en Argelia. Su obra, que le valió el Premio Nobel de Literatura en 1957, es fundamental para entender el pensamiento del siglo XX. Aunque se le suele agrupar con los existencialistas franceses como Jean-Paul Sartre, Camus marcó distancias con ellos al centrar su filosofía en lo que llamó el Absurdo.\n\nPara Camus, el absurdo nace del choque entre el deseo humano de encontrar orden y sentido, y el silencio \"irrazonable\" del mundo. Esta idea alcanzó su máxima expresión en su ensayo El mito de Sísifo, donde utiliza la figura mitológica condenada a empujar una piedra hasta la cima de una montaña solo para verla rodar hacia abajo eternamente.\n\nEn lugar de caer en el nihilismo o el pesimismo, Camus propone que la grandeza del ser humano reside en la rebelión: en seguir empujando la piedra sabiendo que no hay una meta final. Al igual que Meursault en El extranjero, Camus nos invita a aceptar la falta de sentido de la vida no como una tragedia, sino como la oportunidad definitiva para ser verdaderamente libres. Como él mismo escribió al final de su famoso ensayo: \"Hay que imaginar a Sísifo dichoso\"."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": "p165"
+      }
+    ]
+  }
+]
