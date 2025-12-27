@@ -41,6 +41,25 @@ export class ChatFeature {
                 z-index: 9999;
             }
 
+            body.app-mode-reader .ai-chat-fab {
+                width: 44px;
+                height: 44px;
+                bottom: 18px;
+                right: 18px;
+                font-size: 16px;
+                background: rgba(79, 70, 229, 0.18);
+                color: rgba(255, 255, 255, 0.9);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+                backdrop-filter: blur(6px);
+            }
+
+            body.app-mode-reader .ai-chat-fab:hover,
+            body.app-mode-reader .ai-chat-fab:focus-visible {
+                background: rgba(79, 70, 229, 0.3);
+                box-shadow: 0 10px 22px rgba(15, 23, 42, 0.28);
+            }
+
             .ai-chat-panel {
                 position: fixed;
                 bottom: 90px;
@@ -59,6 +78,15 @@ export class ChatFeature {
                 pointer-events: none;
                 transition: opacity 0.2s ease, transform 0.2s ease;
                 z-index: 9999;
+            }
+
+            body.app-mode-reader .ai-chat-panel {
+                right: 16px;
+                bottom: 96px;
+                width: min(420px, calc(100vw - 32px));
+                max-height: calc(100vh - 160px);
+                border-radius: 18px;
+                box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
             }
 
             .ai-chat-panel.open {

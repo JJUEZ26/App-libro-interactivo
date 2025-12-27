@@ -200,7 +200,7 @@
 }
 
 .highlight-menu {
-    position: absolute;
+    position: fixed;
     display: flex;
     align-items: center;
     gap: 8px;

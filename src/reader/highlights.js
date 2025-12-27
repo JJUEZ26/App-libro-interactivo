@@ -396,12 +396,21 @@ function renderHighlightPanel() {
 function showMenu(menu, rect) {
     if (!menu || !rect) return;
     const offset = 10;
-    const wrapperRect = elements.pageWrapper.getBoundingClientRect();
-    const top = rect.top - wrapperRect.top - menu.offsetHeight - offset;
-    const left = rect.left - wrapperRect.left + rect.width / 2 - menu.offsetWidth / 2;
+    const menuHeight = menu.offsetHeight;
+    const menuWidth = menu.offsetWidth;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    menu.style.top = `${Math.max(12, top)}px`;
-    menu.style.left = `${Math.max(12, Math.min(left, wrapperRect.width - menu.offsetWidth - 12))}px`;
+    const preferredTop = rect.top - menuHeight - offset;
+    const fallbackTop = rect.bottom + offset;
+    const top = preferredTop >= 12 ? preferredTop : fallbackTop;
+    const left = rect.left + rect.width / 2 - menuWidth / 2;
+
+    const clampedTop = Math.max(12, Math.min(top, viewportHeight - menuHeight - 12));
+    const clampedLeft = Math.max(12, Math.min(left, viewportWidth - menuWidth - 12));
+
+    menu.style.top = `${clampedTop}px`;
+    menu.style.left = `${clampedLeft}px`;
     menu.classList.add('active');
     menu.setAttribute('aria-hidden', 'false');
 }
