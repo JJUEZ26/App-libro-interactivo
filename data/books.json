@@ -40,11 +40,11 @@
     "storyFile": "stories/ivan_ilich.json"
   },
   {
-    "id": "el_extranjero_camus",
-    "title": "El extranjero",
-    "author": "Albert Camus",
+    "id": "meditaciones",
+    "title": "Meditaciones",
+    "author": "Marco Aurelio",
     "description": "",
     "cover": "images/ivan_ilich_portada.png",
-    "storyFile": "stories/el_extranjero.json"
+    "storyFile": "stories/meditaciones.json"
   }
 ]
