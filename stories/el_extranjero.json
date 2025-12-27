@@ -2910,8 +2910,8 @@
     ],
     "choices": [
       {
-        "text": "Continuar",
-        "page": "p165"
+        "text": "Volver a la biblioteca",
+        "page": -1
       }
     ]
   }
