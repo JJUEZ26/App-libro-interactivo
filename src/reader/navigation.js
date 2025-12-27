@@ -80,8 +80,11 @@ export function goToPage(pageId, isGoingBack = false) {
         if (renderPageRef) renderPageRef(pageId);
         if (resetScrollPositionRef) resetScrollPositionRef();
         state.currentStoryId = pageId;
-        if (!isGoingBack && !state.pageHistory.includes(pageId)) {
+        const existingIndex = state.pageHistory.indexOf(pageId);
+        if (existingIndex === -1) {
             state.pageHistory.push(pageId);
+        } else if (existingIndex !== state.pageHistory.length - 1) {
+            state.pageHistory = state.pageHistory.slice(0, existingIndex + 1);
         }
         savePageHistory({ currentBook: state.currentBook, pageHistory: state.pageHistory });
         if (elements?.pageWrapper) {
@@ -97,19 +100,21 @@ export function goToPage(pageId, isGoingBack = false) {
 }
 
 export function goBack() {
-    if (state.isTransitioning || state.pageHistory.length <= 1) return;
-    state.pageHistory.pop();
-    const prevId = state.pageHistory[state.pageHistory.length - 1];
-    goToPage(prevId, true);
+    if (state.isTransitioning || !state.story) return;
+    const currentIndex = state.story.findIndex((page) => page.id === state.currentStoryId);
+    if (currentIndex <= 0) return;
+    const prevPage = state.story[currentIndex - 1];
+    if (!prevPage) return;
+    goToPage(prevPage.id, true);
 }
 
 export function goForward() {
     if (state.isTransitioning || !state.story) return;
-    const pageData = state.story.find((page) => page.id === state.currentStoryId);
-    if (pageData && pageData.forceShowChoices) return;
-    if (pageData && pageData.choices && pageData.choices.length === 1) {
-        goToPage(pageData.choices[0].page);
-    }
+    const currentIndex = state.story.findIndex((page) => page.id === state.currentStoryId);
+    if (currentIndex === -1 || currentIndex >= state.story.length - 1) return;
+    const nextPage = state.story[currentIndex + 1];
+    if (!nextPage) return;
+    goToPage(nextPage.id, true);
 }
 
 export function openNav() {
