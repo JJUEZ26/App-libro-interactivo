@@ -87,10 +87,14 @@ export function initApp() {
                 return;
             }
 
+            const selection = window.getSelection();
+            if (selection && selection.type === 'Range') return;
+
             const rect = elements.book.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
-            if (clickX < rect.width * 0.3) goBack();
-            else goForward();
+            const edgeThreshold = rect.width * 0.2;
+            if (clickX < edgeThreshold) goBack();
+            else if (clickX > rect.width - edgeThreshold) goForward();
         });
 
         let touchStartX = 0;
@@ -177,6 +181,37 @@ export function initApp() {
             resetScrollPosition();
         }
     });
+
+    const headerEl = getEl('app-header');
+    let lastScrollTop = 0;
+    let headerHidden = false;
+    const toggleHeader = (shouldHide) => {
+        if (!headerEl) return;
+        if (shouldHide === headerHidden) return;
+        headerHidden = shouldHide;
+        headerEl.classList.toggle('header-hidden', headerHidden);
+    };
+    const handleScroll = (currentScroll) => {
+        const delta = currentScroll - lastScrollTop;
+        if (Math.abs(delta) < 8) return;
+        if (currentScroll <= 0) {
+            toggleHeader(false);
+        } else if (delta > 0) {
+            toggleHeader(true);
+        } else {
+            toggleHeader(false);
+        }
+        lastScrollTop = currentScroll;
+    };
+
+    window.addEventListener('scroll', () => handleScroll(window.scrollY), { passive: true });
+    if (elements.pageWrapper) {
+        elements.pageWrapper.addEventListener(
+            'scroll',
+            (event) => handleScroll(event.target.scrollTop || 0),
+            { passive: true, capture: true }
+        );
+    }
 
     if (elements.increaseFontBtn) {
         elements.increaseFontBtn.addEventListener('click', () => changeFontSize(0.1));
