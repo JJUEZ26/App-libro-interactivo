@@ -171,6 +171,221 @@
 }
 
 /* =========================
+   RESALTADOS Y PANEL DE CITAS
+   ========================= */
+.text-highlight {
+    padding: 0 2px;
+    border-radius: 2px;
+    box-decoration-break: clone;
+}
+.highlight-yellow { background-color: rgba(255, 215, 102, 0.55); }
+.highlight-green { background-color: rgba(153, 232, 194, 0.55); }
+.highlight-blue { background-color: rgba(147, 205, 255, 0.55); }
+.text-highlight.highlight-focus {
+    outline: 2px solid rgba(0, 0, 0, 0.2);
+    transition: outline 0.3s ease;
+}
+
+.highlight-menu {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(15, 15, 15, 0.92);
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    font-size: 0.85rem;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.highlight-menu.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.highlight-menu--edit {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.highlight-menu-title {
+    font-weight: 600;
+    opacity: 0.8;
+    letter-spacing: 0.01em;
+}
+.highlight-menu-action {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+.highlight-menu-action.danger {
+    color: #ffb3b3;
+}
+.highlight-menu-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.2);
+}
+.highlight-menu-colors {
+    display: flex;
+    gap: 6px;
+}
+.highlight-color-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    background-clip: padding-box;
+}
+.highlight-color-btn.active {
+    border-color: #fff;
+}
+
+.highlight-panel-toggle {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 20;
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.highlight-panel-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+}
+.highlight-panel-toggle.active {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+.highlight-panel-icon {
+    font-size: 1rem;
+}
+
+.highlight-panel {
+    position: fixed;
+    top: 80px;
+    right: 22px;
+    width: min(360px, 90vw);
+    max-height: 70vh;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 16px;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 19;
+}
+.highlight-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.highlight-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.highlight-panel-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.highlight-panel-close {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: inherit;
+}
+.highlight-panel-body {
+    padding: 12px 16px 16px;
+    overflow-y: auto;
+}
+.highlight-panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.highlight-panel-item {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 10px;
+    align-items: start;
+    text-align: left;
+    border: none;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: inherit;
+}
+.highlight-panel-item:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+.highlight-panel-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+.highlight-panel-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: block;
+}
+.highlight-panel-meta {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    display: block;
+    margin-top: 6px;
+}
+.highlight-panel-empty {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+@media (max-width: 720px) {
+    .highlight-panel-toggle {
+        bottom: 70px;
+        right: 16px;
+    }
+    .highlight-panel {
+        right: 12px;
+        top: 70px;
+    }
+    .highlight-menu {
+        font-size: 0.8rem;
+    }
+}
+
+/* =========================
    ESTILOS PARA KARAOKE (MEJORADOS)
    ========================= */
 .audio-controls-container {
