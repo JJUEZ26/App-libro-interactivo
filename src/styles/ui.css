@@ -12,9 +12,26 @@
     transition: transform 0.3s ease;
 }
 
+#app-header.header-hidden {
+    transform: translateY(-110%);
+}
+
 body.theme-dark #app-header {
     background-color: rgba(10, 10, 10, 0.96);
     border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+body.app-mode-reader #app-header {
+    padding: 0.4rem 1rem;
+}
+
+body.app-mode-reader #main-title {
+    font-size: 1.4rem;
+}
+
+body.app-mode-reader .icon-btn {
+    width: 36px;
+    height: 30px;
 }
 
 .header-left { display: flex; align-items: center; gap: 0.5rem; }
