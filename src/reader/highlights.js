@@ -124,7 +124,9 @@ function bindSelectionHandlers() {
         if (!selection || selection.isCollapsed) {
             activeRange = null;
             hideSelectionMenu();
+            return;
         }
+        setTimeout(handleSelection, 10);
     });
 }
 

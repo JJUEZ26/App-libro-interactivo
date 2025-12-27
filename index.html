@@ -125,12 +125,13 @@
                             aria-label="Deslizar para avanzar páginas"
                         >
                     </div>
-                    <div id="progress-page-label" aria-live="polite">Página 1 / 1</div>
+                    <div class="progress-footer-row">
+                        <button id="highlight-panel-toggle" class="highlight-panel-toggle" type="button" aria-label="Abrir panel de citas">
+                            <span class="highlight-panel-icon" aria-hidden="true">⋯</span>
+                        </button>
+                        <div id="progress-page-label" aria-live="polite">Página 1 / 1</div>
+                    </div>
                 </footer>
-                <button id="highlight-panel-toggle" class="highlight-panel-toggle" type="button" aria-label="Abrir panel de citas">
-                    <span class="highlight-panel-icon">✦</span>
-                    Citas
-                </button>
                 <aside id="highlight-panel" class="highlight-panel" aria-label="Panel de citas" aria-hidden="true">
                     <div class="highlight-panel-header">
                         <h3>Citas guardadas</h3>
