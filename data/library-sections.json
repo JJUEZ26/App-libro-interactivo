@@ -11,7 +11,7 @@
       "id": "novelas-filosoficas",
       "title": "Novelas con tintes filosóficos",
       "subtitle": "Historias que invitan a pensar y a sentir.",
-      "bookIds": ["ivan_ilich.json", "el_extranjero_camus"],
+      "bookIds": ["ivan_ilich.json"],
       "placeholderCount": 2
     },
     {
@@ -24,7 +24,7 @@
       "id": "filosofia",
       "title": "Filosofía",
       "subtitle": "Espacio listo para nuevas ideas.",
-      "bookIds": [],
+      "bookIds": ["meditaciones"],
       "placeholderCount": 4
     },
     {
