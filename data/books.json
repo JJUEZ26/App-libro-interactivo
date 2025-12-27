@@ -46,5 +46,13 @@
     "description": "",
     "cover": "images/meditaciones.jpg",
     "storyFile": "stories/meditaciones.json"
+  },
+  {
+    "id": "el extranjero",
+    "title": "El extranjero",
+    "author": "Albert Camus",
+    "description": "",
+    "cover": "images/el_extranjero.jpg",
+    "storyFile": "stories/el_extranjero.json"
   }
 ]
