@@ -3469,13 +3469,13 @@
     "choices": [
       {
         "text": "Continuar",
-        "page": "p172"
+        "page": "p173"
       }
     ]
   },
   {
-    "id": "p172",
-    "page": 172,
+    "id": "p173",
+    "page": 173,
     "bgMusic": "",
     "sound": "",
     "effect": "",
@@ -3487,13 +3487,13 @@
     "choices": [
       {
         "text": "Continuar",
-        "page": "p173"
+        "page": "p374"
       }
     ]
   },
   {
-    "id": "p173",
-    "page": 173,
+    "id": "p374",
+    "page": 374,
     "bgMusic": "",
     "sound": "",
     "effect": "",
