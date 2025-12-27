@@ -111,12 +111,6 @@ export function renderPage(pageId) {
     }
 
     pageContent.appendChild(contentCenterer);
-    if (pageData.page !== undefined) {
-        const pageNumberDiv = document.createElement('div');
-        pageNumberDiv.className = 'page-number';
-        pageNumberDiv.textContent = `Página ${pageData.page}`;
-        pageContent.appendChild(pageNumberDiv);
-    }
     elements.pageWrapper.appendChild(pageContent);
 
     const playBtn = document.getElementById('karaoke-play-btn');
