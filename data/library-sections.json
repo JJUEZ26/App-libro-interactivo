@@ -11,7 +11,7 @@
       "id": "novelas-filosoficas",
       "title": "Novelas con tintes filosóficos",
       "subtitle": "Historias que invitan a pensar y a sentir.",
-      "bookIds": ["ivan_ilich.json"],
+      "bookIds": ["ivan_ilich.json", "el_extranjero"],
       "placeholderCount": 2
     },
     {
