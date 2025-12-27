@@ -58,3 +58,18 @@ export function loadPageHistory(bookId, localStorageRef = localStorage) {
     const savedHistory = localStorageRef.getItem(getPageHistoryKey(bookId));
     return savedHistory ? JSON.parse(savedHistory) : null;
 }
+
+export function getHighlightsKey(bookId) {
+    return `highlights-${bookId}`;
+}
+
+export function saveHighlights(bookId, highlights, localStorageRef = localStorage) {
+    if (!bookId) return;
+    localStorageRef.setItem(getHighlightsKey(bookId), JSON.stringify(highlights));
+}
+
+export function loadHighlights(bookId, localStorageRef = localStorage) {
+    if (!bookId) return [];
+    const stored = localStorageRef.getItem(getHighlightsKey(bookId));
+    return stored ? JSON.parse(stored) : [];
+}

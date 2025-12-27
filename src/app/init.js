@@ -1,6 +1,7 @@
 import { createLibrary } from '../books/index.js';
 import { setLibraryDependencies, openBook, switchToLibraryView } from '../library/view.js';
 import { loadStory } from '../reader/story.js';
+import { initHighlights } from '../reader/highlights.js';
 import { setRenderDependencies, renderPage, resetScrollPosition } from '../reader/render.js';
 import {
     closeNav,
@@ -47,12 +48,18 @@ export function initApp() {
         progressMarker: getEl('progress-marker'),
         progressSlider: getEl('progress-slider'),
         progressPageLabel: getEl('progress-page-label'),
-        appFooter: getEl('app-footer')
+        appFooter: getEl('app-footer'),
+        highlightMenu: getEl('highlight-menu'),
+        highlightEditMenu: getEl('highlight-edit-menu'),
+        highlightPanelToggle: getEl('highlight-panel-toggle'),
+        highlightPanel: getEl('highlight-panel'),
+        highlightList: getEl('highlight-list')
     };
 
     setLibraryDependencies({ elements, loadStory, goToPage });
     setRenderDependencies({ elements, goToPage });
     setNavigationDependencies({ elements, renderPage, resetScrollPosition, switchToLibraryView });
+    initHighlights({ elements, goToPage });
 
     const library = createLibrary({
         libraryHero: elements.libraryHero,

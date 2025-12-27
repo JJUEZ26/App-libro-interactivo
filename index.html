@@ -90,7 +90,26 @@
             <section id="reader-view" aria-label="Lector de historias" hidden>
                 <div id="book-container">
                     <div id="book">
-                        <div id="page-wrapper"></div>
+                        <div id="page-wrapper">
+                            <div id="highlight-menu" class="highlight-menu" role="menu" aria-hidden="true">
+                                <button type="button" class="highlight-menu-action" data-action="highlight">Resaltar</button>
+                                <div class="highlight-menu-divider"></div>
+                                <div class="highlight-menu-colors" role="group" aria-label="Elegir color">
+                                    <button type="button" class="highlight-color-btn highlight-yellow" data-color-id="sun" aria-label="Amarillo suave"></button>
+                                    <button type="button" class="highlight-color-btn highlight-green" data-color-id="mint" aria-label="Menta"></button>
+                                    <button type="button" class="highlight-color-btn highlight-blue" data-color-id="sky" aria-label="Celeste"></button>
+                                </div>
+                            </div>
+                            <div id="highlight-edit-menu" class="highlight-menu highlight-menu--edit" role="menu" aria-hidden="true">
+                                <span class="highlight-menu-title">Resaltado</span>
+                                <div class="highlight-menu-colors" role="group" aria-label="Cambiar color">
+                                    <button type="button" class="highlight-color-btn highlight-yellow" data-color-id="sun" aria-label="Amarillo suave"></button>
+                                    <button type="button" class="highlight-color-btn highlight-green" data-color-id="mint" aria-label="Menta"></button>
+                                    <button type="button" class="highlight-color-btn highlight-blue" data-color-id="sky" aria-label="Celeste"></button>
+                                </div>
+                                <button type="button" class="highlight-menu-action danger" data-action="delete">Eliminar resaltado</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -108,6 +127,19 @@
                     </div>
                     <div id="progress-page-label" aria-live="polite">Página 1 / 1</div>
                 </footer>
+                <button id="highlight-panel-toggle" class="highlight-panel-toggle" type="button" aria-label="Abrir panel de citas">
+                    <span class="highlight-panel-icon">✦</span>
+                    Citas
+                </button>
+                <aside id="highlight-panel" class="highlight-panel" aria-label="Panel de citas" aria-hidden="true">
+                    <div class="highlight-panel-header">
+                        <h3>Citas guardadas</h3>
+                        <button type="button" class="highlight-panel-close" data-action="close" aria-label="Cerrar panel">✕</button>
+                    </div>
+                    <div class="highlight-panel-body">
+                        <div id="highlight-list" class="highlight-panel-list"></div>
+                    </div>
+                </aside>
             </section>
         </main>
 

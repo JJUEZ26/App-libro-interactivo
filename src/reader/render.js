@@ -1,5 +1,6 @@
 import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects } from '../effects/index.js';
+import { applyHighlightsForPage } from './highlights.js';
 import {
     playPageSound,
     startKaraokeSync,
@@ -37,7 +38,7 @@ export function preloadNextImages(currentPageId) {
 export function renderPage(pageId) {
     if (!elements?.pageWrapper) return;
 
-    elements.pageWrapper.innerHTML = '';
+    elements.pageWrapper.querySelectorAll('.page-content').forEach((node) => node.remove());
     if (!state.story) return;
 
     const pageData = state.story.find((page) => page.id === pageId);
@@ -150,6 +151,7 @@ export function renderPage(pageId) {
 
     handlePageEffects(pageData.effect, { getAppMode });
     preloadNextImages(pageId);
+    applyHighlightsForPage(pageId);
 }
 
 export function resetScrollPosition() {
