@@ -80,29 +80,6 @@
         <main id="main-content">
             <!-- VISTA BIBLIOTECA -->
             <section id="library-view" aria-label="Biblioteca de libros interactivos">
-                <!-- Panel de autenticación -->
-                <section id="auth-section" class="auth-section" aria-label="Autenticación de usuarios">
-                    <div class="auth-card">
-                        <h2>Acceso</h2>
-                        <p id="auth-status" class="auth-status">Comprobando estado de la sesión...</p>
-                        <form id="auth-form" class="auth-form" novalidate>
-                            <label for="auth-email">Correo electrónico</label>
-                            <input id="auth-email" type="email" autocomplete="email" placeholder="tucorreo@email.com" required>
-
-                            <label for="auth-password">Contraseña</label>
-                            <input id="auth-password" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres" required>
-
-                            <div class="auth-actions">
-                                <button id="auth-register" type="button">Registrarse</button>
-                                <button id="auth-login" type="button" class="secondary">Iniciar sesión</button>
-                            </div>
-
-                            <button id="auth-logout" type="button" class="auth-logout-btn hidden">Cerrar sesión</button>
-                            <p id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></p>
-                        </form>
-                    </div>
-                </section>
-
                 <section id="library-hero" class="library-hero" aria-label="Libro destacado"></section>
                 <div id="library-sections" class="library-sections">
                     <!-- Las secciones se rellenan con JS -->
