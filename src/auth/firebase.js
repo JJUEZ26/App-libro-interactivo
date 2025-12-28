@@ -1,8 +1,10 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
 
 let firebaseApp;
 let authInstance;
+let analyticsInstance;
 let configPromise;
 
 // Recupera la configuración desde un endpoint seguro (Vercel Functions).
@@ -25,6 +27,9 @@ export async function getFirebaseApp() {
     if (!firebaseApp) {
         const firebaseConfig = await loadFirebaseConfig();
         firebaseApp = initializeApp(firebaseConfig);
+        if (firebaseConfig.measurementId) {
+            analyticsInstance = getAnalytics(firebaseApp);
+        }
     }
 
     return firebaseApp;
@@ -38,4 +43,11 @@ export async function getFirebaseAuth() {
     }
 
     return authInstance;
+}
+
+export async function getFirebaseAnalytics() {
+    if (!analyticsInstance) {
+        await getFirebaseApp();
+    }
+    return analyticsInstance;
 }
