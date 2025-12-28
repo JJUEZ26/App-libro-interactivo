@@ -3,9 +3,9 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut
-} from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
+} from 'firebase/auth';
 
-import { getFirebaseAuth } from './firebase.js';
+import { auth } from '../lib/firebase.js';
 
 const authErrorMessages = {
     'auth/email-already-in-use': 'Este correo ya está registrado. Prueba iniciar sesión.',
@@ -23,25 +23,21 @@ export function formatAuthError(error) {
 }
 
 // Registra un usuario nuevo con correo y contraseña.
-export async function registerUser(email, password) {
-    const auth = await getFirebaseAuth();
+export function registerUser(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
 }
 
 // Inicia sesión con correo y contraseña.
-export async function loginUser(email, password) {
-    const auth = await getFirebaseAuth();
+export function loginUser(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
 }
 
 // Cierra la sesión del usuario actual.
-export async function logoutUser() {
-    const auth = await getFirebaseAuth();
+export function logoutUser() {
     return signOut(auth);
 }
 
 // Escucha cambios de sesión para actualizar la interfaz.
-export async function subscribeToAuthChanges(callback) {
-    const auth = await getFirebaseAuth();
+export function subscribeToAuthChanges(callback) {
     return onAuthStateChanged(auth, callback);
 }
