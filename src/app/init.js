@@ -16,6 +16,7 @@ import {
 import { loadPreferences, saveVolume } from '../utils/storage.js';
 import { applyTheme, changeFontSize, cycleTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
 import { ChatFeature } from '../ui/ChatModule.js';
+import { initAuthUI } from '../auth/ui.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
 
@@ -188,6 +189,8 @@ export function initApp() {
             resetScrollPosition();
         }
     });
+
+    initAuthUI();
 
     const headerEl = getEl('app-header');
     let lastScrollTop = 0;
