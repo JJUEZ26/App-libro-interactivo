@@ -5,7 +5,6 @@ import {
     registerUser,
     subscribeToAuthChanges
 } from './auth.js';
-import { initializeFirebase } from './firebase.js';
 
 function setFeedback(feedbackEl, message, type) {
     feedbackEl.textContent = message;
@@ -52,11 +51,6 @@ export function initAuthUI() {
             loginBtn.classList.remove('hidden');
         }
     };
-
-    initializeFirebase().catch((error) => {
-        statusEl.textContent = 'No se pudo iniciar Firebase.';
-        setFeedback(feedbackEl, formatAuthError(error), 'error');
-    });
 
     registerBtn.addEventListener('click', async () => {
         clearFeedback();
