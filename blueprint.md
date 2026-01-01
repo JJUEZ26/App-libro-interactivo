@@ -55,3 +55,6 @@ La aplicación mantendrá su estética actual, pero se mejorará con elementos v
 5. **Integración UI del chat de voz:**
     * Añadir controles de voz en `src/ui/ChatModule.js` (botón de iniciar/detener, selector de voz, estado).
     * Permitir guardar la API Key en `localStorage` para iniciar sesiones desde el cliente.
+6. **Uso de API Key desde Vercel:**
+    * Exponer un endpoint `api/live-key.js` que entregue `GEMINI_API_KEY` al cliente cuando no exista una clave local.
+    * Consumir la clave desde `ChatModule` antes de pedirla manualmente al usuario.

@@ -68,9 +68,12 @@ export class GeminiLiveClient {
             this.ws.addEventListener('message', (event) => {
                 this.handleServerMessage(event.data);
             });
-            this.ws.addEventListener('close', () => {
-                this.onStatus?.('Conexión cerrada.');
-            });
+        this.ws.addEventListener('close', (event) => {
+            this.onStatus?.('Conexión cerrada.');
+            if (event?.reason) {
+                this.onError?.(new Error(`WebSocket cerrado (${event.code}): ${event.reason}`));
+            }
+        });
             this.ws.addEventListener('error', (event) => {
                 this.onError?.(event);
                 reject(new Error('No se pudo conectar al WebSocket de Gemini Live.'));
@@ -131,7 +134,7 @@ export class GeminiLiveClient {
         const payload = {
             setup: {
                 model: `models/${this.model}`,
-                response_modalities: ['AUDIO'],
+                response_modalities: ['AUDIO', 'TEXT'],
                 speech_config: {
                     voice_config: {
                         prebuilt_voice_config: {

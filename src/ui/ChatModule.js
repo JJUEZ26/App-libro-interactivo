@@ -629,7 +629,7 @@ export class ChatFeature {
     }
 
     async startLiveVoice() {
-        const apiKey = this.getLiveApiKey();
+        const apiKey = await this.getLiveApiKey();
         if (!apiKey) {
             this.statusLine.textContent = 'Ingresa una API Key de Gemini para usar voz en vivo.';
             return;
@@ -707,17 +707,31 @@ export class ChatFeature {
         }
     }
 
-    getLiveApiKey() {
+    async getLiveApiKey() {
         const fromOptions = this.options.liveApiKey?.trim();
         if (fromOptions) return fromOptions;
         const fromWindow = window.GEMINI_LIVE_API_KEY?.trim();
         if (fromWindow) return fromWindow;
         const stored = localStorage.getItem('gemini_live_api_key');
         if (stored) return stored;
+        const fromServer = await this.fetchLiveApiKeyFromServer();
+        if (fromServer) return fromServer;
         const promptValue = window.prompt('Introduce tu API Key de Gemini Live');
         if (promptValue) {
             localStorage.setItem('gemini_live_api_key', promptValue.trim());
             return promptValue.trim();
+        }
+        return '';
+    }
+
+    async fetchLiveApiKeyFromServer() {
+        try {
+            const response = await fetch('/api/live-key');
+            if (!response.ok) return '';
+            const data = await response.json();
+            if (data?.apiKey) return String(data.apiKey).trim();
+        } catch (error) {
+            console.warn('No se pudo obtener la API Key del servidor:', error);
         }
         return '';
     }
