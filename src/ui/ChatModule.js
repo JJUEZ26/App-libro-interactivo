@@ -252,12 +252,12 @@ export class ChatFeature {
         this.panel.setAttribute('aria-label', 'Chat de IA');
 
         const header = document.createElement('div');
+        this.voiceSelect = document.createElement('select');
         header.className = 'ai-chat-header';
         const title = document.createElement('h3');
         title.textContent = 'Asistente de lectura';
         const headerActions = document.createElement('div');
         headerActions.className = 'ai-chat-header-actions';
-        this.voiceSelect = document.createElement('select');
         this.voiceSelect.className = 'ai-chat-select';
         this.voiceSelect.setAttribute('aria-label', 'Voz del asistente');
         ['Puck', 'Kore'].forEach((voice) => {
@@ -628,12 +628,20 @@ export class ChatFeature {
         }
     }
 
+    // ==========================================================
+    // INICIO: CONFIGURACIÓN PARA PRUEBA NUCLEAR (HARDCODED)
+    // ==========================================================
     async startLiveVoice() {
-        const apiKey = await this.getLiveApiKey();
+        // ⚠️ USANDO TU LLAVE DIRECTAMENTE PARA SALTARTE VERCEL Y CACHÉ
+        const apiKey = "AIzaSyAmpUpKUhpIFz8HRA7lH5wd8Tb78pJVMO4";
+
+        console.log("☢️ PRUEBA NUCLEAR - Iniciando con llave directa:", apiKey);
+
         if (!apiKey) {
-            this.statusLine.textContent = 'Ingresa una API Key de Gemini para usar voz en vivo.';
+            this.statusLine.textContent = 'Falta la API Key';
             return;
         }
+
         if (!this.liveClient) {
             this.liveClient = new GeminiLiveClient({
                 apiKey,
@@ -659,6 +667,7 @@ export class ChatFeature {
         this.statusLine.textContent = 'Conectando al chat de voz...';
         this.liveButton.classList.add('active');
         this.liveButton.textContent = 'Voz activa';
+
         try {
             await this.liveClient.start();
             this.isLiveActive = true;
@@ -669,11 +678,14 @@ export class ChatFeature {
             this.liveButton.textContent = 'Voz';
         }
     }
+    // ==========================================================
+    // FIN: CONFIGURACIÓN PARA PRUEBA NUCLEAR
+    // ==========================================================
 
     stopLiveVoice() {
         if (this.liveClient) {
             this.liveClient.stop();
-            this.liveClient = null;
+            this.liveClient = null; // IMPORTANTE: Mata el cliente viejo
         }
         this.isLiveActive = false;
         this.liveButton.classList.remove('active');
@@ -708,6 +720,7 @@ export class ChatFeature {
     }
 
     async getLiveApiKey() {
+        // ESTA FUNCIÓN SE IGNORA EN LA PRUEBA NUCLEAR
         const fromOptions = this.options.liveApiKey?.trim();
         if (fromOptions) return fromOptions;
         const fromWindow = window.GEMINI_LIVE_API_KEY?.trim();
