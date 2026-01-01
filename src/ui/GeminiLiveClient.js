@@ -1,333 +1,209 @@
+/* src/ui/GeminiLiveClient.js */
 export class GeminiLiveClient {
-constructor({
-        apiKey,
-        // CORRECCIÓN 1: Usar el modelo correcto para Live
-        model = 'gemini-2.0-flash-exp', 
-        voiceName = 'Puck',
-        targetSampleRate = 16000,
-        vadThreshold = 0.015, // Ajusta si es muy sensible
-        vadSilenceMs = 500,   // Menos tiempo para respuestas más rápidas
-        vadHangoverMs = 250,
-        onStatus,
-        onText,
-        onAudio,
-        onError,
-        onVadChange
-    } = {}) {
+    constructor({ apiKey, model = 'gemini-2.0-flash-exp', voiceName = 'Puck', onStatus, onText, onAudio, onError }) {
         this.apiKey = apiKey;
         this.model = model;
-        // ... (resto de tus variables igual) ...
         this.voiceName = voiceName;
-        this.targetSampleRate = targetSampleRate;
-        this.vadThreshold = vadThreshold;
-        this.vadSilenceMs = vadSilenceMs;
-        this.vadHangoverMs = vadHangoverMs;
         this.onStatus = onStatus;
         this.onText = onText;
         this.onAudio = onAudio;
         this.onError = onError;
-        this.onVadChange = onVadChange;
-        
-        // ... (inicialización de variables null) ...
+
+        // Estado interno
         this.ws = null;
-        this.captureContext = null;
-        this.captureSource = null;
-        this.captureProcessor = null;
-        this.captureGain = null;
-        this.captureStream = null;
+        this.audioContext = null;      // Para capturar micrófono
+        this.mediaStream = null;
+        this.processor = null;
+        this.inputSampleRate = 16000;
+        
+        // Contexto de salida (Reproducción) - Lo creamos UNA sola vez
         this.outputContext = null;
-        this.playbackTime = 0;
-        this.isSpeaking = false;
-        this.lastVoiceTs = 0;
-        this.isStarted = false;
+        this.nextPlayTime = 0;
+    }
+
+    async start() {
+        this.onStatus?.("Iniciando conexión...");
+        // Inicializar contexto de salida si no existe
+        if (!this.outputContext) {
+            this.outputContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+        }
+        
+        await this.connect();
+        await this.startRecording();
     }
 
     async connect() {
-        if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
-        if (!this.apiKey) throw new Error('Falta la API Key de Gemini Live.');
-        
-        // CORRECCIÓN 2: Usar el endpoint BidiGenerateContent que es más estable para Live
-        const endpoint = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
+        const url = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
 
-        await new Promise((resolve, reject) => {
-            this.ws = new WebSocket(endpoint);
-            this.ws.addEventListener('open', () => {
-                this.onStatus?.('Conectado al chat de voz.');
+        return new Promise((resolve, reject) => {
+            this.ws = new WebSocket(url);
+
+            this.ws.onopen = () => {
+                this.onStatus?.("🟢 Conectado. Habla ahora.");
                 this.sendSetup();
                 resolve();
-            });
-            this.ws.addEventListener('message', (event) => {
-                this.handleServerMessage(event.data);
-            });
-            this.ws.addEventListener('close', (event) => {
-                this.onStatus?.('Conexión cerrada.');
-                console.log("WebSocket Close Code:", event.code, "Reason:", event.reason); // Log para debug
-                if (event?.code !== 1000 && event?.code !== 1005) { // Ignorar cierres normales
-                     this.onError?.(new Error(`WebSocket cerrado (${event.code}): ${event.reason || 'Sin razón'}`));
-                }
-            });
-            this.ws.addEventListener('error', (event) => {
-                console.error("WebSocket Error nativo:", event);
-                // No rechaces la promesa aquí inmediatamente, deja que el 'close' maneje la lógica
-                // o usa un timeout, porque el evento 'error' de WS da poca info.
-            });
+            };
+
+            this.ws.onmessage = async (event) => {
+                this.handleMessage(event.data);
+            };
+
+            this.ws.onclose = (ev) => {
+                this.onStatus?.("🔴 Desconectado");
+                console.log("Cierre WS:", ev.code, ev.reason);
+            };
+
+            this.ws.onerror = (err) => {
+                console.error("Error WS:", err);
+                this.onError?.(err);
+                reject(err);
+            };
         });
-    }
-    async startAudioCapture() {
-        if (!navigator.mediaDevices?.getUserMedia) {
-            throw new Error('getUserMedia no está disponible en este navegador.');
-        }
-
-        this.captureStream = await navigator.mediaDevices.getUserMedia({
-            audio: {
-                channelCount: 1,
-                echoCancellation: true,
-                noiseSuppression: true,
-                autoGainControl: true
-            }
-        });
-
-        this.captureContext = new AudioContext();
-        this.captureSource = this.captureContext.createMediaStreamSource(this.captureStream);
-        this.captureProcessor = this.captureContext.createScriptProcessor(4096, 1, 1);
-        this.captureGain = this.captureContext.createGain();
-        this.captureGain.gain.value = 0;
-        this.captureSource.connect(this.captureProcessor);
-        this.captureProcessor.connect(this.captureGain);
-        this.captureGain.connect(this.captureContext.destination);
-
-        this.captureProcessor.onaudioprocess = (event) => {
-            const inputBuffer = event.inputBuffer.getChannelData(0);
-            const rms = this.calculateRms(inputBuffer);
-            this.updateVad(rms);
-            const now = performance.now();
-            const shouldSend = this.isSpeaking || (now - this.lastVoiceTs < this.vadHangoverMs);
-            if (!shouldSend) return;
-
-            const downsampled = downsampleBuffer(inputBuffer, this.captureContext.sampleRate, this.targetSampleRate);
-            const pcm16 = float32ToInt16(downsampled);
-            const base64 = encodeBase64(new Uint8Array(pcm16.buffer));
-            this.sendAudioChunk(base64, this.targetSampleRate);
-        };
-
-        if (this.captureContext.state === 'suspended') {
-            await this.captureContext.resume();
-        }
-    }
-
-    ensureOutputContext() {
-        if (!this.outputContext) {
-            this.outputContext = new AudioContext();
-            this.playbackTime = this.outputContext.currentTime;
-        }
     }
 
     sendSetup() {
-        const payload = {
+        const setupMessage = {
             setup: {
                 model: `models/${this.model}`,
-                response_modalities: ['AUDIO', 'TEXT'],
-                speech_config: {
-                    voice_config: {
-                        prebuilt_voice_config: {
-                            voice_name: this.voiceName
-                        }
+                generation_config: {
+                    response_modalities: ["AUDIO"],
+                    speech_config: {
+                        voice_config: { prebuilt_voice_config: { voice_name: this.voiceName } }
                     }
                 }
             }
         };
-        this.send(payload);
+        this.ws.send(JSON.stringify(setupMessage));
     }
 
-    sendAudioChunk(base64Audio, sampleRate) {
-        this.send({
-            realtime_input: {
-                media_chunks: [
-                    {
-                        mime_type: `audio/pcm;rate=${sampleRate}`,
-                        data: base64Audio
-                    }
-                ]
+    async handleMessage(data) {
+        if (data instanceof Blob) {
+            try {
+                const arrayBuffer = await data.arrayBuffer();
+                this.playAudioChunk(arrayBuffer);
+                this.onAudio?.(); 
+            } catch (e) {
+                console.error("Error decodificando audio", e);
             }
+        } else {
+            // Manejo de mensajes de control (texto)
+            try {
+                // Aquí podrías procesar 'turn_complete' si quisieras
+            } catch (e) {}
+        }
+    }
+
+    async startRecording() {
+        // Contexto de entrada (Micrófono)
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
+            sampleRate: this.inputSampleRate
         });
-    }
 
-    handleServerMessage(raw) {
-        let message = null;
         try {
-            message = JSON.parse(raw);
-        } catch (error) {
-            this.onError?.(error);
-            return;
-        }
-
-        if (message.error) {
-            this.onError?.(message.error);
-        }
-
-        const serverContent = message.server_content;
-        if (serverContent?.model_turn?.parts?.length) {
-            const parts = serverContent.model_turn.parts;
-            const textParts = parts
-                .filter((part) => typeof part.text === 'string')
-                .map((part) => part.text)
-                .join('');
-            if (textParts) {
-                this.onText?.(textParts, serverContent.turn_complete === true);
-            }
-            for (const part of parts) {
-                if (part.inline_data?.data && part.inline_data?.mime_type?.includes('audio/pcm')) {
-                    this.handleAudioChunk(part.inline_data);
+            this.mediaStream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    channelCount: 1,
+                    sampleRate: this.inputSampleRate
                 }
-            }
+            });
+
+            const source = this.audioContext.createMediaStreamSource(this.mediaStream);
+            this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
+
+            this.processor.onaudioprocess = (e) => {
+                const inputData = e.inputBuffer.getChannelData(0);
+                const pcm16 = this.convertFloat32ToInt16(inputData);
+                this.sendAudioChunk(pcm16);
+            };
+
+            source.connect(this.processor);
+            this.processor.connect(this.audioContext.destination);
+
+        } catch (err) {
+            this.onError?.("Error mic: " + err.message);
         }
     }
 
-    handleAudioChunk({ data, mime_type: mimeType }) {
-        const sampleRate = extractSampleRate(mimeType) || 24000;
-        const bytes = decodeBase64(data);
-        const pcm16 = new Int16Array(bytes.buffer, bytes.byteOffset, bytes.byteLength / 2);
-        const float32 = int16ToFloat32(pcm16);
-        this.ensureOutputContext();
-
-        const audioBuffer = this.outputContext.createBuffer(1, float32.length, sampleRate);
-        audioBuffer.getChannelData(0).set(float32);
-
-        const source = this.outputContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(this.outputContext.destination);
-
-        if (this.playbackTime < this.outputContext.currentTime) {
-            this.playbackTime = this.outputContext.currentTime;
+    sendAudioChunk(int16Data) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            const base64Audio = this.arrayBufferToBase64(int16Data.buffer);
+            const msg = {
+                realtime_input: {
+                    media_chunks: [{
+                        mime_type: "audio/pcm",
+                        data: base64Audio
+                    }]
+                }
+            };
+            this.ws.send(JSON.stringify(msg));
         }
-        source.start(this.playbackTime);
-        this.playbackTime += audioBuffer.duration;
-        this.onAudio?.();
-    }
-
-    updateVad(rms) {
-        const now = performance.now();
-        if (rms > this.vadThreshold) {
-            this.lastVoiceTs = now;
-            if (!this.isSpeaking) {
-                this.isSpeaking = true;
-                this.onVadChange?.(true);
-            }
-        } else if (this.isSpeaking && now - this.lastVoiceTs > this.vadSilenceMs) {
-            this.isSpeaking = false;
-            this.onVadChange?.(false);
-        }
-    }
-
-    calculateRms(buffer) {
-        let sum = 0;
-        for (let i = 0; i < buffer.length; i += 1) {
-            sum += buffer[i] * buffer[i];
-        }
-        return Math.sqrt(sum / buffer.length);
-    }
-
-    send(payload) {
-        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
-        this.ws.send(JSON.stringify(payload));
     }
 
     stop() {
-        if (this.captureProcessor) {
-            this.captureProcessor.disconnect();
-            this.captureProcessor.onaudioprocess = null;
-            this.captureProcessor = null;
+        // Detener micrófono
+        if (this.mediaStream) {
+            this.mediaStream.getTracks().forEach(track => track.stop());
         }
-        if (this.captureGain) {
-            this.captureGain.disconnect();
-            this.captureGain = null;
+        if (this.processor) {
+            this.processor.disconnect();
+            this.processor = null;
         }
-        if (this.captureSource) {
-            this.captureSource.disconnect();
-            this.captureSource = null;
+        if (this.audioContext) {
+            this.audioContext.close();
         }
-        if (this.captureContext) {
-            this.captureContext.close();
-            this.captureContext = null;
-        }
-        if (this.captureStream) {
-            this.captureStream.getTracks().forEach((track) => track.stop());
-            this.captureStream = null;
-        }
-        if (this.outputContext) {
-            this.outputContext.close();
-            this.outputContext = null;
-        }
+        // Cerrar WebSocket
         if (this.ws) {
             this.ws.close();
-            this.ws = null;
         }
-        this.isStarted = false;
-        this.isSpeaking = false;
-        this.playbackTime = 0;
+        this.onStatus?.("⏹️ Detenido");
     }
-}
 
-function downsampleBuffer(buffer, sourceRate, targetRate) {
-    if (targetRate === sourceRate) return buffer;
-    const ratio = sourceRate / targetRate;
-    const newLength = Math.round(buffer.length / ratio);
-    const result = new Float32Array(newLength);
-    let offsetResult = 0;
-    let offsetBuffer = 0;
-    while (offsetResult < result.length) {
-        const nextOffsetBuffer = Math.round((offsetResult + 1) * ratio);
-        let sum = 0;
-        let count = 0;
-        for (let i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i += 1) {
-            sum += buffer[i];
-            count += 1;
+    // --- Utilidades ---
+    convertFloat32ToInt16(float32Array) {
+        const int16Array = new Int16Array(float32Array.length);
+        for (let i = 0; i < float32Array.length; i++) {
+            const s = Math.max(-1, Math.min(1, float32Array[i]));
+            int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
         }
-        result[offsetResult] = sum / count;
-        offsetResult += 1;
-        offsetBuffer = nextOffsetBuffer;
+        return int16Array;
     }
-    return result;
-}
 
-function float32ToInt16(buffer) {
-    const output = new Int16Array(buffer.length);
-    for (let i = 0; i < buffer.length; i += 1) {
-        let sample = Math.max(-1, Math.min(1, buffer[i]));
-        output[i] = sample < 0 ? sample * 0x8000 : sample * 0x7fff;
+    arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary);
     }
-    return output;
-}
 
-function int16ToFloat32(buffer) {
-    const output = new Float32Array(buffer.length);
-    for (let i = 0; i < buffer.length; i += 1) {
-        output[i] = buffer[i] / 0x8000;
+    playAudioChunk(arrayBuffer) {
+        // Usamos el contexto de salida persistente
+        if (!this.outputContext) return;
+
+        const float32Data = new Float32Array(arrayBuffer.byteLength / 2);
+        const dataView = new DataView(arrayBuffer);
+
+        for (let i = 0; i < float32Data.length; i++) {
+            const int16 = dataView.getInt16(i * 2, true);
+            float32Data[i] = int16 / 32768.0;
+        }
+
+        const buffer = this.outputContext.createBuffer(1, float32Data.length, 24000);
+        buffer.copyToChannel(float32Data, 0);
+
+        const source = this.outputContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.outputContext.destination);
+
+        // Lógica simple de cola para que no se superpongan los audios
+        const now = this.outputContext.currentTime;
+        // Si el próximo tiempo de reproducción es menor que ahora, empezamos ya.
+        // Si no, programamos para cuando termine el anterior.
+        const startTime = Math.max(now, this.nextPlayTime);
+        
+        source.start(startTime);
+        this.nextPlayTime = startTime + buffer.duration;
     }
-    return output;
-}
-
-function encodeBase64(bytes) {
-    let binary = '';
-    const chunkSize = 0x8000;
-    for (let i = 0; i < bytes.length; i += chunkSize) {
-        const chunk = bytes.subarray(i, i + chunkSize);
-        binary += String.fromCharCode(...chunk);
-    }
-    return btoa(binary);
-}
-
-function decodeBase64(base64) {
-    const binary = atob(base64);
-    const len = binary.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i += 1) {
-        bytes[i] = binary.charCodeAt(i);
-    }
-    return bytes;
-}
-
-function extractSampleRate(mimeType = '') {
-    const match = mimeType.match(/rate=(\d+)/);
-    return match ? Number(match[1]) : null;
 }
