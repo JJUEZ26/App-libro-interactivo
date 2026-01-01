@@ -7,7 +7,7 @@ export class ChatFeature {
             container: document.body,
             enableTTS: false,
             enableLiveVoice: true,
-            liveVoiceModel: 'gemini-2.5-flash-preview-live',
+            liveVoiceModel: 'gemini-2.0-flash-exp',
             liveApiKey: '',
             ...options
         };
