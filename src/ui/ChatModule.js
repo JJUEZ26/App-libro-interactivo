@@ -1,10 +1,14 @@
 import { state } from '../app/state.js';
+import { GeminiLiveClient } from './GeminiLiveClient.js';
 
 export class ChatFeature {
     constructor(options = {}) {
         this.options = {
             container: document.body,
             enableTTS: false,
+            enableLiveVoice: true,
+            liveVoiceModel: 'gemini-2.5-flash-preview-live',
+            liveApiKey: '',
             ...options
         };
         this.messages = [];
@@ -14,6 +18,10 @@ export class ChatFeature {
         this.messageElements = new Map();
         this.isOpen = false;
         this.recognition = null;
+        this.liveClient = null;
+        this.isLiveActive = false;
+        this.liveTextMessageId = null;
+        this.liveTextBuffer = '';
         this.setupStyles();
         this.createUI();
         this.setupSpeechRecognition();
@@ -211,6 +219,23 @@ export class ChatFeature {
                 padding: 0 16px 8px;
                 color: #94a3b8;
             }
+
+            .ai-chat-select {
+                border-radius: 999px;
+                border: 1px solid rgba(148, 163, 184, 0.35);
+                background: rgba(15, 23, 42, 0.7);
+                color: #e2e8f0;
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .ai-chat-button.live {
+                background: #0ea5e9;
+            }
+
+            .ai-chat-button.live.active {
+                background: #22c55e;
+            }
         `;
         document.head.appendChild(style);
     }
@@ -232,6 +257,15 @@ export class ChatFeature {
         title.textContent = 'Asistente de lectura';
         const headerActions = document.createElement('div');
         headerActions.className = 'ai-chat-header-actions';
+        this.voiceSelect = document.createElement('select');
+        this.voiceSelect.className = 'ai-chat-select';
+        this.voiceSelect.setAttribute('aria-label', 'Voz del asistente');
+        ['Puck', 'Kore'].forEach((voice) => {
+            const option = document.createElement('option');
+            option.value = voice;
+            option.textContent = voice;
+            this.voiceSelect.appendChild(option);
+        });
         const resetButton = document.createElement('button');
         resetButton.className = 'ai-chat-reset';
         resetButton.type = 'button';
@@ -241,6 +275,7 @@ export class ChatFeature {
         closeButton.className = 'ai-chat-close';
         closeButton.setAttribute('aria-label', 'Cerrar chat');
         closeButton.textContent = '✕';
+        headerActions.appendChild(this.voiceSelect);
         headerActions.appendChild(resetButton);
         headerActions.appendChild(closeButton);
         header.appendChild(title);
@@ -251,7 +286,7 @@ export class ChatFeature {
 
         this.statusLine = document.createElement('div');
         this.statusLine.className = 'ai-chat-status';
-        this.statusLine.textContent = 'Pregunta sobre la página actual del libro.';
+        this.statusLine.textContent = 'Pregunta sobre la página actual o activa el modo voz.';
 
         const inputArea = document.createElement('div');
         inputArea.className = 'ai-chat-input-area';
@@ -268,6 +303,16 @@ export class ChatFeature {
         this.micButton.textContent = '🎙️';
         this.micButton.setAttribute('aria-label', 'Dictar pregunta');
 
+        this.liveButton = document.createElement('button');
+        this.liveButton.className = 'ai-chat-button live';
+        this.liveButton.type = 'button';
+        this.liveButton.textContent = 'Voz';
+        this.liveButton.setAttribute('aria-label', 'Iniciar conversación de voz');
+        if (!this.options.enableLiveVoice) {
+            this.liveButton.disabled = true;
+            this.liveButton.title = 'Modo voz deshabilitado.';
+        }
+
         this.sendButton = document.createElement('button');
         this.sendButton.className = 'ai-chat-button';
         this.sendButton.type = 'button';
@@ -275,6 +320,7 @@ export class ChatFeature {
 
         inputArea.appendChild(this.input);
         inputArea.appendChild(this.micButton);
+        inputArea.appendChild(this.liveButton);
         inputArea.appendChild(this.sendButton);
 
         this.panel.appendChild(header);
@@ -295,6 +341,8 @@ export class ChatFeature {
             }
         });
         this.micButton.addEventListener('click', () => this.startVoiceRecognition());
+        this.liveButton.addEventListener('click', () => this.toggleLiveVoice());
+        this.voiceSelect.addEventListener('change', () => this.updateLiveVoice());
         resetButton.addEventListener('click', () => this.resetConversation());
     }
 
@@ -315,6 +363,7 @@ export class ChatFeature {
     closePanel() {
         this.isOpen = false;
         this.panel.classList.remove('open');
+        if (this.isLiveActive) this.stopLiveVoice();
     }
 
     addMessage({ sender, text, status }) {
@@ -562,6 +611,115 @@ export class ChatFeature {
             console.warn('No se pudo iniciar reconocimiento de voz:', error);
             this.micButton.classList.remove('recording');
         }
+    }
+
+    updateLiveVoice() {
+        if (this.liveClient) {
+            this.liveClient.setVoiceName(this.voiceSelect.value);
+        }
+    }
+
+    async toggleLiveVoice() {
+        if (!this.options.enableLiveVoice) return;
+        if (this.isLiveActive) {
+            this.stopLiveVoice();
+        } else {
+            await this.startLiveVoice();
+        }
+    }
+
+    async startLiveVoice() {
+        const apiKey = this.getLiveApiKey();
+        if (!apiKey) {
+            this.statusLine.textContent = 'Ingresa una API Key de Gemini para usar voz en vivo.';
+            return;
+        }
+        if (!this.liveClient) {
+            this.liveClient = new GeminiLiveClient({
+                apiKey,
+                model: this.options.liveVoiceModel,
+                voiceName: this.voiceSelect.value,
+                onStatus: (message) => {
+                    this.statusLine.textContent = message;
+                },
+                onText: (text, isFinal) => {
+                    this.handleLiveText(text, isFinal);
+                },
+                onVadChange: (isSpeaking) => {
+                    this.statusLine.textContent = isSpeaking
+                        ? 'Detectando voz...'
+                        : 'Silencio detectado. Esperando respuesta.';
+                },
+                onError: (error) => {
+                    console.error('Gemini Live error:', error);
+                    this.statusLine.textContent = 'Error en el chat de voz. Revisa la consola.';
+                }
+            });
+        }
+
+        this.statusLine.textContent = 'Conectando al chat de voz...';
+        this.liveButton.classList.add('active');
+        this.liveButton.textContent = 'Voz activa';
+        try {
+            await this.liveClient.start();
+            this.isLiveActive = true;
+        } catch (error) {
+            console.error('No se pudo iniciar voz en vivo:', error);
+            this.statusLine.textContent = 'No se pudo iniciar el chat de voz.';
+            this.liveButton.classList.remove('active');
+            this.liveButton.textContent = 'Voz';
+        }
+    }
+
+    stopLiveVoice() {
+        if (this.liveClient) {
+            this.liveClient.stop();
+        }
+        this.isLiveActive = false;
+        this.liveButton.classList.remove('active');
+        this.liveButton.textContent = 'Voz';
+        this.statusLine.textContent = 'Modo voz detenido. Puedes escribir un mensaje.';
+        this.resetLiveTranscript();
+    }
+
+    resetLiveTranscript() {
+        this.liveTextMessageId = null;
+        this.liveTextBuffer = '';
+    }
+
+    handleLiveText(text, isFinal) {
+        if (!text) return;
+        if (!this.liveTextMessageId) {
+            this.liveTextMessageId = this.addMessage({
+                sender: 'ai',
+                text: '',
+                status: 'loading'
+            });
+        }
+        this.liveTextBuffer += text;
+        this.updateMessage(this.liveTextMessageId, {
+            text: this.liveTextBuffer,
+            status: isFinal ? 'done' : 'loading'
+        });
+        if (isFinal) {
+            this.conversationHistory.push({ role: 'assistant', content: this.liveTextBuffer });
+            this.resetLiveTranscript();
+        }
+    }
+
+    getLiveApiKey() {
+        const fromOptions = this.options.liveApiKey?.trim();
+        if (fromOptions) return fromOptions;
+        const fromWindow = window.GEMINI_LIVE_API_KEY?.trim();
+        if (fromWindow) return fromWindow;
+        const stored = localStorage.getItem('gemini_live_api_key');
+        if (stored) return stored;
+        const promptValue = window.prompt('Introduce tu API Key de Gemini Live');
+        if (promptValue) {
+            localStorage.setItem('gemini_live_api_key', promptValue.trim());
+            return promptValue.trim();
+        }
+        return '';
     }
 
     speak(text) {

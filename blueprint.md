@@ -17,6 +17,7 @@ La aplicación mantendrá su estética actual, pero se mejorará con elementos v
 *   **Novela Interactiva:** Sistema de decisiones que ramifican la historia.
 *   **Narrativa Visual:** Imágenes que acompañan momentos clave de la narración.
 *   **Soporte PWA Básico:** Incluye un `manifest.webmanifest` y un `service-worker.js` para la instalación y el funcionamiento sin conexión.
+*   **Chat contextual:** Panel flotante con asistencia de IA para preguntas sobre la lectura.
 
 ## Plan de Acción: Mejoras para iOS Safari
 
@@ -36,3 +37,21 @@ La aplicación mantendrá su estética actual, pero se mejorará con elementos v
 5.  **Verificación de Metadatos PWA para iOS:**
     *   Se revisará el `manifest.webmanifest` para confirmar que el modo `display` está configurado como `standalone`.
     *   Se inspeccionará `index.html` para asegurar que las metaetiquetas `apple-mobile-web-app-capable` y `apple-mobile-web-app-status-bar-style` están presentes y correctamente configuradas para una experiencia de PWA óptima en iOS.
+
+## Plan de Acción: Chat de voz en vivo con Gemini 2.5 Flash
+
+1. **Cliente Gemini Live en el frontend:**
+    * Crear `src/ui/GeminiLiveClient.js` con conexión WebSocket al endpoint Live.
+    * Enviar el mensaje `setup` con el modelo `gemini-2.5-flash-preview-live` y la voz seleccionada.
+2. **Captura y envío de audio en tiempo real:**
+    * Capturar el micrófono con `getUserMedia` y convertir a PCM 16-bit.
+    * Implementar downsampling a 16 kHz cuando sea necesario.
+3. **Salida de audio y reproducción fluida:**
+    * Recibir chunks de audio desde el WebSocket y reproducirlos en secuencia con Web Audio API.
+    * Mantener un buffer de reproducción para evitar cortes.
+4. **VAD simple en el cliente:**
+    * Calcular RMS por frame y detectar silencio con un umbral configurable.
+    * Pausar el envío cuando el usuario deja de hablar.
+5. **Integración UI del chat de voz:**
+    * Añadir controles de voz en `src/ui/ChatModule.js` (botón de iniciar/detener, selector de voz, estado).
+    * Permitir guardar la API Key en `localStorage` para iniciar sesiones desde el cliente.
