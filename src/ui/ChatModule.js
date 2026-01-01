@@ -637,7 +637,6 @@ export class ChatFeature {
         if (!this.liveClient) {
             this.liveClient = new GeminiLiveClient({
                 apiKey,
-                model: this.options.liveVoiceModel,
                 voiceName: this.voiceSelect.value,
                 onStatus: (message) => {
                     this.statusLine.textContent = message;
