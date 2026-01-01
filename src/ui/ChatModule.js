@@ -673,6 +673,7 @@ export class ChatFeature {
     stopLiveVoice() {
         if (this.liveClient) {
             this.liveClient.stop();
+            this.liveClient = null;
         }
         this.isLiveActive = false;
         this.liveButton.classList.remove('active');
