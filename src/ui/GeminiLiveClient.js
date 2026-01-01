@@ -1,11 +1,12 @@
 export class GeminiLiveClient {
-    constructor({
+constructor({
         apiKey,
-        model = 'gemini-2.5-flash-preview-live',
+        // CORRECCIÓN 1: Usar el modelo correcto para Live
+        model = 'gemini-2.0-flash-exp', 
         voiceName = 'Puck',
         targetSampleRate = 16000,
-        vadThreshold = 0.015,
-        vadSilenceMs = 900,
+        vadThreshold = 0.015, // Ajusta si es muy sensible
+        vadSilenceMs = 500,   // Menos tiempo para respuestas más rápidas
         vadHangoverMs = 250,
         onStatus,
         onText,
@@ -15,6 +16,7 @@ export class GeminiLiveClient {
     } = {}) {
         this.apiKey = apiKey;
         this.model = model;
+        // ... (resto de tus variables igual) ...
         this.voiceName = voiceName;
         this.targetSampleRate = targetSampleRate;
         this.vadThreshold = vadThreshold;
@@ -25,7 +27,8 @@ export class GeminiLiveClient {
         this.onAudio = onAudio;
         this.onError = onError;
         this.onVadChange = onVadChange;
-
+        
+        // ... (inicialización de variables null) ...
         this.ws = null;
         this.captureContext = null;
         this.captureSource = null;
@@ -39,24 +42,12 @@ export class GeminiLiveClient {
         this.isStarted = false;
     }
 
-    setVoiceName(voiceName) {
-        this.voiceName = voiceName;
-        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-            this.sendSetup();
-        }
-    }
-
-    async start() {
-        if (this.isStarted) return;
-        await this.connect();
-        await this.startAudioCapture();
-        this.isStarted = true;
-    }
-
     async connect() {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
         if (!this.apiKey) throw new Error('Falta la API Key de Gemini Live.');
-        const endpoint = `wss://generativelanguage.googleapis.com/v1beta/models/${this.model}:connect?key=${this.apiKey}`;
+        
+        // CORRECCIÓN 2: Usar el endpoint BidiGenerateContent que es más estable para Live
+        const endpoint = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
 
         await new Promise((resolve, reject) => {
             this.ws = new WebSocket(endpoint);
@@ -68,19 +59,20 @@ export class GeminiLiveClient {
             this.ws.addEventListener('message', (event) => {
                 this.handleServerMessage(event.data);
             });
-        this.ws.addEventListener('close', (event) => {
-            this.onStatus?.('Conexión cerrada.');
-            if (event?.reason) {
-                this.onError?.(new Error(`WebSocket cerrado (${event.code}): ${event.reason}`));
-            }
-        });
+            this.ws.addEventListener('close', (event) => {
+                this.onStatus?.('Conexión cerrada.');
+                console.log("WebSocket Close Code:", event.code, "Reason:", event.reason); // Log para debug
+                if (event?.code !== 1000 && event?.code !== 1005) { // Ignorar cierres normales
+                     this.onError?.(new Error(`WebSocket cerrado (${event.code}): ${event.reason || 'Sin razón'}`));
+                }
+            });
             this.ws.addEventListener('error', (event) => {
-                this.onError?.(event);
-                reject(new Error('No se pudo conectar al WebSocket de Gemini Live.'));
+                console.error("WebSocket Error nativo:", event);
+                // No rechaces la promesa aquí inmediatamente, deja que el 'close' maneje la lógica
+                // o usa un timeout, porque el evento 'error' de WS da poca info.
             });
         });
     }
-
     async startAudioCapture() {
         if (!navigator.mediaDevices?.getUserMedia) {
             throw new Error('getUserMedia no está disponible en este navegador.');
