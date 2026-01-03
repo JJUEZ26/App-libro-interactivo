@@ -1,40 +1,40 @@
-import audioop
 import os
-import queue
 import sys
-from typing import Optional
-
 import pyaudio
+import queue
 from google.cloud import speech
-from vertexai.preview.generative_models import GenerativeModel
+from google.cloud import aiplatform
 import vertexai
+from vertexai.generative_models import GenerativeModel
+import google.api_core.exceptions
 
-try:
-    if not os.path.exists("key.json"):
-        raise FileNotFoundError
-except FileNotFoundError:
-    print("Error crítico: No se encuentra el archivo key.json de seguridad")
-    sys.exit(1)
+# --- CONFIGURACIÓN ---
+# Tu Proyecto de Google Cloud
+PROJECT_ID = "995012067544" 
+LOCATION = "us-central1"
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+# Lista de modelos a probar (en orden de preferencia)
+MODELS_TO_TRY = [
+    "gemini-1.5-flash-001",  # Opción 1: El más rápido y moderno
+    "gemini-1.5-pro-001",    # Opción 2: El más inteligente
+    "gemini-1.0-pro",        # Opción 3: El clásico
+    "gemini-pro"             # Opción 4: Genérico
+]
 
+# Configuración del Micrófono
 RATE = 16000
-CHUNK = int(RATE / 10)
-SILENCE_THRESHOLD = 500
-SILENCE_DURATION = 1.2
-MAX_RECORD_SECONDS = 15
-
+CHUNK = int(RATE / 10)  # 100ms
 
 class MicrophoneStream:
-    def __init__(self, rate: int, chunk: int) -> None:
+    """Abre un stream de grabación y genera trozos de audio."""
+    def __init__(self, rate, chunk):
         self._rate = rate
         self._chunk = chunk
-        self._buff: queue.Queue[bytes] = queue.Queue()
-        self._audio_interface = pyaudio.PyAudio()
-        self._audio_stream = None
+        self._buff = queue.Queue()
         self.closed = True
 
     def __enter__(self):
+        self._audio_interface = pyaudio.PyAudio()
         self._audio_stream = self._audio_interface.open(
             format=pyaudio.paInt16,
             channels=1,
@@ -46,10 +46,9 @@ class MicrophoneStream:
         self.closed = False
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self._audio_stream is not None:
-            self._audio_stream.stop_stream()
-            self._audio_stream.close()
+    def __exit__(self, type, value, traceback):
+        self._audio_stream.stop_stream()
+        self._audio_stream.close()
         self.closed = True
         self._buff.put(None)
         self._audio_interface.terminate()
@@ -67,94 +66,104 @@ class MicrophoneStream:
             while True:
                 try:
                     chunk = self._buff.get(block=False)
+                    if chunk is None:
+                        return
+                    data.append(chunk)
                 except queue.Empty:
                     break
-                if chunk is None:
-                    return
-                data.append(chunk)
             yield b"".join(data)
 
+def init_vertex_ai():
+    """Inicializa Vertex AI con el proyecto correcto."""
+    print(f"🔄 Conectando con Vertex AI (Proyecto: {PROJECT_ID})...")
+    try:
+        vertexai.init(project=PROJECT_ID, location=LOCATION)
+        return True
+    except Exception as e:
+        print(f"❌ Error inicializando Vertex AI: {e}")
+        return False
 
-def record_until_silence(stream: MicrophoneStream) -> Optional[bytes]:
-    silence_limit = int(SILENCE_DURATION / (CHUNK / RATE))
-    max_chunks = int(MAX_RECORD_SECONDS / (CHUNK / RATE))
-    silence_chunks = 0
-    recorded = []
-    has_speech = False
+def generate_response_smart(prompt_text):
+    """Intenta obtener respuesta probando varios modelos."""
+    
+    for model_name in MODELS_TO_TRY:
+        try:
+            # print(f"   intentando con modelo: {model_name}...") # Descomentar para depurar
+            model = GenerativeModel(model_name)
+            response = model.generate_content(prompt_text)
+            return response.text
+        except google.api_core.exceptions.NotFound:
+            # El modelo no existe, probamos el siguiente
+            continue
+        except Exception as e:
+            print(f"⚠️ Error con {model_name}: {e}")
+            continue
+    
+    return "❌ Error: No pude conectar con ningún modelo de IA disponible."
 
-    for chunk_index, chunk in enumerate(stream.generator()):
-        rms = audioop.rms(chunk, 2)
-        if rms > SILENCE_THRESHOLD:
-            has_speech = True
-            silence_chunks = 0
-        elif has_speech:
-            silence_chunks += 1
+def listen_print_loop(responses):
+    """Itera sobre las respuestas del servidor y detecta texto final."""
+    for response in responses:
+        if not response.results:
+            continue
 
-        recorded.append(chunk)
+        result = response.results[0]
+        if not result.alternatives:
+            continue
 
-        if has_speech and silence_chunks >= silence_limit:
-            break
-        if chunk_index >= max_chunks:
-            break
+        transcript = result.alternatives[0].transcript
 
-    if not has_speech:
-        return None
-    return b"".join(recorded)
+        # Si el resultado es final (el usuario dejó de hablar)
+        if result.is_final:
+            print(f"\n🎤 Tú dijiste: {transcript}")
+            
+            if "salir" in transcript.lower() or "adiós" in transcript.lower():
+                print("👋 ¡Hasta luego!")
+                sys.exit()
 
+            print("🧠 Gemini pensando...")
+            respuesta_ai = generate_response_smart(transcript)
+            print(f"🤖 Gemini: {respuesta_ai}\n")
+            print("Escuchando... (Di 'salir' para terminar)")
 
-def transcribe_audio(client: speech.SpeechClient, audio_data: bytes) -> Optional[str]:
-    audio = speech.RecognitionAudio(content=audio_data)
+def main():
+    # 1. Configurar credenciales
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
+    
+    # 2. Inicializar Vertex AI
+    if not init_vertex_ai():
+        return
+
+    # 3. Configurar Reconocimiento de Voz
+    client = speech.SpeechClient()
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
-        language_code="es-ES",
+        language_code="es-ES", # Español
     )
-    response = client.recognize(config=config, audio=audio)
-    if not response.results:
-        return None
-    return response.results[0].alternatives[0].transcript
-
-
-def generate_response(prompt: str) -> str:
-    project_id = (
-        os.environ.get("GOOGLE_CLOUD_PROJECT")
-        or os.environ.get("GCP_PROJECT")
-        or os.environ.get("PROJECT_ID")
+    streaming_config = speech.StreamingRecognitionConfig(
+        config=config,
+        interim_results=True 
     )
-    if not project_id:
-        raise ValueError(
-            "Define GOOGLE_CLOUD_PROJECT (o GCP_PROJECT/PROJECT_ID) para usar Vertex AI."
-        )
-    location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
-    vertexai.init(project=project_id, location=location)
-    model = GenerativeModel("gemini-1.0-pro")
-    response = model.generate_content(prompt)
-    return response.text or "(Sin respuesta)"
 
-
-def main() -> None:
-    print("Habla cuando estés listo. Detén tu voz para finalizar...")
-    speech_client = speech.SpeechClient()
+    print("\n🟢 SISTEMA LISTO. Habla ahora...")
+    print("(Presiona Ctrl+C para detener forzosamente)")
 
     with MicrophoneStream(RATE, CHUNK) as stream:
-        audio_data = record_until_silence(stream)
+        audio_generator = stream.generator()
+        requests = (
+            speech.StreamingRecognizeRequest(audio_content=content)
+            for content in audio_generator
+        )
 
-    if not audio_data:
-        print("No se detectó voz. Inténtalo de nuevo.")
-        return
-
-    transcript = transcribe_audio(speech_client, audio_data)
-    if not transcript:
-        print("No se pudo transcribir el audio.")
-        return
-
-    print(f"Tú: {transcript}")
-    answer = generate_response(transcript)
-    print(f"Gemini: {answer}")
-
+        try:
+            responses = client.streaming_recognize(streaming_config, requests)
+            listen_print_loop(responses)
+        except Exception as e:
+            print(f"\n❌ Error en el stream de audio: {e}")
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\nConversación finalizada.")
+        print("\n🛑 Programa detenido por el usuario.")
