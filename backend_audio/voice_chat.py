@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel
 import google.api_core.exceptions
 
 # --- CONFIGURACIÓN ---
-PROJECT_ID = "995012067544" 
+PROJECT_ID = "gen-lang-client-0356838678" 
 LOCATION = "us-central1"
 
 # --- LISTA DE MODELOS (NOMBRES TÉCNICOS COMPLETOS) ---
