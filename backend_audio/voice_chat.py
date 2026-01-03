@@ -12,12 +12,12 @@ import google.api_core.exceptions
 PROJECT_ID = "995012067544" 
 LOCATION = "us-central1"
 
-# Nombres simplificados de modelos
+# --- LISTA DE MODELOS (NOMBRES TÉCNICOS COMPLETOS) ---
+# Usamos las versiones "-001" que son obligatorias para tu proyecto
 MODELS_TO_TRY = [
-    "gemini-1.5-flash",    # Nombre corto
-    "gemini-1.5-pro",      # Nombre corto
-    "gemini-1.0-pro",      # Clásico
-    "gemini-pro"           # Genérico
+    "gemini-1.5-flash-001",  # El más rápido
+    "gemini-1.5-pro-001",    # El más inteligente
+    "gemini-1.0-pro-001",    # El clásico
 ]
 
 # Configuración del Micrófono
@@ -72,30 +72,29 @@ class MicrophoneStream:
             yield b"".join(data)
 
 def init_vertex_ai():
-    print(f"🔄 Conectando a Vertex AI en '{LOCATION}'...")
+    print(f"🔄 Conectando a Vertex AI ({LOCATION})...")
     try:
         vertexai.init(project=PROJECT_ID, location=LOCATION)
         return True
     except Exception as e:
-        print(f"❌ Error CRÍTICO inicializando Vertex AI: {e}")
+        print(f"❌ Error inicializando: {e}")
         return False
 
 def generate_response_smart(prompt_text):
-    print("\n   🔍 Buscando un cerebro disponible...")
     for model_name in MODELS_TO_TRY:
         try:
-            print(f"   👉 Probando modelo: {model_name}...", end="")
+            # print(f"👉 Probando: {model_name}...") 
             model = GenerativeModel(model_name)
-            # Intentamos generar algo pequeño para ver si responde
             response = model.generate_content(prompt_text)
-            print(" ✅ ¡CONECTADO!")
             return response.text
+        except google.api_core.exceptions.NotFound:
+            # Si no encuentra el modelo, prueba el siguiente silenciosamente
+            continue
         except Exception as e:
-            # Aquí imprimimos el error EXACTO para saber qué pasa
-            print(f"\n      ❌ Falló {model_name}. Razón: {e}")
+            print(f"⚠️ Error con {model_name}: {e}")
             continue
     
-    return "❌ DIAGNÓSTICO: Todos los modelos fallaron. Revisa los errores de arriba."
+    return "❌ Error: No se pudo conectar con Gemini. Verifica que pulsaste 'Habilitar APIs' en la web."
 
 def listen_print_loop(responses):
     for response in responses:
@@ -136,7 +135,7 @@ def main():
         interim_results=True 
     )
 
-    print("\n🟢 SISTEMA DE DIAGNÓSTICO LISTO. Habla ahora...")
+    print("\n🟢 CHAT DE VOZ LISTO. Habla ahora...")
     
     with MicrophoneStream(RATE, CHUNK) as stream:
         audio_generator = stream.generator()
