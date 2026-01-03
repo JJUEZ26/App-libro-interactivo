@@ -9,24 +9,22 @@ from vertexai.generative_models import GenerativeModel
 import google.api_core.exceptions
 
 # --- CONFIGURACIÓN ---
-# Tu Proyecto de Google Cloud
 PROJECT_ID = "995012067544" 
 LOCATION = "us-central1"
 
-# Lista de modelos a probar (en orden de preferencia)
+# Nombres simplificados de modelos
 MODELS_TO_TRY = [
-    "gemini-1.5-flash-001",  # Opción 1: El más rápido y moderno
-    "gemini-1.5-pro-001",    # Opción 2: El más inteligente
-    "gemini-1.0-pro",        # Opción 3: El clásico
-    "gemini-pro"             # Opción 4: Genérico
+    "gemini-1.5-flash",    # Nombre corto
+    "gemini-1.5-pro",      # Nombre corto
+    "gemini-1.0-pro",      # Clásico
+    "gemini-pro"           # Genérico
 ]
 
 # Configuración del Micrófono
 RATE = 16000
-CHUNK = int(RATE / 10)  # 100ms
+CHUNK = int(RATE / 10)
 
 class MicrophoneStream:
-    """Abre un stream de grabación y genera trozos de audio."""
     def __init__(self, rate, chunk):
         self._rate = rate
         self._chunk = chunk
@@ -74,46 +72,41 @@ class MicrophoneStream:
             yield b"".join(data)
 
 def init_vertex_ai():
-    """Inicializa Vertex AI con el proyecto correcto."""
-    print(f"🔄 Conectando con Vertex AI (Proyecto: {PROJECT_ID})...")
+    print(f"🔄 Conectando a Vertex AI en '{LOCATION}'...")
     try:
         vertexai.init(project=PROJECT_ID, location=LOCATION)
         return True
     except Exception as e:
-        print(f"❌ Error inicializando Vertex AI: {e}")
+        print(f"❌ Error CRÍTICO inicializando Vertex AI: {e}")
         return False
 
 def generate_response_smart(prompt_text):
-    """Intenta obtener respuesta probando varios modelos."""
-    
+    print("\n   🔍 Buscando un cerebro disponible...")
     for model_name in MODELS_TO_TRY:
         try:
-            # print(f"   intentando con modelo: {model_name}...") # Descomentar para depurar
+            print(f"   👉 Probando modelo: {model_name}...", end="")
             model = GenerativeModel(model_name)
+            # Intentamos generar algo pequeño para ver si responde
             response = model.generate_content(prompt_text)
+            print(" ✅ ¡CONECTADO!")
             return response.text
-        except google.api_core.exceptions.NotFound:
-            # El modelo no existe, probamos el siguiente
-            continue
         except Exception as e:
-            print(f"⚠️ Error con {model_name}: {e}")
+            # Aquí imprimimos el error EXACTO para saber qué pasa
+            print(f"\n      ❌ Falló {model_name}. Razón: {e}")
             continue
     
-    return "❌ Error: No pude conectar con ningún modelo de IA disponible."
+    return "❌ DIAGNÓSTICO: Todos los modelos fallaron. Revisa los errores de arriba."
 
 def listen_print_loop(responses):
-    """Itera sobre las respuestas del servidor y detecta texto final."""
     for response in responses:
         if not response.results:
             continue
-
         result = response.results[0]
         if not result.alternatives:
             continue
 
         transcript = result.alternatives[0].transcript
 
-        # Si el resultado es final (el usuario dejó de hablar)
         if result.is_final:
             print(f"\n🎤 Tú dijiste: {transcript}")
             
@@ -127,28 +120,24 @@ def listen_print_loop(responses):
             print("Escuchando... (Di 'salir' para terminar)")
 
 def main():
-    # 1. Configurar credenciales
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
     
-    # 2. Inicializar Vertex AI
     if not init_vertex_ai():
         return
 
-    # 3. Configurar Reconocimiento de Voz
     client = speech.SpeechClient()
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
-        language_code="es-ES", # Español
+        language_code="es-ES",
     )
     streaming_config = speech.StreamingRecognitionConfig(
         config=config,
         interim_results=True 
     )
 
-    print("\n🟢 SISTEMA LISTO. Habla ahora...")
-    print("(Presiona Ctrl+C para detener forzosamente)")
-
+    print("\n🟢 SISTEMA DE DIAGNÓSTICO LISTO. Habla ahora...")
+    
     with MicrophoneStream(RATE, CHUNK) as stream:
         audio_generator = stream.generator()
         requests = (
@@ -166,4 +155,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n🛑 Programa detenido por el usuario.")
+        print("\n🛑 Programa detenido.")
