@@ -65,6 +65,9 @@
                                 <path d="M12 9c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zM4 11H1v2h3v-2zm19 0h-3v2h3v-2zM13 1h-2v3h2V1zm-2 19h2v3h-2v-3zM6.34 6.34 4.22 4.22 2.81 5.63l2.12 2.12 1.41-1.41zm11.32 11.32 2.12 2.12 1.41-1.41-2.12-2.12-1.41 1.41zM6.34 17.66l-2.12 2.12 1.41 1.41 2.12-2.12-1.41-1.41z"/>
                             </svg>
                         </button>
+                        <button id="open-goal-wizard" class="settings-action" aria-label="Configurar meta">
+                            Meta
+                        </button>
                     </div>
                     <!-- Slider de volumen -->
                     <div class="volume-control-container">
@@ -157,6 +160,103 @@
                         <h3>Pasos recientes</h3>
                         <ul id="history-list"></ul>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL CONFIGURACIÓN META -->
+        <div id="modal-project" class="modal-overlay" aria-hidden="true">
+            <div class="modal-content modal-content--wizard" role="dialog" aria-modal="true" aria-labelledby="goal-wizard-title">
+                <div class="modal-header">
+                    <h2 id="goal-wizard-title">Wizard de Meta</h2>
+                    <button id="wizard-close" aria-label="Cerrar">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="wizard-progress">
+                        <span id="wizard-step-label">Paso 1/6</span>
+                        <div id="wizard-dots" class="wizard-dots" aria-hidden="true"></div>
+                    </div>
+
+                    <div id="wizard-steps" class="wizard-steps">
+                        <section class="wizard-step" data-step="1">
+                            <h3>¿Qué quieres lograr?</h3>
+                            <p>Describe tu meta con tus palabras.</p>
+                            <textarea id="wizard-intent" rows="3" placeholder="Quiero leer La Peste de Camus"></textarea>
+                        </section>
+
+                        <section class="wizard-step" data-step="2">
+                            <h3>¿Cómo quieres medir el progreso?</h3>
+                            <div class="wizard-card-grid">
+                                <button type="button" class="wizard-card" data-mode="time">
+                                    <span class="wizard-card-title">Tiempo</span>
+                                    <span class="wizard-card-subtitle">Horas totales</span>
+                                </button>
+                                <button type="button" class="wizard-card" data-mode="units">
+                                    <span class="wizard-card-title">Unidades</span>
+                                    <span class="wizard-card-subtitle">Páginas, lecciones…</span>
+                                </button>
+                                <button type="button" class="wizard-card" data-mode="hybrid">
+                                    <span class="wizard-card-title">Híbrido</span>
+                                    <span class="wizard-card-subtitle">Tiempo + unidades</span>
+                                </button>
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="3">
+                            <h3>Define tu meta total</h3>
+                            <div class="wizard-field" data-mode-target="time">
+                                <label for="wizard-target-hours">¿Cuántas horas en total?</label>
+                                <input id="wizard-target-hours" type="number" min="1" step="1" placeholder="40">
+                            </div>
+                            <div class="wizard-field" data-mode-target="units">
+                                <label for="wizard-target-units">¿Meta total?</label>
+                                <input id="wizard-target-units" type="number" min="1" step="1" placeholder="240">
+                                <label for="wizard-unit-name">¿Cómo se llaman tus unidades?</label>
+                                <input id="wizard-unit-name" type="text" placeholder="páginas">
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="4">
+                            <h3>Plan semanal</h3>
+                            <p>Elige tus días y cuánto tiempo dedicarás.</p>
+                            <div class="wizard-day-chips" id="wizard-days">
+                                <button type="button" class="day-chip" data-day="1">L</button>
+                                <button type="button" class="day-chip" data-day="2">M</button>
+                                <button type="button" class="day-chip" data-day="3">X</button>
+                                <button type="button" class="day-chip" data-day="4">J</button>
+                                <button type="button" class="day-chip" data-day="5">V</button>
+                                <button type="button" class="day-chip" data-day="6">S</button>
+                                <button type="button" class="day-chip" data-day="7">D</button>
+                            </div>
+                            <div class="wizard-field">
+                                <label for="wizard-minutes-session">Minutos por sesión</label>
+                                <input id="wizard-minutes-session" type="number" min="5" step="5" placeholder="60">
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="5">
+                            <h3>Ritmo estimado</h3>
+                            <div class="wizard-field">
+                                <label for="wizard-rate-hour">Unidades por hora (estimado)</label>
+                                <input id="wizard-rate-hour" type="number" min="1" step="1" placeholder="20">
+                                <span class="wizard-hint">Se usa para estimar cuando solo registras tiempo.</span>
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="6">
+                            <h3>Resumen</h3>
+                            <div class="wizard-field">
+                                <label for="wizard-title">Título sugerido</label>
+                                <input id="wizard-title" type="text" placeholder="Leer: La Peste">
+                            </div>
+                            <div id="wizard-summary" class="wizard-summary"></div>
+                            <button id="wizard-create" class="primary-btn" type="button">Crear Meta</button>
+                        </section>
+                    </div>
+                </div>
+                <div class="wizard-footer">
+                    <button id="wizard-back" class="secondary-btn" type="button">Atrás</button>
+                    <button id="wizard-next" class="primary-btn" type="button">Siguiente</button>
                 </div>
             </div>
         </div>

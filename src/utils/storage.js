@@ -73,3 +73,25 @@ export function loadHighlights(bookId, localStorageRef = localStorage) {
     const stored = localStorageRef.getItem(getHighlightsKey(bookId));
     return stored ? JSON.parse(stored) : [];
 }
+
+const GOAL_STORAGE_KEY = 'currentGoal';
+const GOAL_SESSIONS_KEY = 'goalSessions';
+
+export function saveGoal(goal, localStorageRef = localStorage) {
+    if (!goal) return;
+    localStorageRef.setItem(GOAL_STORAGE_KEY, JSON.stringify(goal));
+}
+
+export function loadGoal(localStorageRef = localStorage) {
+    const stored = localStorageRef.getItem(GOAL_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
+}
+
+export function saveGoalSessions(sessions = [], localStorageRef = localStorage) {
+    localStorageRef.setItem(GOAL_SESSIONS_KEY, JSON.stringify(sessions));
+}
+
+export function loadGoalSessions(localStorageRef = localStorage) {
+    const stored = localStorageRef.getItem(GOAL_SESSIONS_KEY);
+    return stored ? JSON.parse(stored) : [];
+}

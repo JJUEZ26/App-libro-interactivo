@@ -13,7 +13,9 @@ export const state = {
     currentAudioFile: null,
     currentVolume: 1,
     totalPagesInStory: 0,
-    karaokeInterval: null
+    karaokeInterval: null,
+    currentGoal: null,
+    goalSessions: []
 };
 
 export const themeColors = {
