@@ -17,6 +17,7 @@ import { loadPreferences, saveVolume } from '../utils/storage.js';
 import { applyTheme, changeFontSize, cycleTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
 import { ChatFeature } from '../ui/ChatModule.js';
 import { getEl } from './dom.js';
+import { initGoalWizard } from './goalWizard.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
 
 export function initApp() {
@@ -37,6 +38,9 @@ export function initApp() {
         themeSelectorBtn: getEl('theme-selector'),
         settingsToggle: getEl('settings-toggle'),
         settingsMenu: getEl('settings-menu'),
+        openGoalWizard: getEl('open-goal-wizard'),
+        goalWizardModal: getEl('modal-project'),
+        goalWizardClose: getEl('wizard-close'),
         fullscreenBtn: getEl('fullscreen-btn'),
         volumeSlider: getEl('volume-slider'),
         navToggle: getEl('nav-toggle'),
@@ -237,6 +241,11 @@ export function initApp() {
     }
 
     new ChatFeature();
+    const goalWizard = initGoalWizard({
+        modal: elements.goalWizardModal,
+        openButton: elements.openGoalWizard,
+        closeButton: elements.goalWizardClose
+    });
 
     async function initializeApp() {
         loadPreferences({
@@ -250,6 +259,9 @@ export function initApp() {
         });
         switchToLibraryView();
         await library.loadBooks();
+        if (goalWizard?.openIfFirstTime) {
+            goalWizard.openIfFirstTime();
+        }
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
