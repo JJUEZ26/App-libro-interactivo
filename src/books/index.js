@@ -6,20 +6,33 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         if (!libraryHero && !librarySections) return;
 
         try {
+            // Usamos rutas absolutas desde la raíz para evitar errores en Vercel
             const [booksResponse, sectionsResponse] = await Promise.all([
-                fetch('data/books.json'),
-                fetch('data/library-sections.json')
+                fetch('/data/books.json'),
+                fetch('/data/library-sections.json')
             ]);
             if (!booksResponse.ok) throw new Error(`Error HTTP: ${booksResponse.status}`);
             if (!sectionsResponse.ok) throw new Error(`Error HTTP: ${sectionsResponse.status}`);
             books = await booksResponse.json();
             sectionsConfig = await sectionsResponse.json();
+
+            // Normalizamos las rutas de los libros para que siempre sean absolutas
+            books = books.map(book => ({
+                ...book,
+                cover: book.cover && !book.cover.startsWith('/') ? `/${book.cover}` : book.cover,
+                storyFile: book.storyFile && !book.storyFile.startsWith('/') ? `/${book.storyFile}` : book.storyFile
+            }));
+
             renderLibrary();
         } catch (error) {
-            console.error('Error al cargar books.json:', error);
+            console.error('Error al cargar la biblioteca:', error);
             if (librarySections) {
-                librarySections.innerHTML =
-                    '<p style="padding: 20px; color: red;">Error cargando la biblioteca. Revisa que data/books.json y data/library-sections.json existan y sean válidos.</p>';
+                librarySections.innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: var(--color-danger); background: rgba(220, 38, 38, 0.05); border-radius: var(--radius-xl); border: 1px solid var(--color-danger);">
+                        <h3 style="margin-bottom: 10px;">Error cargando la biblioteca</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">No pudimos conectar con el servidor de datos. Revisa que <code>/data/books.json</code> exista.</p>
+                        <button onclick="location.reload()" style="margin-top: 20px; padding: 8px 16px; background: var(--color-danger); color: white; border: none; border-radius: 99px; cursor: pointer;">Reintentar</button>
+                    </div>`;
             }
         }
     }
@@ -89,7 +102,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             img.alt = `Portada de ${featuredBook.title || 'libro destacado'}`;
             img.loading = 'eager';
             img.className = 'library-hero-image';
-            img.onerror = function() { this.classList.add('placeholder'); this.src=''; this.alt='Imagen no encontrada'; };
+            img.onerror = function () { this.classList.add('placeholder'); this.src = ''; this.alt = 'Imagen no encontrada'; };
             heroCover.appendChild(img);
         } else {
             const placeholder = document.createElement('div');
@@ -171,7 +184,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             img.alt = `Portada de ${bookData.title || 'libro'}`;
             img.loading = 'lazy';
             img.className = 'book-cover';
-            img.onerror = function() { this.classList.add('placeholder'); this.src=''; this.alt='Imagen no encontrada'; };
+            img.onerror = function () { this.classList.add('placeholder'); this.src = ''; this.alt = 'Imagen no encontrada'; };
             coverWrapper.appendChild(img);
         } else {
             const placeholder = document.createElement('div');
