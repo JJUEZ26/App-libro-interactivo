@@ -1,49 +1,261 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
+/* ========================================
+   LECTURAS INTERACTIVAS - DESIGN TOKENS
+   Sistema de Diseño Premium v2.0
+   ======================================== */
+
+/* Cargar Fuentes Premium */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700;900&family=Cormorant+Garamond:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
 
 :root {
-    /* PALETAS LECTOR */
+    /* ========================================
+       SISTEMA DE COLORES OKLCH (UI/Biblioteca)
+       ======================================== */
+    
+    /* Tema Midnight Library (Dark Premium) */
+    --color-bg-primary: oklch(15% 0.02 240);        /* Navy profundo */
+    --color-bg-secondary: oklch(20% 0.03 240);      /* Navy oscuro */
+    --color-bg-tertiary: oklch(25% 0.04 240);       /* Navy medio */
+    --color-bg-elevated: oklch(22% 0.03 240);       /* Cards elevadas */
+    
+    --color-accent-primary: oklch(70% 0.25 330);    /* Rosa vibrante */
+    --color-accent-secondary: oklch(75% 0.20 200);  /* Cyan brillante */
+    --color-accent-tertiary: oklch(65% 0.22 280);   /* Morado */
+    
+    --color-text-primary: oklch(95% 0.01 240);      /* Blanco cálido */
+    --color-text-secondary: oklch(70% 0.02 240);    /* Gris claro */
+    --color-text-tertiary: oklch(50% 0.02 240);     /* Gris medio */
+    --color-text-disabled: oklch(40% 0.02 240);     /* Gris oscuro */
+    
+    --color-success: oklch(70% 0.20 145);           /* Verde esmeralda */
+    --color-warning: oklch(75% 0.20 60);            /* Amarillo dorado */
+    --color-danger: oklch(65% 0.25 25);             /* Rojo coral */
+    --color-info: oklch(70% 0.20 230);              /* Azul info */
+    
+    /* Overlays y Efectos */
+    --color-overlay-dark: rgba(0, 0, 0, 0.6);
+    --color-overlay-light: rgba(255, 255, 255, 0.05);
+    --color-glass-bg: rgba(255, 255, 255, 0.05);
+    --color-glass-border: rgba(255, 255, 255, 0.1);
+    
+    /* ========================================
+       TEMAS DE LECTURA (Reader View)
+       Mantenemos compatibilidad con sistema anterior
+       ======================================== */
+    
+    /* Light Theme */
     --primary-color-light: #fdf6e3;
     --secondary-color-light: #3a2e28;
     --accent-color-light: #8b5e3c;
     --main-bg-light: #e8e0d5;
-
+    
+    /* Sepia Theme */
     --primary-color-sepia: #f4ecd8;
     --secondary-color-sepia: #5d4037;
     --accent-color-sepia: #d84315;
     --main-bg-sepia: #d7ccc8;
-
+    
+    /* Bone Theme */
     --primary-color-bone: #f2f0e9;
     --secondary-color-bone: #4a453a;
     --accent-color-bone: #8c857b;
     --main-bg-bone: #dcdbd4;
-
+    
+    /* Dark Theme (Reader) */
     --primary-color-dark: #1e1e1e;
     --secondary-color-dark: #e0e0e0;
     --accent-color-dark: #ffab91;
     --main-bg-dark: #121212;
-
-    --font-body: 'Cormorant Garamond', serif;
-    --font-title: 'IM Fell English', serif;
-
-    /* Colores dinámicos lector */
+    
+    /* Colores dinámicos para Reader */
     --bg-color: var(--primary-color-light);
     --text-color: var(--secondary-color-light);
     --accent-color: var(--accent-color-light);
     --main-bg: var(--main-bg-light);
-
-    --font-size-dynamic: 1.2rem;
-
-    /* Colores de la INTERFAZ */
+    
+    /* ========================================
+       TIPOGRAFÍA
+       ======================================== */
+    
+    /* Familias de Fuente */
+    --font-display: 'Playfair Display', serif;      /* Títulos UI */
+    --font-body: 'Inter', sans-serif;               /* Texto UI */
+    --font-reader-body: 'Cormorant Garamond', serif; /* Lectura */
+    --font-reader-title: 'IM Fell English', serif;   /* Títulos historias */
+    --font-mono: 'Fira Code', 'Courier New', monospace;
+    
+    /* Escala Tipográfica Modular */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.25rem;      /* 20px */
+    --text-2xl: 1.5rem;      /* 24px */
+    --text-3xl: 1.875rem;    /* 30px */
+    --text-4xl: 2.25rem;     /* 36px */
+    --text-5xl: 3rem;        /* 48px */
+    --text-6xl: 3.75rem;     /* 60px */
+    --text-7xl: 4.5rem;      /* 72px */
+    --text-8xl: 6rem;        /* 96px */
+    --text-9xl: 8rem;        /* 128px */
+    
+    /* Pesos de Fuente */
+    --font-light: 300;
+    --font-normal: 400;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-black: 900;
+    
+    /* Line Heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.6;
+    --leading-loose: 1.8;
+    --leading-extra-loose: 2;
+    
+    /* Letter Spacing */
+    --tracking-tighter: -0.05em;
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+    --tracking-widest: 0.1em;
+    
+    --font-size-dynamic: 1.2rem;  /* Para reader (retrocompatibilidad) */
+    
+    /* ========================================
+       SISTEMA DE ESPACIADO MODULAR (base 4px)
+       ======================================== */
+    
+    --space-0: 0;
+    --space-1: 0.25rem;   /* 4px */
+    --space-2: 0.5rem;    /* 8px */
+    --space-3: 0.75rem;   /* 12px */
+    --space-4: 1rem;      /* 16px */
+    --space-5: 1.25rem;   /* 20px */
+    --space-6: 1.5rem;    /* 24px */
+    --space-8: 2rem;      /* 32px */
+    --space-10: 2.5rem;   /* 40px */
+    --space-12: 3rem;     /* 48px */
+    --space-16: 4rem;     /* 64px */
+    --space-20: 5rem;     /* 80px */
+    --space-24: 6rem;     /* 96px */
+    --space-32: 8rem;     /* 128px */
+    
+    /* Espaciado Semántico */
+    --space-section: var(--space-16);
+    --space-card-padding: var(--space-6);
+    --space-button-padding-x: var(--space-8);
+    --space-button-padding-y: var(--space-4);
+    
+    /* ========================================
+       SISTEMA DE SOMBRAS (5 Niveles)
+       ======================================== */
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15),
+                 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.2),
+                 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Sombras con Color (para elementos destacados) */
+    --shadow-accent: 0 8px 32px rgba(233, 30, 99, 0.3);
+    --shadow-accent-strong: 0 12px 48px rgba(233, 30, 99, 0.5);
+    --shadow-cyan: 0 8px 32px rgba(0, 188, 212, 0.3);
+    --shadow-success: 0 8px 24px rgba(76, 175, 80, 0.3);
+    
+    /* Sombras Internas (para glass effects) */
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    --shadow-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    
+    /* ========================================
+       BORDER RADIUS
+       ======================================== */
+    
+    --radius-sm: 0.25rem;   /* 4px */
+    --radius-md: 0.5rem;    /* 8px */
+    --radius-lg: 0.75rem;   /* 12px */
+    --radius-xl: 1rem;      /* 16px */
+    --radius-2xl: 1.5rem;   /* 24px */
+    --radius-full: 9999px;  /* Círculo completo */
+    
+    /* ========================================
+       TRANSICIONES Y EASINGS
+       ======================================== */
+    
+    /* Duraciones */
+    --duration-instant: 100ms;
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    --duration-slower: 700ms;
+    
+    /* Curvas de Aceleración */
+    --ease-linear: linear;
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);        /* Suave y rápido */
+    --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);   /* Balanceado */
+    --ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Rebote */
+    
+    /* ========================================
+       Z-INDEX LAYERS
+       ======================================== */
+    
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-popover: 600;
+    --z-tooltip: 700;
+    
+    /* ========================================
+       BREAKPOINTS (para referencia en JS)
+       ======================================== */
+    
+    --bp-xs: 375px;
+    --bp-sm: 640px;
+    --bp-md: 768px;
+    --bp-lg: 1024px;
+    --bp-xl: 1280px;
+    --bp-2xl: 1536px;
+    
+    /* ========================================
+       BLUR VALUES
+       ======================================== */
+    
+    --blur-sm: 4px;
+    --blur-md: 8px;
+    --blur-lg: 16px;
+    --blur-xl: 24px;
+    --blur-2xl: 40px;
+    
+    /* Backdrop Filter para Glassmorphism */
+    --backdrop-blur: blur(20px) saturate(180%);
+    
+    /* ========================================
+       COLORES DE INTERFAZ (UI Legacy)
+       Mantenemos para retrocompatibilidad
+       ======================================== */
+    
     --ui-bg-light: #ffffff;
     --ui-card-light: #ffffff;
     --ui-text-light: #3a2e28;
-
-    --ui-bg-dark: #050505;
-    --ui-card-dark: #181818;
-    --ui-text-dark: #f5f5f5;
+    
+    --ui-bg-dark: oklch(15% 0.02 240);
+    --ui-card-dark: oklch(20% 0.03 240);
+    --ui-text-dark: oklch(95% 0.01 240);
 }
 
-/* Temas aplicados al <body> */
+/* ========================================
+   TEMAS DE LECTURA (Body Classes)
+   ======================================== */
+
 body.theme-light {
     --bg-color: var(--primary-color-light);
     --text-color: var(--secondary-color-light);
@@ -72,12 +284,23 @@ body.theme-dark {
     --main-bg: var(--main-bg-dark);
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+/* ========================================
+   RESET Y BASE STYLES
+   ======================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 html {
     width: 100%;
     height: 100%;
     overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 body {
@@ -86,14 +309,138 @@ body {
     width: 100%;
     min-height: 100%;
     font-family: var(--font-body);
-    background-color: #ffffff;
-    color: #3a2e28;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
     overflow-x: hidden;
+    transition: background-color var(--duration-normal) var(--ease-out);
 }
 
-body.theme-dark {
-    background-color: #050505;
-    color: var(--ui-text-dark);
+/* Modo Biblioteca usa colores OKLCH */
+body.app-mode-library {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
 }
 
-button { font-family: var(--font-body); cursor: pointer; }
+/* Modo Reader usa temas clásicos */
+body.app-mode-reader {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* ========================================
+   TYPOGRAPHY DEFAULTS
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    margin: 0;
+}
+
+h1 { font-size: var(--text-5xl); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-3xl); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+h6 { font-size: var(--text-lg); }
+
+p {
+    margin: 0;
+    line-height: var(--leading-relaxed);
+}
+
+a {
+    color: var(--color-accent-primary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+    color: var(--color-accent-secondary);
+}
+
+button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+
+.font-light { font-weight: var(--font-light); }
+.font-normal { font-weight: var(--font-normal); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+.font-black { font-weight: var(--font-black); }
+
+/* ========================================
+   SELECTION STYLING
+   ======================================== */
+
+::selection {
+    background-color: var(--color-accent-primary);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--color-accent-primary);
+    color: white;
+}
+
+/* ========================================
+   SCROLLBAR STYLING (Webkit)
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+}
+
+/* ========================================
+   FOCUS VISIBLE (Accesibilidad)
+   ======================================== */
+
+:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+}

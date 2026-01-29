@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel
 import google.api_core.exceptions
 
 # --- CONFIGURACIÓN ---
-PROJECT_ID = "gen-lang-client-0356838678" 
+PROJECT_ID = "gemini-voz-pro" 
 LOCATION = "us-central1"
 
 # --- LISTA DE MODELOS (NOMBRES TÉCNICOS COMPLETOS) ---
