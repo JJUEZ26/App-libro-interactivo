@@ -1,177 +1,173 @@
 const LEAF_TYPES = [
     {
-        name: 'maple',
-        path: "M175,300 Q175,250 175,200 L140,220 L150,190 L120,180 L140,160 L110,130 L140,120 L130,90 L160,80 L175,40 L190,80 L220,90 L210,120 L240,130 L210,160 L230,180 L200,190 L210,220 L175,200 Q175,250 175,300 Z",
-        veins: [
-            "M175,300 L175,40", // Central
-            "M175,200 L140,220", "M175,200 L210,220", // Bottom lobes
-            "M175,160 L110,130", "M175,160 L240,130", // Middle lobes
-            "M175,120 L130,90", "M175,120 L220,90"    // Top lobes
-        ],
+        name: 'maple-red',
+        path: 'M175 316 C171 287 170 255 173 224 C154 235 131 242 113 230 C120 214 118 197 101 189 C116 179 122 162 119 146 C138 148 154 138 164 120 C149 110 138 94 137 76 C157 84 174 79 188 63 C198 79 214 84 233 76 C232 96 222 111 207 121 C219 136 235 146 252 145 C248 163 254 180 269 190 C252 198 246 215 255 231 C236 243 213 235 195 223 C198 254 197 287 191 316 Z',
+        stem: 'M182 316 C178 334 179 348 183 364',
         colors: [
-            { start: '#e74c3c', end: '#c0392b' }, // Red
-            { start: '#e67e22', end: '#d35400' }, // Orange
-            { start: '#f1c40f', end: '#e67e22' }  // Yellow-Orange
+            { start: '#8f2f1f', end: '#cf5b31' },
+            { start: '#9b3a1d', end: '#dd7c33' }
         ],
-        viewBox: "0 0 350 350"
+        viewBox: '70 45 220 330'
     },
     {
-        name: 'oak',
-        path: "M175,300 C175,280 175,240 175,220 C140,230 110,210 120,180 C110,160 100,140 120,120 C110,100 120,80 140,70 C150,60 175,40 175,40 C175,40 200,60 210,70 C230,80 240,100 230,120 C250,140 240,160 230,180 C240,210 210,230 175,220 C175,240 175,280 175,300 Z",
-        veins: [
-            "M175,300 L175,40", // Central
-            "M175,220 L120,180", "M175,220 L230,180",
-            "M175,160 L120,120", "M175,160 L230,120",
-            "M175,100 L140,70", "M175,100 L210,70"
-        ],
+        name: 'oak-dry',
+        path: 'M173 315 C171 286 170 252 174 224 C147 227 123 212 126 186 C111 171 108 146 125 126 C118 104 129 82 151 72 C164 57 178 50 187 50 C196 50 210 57 223 72 C246 83 257 104 249 126 C266 146 263 171 248 186 C251 212 227 228 200 224 C204 252 203 286 201 315 Z',
+        stem: 'M186 315 C184 334 184 347 190 363',
         colors: [
-            { start: '#795548', end: '#5d4037' }, // Brown
-            { start: '#d35400', end: '#a04000' }, // Rust
-            { start: '#a67c52', end: '#8b5e3c' }  // Terracotta
+            { start: '#6d3b25', end: '#a26036' },
+            { start: '#5f3423', end: '#8a5335' }
         ],
-        viewBox: "0 0 350 350"
+        viewBox: '95 40 190 330'
     },
     {
-        name: 'simple',
-        path: "M175,300 C175,280 175,240 175,220 C100,180 120,100 175,30 C230,100 250,180 175,220 C175,240 175,280 175,300 Z",
-        veins: [
-            "M175,300 L175,30", // Central
-            "M175,220 L130,180", "M175,220 L220,180",
-            "M175,180 L130,140", "M175,180 L220,140",
-            "M175,140 L140,100", "M175,140 L210,100"
-        ],
+        name: 'elm-brown',
+        path: 'M178 322 C170 289 170 255 173 222 C141 212 118 182 120 145 C124 109 148 78 176 61 C204 78 228 109 232 145 C234 182 211 212 179 222 C183 255 184 289 178 322 Z',
+        stem: 'M178 322 C176 338 176 350 181 364',
         colors: [
-            { start: '#2ecc71', end: '#27ae60' }, // Green
-            { start: '#f1c40f', end: '#f39c12' }, // Yellow
-            { start: '#e74c3c', end: '#c0392b' }  // Red
+            { start: '#7f4a2f', end: '#b77742' },
+            { start: '#6f422b', end: '#a86b3c' }
         ],
-        viewBox: "0 0 350 350"
+        veins: [
+            'M176 71 L176 319',
+            'M176 130 L142 160',
+            'M176 130 L210 160',
+            'M176 180 L139 207',
+            'M176 180 L213 207'
+        ],
+        viewBox: '105 50 150 320'
     }
 ];
+
+function getPerformanceScale() {
+    const memory = navigator.deviceMemory || 4;
+    const cores = navigator.hardwareConcurrency || 4;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) return 0.45;
+    if (memory <= 2 || cores <= 4) return 0.7;
+    return 1;
+}
 
 export function createFallingLeaf(container, intensity = 'medium', isFirst = false, startMidAir = false) {
     const leaf = document.createElement('div');
     leaf.className = 'falling-leaf';
 
-    // Profundidad
     const depth = Math.random();
-    const size = 30 + (depth * 50); // 30px a 80px (adjusted for images)
-    const zIndex = Math.floor(depth * 100);
-    const blur = depth < 0.2 ? (0.2 - depth) * 4 : 0;
+    const size = 24 + depth * 42;
+    const zIndex = Math.floor(20 + depth * 80);
+    const blur = depth < 0.18 ? (0.18 - depth) * 5 : 0;
 
-    // Velocidad
-    const baseDuration = (intensity === 'minimal') ? 22 : 15; // Slower for minimal
-    const speedMultiplier = 0.6 + (depth * 0.8);
+    const baseDuration = intensity === 'minimal' ? 26 : 16;
+    const speedMultiplier = 0.58 + depth * 0.9;
 
-    const startX = Math.random() * 105 - 2.5;
-    leaf.style.left = `${startX}%`;
+    leaf.style.left = `${Math.random() * 108 - 4}%`;
     leaf.style.width = `${size}px`;
     leaf.style.height = `${size}px`;
-    leaf.style.zIndex = zIndex;
-
+    leaf.style.zIndex = `${zIndex}`;
+    leaf.style.opacity = `${0.5 + depth * 0.45}`;
     if (blur > 0) leaf.style.filter = `blur(${blur}px)`;
 
-    // SVG Selection
     const leafType = LEAF_TYPES[Math.floor(Math.random() * LEAF_TYPES.length)];
     const colorPair = leafType.colors[Math.floor(Math.random() * leafType.colors.length)];
-    const uniqueId = `leaf-grad-${Math.random().toString(36).substr(2, 9)}`;
+    const uniqueId = `leaf-grad-${Math.random().toString(36).slice(2, 11)}`;
 
-    // Create SVG element
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("viewBox", leafType.viewBox);
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', leafType.viewBox);
+    svg.setAttribute('aria-hidden', 'true');
     svg.style.width = '100%';
     svg.style.height = '100%';
-    // Add slight rotation to the image itself for variety
     svg.style.transform = `rotate(${Math.random() * 360}deg)`;
-    svg.style.overflow = 'visible';
 
-    // Create Gradient Definition
-    const defs = document.createElementNS(svgNS, "defs");
-    const linearGradient = document.createElementNS(svgNS, "linearGradient");
-    linearGradient.setAttribute("id", uniqueId);
-    linearGradient.setAttribute("x1", "0%");
-    linearGradient.setAttribute("y1", "100%"); // Bottom
-    linearGradient.setAttribute("x2", "0%");
-    linearGradient.setAttribute("y2", "0%");   // Top
+    const defs = document.createElementNS(svgNS, 'defs');
+    const linearGradient = document.createElementNS(svgNS, 'linearGradient');
+    linearGradient.setAttribute('id', uniqueId);
+    linearGradient.setAttribute('x1', '0%');
+    linearGradient.setAttribute('y1', '100%');
+    linearGradient.setAttribute('x2', '0%');
+    linearGradient.setAttribute('y2', '0%');
 
-    const stop1 = document.createElementNS(svgNS, "stop");
-    stop1.setAttribute("offset", "0%");
-    stop1.setAttribute("stop-color", colorPair.start);
+    const stop1 = document.createElementNS(svgNS, 'stop');
+    stop1.setAttribute('offset', '0%');
+    stop1.setAttribute('stop-color', colorPair.start);
 
-    const stop2 = document.createElementNS(svgNS, "stop");
-    stop2.setAttribute("offset", "100%");
-    stop2.setAttribute("stop-color", colorPair.end);
+    const stop2 = document.createElementNS(svgNS, 'stop');
+    stop2.setAttribute('offset', '100%');
+    stop2.setAttribute('stop-color', colorPair.end);
 
-    linearGradient.appendChild(stop1);
-    linearGradient.appendChild(stop2);
+    linearGradient.append(stop1, stop2);
     defs.appendChild(linearGradient);
     svg.appendChild(defs);
 
-    // Create Main Leaf Path
-    const path = document.createElementNS(svgNS, "path");
-    path.setAttribute("d", leafType.path);
-    path.setAttribute("fill", `url(#${uniqueId})`);
-    path.setAttribute("stroke", "rgba(0,0,0,0.1)");
-    path.setAttribute("stroke-width", "1");
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', leafType.path);
+    path.setAttribute('fill', `url(#${uniqueId})`);
+    path.setAttribute('stroke', 'rgba(44, 24, 18, 0.28)');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('stroke-linejoin', 'round');
     svg.appendChild(path);
 
-    // Create Veins
     if (leafType.veins) {
-        const veinsGroup = document.createElementNS(svgNS, "g");
-        leafType.veins.forEach(veinPath => {
-            const vPath = document.createElementNS(svgNS, "path");
-            vPath.setAttribute("d", veinPath);
-            vPath.setAttribute("fill", "none");
-            vPath.setAttribute("stroke", "rgba(0,0,0,0.15)"); // Darker than outline
-            vPath.setAttribute("stroke-width", "2");
-            vPath.setAttribute("stroke-linecap", "round");
+        const veinsGroup = document.createElementNS(svgNS, 'g');
+        leafType.veins.forEach((veinPath) => {
+            const vPath = document.createElementNS(svgNS, 'path');
+            vPath.setAttribute('d', veinPath);
+            vPath.setAttribute('fill', 'none');
+            vPath.setAttribute('stroke', 'rgba(55, 33, 20, 0.18)');
+            vPath.setAttribute('stroke-width', '2');
+            vPath.setAttribute('stroke-linecap', 'round');
             veinsGroup.appendChild(vPath);
         });
         svg.appendChild(veinsGroup);
     }
 
+    if (leafType.stem) {
+        const stem = document.createElementNS(svgNS, 'path');
+        stem.setAttribute('d', leafType.stem);
+        stem.setAttribute('fill', 'none');
+        stem.setAttribute('stroke', '#4b2b1a');
+        stem.setAttribute('stroke-width', '3');
+        stem.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(stem);
+    }
+
     leaf.appendChild(svg);
 
     const fallDuration = baseDuration / speedMultiplier;
-    const swayDuration = 3 + Math.random() * 4;
-    const swayAmount = 60 + Math.random() * 80;
-    const rotationSpeed = 6 + Math.random() * 10;
+    const swayDuration = 3 + Math.random() * 5;
+    const flutterDuration = 2.5 + Math.random() * 3;
+    const swayAmount = 45 + Math.random() * 95;
+    const tiltAmount = 8 + Math.random() * 14;
+    const rotationSpeed = 8 + Math.random() * 10;
 
-    // DELAY configuration
-    // If startMidAir is true, we use a negative delay to simulate the leaf being already in motion
     let delay = 0;
     let animationDelay = 0;
 
     if (startMidAir) {
-        // Random negative delay between 2s and fallDuration/2
-        animationDelay = -1 * (2 + Math.random() * (fallDuration * 0.6));
+        animationDelay = -(1.5 + Math.random() * (fallDuration * 0.65));
+    } else if (intensity === 'minimal') {
+        delay = 3;
     } else {
-        // Normal stagger
-        // If it's minimal intensity, the first leaf has a fixed 3s delay
-        if (intensity === 'minimal') {
-            delay = 3;
-        } else {
-            delay = isFirst ? 0 : (0.2 + Math.random() * 1.5);
-        }
+        delay = isFirst ? 0 : 0.2 + Math.random() * 1.4;
     }
 
     leaf.style.setProperty('--fall-duration', `${fallDuration}s`);
     leaf.style.setProperty('--fall-delay', `${delay}s`);
-    leaf.style.setProperty('--animation-delay-offset', `${animationDelay}s`); // New variable for negative delay
     leaf.style.setProperty('--sway-amount', `${swayAmount}px`);
+    leaf.style.setProperty('--tilt-amount', `${tiltAmount}deg`);
     leaf.style.setProperty('--sway-duration', `${swayDuration}s`);
+    leaf.style.setProperty('--flutter-duration', `${flutterDuration}s`);
     leaf.style.setProperty('--rotation-speed', `${rotationSpeed}s`);
 
-    // For startMidAir, we need to ensure the animation starts immediately in its cycle
     if (startMidAir) {
-        leaf.style.animationDelay = `${animationDelay}s, ${animationDelay}s, ${animationDelay}s`;
+        leaf.style.animationDelay = `${animationDelay}s, ${animationDelay}s`;
+        svg.style.animationDelay = `${animationDelay}s, ${animationDelay}s`;
     }
 
     container.appendChild(leaf);
 
-    leaf.addEventListener('animationend', (e) => {
-        if (e.animationName === 'leaf-fall') leaf.remove();
+    leaf.addEventListener('animationend', (event) => {
+        if (event.animationName === 'leaf-fall') leaf.remove();
     });
 
     return leaf;
@@ -183,15 +179,18 @@ export function startLeavesEffect(intensity = 'medium') {
     document.body.appendChild(overlay);
 
     const settings = {
-        'minimal': { interval: 10000, max: 1, initialCount: 0 },
-        'low': { interval: 3500, max: 8, initialCount: 1 },
-        'medium': { interval: 1800, max: 15, initialCount: 4 },
-        'high': { interval: 1000, max: 22, initialCount: 7 },
-        'intense': { interval: 500, max: 35, initialCount: 12 }
+        minimal: { interval: 10000, max: 1, initialCount: 0 },
+        low: { interval: 3400, max: 8, initialCount: 1 },
+        medium: { interval: 1800, max: 14, initialCount: 4 },
+        high: { interval: 1100, max: 20, initialCount: 6 },
+        intense: { interval: 650, max: 30, initialCount: 10 }
     };
 
     const config = settings[intensity] || settings.medium;
-    const { interval, max, initialCount } = config;
+    const scale = getPerformanceScale();
+    const interval = Math.round(config.interval / Math.max(scale, 0.45));
+    const max = Math.max(1, Math.round(config.max * scale));
+    const initialCount = Math.max(0, Math.round(config.initialCount * scale));
 
     let isFirstLeaf = true;
 
@@ -202,12 +201,8 @@ export function startLeavesEffect(intensity = 'medium') {
         }
     };
 
-    // GENERATE INITIAL BATCH (Mid-air)
-    for (let i = 0; i < initialCount; i++) {
-        spawn(true);
-    }
+    for (let i = 0; i < initialCount; i += 1) spawn(true);
 
-    // Continue spawning normal leaves
     const timer = setInterval(() => spawn(false), interval);
 
     return () => {
