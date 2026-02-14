@@ -1,4 +1,6 @@
 import { initBeetle } from './beetle/index.js';
+import { startLeavesEffect } from './leaves/index.js';
+import { startTimePulseEffect } from './time-pulse/index.js';
 
 let activeEffectInterval = null;
 let activeSmokeInterval = null;
@@ -6,6 +8,9 @@ let activeRainInterval = null;
 let activeBirdInterval = null;
 let activeBeetleTimeout = null;
 let activeBeetleCleanup = null;
+let activeLeavesCleanup = null;
+let activeTimePulseCleanup = null;
+let activeSepiaOverlay = null;
 
 function clearExistingEffects() {
     if (activeEffectInterval) { clearInterval(activeEffectInterval); activeEffectInterval = null; }
@@ -13,13 +18,18 @@ function clearExistingEffects() {
     if (activeRainInterval) { clearInterval(activeRainInterval); activeRainInterval = null; }
     if (activeBirdInterval) { clearInterval(activeBirdInterval); activeBirdInterval = null; }
 
+    // Limpiar nuevos efectos
+    if (activeLeavesCleanup) { activeLeavesCleanup(); activeLeavesCleanup = null; }
+    if (activeTimePulseCleanup) { activeTimePulseCleanup(); activeTimePulseCleanup = null; }
+    if (activeSepiaOverlay) { activeSepiaOverlay.remove(); activeSepiaOverlay = null; }
+
     const existingBirds = document.querySelectorAll('.flying-bird');
     existingBirds.forEach(el => el.remove());
 
-    const existingOverlays = document.querySelectorAll('.effect-overlay');
+    const existingOverlays = document.querySelectorAll('.effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, .sepia-overlay');
     existingOverlays.forEach(el => el.remove());
-    
-    const existingParticles = document.querySelectorAll('.smoke-particle, .rain-drop');
+
+    const existingParticles = document.querySelectorAll('.smoke-particle, .rain-drop, .falling-leaf, .time-pulse-ring');
     existingParticles.forEach(el => el.remove());
 }
 
@@ -102,7 +112,7 @@ export function startLibraryBeetle({ getAppMode }) {
 
     const scheduleNext = () => {
         if (getAppMode() !== 'library') return;
-        
+
         // Tiempo natural: Entre 5 y 15 segundos
         const delay = 5000 + Math.random() * 10000;
 
@@ -111,7 +121,7 @@ export function startLibraryBeetle({ getAppMode }) {
 
             activeBeetleCleanup = initBeetle({
                 getHideTarget: getBeetleHideTarget,
-                maxLifetimeMs: 20000 + Math.random() * 10000, 
+                maxLifetimeMs: 20000 + Math.random() * 10000,
                 onCleanup: () => {
                     activeBeetleCleanup = null;
                     if (getAppMode() === 'library') scheduleNext();
@@ -140,7 +150,43 @@ export function handlePageEffects(effectString, { getAppMode }) {
     clearExistingEffects();
     if (!effectString) return;
     const effects = effectString.split(',').map(e => e.trim());
+
+    // Efectos existentes
     if (effects.includes('bluebird_pass')) startBirdEffect(getAppMode);
     if (effects.includes('smoke_overlay')) startSmokeEffect(getAppMode);
     if (effects.includes('rain_subtle')) startRainEffect(getAppMode);
+
+    // Nuevos efectos: Hojas cayendo con intensidades
+    if (effects.includes('falling_leaves_low')) {
+        activeLeavesCleanup = startLeavesEffect('low');
+    } else if (effects.includes('falling_leaves_medium')) {
+        activeLeavesCleanup = startLeavesEffect('medium');
+    } else if (effects.includes('falling_leaves_high')) {
+        activeLeavesCleanup = startLeavesEffect('high');
+    } else if (effects.includes('falling_leaves_intense')) {
+        activeLeavesCleanup = startLeavesEffect('intense');
+    }
+
+    // Pulso del tiempo con intensidades
+    if (effects.includes('time_pulse_subtle')) {
+        activeTimePulseCleanup = startTimePulseEffect('subtle');
+    } else if (effects.includes('time_pulse_medium')) {
+        activeTimePulseCleanup = startTimePulseEffect('medium');
+    } else if (effects.includes('time_pulse_strong')) {
+        activeTimePulseCleanup = startTimePulseEffect('strong');
+    }
+
+    // Overlay sepia con intensidades
+    if (effects.some(e => e.startsWith('sepia_'))) {
+        const sepiaEffect = effects.find(e => e.startsWith('sepia_') && e !== 'sepia_grain');
+        const intensity = sepiaEffect ? sepiaEffect.split('_')[1] : null; // light, medium, strong
+        const withGrain = effects.includes('sepia_grain');
+
+        if (intensity) {
+            activeSepiaOverlay = document.createElement('div');
+            activeSepiaOverlay.className = `sepia-overlay sepia-${intensity}`;
+            if (withGrain) activeSepiaOverlay.classList.add('with-grain');
+            document.body.appendChild(activeSepiaOverlay);
+        }
+    }
 }

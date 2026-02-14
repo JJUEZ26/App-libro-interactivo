@@ -472,8 +472,13 @@
     animation: fadeInLeft var(--duration-normal) var(--ease-out-expo) both;
 }
 
+
 .animate-fade-in-right {
     animation: fadeInRight var(--duration-normal) var(--ease-out-expo) both;
+}
+
+.fade-in-text {
+    animation: fadeIn 1.5s var(--ease-out) both;
 }
 
 .animate-scale-in {

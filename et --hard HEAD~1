@@ -1,0 +1,307 @@
+[33m425baa9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m no avance mucho
+[33m655afd5[m ya no aguanto mas
+[33m81ebeb9[m carpeta escondida
+[33m42a17e3[m no cargo bien
+[33mfd40e7a[m Mejoras realizadas tratando con amor a la ia
+[33m5de93f9[m Update test_regions.py
+[33mf1f7801[m Update voice_chat.py
+[33m2ad396f[m Create test_regions.py
+[33mf46ba6c[m Create test_brain.py
+[33m22a1959[m Update voice_chat.py
+[33mfda466f[m Update voice_chat.py
+[33me4ed1de[m Update voice_chat.py
+[33m0da15cd[m Merge pull request #37 from JJUEZ26/codex/create-voice_chat.py-for-voice-conversation
+[33m200818a[m[33m ([m[1;31morigin/codex/create-voice_chat.py-for-voice-conversation[m[33m)[m Add voice chat script with Gemini response
+[33me09ba2f[m Merge pull request #36 from JJUEZ26/codex/create-python-microservice-for-audio-transcription
+[33mdd101ca[m[33m ([m[1;31morigin/codex/create-python-microservice-for-audio-transcription[m[33m)[m Add audio transcription backend scaffold
+[33m27ee6a7[m Merge branch 'main' of https://github.com/JJUEZ26/App-libro-interactivo the commit.
+[33m76c6b23[m Seguridad: Agregado gitignore para ocultar credenciales
+[33me9ee104[m Update ChatModule.js
+[33mcb8023e[m Update ChatModule.js
+[33m233bbc9[m Update ChatModule.js
+[33md3e9e02[m Update ChatModule.js
+[33m841209b[m Update ChatModule.js
+[33m0a75c65[m Update GeminiLiveClient.js
+[33m5275f12[m Update ChatModule.js
+[33m306a544[m Update GeminiLiveClient.js
+[33mb30010b[m Merge pull request #35 from JJUEZ26/codex/implementar-chat-de-voz-nativo-con-gemini-2.5-drqm0s
+[33me26c8cc[m[33m ([m[1;31morigin/codex/implementar-chat-de-voz-nativo-con-gemini-2.5-drqm0s[m[33m)[m Merge branch 'main' into codex/implementar-chat-de-voz-nativo-con-gemini-2.5-drqm0s
+[33m65c776f[m Allow Gemini Live to use server API key
+[33m954461a[m Merge pull request #34 from JJUEZ26/codex/implementar-chat-de-voz-nativo-con-gemini-2.5
+[33ma828fb9[m[33m ([m[1;31morigin/codex/implementar-chat-de-voz-nativo-con-gemini-2.5[m[33m)[m Add Gemini Live voice chat client
+[33m88de693[m Restauración del proyecto a versión estable sin Firebase
+[33mf60eb30[m Merge pull request #33 from JJUEZ26/codex/refactorizar-integracion-de-firebase
+[33m08de49e[m[33m ([m[1;31morigin/codex/refactorizar-integracion-de-firebase[m[33m)[m Simplify Firebase initialization
+[33mecae0ed[m Update firebase-config.js
+[33m1201f79[m Merge pull request #32 from JJUEZ26/codex/revisar-inicializacion-y-llamadas-de-firebase
+[33mc292b73[m[33m ([m[1;31morigin/codex/revisar-inicializacion-y-llamadas-de-firebase[m[33m)[m Mejorar inicialización de Firebase
+[33m7f3e45e[m Merge pull request #31 from JJUEZ26/codex/fix-firebase-authentication-integration
+[33m22a003a[m[33m ([m[1;31morigin/codex/fix-firebase-authentication-integration[m[33m)[m Update Firebase CDN auth setup
+[33m04404e0[m Merge pull request #30 from JJUEZ26/codex/modular-authentication-implementation-with-firebase
+[33m30e9453[m[33m ([m[1;31morigin/codex/modular-authentication-implementation-with-firebase[m[33m)[m Add Firebase auth UI and config endpoint
+[33m9b77399[m Merge pull request #29 from JJUEZ26/codex/redesign-ai-button-for-better-usability
+[33me401466[m[33m ([m[1;31morigin/codex/redesign-ai-button-for-better-usability[m[33m)[m Refine reader chat button and highlight menu
+[33mf13ed48[m Merge pull request #28 from JJUEZ26/codex/redisenar-boton-de-citas-y-funcionalidad
+[33m873d741[m[33m ([m[1;31morigin/codex/redisenar-boton-de-citas-y-funcionalidad[m[33m)[m Refine reader footer and highlight menu
+[33m518d01f[m Merge pull request #27 from JJUEZ26/codex/add-professional-highlighting-and-citation-system
+[33m642402d[m[33m ([m[1;31morigin/codex/add-professional-highlighting-and-citation-system[m[33m)[m Add reader highlights and quotes panel
+[33m5fb29b9[m Merge pull request #26 from JJUEZ26/codex/improve-design-and-ux-of-main-page
+[33m6ba72bf[m[33m ([m[1;31morigin/codex/improve-design-and-ux-of-main-page[m[33m)[m Mejora UI de biblioteca y lector
+[33m574df1a[m Merge pull request #25 from JJUEZ26/codex/fix-pagination-logic-and-design
+[33mdd7ab41[m[33m ([m[1;31morigin/codex/fix-pagination-logic-and-design[m[33m)[m Fix page navigation state and modernize slider
+[33m912201d[m Update el_extranjero.json
+[33m9f5232f[m Update el_extranjero.json
+[33m5562e5d[m Update books.json
+[33m897c671[m Add files via upload
+[33mbc9eaaa[m Update library-sections.json
+[33m5199b99[m Update library-sections.json
+[33m9874071[m Update books.json
+[33m04035be[m Update el_extranjero.json
+[33ma17aab0[m Create el_extranjero.json
+[33mb2b20b0[m Update meditaciones.json
+[33m13b6add[m Update meditaciones.json
+[33ma539c7b[m Update books.json
+[33ma13d52d[m Add files via upload
+[33m2c7299e[m Update library-sections.json
+[33m5708554[m Update books.json
+[33m62556f7[m Rename el_extranjero.json to meditaciones.json
+[33md74e09d[m Update el_extranjero.json
+[33m924e52e[m Update el_extranjero.json
+[33mf145190[m Update el_extranjero.json
+[33m1dbc95d[m Update el_extranjero.json
+[33m5238fc8[m Update el_extranjero.json
+[33m881713f[m Update el_extranjero.json
+[33mcd6ae88[m Update el_extranjero.json
+[33m7534aa7[m Update el_extranjero.json
+[33md23467b[m Update el_extranjero.json
+[33m9df6909[m Update el_extranjero.json
+[33m86d203f[m Update el_extranjero.json
+[33mae5abc0[m Update el_extranjero.json
+[33macbba96[m Update el_extranjero.json
+[33mc95c226[m Update el_extranjero.json
+[33m9f64ab4[m Update el_extranjero.json
+[33m6f369a5[m Update el_extranjero.json
+[33m604716b[m Update el_extranjero.json
+[33m6df4a77[m Update el_extranjero.json
+[33m2ac16c0[m Update el_extranjero.json
+[33m75fe206[m Update el_extranjero.json
+[33mc710191[m Update library-sections.json
+[33me5ad29b[m Update library-sections.json
+[33mf33dd09[m Update el_extranjero.json
+[33m0c540f7[m Merge pull request #24 from JJUEZ26/codex/mejorar-comportamiento-de-la-ia-f0ipc0
+[33m517498e[m[33m ([m[1;31morigin/codex/mejorar-comportamiento-de-la-ia-f0ipc0[m[33m)[m Enhance AI chat context and memory
+[33mc85ef5d[m Merge pull request #23 from JJUEZ26/codex/mejorar-comportamiento-de-la-ia
+[33mfe18c06[m[33m ([m[1;31morigin/codex/mejorar-comportamiento-de-la-ia[m[33m)[m Update assistant prompt for library guidance
+[33m674fea1[m Merge pull request #22 from JJUEZ26/codex/integrate-ai-chat-feature-in-reader
+[33mbdc8ee7[m[33m ([m[1;31morigin/codex/integrate-ai-chat-feature-in-reader[m[33m)[m Add Gemini chat feature with serverless API
+[33m2b523f2[m Merge pull request #21 from JJUEZ26/codex/redesign-navigation-bar-as-seek-bar
+[33m5533124[m[33m ([m[1;31morigin/codex/redesign-navigation-bar-as-seek-bar[m[33m)[m Simplify reader navigation scrubber
+[33m2e3a535[m Merge pull request #20 from JJUEZ26/codex/revisar-y-corregir-ivan_ilich.json
+[33mcbbccd1[m[33m ([m[1;31morigin/codex/revisar-y-corregir-ivan_ilich.json[m[33m)[m Fix ivan ilich story JSON structure
+[33m039a7fe[m Update ivan_ilich.json
+[33me952e29[m Update ivan_ilich.json
+[33m47f8e86[m Update ivan_ilich.json
+[33m010f12a[m Update dos_ivan_ilich.json
+[33m2471269[m Update dos_ivan_ilich.json
+[33mee3be41[m Merge pull request #19 from JJUEZ26/codex/redisenar-barra-de-funcionalidad
+[33m1ce6d38[m[33m ([m[1;31morigin/codex/redisenar-barra-de-funcionalidad[m[33m)[m Redesign reader progress bar
+[33mfb63a79[m Merge pull request #18 from JJUEZ26/codex/add-fast-page-navigation-to-progress-bar
+[33m110484f[m[33m ([m[1;31morigin/codex/add-fast-page-navigation-to-progress-bar[m[33m)[m Add progress scrubber for fast page navigation
+[33m11699c4[m Update dos_ivan_ilich.json
+[33m4c6d9ca[m Update library-sections.json
+[33mb50817b[m Update library-sections.json
+[33m016e4ab[m Update library-sections.json
+[33mf440d53[m Update books.json
+[33m53d6b2a[m Update books.json
+[33mb432121[m Create el_extranjero.json
+[33m8dedc02[m Merge pull request #17 from JJUEZ26/codex/investigate-beetle-display-issue
+[33m842172f[m[33m ([m[1;31morigin/codex/investigate-beetle-display-issue[m[33m)[m Fix beetle position anchoring
+[33m3bf997e[m Update index.js
+[33me711c04[m Update index.js
+[33me1cbcb3[m Update index.js
+[33m5d36402[m Update index.js
+[33m228eaed[m Update index.js
+[33mf2e9d0c[m Update index.js
+[33m3a0c970[m Merge pull request #16 from JJUEZ26/codex/buscar-y-arreglar-error-en-pagina-principal
+[33m730b91a[m[33m ([m[1;31morigin/codex/buscar-y-arreglar-error-en-pagina-principal[m[33m)[m Fix beetle styles loading
+[33m8b63f50[m Merge pull request #15 from JJUEZ26/codex/integrate-kafka-beetle-animation-into-library
+[33m7adfdce[m[33m ([m[1;31morigin/codex/integrate-kafka-beetle-animation-into-library[m[33m)[m Add ambient beetle in library
+[33m700deb8[m Update view.js
+[33m717c48d[m Update view.js
+[33m1322240[m Update view.js
+[33m20692cc[m Create index.js
+[33m6e8b78d[m Create styles.css
+[33m66f1efd[m Update books.json
+[33m99c61f6[m Add files via upload
+[33mb1f598e[m Update books.json
+[33md40dc97[m Create dos_ivan_ilich.json
+[33maf551c9[m Update ivan_ilich.json
+[33m523d6a8[m Update ivan_ilich.json
+[33m56ddcfc[m Update ivan_ilich.json
+[33ma992cb6[m Update ivan_ilich.json
+[33mac4c016[m Update ivan_ilich.json
+[33m3c1e449[m Update ivan_ilich.json
+[33m227268c[m Update ivan_ilich.json
+[33mb4db92d[m Update ivan_ilich.json
+[33mabcd0ce[m Update ivan_ilich.json
+[33m9b1d6bc[m Update ivan_ilich.json
+[33m4cf81a2[m Update ivan_ilich.json
+[33mad79194[m Update ivan_ilich.json
+[33m815ee72[m Update ivan_ilich.json
+[33m8b801f9[m Update ivan_ilich.json
+[33m3b276eb[m Update books.json
+[33mdf5948f[m Update ivan_ilich.json
+[33m950aa59[m Merge pull request #14 from JJUEZ26/codex/fix-color-options-on-main-screen
+[33m6fbc405[m[33m ([m[1;31morigin/codex/fix-color-options-on-main-screen[m[33m)[m Fix library theming and cover sizing
+[33me1cb36b[m Merge pull request #13 from JJUEZ26/codex/redisenar-pagina-principal-de-la-biblioteca
+[33m4cca0ad[m[33m ([m[1;31morigin/codex/redisenar-pagina-principal-de-la-biblioteca[m[33m)[m Redesign library home layout
+[33m6f5bc12[m Update ivan_ilich.json
+[33m380dab2[m Update books.json
+[33m79b7fcb[m Rename Ivan_Ilich to ivan_ilich.json
+[33m65f421e[m Update books.json
+[33m16b912d[m Rename La_muerte _de_Ivan _Ilich to Ivan_Ilich
+[33m6a779ca[m Update books.json
+[33m208a2b8[m Rename La_muerte _de_Iván _Ilich to La_muerte _de_Ivan _Ilich
+[33m62a399d[m Update books.json
+[33m2b3a180[m Update books.json
+[33mbfa78cc[m Update books.json
+[33m0ae2f67[m Create La_muerte _de_Iván _Ilich
+[33mda316f9[m Update idea_vilarino_ya_no_sera.json
+[33m034b885[m Update idea_vilarino_ya_no_sera.json
+[33m1d9f985[m Update idea_vilarino_ya_no_sera.json
+[33m08404f3[m Add files via upload
+[33ma36a712[m Update books.json
+[33m0509358[m Add files via upload
+[33m4b43392[m Update books.json
+[33m03b6968[m Create idea_vilarino_ya_no_sera.json
+[33m502db35[m Merge pull request #12 from JJUEZ26/codex/create-and-organize-new-css-files
+[33m0265593[m[33m ([m[1;31morigin/codex/create-and-organize-new-css-files[m[33m)[m Reorganize global styles into modules
+[33m1ead5a5[m Merge pull request #11 from JJUEZ26/codex/refactor-project-structure-and-extract-functions
+[33m4e69130[m[33m ([m[1;31morigin/codex/refactor-project-structure-and-extract-functions[m[33m)[m Refactor app initialization into modules
+[33m0f4b9a0[m Add files via upload
+[33m242826a[m Update pecado_borges.json
+[33m45d3f36[m Update pecado_borges.json
+[33meeed46d[m Update pecado_borges.json
+[33mcb51205[m Update main.js
+[33mdf66b39[m Update global.css
+[33m34e4a73[m Update pecado_borges.json
+[33m24c56bb[m Update pecado_borges.json
+[33m326108c[m Update main.js
+[33m6f31c15[m Add files via upload
+[33m9e2e360[m Update main.js
+[33m5476f80[m Update global.css
+[33m0b27a48[m Update pecado_borges.json
+[33mb58d8a3[m Add files via upload
+[33m766c858[m Delete images/borges_remordimiento_portada.jpg
+[33mb6a1d9d[m Add files via upload
+[33m090a37b[m Create pecado_borges.json
+[33m02683dc[m Delete stories/stories directory
+[33m307b882[m Create pecado_borges.json
+[33mf657924[m Update global.css
+[33m8905806[m Update main.js
+[33mcb878b7[m Update service-worker.js
+[33m6ecf465[m Update books.json
+[33m682177d[m Update books.json
+[33m840e250[m Implement iOS fullscreen detection and instructions
+[33m9c8f01a[m Update global.css
+[33me38a23e[m Remove HTML span tags from JSON scenes
+[33m43da441[m Update main.js
+[33m1038c47[m Update main.js
+[33m4fdc99f[m Update pajaro_azul.json
+[33m50ce88e[m Add files via upload
+[33m738b7ec[m Update images and choices in pajaro_azul.json
+[33mc328904[m Update styles.css
+[33mbfdaeff[m Update scenes and choices in pajaro_azul.json
+[33m04702e0[m Update pajaro_azul.json
+[33m20c590f[m Update styles.css
+[33m09ab153[m Add files via upload
+[33me1d04ea[m Delete images/bluebird_icon.png
+[33m0969c68[m Update pajaro_azul.json
+[33m8ef1073[m Update index.js
+[33mf37e32d[m Update styles.css
+[33m9995df8[m Update index.js
+[33maacdcf5[m Adjust smoke spawn interval and rain drop count
+[33m2b56d8d[m Update styles.css
+[33m725cd77[m Update index.js
+[33mde2a687[m Update index.js
+[33m257f32b[m Update styles.css
+[33m1c98dec[m Enhance smoke effect styles for better visibility
+[33ma44b78a[m Update styles.css
+[33mc854de1[m Merge pull request #10 from JJUEZ26/codex/corregir-error-de-pagina-en-blanco
+[33m7101fe6[m[33m ([m[1;31morigin/codex/corregir-error-de-pagina-en-blanco[m[33m)[m Fix bluebird effect removing app container
+[33m21d127e[m Merge pull request #9 from JJUEZ26/codex/fix-audio-continuity-issue-in-app
+[33m9bd2c4a[m[33m ([m[1;31morigin/codex/fix-audio-continuity-issue-in-app[m[33m)[m Preserve page audio and guard bird effect
+[33md3e99de[m Merge pull request #8 from JJUEZ26/codex/fix-errors-in-pajaro-azul-book
+[33mb918ce1[m[33m ([m[1;31morigin/codex/fix-errors-in-pajaro-azul-book[m[33m)[m Fix bluebird effect crash and keep intro music
+[33m2aac38a[m Merge pull request #7 from JJUEZ26/codex/fix-audio-playback-and-navigation-issues
+[33mc5eb276[m[33m ([m[1;31morigin/codex/fix-audio-playback-and-navigation-issues[m[33m)[m Fix audio and navigation behavior
+[33me7ec30a[m Merge pull request #6 from JJUEZ26/codex/organize-and-move-css-styles
+[33medc2b08[m[33m ([m[1;31morigin/codex/organize-and-move-css-styles[m[33m)[m Reorganize styles into feature folders
+[33m915d01f[m Update frankenstein.json
+[33m1f4f7c5[m Update id in frankenstein.json
+[33mf22adee[m Merge pull request #5 from JJUEZ26/codex/refactorizar-estructura-de-carpetas-y-modulos
+[33mb243fc3[m[33m ([m[1;31morigin/codex/refactorizar-estructura-de-carpetas-y-modulos[m[33m)[m Refactor main script into modules
+[33m543f43c[m Add files via upload
+[33m24bd20b[m Delete images/bluebird_icon.png
+[33m0cafb48[m Add files via upload
+[33mdaaa1b6[m Add files via upload
+[33m4d0d54f[m Update main.js
+[33mc766b6c[m Update style.css
+[33m91d9b91[m Update pajaro_azul.json
+[33mc3e6e81[m Update books.json
+[33m3f47220[m Update books.json
+[33mc09d7b5[m Update service-worker.js
+[33m56de0ce[m Change id from 'poema-completo' to 'pajaro-azul'
+[33m34e5cc1[m Update books.json
+[33mcff417d[m Add files via upload
+[33m5f24cf6[m Delete images/bukowski_pajaroazul.jpg.png
+[33ma979ad5[m Update books.json
+[33m74ce5d2[m Add files via upload
+[33mf4e600a[m Update main.js
+[33m777a02e[m Update service-worker.js
+[33m8ff90ce[m Update main.js
+[33m3fc2c7a[m Update main.js
+[33m61d56b9[m Update style.css
+[33m91ade9b[m Update index.html
+[33m1de7820[m Add pajaro_azul.json with poem and choices
+[33m6dab69b[m Replace upcoming book entry with 'Pájaro Azul'
+[33mf1128fb[m Delete monstruo_rostro.jpg
+[33m1d6e7fd[m Update service-worker.js
+[33me36d348[m Add upcoming interactive books to JSON data
+[33me9a78ae[m Update index.html
+[33ma05add3[m Refactor main.js for improved readability and structure
+[33me2ba4bf[m Refactor color variables and theme styles in CSS
+[33m51210bb[m Update style.css
+[33mfa2a2df[m Update main.js
+[33mef60638[m Delete story.json
+[33mc05223a[m Create frankenstein.json
+[33maff188a[m Create books.json
+[33m614619e[m Update main.js
+[33m2fae046[m Update style.css
+[33med79a57[m Update index.html
+[33m94f6eef[m Merge pull request #4 from JJUEZ26/codex/fix-image-sizing-and-fullscreen-issue-w3tkkh
+[33m1018154[m[33m ([m[1;31morigin/codex/fix-image-sizing-and-fullscreen-issue-w3tkkh[m[33m)[m Merge branch 'main' into codex/fix-image-sizing-and-fullscreen-issue-w3tkkh
+[33m3936154[m Mejora centrado móvil y pantalla completa
+[33mdf82864[m Merge pull request #3 from JJUEZ26/codex/fix-image-sizing-and-fullscreen-issue-yc523r
+[33m23eef60[m[33m ([m[1;31morigin/codex/fix-image-sizing-and-fullscreen-issue-yc523r[m[33m)[m Merge branch 'main' into codex/fix-image-sizing-and-fullscreen-issue-yc523r
+[33m1f8345f[m Improve image centering and fullscreen background
+[33md166aa0[m Merge pull request #2 from JJUEZ26/codex/fix-image-sizing-and-fullscreen-issue
+[33m7d40c1d[m[33m ([m[1;31morigin/codex/fix-image-sizing-and-fullscreen-issue[m[33m)[m Improve fullscreen immersion and image sizing
+[33m9dc2b45[m Merge pull request #1 from JJUEZ26/codex/add-subtle-subtitle-to-main-title
+[33md6472bb[m[33m ([m[1;31morigin/codex/add-subtle-subtitle-to-main-title[m[33m)[m Add subtitle to main title
+[33mc2db6b1[m Delete sounds/prueba
+[33md019bed[m Delete images/prueba
+[33m4c32db4[m Add files via upload
+[33ma27f816[m Create prueba
+[33m2daffeb[m Add files via upload
+[33m5a3537a[m Create prueba
+[33m877926b[m Delete images
+[33md95181f[m Delete victor_encubierta.png
+[33ma88eb17[m Delete victorduda.png
+[33me59ccc2[m Delete vidadeecos.png
+[33ma9557e9[m Delete victor_conpala.png
+[33m2b9b560[m Create images
+[33m3a5d215[m IMAGES
+[33m2ad7ba8[m Delete images
+[33mbfdc53e[m Create images
+[33m520a262[m Add files via upload

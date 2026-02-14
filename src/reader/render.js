@@ -86,29 +86,53 @@ export function renderPage(pageId) {
 
     contentCenterer.innerHTML = contentHtml;
 
-    if (pageData.choices && (pageData.choices.length > 1 || (pageData.choices.length > 0 && pageData.forceShowChoices))) {
-        const choicesDiv = document.createElement('div');
-        choicesDiv.className = 'choices';
-        pageData.choices.forEach((choice) => {
-            const btn = document.createElement('button');
-            btn.textContent = choice.text;
-            btn.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (choice.page === 'pecado' || choice.text.toLowerCase().includes('escuchar')) {
-                    if (state.currentAudio) {
-                        state.currentAudio.currentTime = 0;
-                        state.currentAudio.play();
-                        updatePlayButtonState(true);
-                        const firstLine = document.querySelector('.karaoke-line');
-                        if (firstLine) firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Renderizar opciones
+    if (pageData.choices && pageData.choices.length > 0) {
+        if (pageData.choices.length === 1 && !pageData.forceShowChoices) {
+            // Caso lineal: Un solo "camino" -> Mostrar indicador sutil de continuar
+            const nextChoice = pageData.choices[0];
+            const continueDiv = document.createElement('div');
+            continueDiv.className = 'continue-indicator';
+            continueDiv.innerHTML = `
+                <span class="continue-text">Continúa</span>
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            `;
+
+            const handleContinue = (e) => {
+                e.stopPropagation();
+                if (goToPage) goToPage(nextChoice.page);
+            };
+
+            continueDiv.addEventListener('click', handleContinue);
+            // También permitir avanzar al hacer click en el contenedor de contenido si no es texto seleccionable
+            // Opcional: contentCenterer.addEventListener('click', handleContinue);
+
+            contentCenterer.appendChild(continueDiv);
+        } else {
+            // Caso ramificado: Varias opciones -> Mostrar botones
+            const choicesDiv = document.createElement('div');
+            choicesDiv.className = 'choices';
+            pageData.choices.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.textContent = choice.text;
+                btn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    if (choice.page === 'pecado' || choice.text.toLowerCase().includes('escuchar')) {
+                        if (state.currentAudio) {
+                            state.currentAudio.currentTime = 0;
+                            state.currentAudio.play();
+                            updatePlayButtonState(true);
+                            const firstLine = document.querySelector('.karaoke-line');
+                            if (firstLine) firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else if (goToPage) {
+                        goToPage(choice.page);
                     }
-                } else if (goToPage) {
-                    goToPage(choice.page);
-                }
+                });
+                choicesDiv.appendChild(btn);
             });
-            choicesDiv.appendChild(btn);
-        });
-        contentCenterer.appendChild(choicesDiv);
+            contentCenterer.appendChild(choicesDiv);
+        }
     }
 
     pageContent.appendChild(contentCenterer);
@@ -137,12 +161,15 @@ export function renderPage(pageId) {
     });
 
     if (pageData.bgMusic) {
-        playPageSound(null, pageData.bgMusic, true);
+        playPageSound(pageId, pageData.bgMusic, true);
     } else if (pageData.sound) {
-        playPageSound(null, pageData.sound, true);
+        playPageSound(pageId, pageData.sound, true);
     } else if (pageData.audio) {
-        playPageSound(null, pageData.audio, false);
-        if (pageData.karaokeLines) {
+        // Si hay audio pero no es karaoke, lo tratamos como música de fondo (autoPlay true)
+        const isKaraoke = pageData.karaokeLines && pageData.karaokeLines.length > 0;
+        playPageSound(pageId, pageData.audio, true);
+
+        if (isKaraoke) {
             startKaraokeSync();
         }
     } else {

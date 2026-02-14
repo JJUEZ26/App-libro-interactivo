@@ -32,6 +32,14 @@
     "theme": "sepia"
   },
   {
+    "id": "no-volvere-joven",
+    "title": "No volveré a ser joven",
+    "author": "Jaime Gil de Biedma",
+    "description": "Una meditación lúcida sobre el paso del tiempo y la madurez.",
+    "cover": "images/gil_biedma_portada.png",
+    "storyFile": "stories/gil_de_biedma_no_volvere.json"
+  },
+  {
     "id": "ivan_ilich.json",
     "title": "La muerte de Iván Ilich",
     "author": "Lev Tolstói",
@@ -54,5 +62,13 @@
     "description": "",
     "cover": "images/el_extranjero.png",
     "storyFile": "stories/el_extranjero.json"
+  },
+  {
+    "id": "la-levedad-del-deseo",
+    "title": "La levedad del deseo",
+    "author": "Obra Original",
+    "description": "Una novela contemporánea sobre la rutina, el deseo y la búsqueda de sentido en la cotidianidad urbana.",
+    "cover": "images/levedad_deseo_portada.png",
+    "storyFile": "stories/la_levedad_del_deseo.json"
   }
 ]

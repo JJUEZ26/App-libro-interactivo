@@ -1,0 +1,88 @@
+[
+    {
+        "id": "inicio",
+        "page": 1,
+        "audio": "nils_frahm_ambre.mp3",
+        "effect": "sepia_light, sepia_grain, falling_leaves_minimal",
+        "scenes": [
+            "No volveré a ser joven.",
+            "Que la vida iba en serio\nuno lo empieza a comprender más tarde"
+        ],
+        "choices": [
+            {
+                "text": "Como todos los jóvenes...",
+                "page": "juventud"
+            }
+        ]
+    },
+    {
+        "id": "juventud",
+        "page": 2,
+        "audio": "nils_frahm_ambre.mp3",
+        "effect": "falling_leaves_low, sepia_light",
+        "scenes": [
+            "—como todos los jóvenes, yo vine\na llevarme la vida por delante.",
+            "Dejar huella quería\ny marcharme entre aplausos"
+        ],
+        "choices": [
+            {
+                "text": "Pero el teatro era otro...",
+                "page": "teatro"
+            }
+        ]
+    },
+    {
+        "id": "teatro",
+        "page": 3,
+        "audio": "nils_frahm_ambre.mp3",
+        "effect": "falling_leaves_medium, time_pulse_subtle, sepia_medium",
+        "scenes": [
+            "—envejecer, morir, eran tan solo\nlas dimensiones del teatro.",
+            "Pero ha pasado el tiempo\ny la <span class='highlight-truth'>verdad desagradable</span> asoma:"
+        ],
+        "choices": [
+            {
+                "text": "El único argumento...",
+                "page": "verdad"
+            }
+        ]
+    },
+    {
+        "id": "verdad",
+        "page": 4,
+        "audio": "nils_frahm_ambre.mp3",
+        "effect": "falling_leaves_high, time_pulse_medium, sepia_strong, sepia_grain",
+        "scenes": [
+            "envejecer, morir,",
+            "es el <span class='highlight-truth'>único argumento de la obra</span>."
+        ],
+        "choices": [
+            {
+                "text": "Sobre el autor",
+                "page": "biografia"
+            }
+        ]
+    },
+    {
+        "id": "biografia",
+        "page": 5,
+        "audio": "nils_frahm_ambre.mp3",
+        "volume": 0.4,
+        "playbackRate": 0.9,
+        "effect": "sepia_medium",
+        "forceShowChoices": true,
+        "images": [],
+        "scenes": [
+            "<img src='images/gil_de_biedma_retrato.jpg' class='bio-portrait' alt='Jaime Gil de Biedma'>",
+            "<strong>Jaime Gil de Biedma (1929-1990)</strong>",
+            "Poeta español de la Generación del 50, conocido por su poesía reflexiva, irónica y profundamente personal.",
+            "'No volveré a ser joven' (1968) es uno de sus poemas más célebres, una meditación lúcida sobre el paso del tiempo y la desilusión que llega con la madurez, cuando uno descubre que la vida no es el escenario glorioso que imaginaba en la juventud."
+        ],
+        "choices": [
+            {
+                "text": "Volver a la biblioteca",
+                "page": -1
+            }
+        ]
+    }
+]

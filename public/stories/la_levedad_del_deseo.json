@@ -1,0 +1,51 @@
+[
+    {
+        "id": "inicio",
+        "page": 1,
+        "effect": "sepia_light",
+        "scenes": [
+            "A veces siento que la ciudad no es más que un exceso de conversaciones y ruidos incesantes que nunca terminan del todo. Murmullos, risas y lamentos que se repiten y rebotan entre el cemento y los vehículos.",
+            "Las avenidas y veredas se llenan de gente que avanza con prisa, a esa velocidad exacta, la justa, que inhibe cualquier intento de introspección.",
+            "Esa tarde de marzo —o abril, no podría decirlo con precisión; en mi memoria las fechas tienden a mezclarse— volví a casa envuelto en todo ese ruido, con la misma sensación que me acompañaba desde hacía varios años ya."
+        ],
+        "choices": [
+            {
+                "text": "La inercia",
+                "page": "trabajo"
+            }
+        ]
+    },
+    {
+        "id": "trabajo",
+        "page": 2,
+        "effect": "sepia_medium, sepia_grain",
+        "scenes": [
+            "Como era habitual, me dominaba el cansancio de la monotonía: horas y horas de correos enviados, resolviendo siempre un mensaje más urgente que el anterior. Los remitentes transmitían, como de costumbre, el carácter impostergable —casi trágico— del problema.",
+            "Pero bastaba con plantarse un momento, con un poco de calma, para descubrir que no eran más que pequeñas nimiedades de la cotidianidad: reportes no presentados, correos sin respuesta, inconvenientes mínimos elevados a la categoría de crisis.",
+            "Y, aun así, alguien tiene que responder y ordenar ese pequeño caos, y ese alguien —por azar o por simple inercia del destino— soy yo."
+        ],
+        "choices": [
+            {
+                "text": "Llegar a casa",
+                "page": "casa"
+            }
+        ]
+    },
+    {
+        "id": "casa",
+        "page": 3,
+        "effect": "sepia_light",
+        "scenes": [
+            "Mientras pienso en la cadena de decisiones que me llevaron hasta ese trabajo, me doy cuenta de que ya he llegado a mi departamento. Todo permanece igual que siempre; no suelo cambiar de lugar las cosas. No es un espacio grande ni pretende serlo, tiene exactamente lo necesario y nada más.",
+            "Hay un pequeño escritorio donde trabajo, escribo y, cuando no queda otra opción, también como; una silla cómoda a medias, un sillón reclinable que siempre quise que fuera mejor de lo que es, y una cama que cruje, aunque es prácticamente nueva.",
+            "Contra la pared está la estantería con mis libros: algunos días son demasiados, otros parecen pocos, y sospecho que esa variación tiene más que ver conmigo que con ellos. A veces fantaseo con mostrárselos a alguien, tomando libro tras libro, hablando de la historia y del autor con un entusiasmo contenido, esperando tal vez encontrar en la mirada de la espectadora un destello breve de interés o admiración.",
+            "Por ahora, solo yo los observo, y ellos permanecen inmutables."
+        ],
+        "choices": [
+            {
+                "text": "Volver a la biblioteca (Fin de la demo)",
+                "page": -1
+            }
+        ]
+    }
+]

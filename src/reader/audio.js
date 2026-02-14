@@ -34,14 +34,24 @@ export function updatePlayButtonState(isPlaying) {
 
 export function playPageSound(pageId, soundFileOverride = null, autoPlay = true) {
     let soundFile = soundFileOverride;
-    if (!soundFile && state.story && pageId) {
+    let volumeMultiplier = 1;
+    let playbackRate = 1;
+
+    if (state.story && pageId) {
         const pageData = state.story.find((page) => page.id === pageId);
-        if (pageData) soundFile = pageData.sound || pageData.audio;
+        if (pageData) {
+            if (!soundFile) soundFile = pageData.sound || pageData.audio;
+            volumeMultiplier = pageData.volume ?? 1;
+            playbackRate = pageData.playbackRate ?? 1;
+        }
     }
 
     if (soundFile) {
         if (state.currentAudio && state.currentAudioFile === soundFile) {
-            state.currentAudio.volume = state.currentVolume;
+            // Si ya está sonando, actualizamos volumen y velocidad dinámicamente
+            state.currentAudio.volume = state.currentVolume * volumeMultiplier;
+            state.currentAudio.playbackRate = playbackRate;
+
             if (autoPlay && state.currentAudio.paused) {
                 state.currentAudio.play().catch((err) => console.error('Error audio:', err));
             }
@@ -49,14 +59,30 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
         }
 
         stopCurrentAudio();
-        state.currentAudio = new Audio(`sounds/${soundFile}`);
+        // El navegador necesita que la ruta sea relativa a index.html o absoluta
+        const audioPath = `public/sounds/${soundFile}`;
+        console.log(`Intentando reproducir: ${audioPath} (Vol: ${volumeMultiplier}, Speed: ${playbackRate})`);
+
+        state.currentAudio = new Audio(audioPath);
         state.currentAudioFile = soundFile;
 
         const pageData = state.story.find((page) => page.id === pageId);
         const isKaraoke = pageData && pageData.karaokeLines;
 
         state.currentAudio.loop = !isKaraoke;
-        state.currentAudio.volume = state.currentVolume;
+        state.currentAudio.volume = state.currentVolume * volumeMultiplier;
+        state.currentAudio.playbackRate = playbackRate;
+
+        state.currentAudio.addEventListener('error', (e) => {
+            console.error('Error cargando el archivo de audio:', soundFile, e);
+            // Intento alternativo sin 'public/' por si el servidor mapea public directamente
+            if (audioPath.startsWith('public/')) {
+                const fallbackPath = audioPath.replace('public/', '');
+                console.log(`Probando ruta alternativa: ${fallbackPath}`);
+                state.currentAudio.src = fallbackPath;
+                state.currentAudio.play().catch(err => console.error('Fallo también ruta alternativa:', err));
+            }
+        });
 
         state.currentAudio.addEventListener('ended', () => {
             updatePlayButtonState(false);
@@ -66,9 +92,13 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
             state.currentAudio
                 .play()
                 .then(() => {
+                    console.log('Reproducción iniciada exitosamente:', soundFile);
                     updatePlayButtonState(true);
                 })
-                .catch((err) => console.error('Error audio:', err));
+                .catch((err) => {
+                    console.warn('Reproducción automática bloqueada o fallida:', err);
+                    updatePlayButtonState(false);
+                });
         } else {
             updatePlayButtonState(false);
         }

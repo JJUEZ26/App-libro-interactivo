@@ -1,30 +1,42 @@
 {
-  "featuredBookId": "frankenstein",
+  "featuredBookId": "la-levedad-del-deseo",
   "sections": [
     {
       "id": "poemas",
       "title": "Poemas",
       "subtitle": "Lecturas breves para empezar el día con emoción.",
-      "bookIds": ["pajaro-azul", "jorge-luis-borges-remordimiento", "ya_no_sera"]
+      "bookIds": [
+        "pajaro-azul",
+        "jorge-luis-borges-remordimiento",
+        "ya_no_sera",
+        "no-volvere-joven"
+      ]
+    },
+    {
+      "id": "novelas-bifurcaciones",
+      "title": "Novelas con bifurcaciones",
+      "subtitle": "Novelas originales reescritas para que tú elijas el camino que quieras tomar.",
+      "bookIds": [
+        "frankenstein"
+      ]
     },
     {
       "id": "novelas-filosoficas",
       "title": "Novelas con tintes filosóficos",
       "subtitle": "Historias que invitan a pensar y a sentir.",
-      "bookIds": ["ivan_ilich.json", "el extranjero"],
+      "bookIds": [
+        "ivan_ilich.json",
+        "el extranjero"
+      ],
       "placeholderCount": 2
-    },
-    {
-      "id": "adaptaciones-ineditas",
-      "title": "Adaptaciones inéditas con bifurcaciones",
-      "subtitle": "Elige rutas y descubre finales alternativos.",
-      "bookIds": ["frankenstein"]
     },
     {
       "id": "filosofia",
       "title": "Filosofía",
       "subtitle": "Espacio listo para nuevas ideas.",
-      "bookIds": ["meditaciones"],
+      "bookIds": [
+        "meditaciones"
+      ],
       "placeholderCount": 4
     },
     {

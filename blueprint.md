@@ -40,7 +40,11 @@ App-libro-interactivo/
 │   ├── el_extranjero.json    # 193KB - Camus
 │   ├── ivan_ilich.json       # 173KB - Tolstói
 │   ├── meditaciones.json     # 332KB - Marco Aurelio
-│   └── ... (8 historias totales)
+│   ├── pajaro_azul.json      # Poema - Bukowski (lectura simple)
+│   ├── pecado_borges.json    # Poema - Borges (con audio)
+│   ├── idea_vilarino_ya_no_sera.json  # Poema - Vilariño (con audio)
+│   ├── gil_de_biedma_no_volvere.json  # Poema - Gil de Biedma (lectura simple)
+│   └── ... (9 historias totales)
 ├── src/
 │   ├── app/                  # Core de la aplicación
 │   │   ├── init.js          # Inicialización y orquestación
