@@ -62,7 +62,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const heroLabel = document.createElement('span');
         heroLabel.className = 'library-hero-label';
-        heroLabel.textContent = 'Libro estrella';
+        heroLabel.textContent = 'Libro estrella prueba 1';
 
         const heroTitle = document.createElement('h2');
         heroTitle.className = 'library-hero-title';
