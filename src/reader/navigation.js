@@ -110,6 +110,13 @@ export function goBack() {
 
 export function goForward() {
     if (state.isTransitioning || !state.story) return;
+
+    const currentPage = state.story.find((page) => page.id === state.currentStoryId);
+    if (currentPage?.choices?.length === 1 && !currentPage.forceShowChoices) {
+        goToPage(currentPage.choices[0].page, true);
+        return;
+    }
+
     const currentIndex = state.story.findIndex((page) => page.id === state.currentStoryId);
     if (currentIndex === -1 || currentIndex >= state.story.length - 1) return;
     const nextPage = state.story[currentIndex + 1];
