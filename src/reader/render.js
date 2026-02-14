@@ -78,10 +78,31 @@ export function renderPage(pageId) {
         });
         contentHtml += `</div>`;
     } else if (pageData.scenes && pageData.scenes.length > 0) {
-        const scenesHtml = pageData.scenes
-            .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${scene.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
-            .join('');
-        contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
+        // Detectar si es contenido poético (tiene \n o scenes cortas)
+        const isPoetry = pageData.scenes.some(s => s.includes('\n')) ||
+            pageData.scenes.every(s => s.replace(/<[^>]+>/g, '').length < 80);
+
+        if (isPoetry && !pageData.scenes.some(s => s.includes('<img'))) {
+            // — MODO POEMA —
+            // Cada scene es una estrofa, cada \n es un verso
+            let verseIndex = 0;
+            const stanzasHtml = pageData.scenes.map((scene) => {
+                const lines = scene.split('\n');
+                const linesHtml = lines.map((line) => {
+                    const delay = verseIndex * 0.6;
+                    verseIndex++;
+                    return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${line}</span>`;
+                }).join('');
+                return `<div class="stanza">${linesHtml}</div>`;
+            }).join('');
+            contentHtml += `<div class="scenes-container poem-layout">${stanzasHtml}</div>`;
+        } else {
+            // — MODO PROSA —
+            const scenesHtml = pageData.scenes
+                .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${scene.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
+                .join('');
+            contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
+        }
     }
 
     contentCenterer.innerHTML = contentHtml;

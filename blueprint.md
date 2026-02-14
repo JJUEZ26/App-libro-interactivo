@@ -612,3 +612,35 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 ---
 
 **Este proyecto es especial. Lo trataremos con el cariño que merece.** 🚀📚✨
+
+---
+
+## 🍂 SISTEMA DE EFECTOS EMOCIONALES — Filosofía
+
+### Principio Rector
+> Cada efecto visual debe reflejar el **alma** del poema o historia. No es decoración; es una extensión emocional del texto.
+
+### Hojas de Otoño (v2.0 — Febrero 2026)
+**Poema**: "No Volveré a Ser Joven" de Jaime Gil de Biedma  
+**Esencia**: La pérdida irreversible de la juventud. Melancolía resignada. El otoño como metáfora del tiempo que pasa sin remedio.
+
+**Implementación técnica**:
+- **8 formas orgánicas únicas** (arce, roble, olmo, abedul, tilo, sauce, higuera, hoja clásica) con paths SVG irregulares y asimétricos
+- **8 paletas emocionales**: desde "recién caída" (todavía con vida) hasta "ceniza" (casi muerta), pasando por "vino seco" (melancolía profunda)
+- **Textura fractal** via filtros SVG `feTurbulence` — simula la textura orgánica de una hoja real
+- **Manchas de envejecimiento** — elipses semi-transparentes aleatorias sobre el cuerpo de la hoja
+- **Venas botánicas** — trazos con dasharray irregular, vena central más gruesa
+- **Bordes secos** — segunda capa de stroke con dasharray dinámico
+- **Física natural via `requestAnimationFrame`** — reemplaza animaciones CSS cíclicas:
+  - Vaivén sinusoidal con turbulencia
+  - Drift lateral aleatorio
+  - Rotación 3D con "flip" para simular dos caras de la hoja
+  - Pausas aleatorias donde la hoja "flota" brevemente
+  - Aceleración natural (easeOutQuad)
+- **Progresión emocional por página**:
+  - Pág 1 (`minimal`): Casi vacío, una hoja solitaria — *"No volveré a ser joven"*
+  - Pág 2 (`low`): Pocas hojas caen lentamente — *"yo vine a llevarme la vida por delante"*
+  - Pág 3 (`medium`): Otoño visible — *"envejecer, morir, eran las dimensiones del teatro"*
+  - Pág 4 (`high`): Caída densa — *"es el único argumento de la obra"*
+- **0 imágenes externas** — todo es SVG generado por código (sin fondos blancos, sin peso extra)
+- **Rendimiento adaptativo** — ajusta cantidad de hojas según memoria del dispositivo y CPU

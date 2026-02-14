@@ -116,12 +116,54 @@
     box-sizing: border-box;
     user-select: text;
     -webkit-user-select: text;
+    /* Centrado vertical del contenido */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .page-content p {
     margin-bottom: 1.5rem;
     text-indent: 2rem;
     text-align: justify;
+}
+
+/* =========================
+   MODO POEMA — Tipografía Poética
+   Cada verso respira, centrado, con serifas clásicas.
+   ========================= */
+
+.poem-layout {
+    font-family: var(--font-reader-body);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+}
+
+.poem-layout .stanza {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.poem-layout .verse-line {
+    display: block;
+    font-size: clamp(1.2rem, 3.5vw, 1.55rem);
+    line-height: 2.2;
+    letter-spacing: 0.015em;
+    color: var(--text-color);
+}
+
+/* Override: los párrafos dentro de poem-layout no heredan formato prosa */
+.poem-layout p,
+.poem-layout .verse-line {
+    text-indent: 0;
+    text-align: center;
+    margin-bottom: 0;
 }
 
 .page-content img {
@@ -751,27 +793,7 @@ body.fullscreen-mode .content-centerer {
     margin: 0 auto;
 }
 
-/* =========================
-   HIGHLIGHT ESPECIAL PARA GIL DE BIEDMA
-   Resaltado para "verdad desagradable" y texto clave
-   ========================= */
-.highlight-truth {
-    color: oklch(45% 0.15 30);
-    /* Rojo oscuro/marrón */
-    font-weight: 700;
-    font-style: italic;
-    text-decoration: underline;
-    text-decoration-color: oklch(55% 0.12 35);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
-    transition: all 0.3s ease;
-}
 
-body.theme-dark .highlight-truth {
-    color: oklch(70% 0.18 28);
-    /* Coral/naranja en modo oscuro */
-    text-decoration-color: oklch(65% 0.15 32);
-}
 
 /* =========================
    CONTINUE INDICATOR (Linear Navigation)

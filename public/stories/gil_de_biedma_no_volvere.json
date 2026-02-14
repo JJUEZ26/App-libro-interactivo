@@ -38,7 +38,7 @@
         "effect": "falling_leaves_medium, time_pulse_subtle, sepia_medium",
         "scenes": [
             "—envejecer, morir, eran tan solo\nlas dimensiones del teatro.",
-            "Pero ha pasado el tiempo\ny la <span class='highlight-truth'>verdad desagradable</span> asoma:"
+            "Pero ha pasado el tiempo\ny la verdad desagradable asoma:"
         ],
         "choices": [
             {
@@ -54,7 +54,7 @@
         "effect": "falling_leaves_high, time_pulse_medium, sepia_strong, sepia_grain",
         "scenes": [
             "envejecer, morir,",
-            "es el <span class='highlight-truth'>único argumento de la obra</span>."
+            "es el único argumento de la obra."
         ],
         "choices": [
             {

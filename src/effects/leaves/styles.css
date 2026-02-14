@@ -1,5 +1,7 @@
 /* ===================================
-   FALLING LEAVES EFFECT - REALISTIC VERSION
+   FALLING LEAVES EFFECT — REALISTIC VERSION
+   Physics-driven animation via JS.
+   CSS handles layout, overlay, and cleanup.
    =================================== */
 
 .leaves-effect-overlay {
@@ -8,7 +10,7 @@
     pointer-events: none;
     z-index: 10;
     overflow: hidden;
-    transition: opacity 1s ease;
+    transition: opacity 1.2s ease;
 }
 
 .leaves-effect-overlay.fading-out {
@@ -17,13 +19,8 @@
 
 .falling-leaf {
     position: absolute;
-    top: -22vh;
     pointer-events: none;
     will-change: transform, top, opacity;
-
-    animation:
-        leaf-fall var(--fall-duration, 20s) linear var(--fall-delay, 0s) forwards,
-        leaf-sway var(--sway-duration, 6s) ease-in-out var(--fall-delay, 0s) infinite alternate;
 }
 
 .falling-leaf svg {
@@ -32,94 +29,16 @@
     height: 100%;
     will-change: transform;
     transform-style: preserve-3d;
-    filter: drop-shadow(1px 3px 4px rgba(27, 17, 12, 0.35));
-
-    animation:
-        leaf-rotate var(--rotation-speed, 12s) ease-in-out var(--fall-delay, 0s) infinite,
-        leaf-flutter var(--flutter-duration, 4s) ease-in-out var(--fall-delay, 0s) infinite;
 }
 
+/* Dark theme: deeper shadows for immersion */
 body.theme-dark .falling-leaf svg {
-    filter: drop-shadow(2px 4px 7px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
 }
 
-@keyframes leaf-fall {
-    0% {
-        top: -22vh;
-        opacity: 0;
-    }
-
-    8% {
-        opacity: 1;
-    }
-
-    88% {
-        opacity: 1;
-    }
-
-    100% {
-        top: 110vh;
-        opacity: 0;
-    }
-}
-
-@keyframes leaf-sway {
-    0% {
-        transform: translateX(0);
-    }
-
-    25% {
-        transform: translateX(calc(var(--sway-amount) * -0.55));
-    }
-
-    60% {
-        transform: translateX(calc(var(--sway-amount) * 0.38));
-    }
-
-    100% {
-        transform: translateX(calc(var(--sway-amount) * -0.18));
-    }
-}
-
-@keyframes leaf-rotate {
-    0% {
-        transform: rotate3d(0.7, 1, 0.2, 0deg);
-    }
-
-    50% {
-        transform: rotate3d(1, 0.8, 0.4, 170deg);
-    }
-
-    100% {
-        transform: rotate3d(0.8, 1, 0.3, 360deg);
-    }
-}
-
-@keyframes leaf-flutter {
-    0%,
-    100% {
-        translate: 0 0;
-        scale: 1;
-        rotate: 0deg;
-    }
-
-    30% {
-        translate: 0 -2px;
-        scale: 0.97 1.01;
-        rotate: calc(var(--tilt-amount) * -1);
-    }
-
-    70% {
-        translate: 0 1px;
-        scale: 1.02 0.98;
-        rotate: var(--tilt-amount);
-    }
-}
-
+/* Accessibility: honor reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-    .falling-leaf,
-    .falling-leaf svg {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+    .leaves-effect-overlay {
+        display: none;
     }
 }
