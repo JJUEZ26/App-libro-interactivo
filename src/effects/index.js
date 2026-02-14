@@ -157,7 +157,9 @@ export function handlePageEffects(effectString, { getAppMode }) {
     if (effects.includes('rain_subtle')) startRainEffect(getAppMode);
 
     // Nuevos efectos: Hojas cayendo con intensidades
-    if (effects.includes('falling_leaves_low')) {
+    if (effects.includes('falling_leaves_minimal')) {
+        activeLeavesCleanup = startLeavesEffect('minimal');
+    } else if (effects.includes('falling_leaves_low')) {
         activeLeavesCleanup = startLeavesEffect('low');
     } else if (effects.includes('falling_leaves_medium')) {
         activeLeavesCleanup = startLeavesEffect('medium');

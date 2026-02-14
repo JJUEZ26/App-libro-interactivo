@@ -88,28 +88,13 @@ export function renderPage(pageId) {
 
     // Renderizar opciones
     if (pageData.choices && pageData.choices.length > 0) {
-        if (pageData.choices.length === 1 && !pageData.forceShowChoices) {
-            // Caso lineal: Un solo "camino" -> Mostrar indicador sutil de continuar
-            const nextChoice = pageData.choices[0];
-            const continueDiv = document.createElement('div');
-            continueDiv.className = 'continue-indicator';
-            continueDiv.innerHTML = `
-                <span class="continue-text">Continúa</span>
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-            `;
+        const shouldRenderChoiceButtons =
+            pageData.forceShowChoices ||
+            pageData.choices.length > 1 ||
+            pageData.choices.some((choice) => choice.page === -1);
 
-            const handleContinue = (e) => {
-                e.stopPropagation();
-                if (goToPage) goToPage(nextChoice.page);
-            };
-
-            continueDiv.addEventListener('click', handleContinue);
-            // También permitir avanzar al hacer click en el contenedor de contenido si no es texto seleccionable
-            // Opcional: contentCenterer.addEventListener('click', handleContinue);
-
-            contentCenterer.appendChild(continueDiv);
-        } else {
-            // Caso ramificado: Varias opciones -> Mostrar botones
+        if (shouldRenderChoiceButtons) {
+            // Caso ramificado y acciones especiales (ej: volver a biblioteca): mostrar botones
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
             pageData.choices.forEach((choice) => {

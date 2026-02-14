@@ -594,6 +594,42 @@
     cursor: not-allowed;
 }
 
+
+@media (max-width: 767px) {
+    .library-hero-card {
+        min-height: 240px;
+        padding: var(--space-5);
+        gap: var(--space-4);
+        border-radius: var(--radius-xl);
+    }
+
+    .library-hero-content {
+        gap: var(--space-3);
+    }
+
+    .library-hero-title {
+        font-size: clamp(1.45rem, 6.8vw, 2rem);
+    }
+
+    .library-hero-description {
+        font-size: var(--text-sm);
+        line-height: var(--leading-normal);
+    }
+
+    .library-hero-actions {
+        margin-top: 0;
+    }
+
+    .library-hero-btn {
+        padding: var(--space-3) var(--space-6);
+        font-size: var(--text-sm);
+    }
+
+    .library-hero-image {
+        width: min(44vw, 180px);
+    }
+}
+
 /* ========================================
    RESPONSIVE DESIGN
    ======================================== */
