@@ -644,3 +644,30 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
   - Pág 4 (`high`): Caída densa — *"es el único argumento de la obra"*
 - **0 imágenes externas** — todo es SVG generado por código (sin fondos blancos, sin peso extra)
 - **Rendimiento adaptativo** — ajusta cantidad de hojas según memoria del dispositivo y CPU
+
+---
+
+### Experiencia Dual Poética (v1.0 — Febrero 2026)
+**Objetivo**: Ofrecer dos formas de consumir poesía: la experiencia auditiva original (voz del autor) y la experiencia de lectura íntima (silenciosa).
+
+**Implementación**:
+1. **Página de Introducción**:
+   - Título y autor con animación de entrada cinemática.
+   - Dos opciones claras:
+     - 🎧 **Escuchar con la voz del autor** (Botón primario, pulsante, destacado)
+     - **Leer en silencio** (Botón secundario, sutil)
+
+2. **Modo Audio (Karaoke Mejorado)**:
+   - Texto completo visible con resaltado sincrónico.
+   - Botón de reproducción rediseñado, elegante y minimalista.
+   - Animaciones dramáticas para el verso activo (`scale` + `glow`).
+
+3. **Modo Lectura Silenciosa**:
+   - **Paginación verso a verso**: El poema se desglosa en múltiples páginas para controlar el ritmo de lectura.
+   - **Tipografía Emocional**: Uso de fuentes serif clásicas, centradas, con mucho aire.
+   - **Animaciones de Entrada**: Los versos aparecen con un `blur-in` escalonado, simulando el pensamiento formándose.
+   - **Atmósfera Visual Personalizada**:
+     - **Borges ("El Remordimiento")**: Progresión de filtro Sepia (`light` -> `medium` -> `strong` + `grain`) para evocar memoria y antigüedad.
+     - **Vilariño ("Ya no")**: Efecto de "Lluvia Sutil" (`rain_subtle`) constante para evocar tristeza fría y pérdida.
+
+---

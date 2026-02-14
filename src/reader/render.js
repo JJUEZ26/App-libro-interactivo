@@ -78,30 +78,41 @@ export function renderPage(pageId) {
         });
         contentHtml += `</div>`;
     } else if (pageData.scenes && pageData.scenes.length > 0) {
-        // Detectar si es contenido poético (tiene \n o scenes cortas)
-        const isPoetry = pageData.scenes.some(s => s.includes('\n')) ||
-            pageData.scenes.every(s => s.replace(/<[^>]+>/g, '').length < 80);
+        // Check if this is a poem intro page (contains custom title markup)
+        const isPoemIntro = pageData.scenes.some(s => s.includes('poem-title-display'));
 
-        if (isPoetry && !pageData.scenes.some(s => s.includes('<img'))) {
-            // — MODO POEMA —
-            // Cada scene es una estrofa, cada \n es un verso
-            let verseIndex = 0;
-            const stanzasHtml = pageData.scenes.map((scene) => {
-                const lines = scene.split('\n');
-                const linesHtml = lines.map((line) => {
-                    const delay = verseIndex * 0.6;
-                    verseIndex++;
-                    return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${line}</span>`;
-                }).join('');
-                return `<div class="stanza">${linesHtml}</div>`;
-            }).join('');
-            contentHtml += `<div class="scenes-container poem-layout">${stanzasHtml}</div>`;
-        } else {
-            // — MODO PROSA —
-            const scenesHtml = pageData.scenes
-                .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${scene.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
+        if (isPoemIntro) {
+            // — POEM INTRO MODE — render HTML directly, centered
+            const introHtml = pageData.scenes
+                .map((scene) => `<div class="poem-intro-content">${scene}</div>`)
                 .join('');
-            contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
+            contentHtml += `<div class="scenes-container poem-intro-layout">${introHtml}</div>`;
+        } else {
+            // Detectar si es contenido poético (tiene \n o scenes cortas)
+            const isPoetry = pageData.scenes.some(s => s.includes('\n')) ||
+                pageData.scenes.every(s => s.replace(/<[^>]+>/g, '').length < 80);
+
+            if (isPoetry && !pageData.scenes.some(s => s.includes('<img'))) {
+                // — MODO POEMA —
+                // Cada scene es una estrofa, cada \n es un verso
+                let verseIndex = 0;
+                const stanzasHtml = pageData.scenes.map((scene) => {
+                    const lines = scene.split('\n');
+                    const linesHtml = lines.map((line) => {
+                        const delay = verseIndex * 0.6;
+                        verseIndex++;
+                        return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${line}</span>`;
+                    }).join('');
+                    return `<div class="stanza">${linesHtml}</div>`;
+                }).join('');
+                contentHtml += `<div class="scenes-container poem-layout">${stanzasHtml}</div>`;
+            } else {
+                // — MODO PROSA —
+                const scenesHtml = pageData.scenes
+                    .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${scene.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
+                    .join('');
+                contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
+            }
         }
     }
 
@@ -115,15 +126,66 @@ export function renderPage(pageId) {
             pageData.choices.some((choice) => choice.page === -1);
 
         if (shouldRenderChoiceButtons) {
-            // Caso ramificado y acciones especiales (ej: volver a biblioteca): mostrar botones
             const choicesDiv = document.createElement('div');
             choicesDiv.className = 'choices';
+
+            if (pageData.delayedChoices) {
+                choicesDiv.classList.add('choices-delayed');
+            }
+
+            // Check if any choice in the data already has "desde el inicio" text
+            const hasExplicitRestart = pageData.choices.some(
+                (c) => c.text && c.text.toLowerCase().includes('desde el inicio')
+            );
+
             pageData.choices.forEach((choice) => {
+                // Auto-inject restart button before "Volver a la biblioteca" 
+                // only if no explicit restart choice exists in the data
+                if (choice.page === -1 && !hasExplicitRestart) {
+                    const restartBtn = document.createElement('button');
+                    restartBtn.textContent = "Comenzar desde el inicio";
+                    restartBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        // Stop audio completely on restart
+                        if (state.currentAudio) {
+                            state.currentAudio.pause();
+                            state.currentAudio.currentTime = 0;
+                        }
+                        if (state.story && state.story.length > 0) {
+                            goToPage(state.story[0].id);
+                        }
+                    });
+                    choicesDiv.appendChild(restartBtn);
+                }
+
                 const btn = document.createElement('button');
                 btn.textContent = choice.text;
+
+                // Determine button style based on context
+                const textLower = (choice.text || '').toLowerCase();
+                const isListenChoice = textLower.includes('escuchar') || textLower.includes('🎧');
+                const isReadChoice = textLower.includes('leer en silencio') || textLower.includes('leer sin');
+                const isRestart = textLower.includes('comenzar desde el inicio');
+
+                if (isListenChoice) {
+                    btn.classList.add('choice-primary');
+                } else if (isReadChoice) {
+                    btn.classList.add('choice-secondary');
+                }
+
                 btn.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    if (choice.page === 'pecado' || choice.text.toLowerCase().includes('escuchar')) {
+
+                    // If restarting or reading silently, STOP audio
+                    if (isRestart || isReadChoice) {
+                        if (state.currentAudio) {
+                            state.currentAudio.pause();
+                            state.currentAudio.currentTime = 0;
+                        }
+                    }
+
+                    if (choice.page === 'pecado' || isListenChoice) {
+                        // For listening, we want to play
                         if (state.currentAudio) {
                             state.currentAudio.currentTime = 0;
                             state.currentAudio.play();
@@ -131,6 +193,9 @@ export function renderPage(pageId) {
                             const firstLine = document.querySelector('.karaoke-line');
                             if (firstLine) firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
+                        // And navigate
+                        if (goToPage) goToPage(choice.page);
+
                     } else if (goToPage) {
                         goToPage(choice.page);
                     }

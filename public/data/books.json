@@ -25,8 +25,9 @@
   },
   {
     "id": "ya_no_sera",
-    "title": "Ya no será",
+    "title": "Ya no",
     "author": "Idea Vilariño",
+    "description": "Ya no será, ya no. No viviremos juntos...",
     "cover": "images/idea_vilarino_portada.png",
     "storyFile": "stories/idea_vilarino_ya_no_sera.json",
     "theme": "sepia"

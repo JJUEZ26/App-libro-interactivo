@@ -1,59 +1,80 @@
 [
   {
-    "id": "ya_no",
+    "id": "intro",
     "page": 1,
+    "poemId": "vilarino_ya_no",
+    "scenes": [
+      "<h2 class='poem-title-display'>Ya no</h2>\n<span class='poem-author-display'>Idea Vilariño</span>"
+    ],
+    "choices": [
+      {
+        "text": "🎧 Escuchar con la voz de la autora",
+        "page": "ya_no"
+      },
+      {
+        "text": "Leer en silencio",
+        "page": "lectura_1"
+      }
+    ],
+    "forceShowChoices": true
+  },
+  {
+    "id": "ya_no",
+    "page": 2,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
     "audio": "idea_vilarino_ya_no.mp3",
     "audioText": "Escucha el poema en la voz de su autora:",
     "karaokeLines": [
-      { 
-        "text": "Ya no será, ya no.<br>No viviremos juntos, no criaré a tu hijo.", 
-        "start": 0.5, 
-        "end": 8.0 
+      {
+        "text": "Ya no será, ya no.<br>No viviremos juntos, no criaré a tu hijo.",
+        "start": 0.5,
+        "end": 8.0
       },
-      { 
-        "text": "No coseré tu ropa, no te tendré de noche,<br>no te besaré al irme.", 
-        "start": 8.0, 
-        "end": 14.5 
+      {
+        "text": "No coseré tu ropa, no te tendré de noche,<br>no te besaré al irme.",
+        "start": 8.0,
+        "end": 14.5
       },
-      { 
-        "text": "Nunca sabrás quién fui,<br>por qué me amaron otros.", 
-        "start": 14.5, 
-        "end": 20.0 
+      {
+        "text": "Nunca sabrás quién fui,<br>por qué me amaron otros.",
+        "start": 14.5,
+        "end": 20.0
       },
-      { 
-        "text": "No llegaré a saber por qué ni cómo nunca,<br>ni si era de verdad lo que dijiste que era.", 
-        "start": 20.0, 
-        "end": 28.0 
+      {
+        "text": "No llegaré a saber por qué ni cómo nunca,<br>ni si era de verdad lo que dijiste que era.",
+        "start": 20.0,
+        "end": 28.0
       },
-      { 
-        "text": "Ni quién fuiste, ni qué fui para ti,<br>ni cómo hubiera sido vivir juntos,", 
-        "start": 28.0, 
-        "end": 35.0 
+      {
+        "text": "Ni quién fuiste, ni qué fui para ti,<br>ni cómo hubiera sido vivir juntos,",
+        "start": 28.0,
+        "end": 35.0
       },
-      { 
-        "text": "querernos, esperarnos, estar.", 
-        "start": 35.0, 
-        "end": 40.0 
+      {
+        "text": "querernos, esperarnos, estar.",
+        "start": 35.0,
+        "end": 40.0
       },
-      { 
-        "text": "Ya no soy más que yo para siempre y tú ya<br>no serás para mí más que tú.", 
-        "start": 40.0, 
-        "end": 46.5 
+      {
+        "text": "Ya no soy más que yo para siempre y tú ya<br>no serás para mí más que tú.",
+        "start": 40.0,
+        "end": 46.5
       },
-      { 
-        "text": "Ya no estás en un día futuro.<br>No sabré dónde vives, con quién, ni si te acuerdas.", 
-        "start": 46.5, 
-        "end": 54.0 
+      {
+        "text": "Ya no estás en un día futuro.<br>No sabré dónde vives, con quién, ni si te acuerdas.",
+        "start": 46.5,
+        "end": 54.0
       },
-      { 
-        "text": "No me abrazarás nunca como esa noche, nunca.", 
-        "start": 54.0, 
-        "end": 59.0 
+      {
+        "text": "No me abrazarás nunca como esa noche, nunca.",
+        "start": 54.0,
+        "end": 59.0
       },
-      { 
-        "text": "No volveré a tocarte. No te veré morir.", 
-        "start": 59.0, 
-        "end": 65.0 
+      {
+        "text": "No volveré a tocarte. No te veré morir.",
+        "start": 59.0,
+        "end": 65.0
       }
     ],
     "choices": [
@@ -64,18 +85,175 @@
     ]
   },
   {
-   "id": "biografia",
-  "page": 2,
-  "forceShowChoices": true,
-  "isPortrait": true,
-  "images": ["images/idea_vilarino_retrato.jpg"],
-  "scenes": [
-    "<strong>Idea Vilariño (1920-2009)</strong>",
-     "Poeta, ensayista y crítica literaria uruguaya.",
-  "Su escritura es reconocida por un tono sobrio, directo y sin adornos, capaz de decir mucho con muy pocas palabras. En sus poemas aparecen con fuerza el amor, la pérdida, la soledad y la muerte, pero también esa lucidez de quien mira de frente lo que duele.",
-  "“Ya no” pertenece a esa zona de su obra donde el lenguaje se vuelve casi seco, como si cada verso fuera lo único que se puede decir cuando ya no queda nada que explicar."
-],
+    "id": "lectura_1",
+    "page": 3,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "Ya no será, ya no.",
+      "No viviremos juntos,\nno criaré a tu hijo."
+    ],
     "choices": [
+      {
+        "text": "",
+        "page": "lectura_2"
+      }
+    ]
+  },
+  {
+    "id": "lectura_2",
+    "page": 4,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "No coseré tu ropa,\nno te tendré de noche,\nno te besaré al irme."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_3"
+      }
+    ]
+  },
+  {
+    "id": "lectura_3",
+    "page": 5,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "Nunca sabrás quién fui,\npor qué me amaron otros."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_4"
+      }
+    ]
+  },
+  {
+    "id": "lectura_4",
+    "page": 6,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "No llegaré a saber\npor qué ni cómo nunca,",
+      "ni si era de verdad\nlo que dijiste que era."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_5"
+      }
+    ]
+  },
+  {
+    "id": "lectura_5",
+    "page": 7,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "Ni quién fuiste,\nni qué fui para ti,",
+      "ni cómo hubiera sido\nvivir juntos,",
+      "querernos,\nesperarnos,\nestar."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_6"
+      }
+    ]
+  },
+  {
+    "id": "lectura_6",
+    "page": 8,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "Ya no soy más que yo\npara siempre",
+      "y tú ya no serás para mí\nmás que tú."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_7"
+      }
+    ]
+  },
+  {
+    "id": "lectura_7",
+    "page": 9,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "Ya no estás en un día futuro.",
+      "No sabré dónde vives,\ncon quién,\nni si te acuerdas."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_8"
+      }
+    ]
+  },
+  {
+    "id": "lectura_8",
+    "page": 10,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "No me abrazarás nunca\ncomo esa noche, nunca."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "lectura_9"
+      }
+    ]
+  },
+  {
+    "id": "lectura_9",
+    "page": 11,
+    "poemId": "vilarino_ya_no",
+    "effect": "rain_subtle",
+    "scenes": [
+      "No volveré a tocarte.",
+      "No te veré morir."
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "🎧 Escucharlo con la voz de la autora",
+        "page": "ya_no"
+      },
+      {
+        "text": "Sobre la autora",
+        "page": "biografia"
+      },
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 12,
+    "forceShowChoices": true,
+    "isPortrait": true,
+    "images": [
+      "images/idea_vilarino_retrato.jpg"
+    ],
+    "scenes": [
+      "<strong>Idea Vilariño (1920-2009)</strong>",
+      "Poeta, ensayista y crítica literaria uruguaya.",
+      "Su escritura es reconocida por un tono sobrio, directo y sin adornos, capaz de decir mucho con muy pocas palabras. En sus poemas aparecen con fuerza el amor, la pérdida, la soledad y la muerte, pero también esa lucidez de quien mira de frente lo que duele.",
+      "\u201cYa no\u201d pertenece a esa zona de su obra donde el lenguaje se vuelve casi seco, como si cada verso fuera lo único que se puede decir cuando ya no queda nada que explicar."
+    ],
+    "choices": [
+      {
+        "text": "Comenzar desde el inicio",
+        "page": "intro"
+      },
       {
         "text": "Volver a la biblioteca",
         "page": -1

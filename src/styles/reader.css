@@ -793,6 +793,27 @@ body.fullscreen-mode .content-centerer {
     margin: 0 auto;
 }
 
+/* --- Efectos visibles en pantalla completa ---
+   En fullscreen, position:fixed puede no funcionar como se espera
+   cuando el contenedor tiene position:relative + z-index.
+   Forzamos los overlays con position:fixed, inset:0 y un z-index
+   alto para que siempre cubran toda la pantalla. */
+body.fullscreen-mode .effect-overlay,
+body.fullscreen-mode .leaves-effect-overlay,
+body.fullscreen-mode .time-pulse-overlay,
+body.fullscreen-mode .sepia-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+}
+
+body.fullscreen-mode .flying-bird {
+    position: fixed;
+    z-index: 10000;
+}
+
+
 
 
 /* =========================

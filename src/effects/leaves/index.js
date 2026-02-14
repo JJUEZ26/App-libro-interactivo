@@ -260,7 +260,7 @@ export function startLeavesEffect(intensity = 'medium') {
 
     const overlay = document.createElement('div');
     overlay.className = 'leaves-effect-overlay';
-    document.body.appendChild(overlay);
+    (document.getElementById('app-container') || document.body).appendChild(overlay);
 
     const settings = {
         minimal: { interval: 12000, max: 2, initialCount: 0 },

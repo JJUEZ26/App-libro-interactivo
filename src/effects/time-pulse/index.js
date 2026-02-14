@@ -6,7 +6,7 @@
 export function startTimePulseEffect(intensity = 'subtle') {
     const overlay = document.createElement('div');
     overlay.className = 'time-pulse-overlay';
-    document.body.appendChild(overlay);
+    (document.getElementById('app-container') || document.body).appendChild(overlay);
 
     // Configurar intensidad
     const opacities = {

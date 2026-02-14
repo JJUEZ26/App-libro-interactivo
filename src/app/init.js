@@ -18,6 +18,7 @@ import { applyTheme, changeFontSize, cycleTheme, toggleFullscreen, toggleSetting
 import { ChatFeature } from '../ui/ChatModule.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
+import { handlePageEffects } from '../effects/index.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v4.2 (Corrección Audio & Estilos)');
@@ -186,6 +187,14 @@ export function initApp() {
         } else {
             document.body.classList.remove('fullscreen-mode');
             resetScrollPosition();
+        }
+        // Re-trigger effects for current page to ensure they display correctly
+        // in the new fullscreen/normal context
+        if (state.story && state.currentStoryId) {
+            const currentPage = state.story.find(p => p.id === state.currentStoryId);
+            if (currentPage && currentPage.effect) {
+                handlePageEffects(currentPage.effect, { getAppMode: () => state.appMode });
+            }
         }
     });
 

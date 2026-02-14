@@ -2,6 +2,16 @@ import { initBeetle } from './beetle/index.js';
 import { startLeavesEffect } from './leaves/index.js';
 import { startTimePulseEffect } from './time-pulse/index.js';
 
+/**
+ * Returns the correct container for visual effects.
+ * Uses #app-container so effects render correctly in both
+ * normal mode AND fullscreen mode (Fullscreen API only
+ * renders the fullscreen element and its descendants).
+ */
+function getEffectsContainer() {
+    return document.getElementById('app-container') || document.body;
+}
+
 let activeEffectInterval = null;
 let activeSmokeInterval = null;
 let activeRainInterval = null;
@@ -56,7 +66,7 @@ function startBirdEffect(getAppMode) {
 function startSmokeEffect(getAppMode) {
     const overlay = document.createElement('div');
     overlay.className = 'effect-overlay';
-    document.body.appendChild(overlay);
+    getEffectsContainer().appendChild(overlay);
     const spawnSmoke = () => {
         if (getAppMode() !== 'reader') return;
         const smoke = document.createElement('div');
@@ -72,7 +82,7 @@ function startSmokeEffect(getAppMode) {
 function startRainEffect(getAppMode) {
     const overlay = document.createElement('div');
     overlay.className = 'effect-overlay';
-    document.body.appendChild(overlay);
+    getEffectsContainer().appendChild(overlay);
     const createDrop = () => {
         if (getAppMode() !== 'reader') return;
         const drop = document.createElement('div');
@@ -188,7 +198,7 @@ export function handlePageEffects(effectString, { getAppMode }) {
             activeSepiaOverlay = document.createElement('div');
             activeSepiaOverlay.className = `sepia-overlay sepia-${intensity}`;
             if (withGrain) activeSepiaOverlay.classList.add('with-grain');
-            document.body.appendChild(activeSepiaOverlay);
+            getEffectsContainer().appendChild(activeSepiaOverlay);
         }
     }
 }
