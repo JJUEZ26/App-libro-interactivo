@@ -46,6 +46,9 @@ export function renderPage(pageId) {
 
     const pageContent = document.createElement('div');
     pageContent.className = 'page-content';
+    if (pageData.pageClass) {
+        pageContent.classList.add(pageData.pageClass);
+    }
 
     const contentCenterer = document.createElement('div');
     contentCenterer.className = 'content-centerer';
@@ -56,6 +59,13 @@ export function renderPage(pageId) {
             .map((url) => `<img src="${url}" alt="Ilustración" loading="eager">`)
             .join('');
         contentHtml += `<div class="images-container">${imgsHtml}</div>`;
+    }
+
+    if (pageData.video && pageData.video.length > 0) {
+        const videosHtml = pageData.video
+            .map((url) => `<chroma-key-video src="${url}" loop></chroma-key-video>`)
+            .join('');
+        contentHtml += `<div class="videos-container">${videosHtml}</div>`;
     }
 
     if (pageData.karaokeLines) {

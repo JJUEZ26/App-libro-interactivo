@@ -1,0 +1,61 @@
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.transition-blur {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.2);
+    animation: blurFadeOut 2.5s ease-out forwards;
+}
+
+@keyframes blurFadeOut {
+    0% {
+        backdrop-filter: blur(8px);
+        background: rgba(0, 0, 0, 0.3);
+        opacity: 1;
+    }
+
+    100% {
+        backdrop-filter: blur(0px);
+        background: rgba(0, 0, 0, 0);
+        opacity: 0;
+    }
+}
+
+.dust-particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatingDust 15s linear infinite;
+    width: 2px;
+    height: 2px;
+}
+
+@keyframes floatingDust {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.6;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0;
+    }
+}

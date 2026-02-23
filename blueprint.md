@@ -671,3 +671,15 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
      - **Vilariño ("Ya no")**: Efecto de "Lluvia Sutil" (`rain_subtle`) constante para evocar tristeza fría y pérdida.
 
 ---
+
+### Chroma Key Dinámico WebGL/Canvas (v3.0 — Febrero 2026)
+**Módulo**: `<chroma-key-video>` (Web Component)
+**Propósito**: Integrar vídeos con pantalla verde (ej. golondrinas volando) sobre cualquier fondo de la aplicación, haciéndolos transparente de manera dinámica según el tema seleccionado por el usuario.
+
+**Estrategia Técnica**:
+- Se creó el Web Component encapsulado `<chroma-key-video>`.
+- Procesa el vídeo frame por frame utilizando la API de Canvas (`getImageData` y `putImageData`).
+- **Algoritmo de Chroma**: Mide la dominancia del canal verde (`g > Math.max(r, b) + threshold`).
+- Implementa una transición suave de anti-aliasing (alpha blend) en los bordes para reducir el "halo" verde ("spill suppression").
+- No requiere librerías externas ni procesado en servidor; funciona client-side permitiendo que el video flote sobre CSS cambiante.
+- Integrado directamente en el motor de renderizado (`render.js`) a través de la propiedad de datos `"video": ["rutadelvideo.mp4"]`.

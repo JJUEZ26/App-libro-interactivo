@@ -1,6 +1,9 @@
 import { initBeetle } from './beetle/index.js';
 import { startLeavesEffect } from './leaves/index.js';
 import { startTimePulseEffect } from './time-pulse/index.js';
+import { startSwallowsEffect } from './swallows/index.js';
+import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
+import { startDewdropsEffect } from './dewdrops/index.js';
 
 /**
  * Returns the correct container for visual effects.
@@ -21,6 +24,10 @@ let activeBeetleCleanup = null;
 let activeLeavesCleanup = null;
 let activeTimePulseCleanup = null;
 let activeSepiaOverlay = null;
+let activeSwallowsCleanup = null;
+let activeTwilightCleanup = null;
+let activeDewdropsCleanup = null;
+let activeFirefliesCleanup = null;
 
 function clearExistingEffects() {
     if (activeEffectInterval) { clearInterval(activeEffectInterval); activeEffectInterval = null; }
@@ -32,14 +39,18 @@ function clearExistingEffects() {
     if (activeLeavesCleanup) { activeLeavesCleanup(); activeLeavesCleanup = null; }
     if (activeTimePulseCleanup) { activeTimePulseCleanup(); activeTimePulseCleanup = null; }
     if (activeSepiaOverlay) { activeSepiaOverlay.remove(); activeSepiaOverlay = null; }
+    if (activeSwallowsCleanup) { activeSwallowsCleanup(); activeSwallowsCleanup = null; }
+    if (activeTwilightCleanup) { activeTwilightCleanup(); activeTwilightCleanup = null; }
+    if (activeDewdropsCleanup) { activeDewdropsCleanup(); activeDewdropsCleanup = null; }
+    if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
 
     const existingBirds = document.querySelectorAll('.flying-bird');
     existingBirds.forEach(el => el.remove());
 
-    const existingOverlays = document.querySelectorAll('.effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, .sepia-overlay');
+    const existingOverlays = document.querySelectorAll('.effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, .sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, .fireflies-overlay');
     existingOverlays.forEach(el => el.remove());
 
-    const existingParticles = document.querySelectorAll('.smoke-particle, .rain-drop, .falling-leaf, .time-pulse-ring');
+    const existingParticles = document.querySelectorAll('.smoke-particle, .rain-drop, .falling-leaf, .time-pulse-ring, .swallow-bird, .firefly, .dewdrop');
     existingParticles.forEach(el => el.remove());
 }
 
@@ -200,5 +211,39 @@ export function handlePageEffects(effectString, { getAppMode }) {
             if (withGrain) activeSepiaOverlay.classList.add('with-grain');
             getEffectsContainer().appendChild(activeSepiaOverlay);
         }
+    }
+
+    // --- Golondrinas (Bécquer) ---
+    if (effects.includes('swallows_arriving')) {
+        activeSwallowsCleanup = startSwallowsEffect('arriving');
+    } else if (effects.includes('swallows_nesting')) {
+        activeSwallowsCleanup = startSwallowsEffect('nesting');
+    } else if (effects.includes('swallows_passing')) {
+        activeSwallowsCleanup = startSwallowsEffect('passing');
+    } else if (effects.includes('swallows_fading')) {
+        activeSwallowsCleanup = startSwallowsEffect('fading');
+    } else if (effects.includes('swallows_single')) {
+        activeSwallowsCleanup = startSwallowsEffect('single');
+    }
+
+    // --- Atardecer/Noche (Bécquer) ---
+    const twilightEffect = effects.find(e => e.startsWith('twilight_'));
+    if (twilightEffect) {
+        const intensity = twilightEffect.replace('twilight_', '');
+        activeTwilightCleanup = startTwilightEffect(intensity);
+    }
+
+    // --- Gotas de rocío / Lágrimas ---
+    if (effects.includes('dewdrops_shimmer')) {
+        activeDewdropsCleanup = startDewdropsEffect('shimmer');
+    } else if (effects.includes('dewdrops_tears')) {
+        activeDewdropsCleanup = startDewdropsEffect('tears');
+    }
+
+    // --- Luciérnagas ---
+    if (effects.includes('fireflies_subtle')) {
+        activeFirefliesCleanup = startFirefliesEffect('subtle');
+    } else if (effects.includes('fireflies_bright')) {
+        activeFirefliesCleanup = startFirefliesEffect('bright');
     }
 }

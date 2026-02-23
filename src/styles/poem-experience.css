@@ -360,3 +360,260 @@ body.theme-dark .choices button.choice-secondary:hover {
         transform: translateY(0);
     }
 }
+
+/* ========================================
+   BÉCQUER — "Volverán las oscuras golondrinas"
+   Unique visual identity: Twilight garden
+   ======================================== */
+
+/* --- Bécquer Title (Intro Page) --- */
+.becquer-title {
+    font-style: italic;
+    letter-spacing: 0.02em;
+}
+
+/* --- Twilight text adaptation --- */
+.twilight-night~.page-content,
+.twilight-deep_night~.page-content {
+    color: rgba(220, 215, 230, 0.95);
+    text-shadow: 0 0 20px rgba(180, 170, 220, 0.1);
+}
+
+/* --- Swallow nested state --- */
+.swallow-nested {
+    transition: transform 2s ease-out, opacity 1s ease;
+}
+
+/* --- Firefly Animation --- */
+@keyframes fireflyGlow {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.5);
+    }
+
+    15% {
+        opacity: 0.8;
+        transform: translate(calc(var(--fly-drift) * 0.3), -8px) scale(1);
+    }
+
+    40% {
+        opacity: 0.4;
+        transform: translate(calc(var(--fly-drift) * 0.6), -15px) scale(0.8);
+    }
+
+    60% {
+        opacity: 0.9;
+        transform: translate(var(--fly-drift), -5px) scale(1.1);
+    }
+
+    80% {
+        opacity: 0.3;
+        transform: translate(calc(var(--fly-drift) * 0.8), -12px) scale(0.7);
+    }
+}
+
+/* --- Dewdrop Shimmer (floating dew) --- */
+@keyframes dewdropShimmer {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) scale(0.6);
+    }
+
+    20% {
+        opacity: 0.7;
+        transform: translateY(-1vh) translateX(calc(var(--drop-sway) * 0.3)) scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(calc(var(--drop-fall-distance) * 0.3)) translateX(var(--drop-sway)) scale(1.1);
+    }
+
+    70% {
+        opacity: 0.6;
+        transform: translateY(calc(var(--drop-fall-distance) * 0.7)) translateX(calc(var(--drop-sway) * 0.5)) scale(0.9);
+    }
+
+    90% {
+        opacity: 0.2;
+        transform: translateY(var(--drop-fall-distance)) translateX(0) scale(0.7);
+    }
+}
+
+/* --- Dewdrop Fall (tears) --- */
+@keyframes dewdropFall {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.4);
+    }
+
+    10% {
+        opacity: 0.9;
+        transform: translateY(0) scale(1);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(1vh) scale(1.05);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(var(--drop-fall-distance)) scale(0.6);
+    }
+}
+
+/* --- Twilight overlay transitions --- */
+.twilight-overlay {
+    transition: opacity 2.5s ease, background 3s ease;
+}
+
+/* --- "¡No volverán!" emotional emphasis --- */
+.poem-layout .verse-line:last-child {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+/* --- Bécquer Balcony Layout (Text Left, Media Right) --- */
+.layout-poem-balcony .content-centerer {
+    display: flex;
+    flex-direction: row-reverse;
+    /* Reverses DOM order. Since media is rendered before text, media goes right */
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: 100%;
+    position: relative;
+}
+
+.layout-poem-balcony .images-container,
+.layout-poem-balcony .videos-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    /* Align to the right edge */
+    align-items: center;
+    max-width: 45%;
+    margin: 0;
+    pointer-events: none;
+}
+
+.layout-poem-balcony .images-container img {
+    /* Make the image larger and pull it to the right edge */
+    width: 140%;
+    max-width: none;
+    margin-right: -20%;
+    margin-left: auto;
+    height: auto;
+    object-fit: contain;
+    /* Removed scaleX(-1) to keep native right-alignment */
+    mix-blend-mode: multiply;
+    opacity: 0.75;
+    filter: grayscale(100%) contrast(1.5) brightness(1.15) sepia(50%) hue-rotate(-10deg);
+    /* Soften the edges */
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%, black 70%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to left, transparent 0%, black 15%, black 70%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+    animation: balconyFadeInRight 2s ease-out forwards;
+}
+
+.layout-poem-balcony .videos-container chroma-key-video {
+    width: 140%;
+    max-width: none;
+    margin-right: -20%;
+    margin-left: auto;
+    height: auto;
+    opacity: 0.9;
+    /* Soften the edges */
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%, black 85%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to left, transparent 0%, black 15%, black 85%, transparent 100%),
+        linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+    animation: balconyFadeInRight 2s ease-out forwards;
+}
+
+.layout-poem-balcony .scenes-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    /* Verses left-aligned within a container on the left */
+    max-width: 55%;
+    z-index: 2;
+}
+
+@keyframes balconyFadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 0.9;
+        transform: translateX(0);
+    }
+}
+
+/* 🔥 Mobile Design First Priority 🔥 
+   Stack layout vertically on mobile, giving text top focus, media bottom.
+*/
+@media (max-width: 768px) {
+    .layout-poem-balcony .content-centerer {
+        flex-direction: column-reverse;
+        /* Text on top, media at bottom */
+        justify-content: flex-end;
+        padding-top: 8vh;
+        gap: 2rem;
+    }
+
+    .layout-poem-balcony .scenes-container {
+        max-width: 100%;
+        align-items: center;
+        /* Center verses on mobile */
+        text-align: center;
+    }
+
+    .layout-poem-balcony .images-container,
+    .layout-poem-balcony .videos-container {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: -1rem;
+    }
+
+    .layout-poem-balcony .videos-container chroma-key-video,
+    .layout-poem-balcony .images-container img {
+        width: 140%;
+        /* slightly larger to fill horizontally softly */
+        margin-right: -20%;
+        margin-left: 0;
+        /* Mobile masking to soften the top edge from text */
+        -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 100%),
+            linear-gradient(to left, transparent 5%, black 20%, black 80%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 100%),
+            linear-gradient(to left, transparent 5%, black 20%, black 80%, transparent 100%);
+    }
+}
+
+
+
+/* Bécquer-specific verse styling for night scenes */
+.twilight-night~.page-content .poem-layout .verse-line,
+.twilight-deep_night~.page-content .poem-layout .verse-line {
+    color: rgba(230, 225, 240, 0.9);
+}
+
+.twilight-deep_night~.page-content .poem-layout .stanza:last-child .verse-line:last-child {
+    font-weight: 600;
+    text-shadow: 0 0 25px rgba(200, 180, 255, 0.15);
+}

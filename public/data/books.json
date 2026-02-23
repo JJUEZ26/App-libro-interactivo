@@ -71,5 +71,13 @@
     "description": "Una novela contemporánea sobre la rutina, el deseo y la búsqueda de sentido en la cotidianidad urbana.",
     "cover": "images/levedad_deseo_portada.png",
     "storyFile": "stories/la_levedad_del_deseo.json"
+  },
+  {
+    "id": "becquer-golondrinas",
+    "title": "Volverán las oscuras golondrinas",
+    "author": "Gustavo Adolfo Bécquer",
+    "description": "Rima LIII — Un canto a la pérdida irreparable del amor. Las golondrinas volverán, pero aquellas... ésas no volverán.",
+    "cover": "images/becquer_golondrinas_portada.png",
+    "storyFile": "stories/becquer_golondrinas.json"
   }
 ]

@@ -1,0 +1,137 @@
+[
+    {
+        "id": "intro",
+        "page": 0,
+        "effect": "twilight_golden, swallows_single",
+        "scenes": [
+            "<h1 class='poem-title-display becquer-title'>Volverán las oscuras golondrinas</h1><span class='poem-author-display'>Gustavo Adolfo Bécquer — Rima LIII</span>"
+        ],
+        "choices": [
+            {
+                "text": "Leer en silencio",
+                "page": "estrofa1"
+            }
+        ]
+    },
+    {
+        "id": "estrofa1",
+        "page": 1,
+        "pageClass": "layout-poem-balcony",
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_sunset, swallows_arriving",
+        "video": [
+            "videos/golondrinas_processed.mp4"
+        ],
+        "scenes": [
+            "Volverán las oscuras golondrinas\nen tu balcón sus nidos a colgar,",
+            "y otra vez con el ala a sus cristales\njugando llamarán."
+        ],
+        "choices": [
+            {
+                "text": "Pero aquellas que el vuelo refrenaban...",
+                "page": "perdida1"
+            }
+        ]
+    },
+    {
+        "id": "perdida1",
+        "page": 2,
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_dusk_early, swallows_fading",
+        "scenes": [
+            "Pero aquellas que el vuelo refrenaban\ntu hermosura y mi dicha a contemplar,",
+            "aquellas que aprendieron nuestros nombres...\nésas... ¡no volverán!"
+        ],
+        "choices": [
+            {
+                "text": "Volverán las tupidas madreselvas...",
+                "page": "estrofa2"
+            }
+        ]
+    },
+    {
+        "id": "estrofa2",
+        "page": 3,
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_dusk, dewdrops_shimmer",
+        "scenes": [
+            "Volverán las tupidas madreselvas\nde tu jardín las tapias a escalar",
+            "y otra vez a la tarde aún más hermosas\nsus flores se abrirán."
+        ],
+        "choices": [
+            {
+                "text": "Pero aquellas cuajadas de rocío...",
+                "page": "perdida2"
+            }
+        ]
+    },
+    {
+        "id": "perdida2",
+        "page": 4,
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_dusk_late, dewdrops_tears, swallows_fading",
+        "scenes": [
+            "Pero aquellas cuajadas de rocío\ncuyas gotas mirábamos temblar",
+            "y caer como lágrimas del día...\nésas... ¡no volverán!"
+        ],
+        "choices": [
+            {
+                "text": "Volverán del amor en tus oídos...",
+                "page": "estrofa3"
+            }
+        ]
+    },
+    {
+        "id": "estrofa3",
+        "page": 5,
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_night, fireflies_subtle",
+        "scenes": [
+            "Volverán del amor en tus oídos\nlas palabras ardientes a sonar,",
+            "tu corazón de su profundo sueño\ntal vez despertará."
+        ],
+        "choices": [
+            {
+                "text": "Pero mudo y absorto y de rodillas...",
+                "page": "final"
+            }
+        ]
+    },
+    {
+        "id": "final",
+        "page": 6,
+        "audio": "becquer_golondrinas.mp3",
+        "effect": "twilight_deep_night",
+        "delayedChoices": true,
+        "scenes": [
+            "Pero mudo y absorto y de rodillas\ncomo se adora a Dios ante su altar,",
+            "como yo te he querido..., desengáñate,\nasí... ¡no te querrán!"
+        ],
+        "choices": [
+            {
+                "text": "Sobre el autor",
+                "page": "biografia"
+            }
+        ]
+    },
+    {
+        "id": "biografia",
+        "page": 7,
+        "audio": "becquer_golondrinas.mp3",
+        "volume": 0.4,
+        "effect": "twilight_night, fireflies_subtle",
+        "forceShowChoices": true,
+        "scenes": [
+            "<img src='images/becquer_retrato.jpg' class='bio-portrait' alt='Gustavo Adolfo Bécquer'>",
+            "<strong>Gustavo Adolfo Bécquer (1836-1870)</strong>",
+            "Poeta y narrador español, máximo representante del Romanticismo tardío. Su obra, breve pero intensísima, se concentra en las 'Rimas', 86 poemas sobre el amor, la creación poética y la soledad.",
+            "'Rima LIII' es quizá su poema más célebre. Un canto a la pérdida irreparable: las golondrinas volverán, las flores volverán, el amor volverá... pero nunca con la misma intensidad, nunca con la misma verdad."
+        ],
+        "choices": [
+            {
+                "text": "Volver a la biblioteca",
+                "page": -1
+            }
+        ]
+    }
+]
