@@ -6,11 +6,19 @@ import { stopCurrentAudio } from '../reader/audio.js';
 let elements = null;
 let loadStoryRef = null;
 let goToPageRef = null;
+let onLibraryReturnCallback = null;
 
 export function setLibraryDependencies({ elements: elementsRef, loadStory, goToPage }) {
     elements = elementsRef;
     loadStoryRef = loadStory;
     goToPageRef = goToPage;
+}
+
+/**
+ * Register a callback to re-render library when returning from reader
+ */
+export function setOnLibraryReturn(callback) {
+    onLibraryReturnCallback = callback;
 }
 
 export function switchToLibraryView() {
@@ -43,6 +51,11 @@ export function switchToLibraryView() {
     handlePageEffects(null, { getAppMode });
     startLibraryBeetle({ getAppMode });
     window.scrollTo(0, 0);
+
+    // Re-render library to update progress indicators
+    if (onLibraryReturnCallback) {
+        onLibraryReturnCallback();
+    }
 }
 
 export function switchToReaderView() {
@@ -68,13 +81,113 @@ export function switchToReaderView() {
     stopLibraryBeetle();
 }
 
-export async function openBook(bookData) {
-    if (!bookData || !bookData.storyFile) return;
-    state.currentBook = bookData;
-    if (elements?.mainTitle) elements.mainTitle.textContent = bookData.title || 'Lectura';
-    if (loadStoryRef) await loadStoryRef(bookData.storyFile);
-    if (!state.story) return;
+/** Small helper: resolve after N ms */
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+/** Wait for next paint to complete */
+function nextPaint() {
+    return new Promise(resolve => {
+        requestAnimationFrame(() => {
+            // Double rAF ensures the browser has actually painted
+            requestAnimationFrame(resolve);
+        });
+    });
+}
+
+/**
+ * Open a book with a smooth cinematic transition.
+ * 
+ * ARCHITECTURE:
+ *   1. Show overlay INSTANTLY
+ *   2. In parallel: animate cover + load story data
+ *   3. When BOTH are done: switch to reader view (hidden under overlay)
+ *   4. After reader paints: fade overlay out
+ *   
+ * This guarantees NO flash between library and reader.
+ */
+export async function openBook(bookData, coverImgEl) {
+    if (!bookData || !bookData.storyFile) return;
+
+    // --- STEP 1: Instant overlay ---
+    const overlay = document.createElement('div');
+    overlay.className = 'book-open-overlay';
+    document.body.appendChild(overlay);
+
+    // Force layout then activate
+    overlay.offsetHeight;
+    overlay.classList.add('active');
+
+    // --- STEP 2: Create cover clone (if we have an image) ---
+    let clone = null;
+    let titleEl = null;
+
+    if (coverImgEl?.src && coverImgEl.naturalWidth > 0) {
+        const rect = coverImgEl.getBoundingClientRect();
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const targetW = Math.min(220, vw * 0.4);
+        const targetH = targetW * 1.5;
+        const targetX = (vw - targetW) / 2;
+        const targetY = (vh - targetH) / 2 - 20;
+
+        clone = document.createElement('img');
+        clone.src = coverImgEl.src;
+        clone.style.cssText = `
+            position: fixed;
+            top: ${rect.top}px;
+            left: ${rect.left}px;
+            width: ${rect.width}px;
+            height: ${rect.height}px;
+            object-fit: cover;
+            border-radius: 12px;
+            z-index: 10002;
+            will-change: transform, opacity;
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        `;
+        document.body.appendChild(clone);
+
+        titleEl = document.createElement('div');
+        titleEl.className = 'book-open-title';
+        titleEl.innerHTML = `<h2>${bookData.title || ''}</h2><p>${bookData.author || ''}</p>`;
+        document.body.appendChild(titleEl);
+
+        // Animate to center on next frame
+        requestAnimationFrame(() => {
+            clone.style.top = `${targetY}px`;
+            clone.style.left = `${targetX}px`;
+            clone.style.width = `${targetW}px`;
+            clone.style.height = `${targetH}px`;
+            clone.style.borderRadius = '16px';
+            clone.style.boxShadow = '0 25px 60px rgba(0,0,0,0.8)';
+        });
+
+        // Show title with slight delay
+        setTimeout(() => titleEl?.classList.add('visible'), 180);
+    }
+
+    // --- STEP 3: Load story IN PARALLEL with the animation ---
+    // We wait for BOTH: a minimum visual time AND the story data
+    const MIN_ANIMATION_MS = 500; // Enough for the cover to reach center
+
+    const [storyLoaded] = await Promise.all([
+        (async () => {
+            state.currentBook = bookData;
+            if (elements?.mainTitle) elements.mainTitle.textContent = bookData.title || 'Lectura';
+            if (loadStoryRef) await loadStoryRef(bookData.storyFile);
+            return !!state.story;
+        })(),
+        delay(MIN_ANIMATION_MS)
+    ]);
+
+    if (!storyLoaded) {
+        cleanup(overlay, clone, titleEl);
+        return;
+    }
+
+    // --- STEP 4: Prepare reader UNDER the overlay ---
     const loadedHistory = loadPageHistory(state.currentBook.id);
     if (loadedHistory && loadedHistory.length > 0) {
         state.pageHistory = loadedHistory;
@@ -83,6 +196,31 @@ export async function openBook(bookData) {
         state.currentStoryId = state.story[0].id;
         state.pageHistory = [state.currentStoryId];
     }
+
     switchToReaderView();
     if (goToPageRef) goToPageRef(state.currentStoryId, true);
+
+    // Wait for the reader to actually paint
+    await nextPaint();
+
+    // --- STEP 5: Fade out everything smoothly ---
+    if (clone) {
+        clone.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        clone.style.opacity = '0';
+        clone.style.transform = 'scale(1.05)';
+    }
+    if (titleEl) {
+        titleEl.classList.remove('visible');
+        titleEl.classList.add('fade-out');
+    }
+    overlay.classList.add('fade-out');
+
+    // Cleanup after fade completes
+    setTimeout(() => cleanup(overlay, clone, titleEl), 350);
+}
+
+function cleanup(overlay, clone, titleEl) {
+    clone?.remove();
+    titleEl?.remove();
+    overlay?.remove();
 }

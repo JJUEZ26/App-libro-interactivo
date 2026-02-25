@@ -1,8 +1,9 @@
-import { state, themeColors } from '../app/state.js';
+import { state, themeColors, themeLabels } from '../app/state.js';
 import { saveFontSize, saveTheme } from '../utils/storage.js';
 
 export function applyTheme(themeName) {
-    document.body.classList.remove('theme-light', 'theme-sepia', 'theme-bone', 'theme-dark');
+    // Solo dark, sepia, light
+    document.body.classList.remove('theme-light', 'theme-sepia', 'theme-dark');
     const className = `theme-${themeName}`;
     document.body.classList.add(className);
 
@@ -10,6 +11,15 @@ export function applyTheme(themeName) {
     if (metaThemeColor && themeColors[themeName]) {
         metaThemeColor.setAttribute('content', themeColors[themeName]);
     }
+
+    // Actualizar indicador visual del tema activo en settings panel
+    updateThemeIndicator(themeName);
+}
+
+function updateThemeIndicator(themeName) {
+    document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === themeName);
+    });
 }
 
 export function cycleTheme() {
@@ -22,14 +32,34 @@ export function cycleTheme() {
     saveTheme(state.currentTheme);
 }
 
+export function selectTheme(themeName) {
+    if (!state.readerThemes.includes(themeName)) return;
+    state.currentTheme = themeName;
+    applyTheme(state.currentTheme);
+    saveTheme(state.currentTheme);
+}
+
 export function changeFontSize(delta) {
     state.fontSize = Math.max(0.8, Math.min(1.8, state.fontSize + delta));
     document.documentElement.style.setProperty('--font-size-dynamic', `${state.fontSize}rem`);
     saveFontSize(state.fontSize);
+
+    // Actualizar display del tamaño de fuente
+    const fontDisplay = document.getElementById('font-size-display');
+    if (fontDisplay) fontDisplay.textContent = `${Math.round(state.fontSize * 100)}%`;
 }
 
 export function toggleSettingsMenu(settingsMenu) {
-    if (settingsMenu) settingsMenu.classList.toggle('visible');
+    if (!settingsMenu) return;
+    const isVisible = settingsMenu.classList.contains('visible');
+    settingsMenu.classList.toggle('visible');
+
+    // Actualizar estado visual cuando se abre
+    if (!isVisible) {
+        updateThemeIndicator(state.currentTheme);
+        const fontDisplay = document.getElementById('font-size-display');
+        if (fontDisplay) fontDisplay.textContent = `${Math.round(state.fontSize * 100)}%`;
+    }
 }
 
 function isIOS() {

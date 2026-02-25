@@ -19,7 +19,7 @@ export function loadPreferences({
         documentRef.documentElement.style.setProperty('--font-size-dynamic', `${parsedFontSize}rem`);
     }
 
-    let resolvedTheme = 'light';
+    let resolvedTheme = 'dark';
     if (savedTheme && (readerThemes.includes(savedTheme) || libraryThemes.includes(savedTheme))) {
         resolvedTheme = savedTheme;
     }

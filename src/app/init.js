@@ -1,5 +1,5 @@
 import { createLibrary } from '../books/index.js';
-import { setLibraryDependencies, openBook, switchToLibraryView } from '../library/view.js';
+import { setLibraryDependencies, openBook, switchToLibraryView, setOnLibraryReturn } from '../library/view.js';
 import { loadStory } from '../reader/story.js';
 import { initHighlights } from '../reader/highlights.js';
 import { setRenderDependencies, renderPage, resetScrollPosition } from '../reader/render.js';
@@ -14,7 +14,7 @@ import {
     setNavigationDependencies
 } from '../reader/navigation.js';
 import { loadPreferences, saveVolume } from '../utils/storage.js';
-import { applyTheme, changeFontSize, cycleTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
+import { applyTheme, changeFontSize, cycleTheme, selectTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
 import { ChatFeature } from '../ui/ChatModule.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
@@ -67,6 +67,9 @@ export function initApp() {
         librarySections: elements.librarySections,
         openBook
     });
+
+    // Register callback to re-render library when returning from reader
+    setOnLibraryReturn(() => library.renderLibrary());
 
     if (elements.backToLibraryBtn) {
         elements.backToLibraryBtn.addEventListener('click', () => {
@@ -235,12 +238,16 @@ export function initApp() {
     if (elements.decreaseFontBtn) {
         elements.decreaseFontBtn.addEventListener('click', () => changeFontSize(-0.1));
     }
-    if (elements.themeSelectorBtn) {
-        elements.themeSelectorBtn.addEventListener('click', cycleTheme);
-    }
     if (elements.settingsToggle) {
         elements.settingsToggle.addEventListener('click', () => toggleSettingsMenu(elements.settingsMenu));
     }
+    // Theme option buttons — direct selection
+    document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.dataset.theme;
+            if (theme) selectTheme(theme);
+        });
+    });
     if (elements.fullscreenBtn) {
         elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
     }

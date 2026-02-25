@@ -1,20 +1,24 @@
 {
-  "name": "Frankenstein, El moderno prometeo",
-  "short_name": "Frankenstein",
+  "name": "Lecturas Interactivas",
+  "short_name": "Lecturas",
+  "description": "Plataforma inmersiva de narrativa adaptativa con decisiones interactivas.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#2d2622",
-  "theme_color": "#2d2622",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "images/frankenstein_icon.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "images/monstruo_rostro.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "images/frankenstein_icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "images/monstruo_rostro.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ]
 }

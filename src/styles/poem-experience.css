@@ -502,11 +502,10 @@ body.theme-dark .choices button.choice-secondary:hover {
 }
 
 .layout-poem-balcony .images-container img {
-    /* Make the image larger and pull it to the right edge */
-    width: 140%;
-    max-width: none;
-    margin-right: -20%;
-    margin-left: auto;
+    /* Ensure no overflow */
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     height: auto;
     object-fit: contain;
     /* Removed scaleX(-1) to keep native right-alignment */
@@ -524,10 +523,10 @@ body.theme-dark .choices button.choice-secondary:hover {
 }
 
 .layout-poem-balcony .videos-container chroma-key-video {
-    width: 140%;
-    max-width: none;
-    margin-right: -20%;
-    margin-left: auto;
+    /* Ensure no overflow */
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     height: auto;
     opacity: 0.9;
     /* Soften the edges */
@@ -593,10 +592,8 @@ body.theme-dark .choices button.choice-secondary:hover {
 
     .layout-poem-balcony .videos-container chroma-key-video,
     .layout-poem-balcony .images-container img {
-        width: 140%;
-        /* slightly larger to fill horizontally softly */
-        margin-right: -20%;
-        margin-left: 0;
+        width: 100%;
+        margin: 0;
         /* Mobile masking to soften the top edge from text */
         -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 100%),
             linear-gradient(to left, transparent 5%, black 20%, black 80%, transparent 100%);
@@ -616,4 +613,139 @@ body.theme-dark .choices button.choice-secondary:hover {
 .twilight-deep_night~.page-content .poem-layout .stanza:last-child .verse-line:last-child {
     font-weight: 600;
     text-shadow: 0 0 25px rgba(200, 180, 255, 0.15);
+}
+
+/* ========================================
+   MADRESELVA — "Volverán las tupidas madreselvas"
+   Living vine frame that wraps the verses
+   The video acts as an organic botanical margin
+   ======================================== */
+
+/* The content-centerer becomes a relative container so the video
+   can be positioned absolutely behind the text */
+.layout-poem-madreselva .content-centerer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    overflow: hidden;
+}
+
+/* The video container becomes an absolute overlay filling the page,
+   creating the "vine frame" illusion around the text */
+.layout-poem-madreselva .videos-container {
+    position: absolute !important;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    animation: madreselvaReveal 4s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+}
+
+.layout-poem-madreselva .videos-container chroma-key-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    /* Soft edges so the vine frame fades into the background naturally */
+    -webkit-mask-image:
+        radial-gradient(ellipse 90% 85% at center, transparent 35%, black 65%);
+    mask-image:
+        radial-gradient(ellipse 90% 85% at center, transparent 35%, black 65%);
+}
+
+/* Text sits above the vine frame */
+.layout-poem-madreselva .scenes-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 85%;
+}
+
+/* Verses get a subtle text-shadow so they remain legible
+   even with the botanical overlay behind them */
+.layout-poem-madreselva .poem-layout .verse-line {
+    text-shadow:
+        0 0 20px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(0, 0, 0, 0.2);
+}
+
+/* The vine frame fades in gradually, as if growing around the page */
+@keyframes madreselvaReveal {
+    0% {
+        opacity: 0;
+        transform: scale(1.15);
+        filter: blur(6px);
+    }
+
+    40% {
+        opacity: 0.6;
+        filter: blur(2px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* ==== MOBILE: TRUE FULL-PAGE BLOOMING FRAME ====
+   Instead of trying to force a radial mask, we let the video expand to
+   the whole viewport behind the text so the beautiful edges are visible. */
+@media (max-width: 768px) {
+    .layout-poem-madreselva .content-centerer {
+        min-height: 80vh;
+        padding-top: 5vh;
+    }
+
+    /* Break out of the container bounds to fill the whole screen behind text */
+    .layout-poem-madreselva .videos-container {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        inset: unset;
+    }
+
+    .layout-poem-madreselva .videos-container chroma-key-video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* Contain: Never crop, show full natural aspect. Background fills the rest. */
+        object-position: center center;
+        opacity: 0.85;
+        /* Bright and visible */
+        /* Gentle soft gradients top and bottom so it fades into night sky */
+        -webkit-mask-image: linear-gradient(to bottom, transparent 2%, black 15%, black 85%, transparent 98%);
+        mask-image: linear-gradient(to bottom, transparent 2%, black 15%, black 85%, transparent 98%);
+    }
+
+    /* Add a dark semi-transparent veil specifically behind the text 
+       so the bright flowers don't make the verses unreadable. */
+    .layout-poem-madreselva .scenes-container {
+        position: relative;
+        z-index: 10;
+        max-width: 90%;
+        padding: 30px 15px;
+        background: radial-gradient(circle at center, rgba(30, 25, 45, 0.7) 0%, rgba(30, 25, 45, 0) 70%);
+        border-radius: 20px;
+    }
+
+    .layout-poem-madreselva .poem-layout .verse-line {
+        color: rgba(240, 235, 250, 0.95);
+        text-shadow:
+            0 0 10px rgba(0, 0, 0, 0.8),
+            0 0 20px rgba(0, 0, 0, 0.6),
+            0 0 5px rgba(200, 180, 255, 0.2);
+    }
 }

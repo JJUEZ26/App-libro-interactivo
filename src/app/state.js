@@ -5,9 +5,10 @@ export const state = {
     currentStoryId: -1,
     pageHistory: [],
     fontSize: 1.1,
-    currentTheme: 'light',
-    readerThemes: ['light', 'dark', 'sepia', 'bone'],
-    libraryThemes: ['light', 'dark'],
+    currentTheme: 'dark',
+    // Orden: Negro (default) → Sepia (rosado clásico) → Claro (blanco limpio)
+    readerThemes: ['dark', 'sepia', 'light'],
+    libraryThemes: ['dark'],
     isTransitioning: false,
     currentAudio: null,
     currentAudioFile: null,
@@ -17,10 +18,15 @@ export const state = {
 };
 
 export const themeColors = {
-    light: '#fdf6e3',
+    dark: '#1a1a1a',
     sepia: '#f4ecd8',
-    bone: '#f2f0e9',
-    dark: '#1a1a1a'
+    light: '#ffffff'
+};
+
+export const themeLabels = {
+    dark: 'Oscuro',
+    sepia: 'Clásico',
+    light: 'Claro'
 };
 
 export const setFontSize = (value) => {

@@ -1,3 +1,5 @@
+import { loadPageHistory } from '../utils/storage.js';
+
 export function createLibrary({ libraryHero, librarySections, openBook }) {
     let books = [];
     let sectionsConfig = null;
@@ -6,7 +8,6 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         if (!libraryHero && !librarySections) return;
 
         try {
-            // Usamos rutas absolutas desde la raíz para evitar errores en Vercel
             const [booksResponse, sectionsResponse] = await Promise.all([
                 fetch('/data/books.json'),
                 fetch('/data/library-sections.json')
@@ -16,7 +17,6 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             books = await booksResponse.json();
             sectionsConfig = await sectionsResponse.json();
 
-            // Normalizamos las rutas de los libros para que siempre sean absolutas
             books = books.map(book => ({
                 ...book,
                 cover: book.cover && !book.cover.startsWith('/') ? `/${book.cover}` : book.cover,
@@ -50,6 +50,103 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         renderSections(booksById);
     }
 
+    /**
+     * Calculate reading progress for a book
+     * @returns {{ pagesRead: number, totalPages: number, percent: number } | null}
+     */
+    function getReadingProgress(bookData) {
+        if (!bookData || bookData.type === 'poem') return null;
+        const totalPages = bookData.totalPages || 0;
+        if (totalPages === 0) return null;
+
+        const history = loadPageHistory(bookData.id);
+        if (!history || history.length === 0) return null;
+
+        const pagesRead = history.length;
+        const percent = Math.min(100, Math.round((pagesRead / totalPages) * 100));
+
+        return { pagesRead, totalPages, percent };
+    }
+
+    /**
+     * Create SVG circular progress ring
+     */
+    function createProgressRing(percent) {
+        const size = 40;
+        const strokeWidth = 3;
+        const radius = (size - strokeWidth) / 2;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (percent / 100) * circumference;
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', size);
+        svg.setAttribute('height', size);
+        svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+        svg.classList.add('progress-ring');
+
+        // Background circle
+        const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        bgCircle.setAttribute('cx', size / 2);
+        bgCircle.setAttribute('cy', size / 2);
+        bgCircle.setAttribute('r', radius);
+        bgCircle.setAttribute('fill', 'none');
+        bgCircle.setAttribute('stroke', 'rgba(255, 255, 255, 0.1)');
+        bgCircle.setAttribute('stroke-width', strokeWidth);
+
+        // Progress circle
+        const progressCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        progressCircle.setAttribute('cx', size / 2);
+        progressCircle.setAttribute('cy', size / 2);
+        progressCircle.setAttribute('r', radius);
+        progressCircle.setAttribute('fill', 'none');
+        progressCircle.setAttribute('stroke', 'url(#progressGradient)');
+        progressCircle.setAttribute('stroke-width', strokeWidth);
+        progressCircle.setAttribute('stroke-linecap', 'round');
+        progressCircle.setAttribute('stroke-dasharray', circumference);
+        progressCircle.setAttribute('stroke-dashoffset', offset);
+        progressCircle.setAttribute('transform', `rotate(-90 ${size / 2} ${size / 2})`);
+        progressCircle.classList.add('progress-ring-circle');
+
+        // Gradient
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+        gradient.setAttribute('id', 'progressGradient');
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+
+        const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', '#ec4899');
+        const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#8b5cf6');
+
+        gradient.appendChild(stop1);
+        gradient.appendChild(stop2);
+        defs.appendChild(gradient);
+
+        svg.appendChild(defs);
+        svg.appendChild(bgCircle);
+        svg.appendChild(progressCircle);
+
+        // Percentage text
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', '50%');
+        text.setAttribute('y', '50%');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('fill', 'white');
+        text.setAttribute('font-size', '11');
+        text.setAttribute('font-weight', '700');
+        text.setAttribute('font-family', 'Inter, sans-serif');
+        text.textContent = `${percent}%`;
+        svg.appendChild(text);
+
+        return svg;
+    }
+
     function renderHero(booksById) {
         const featuredId = sectionsConfig?.featuredBookId;
         const featuredBook = featuredId ? booksById.get(featuredId) : null;
@@ -62,7 +159,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const heroLabel = document.createElement('span');
         heroLabel.className = 'library-hero-label';
-        heroLabel.textContent = 'Libro estrella prueba 1';
+        heroLabel.textContent = '✨ Destacado';
 
         const heroTitle = document.createElement('h2');
         heroTitle.className = 'library-hero-title';
@@ -83,7 +180,14 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const heroButton = document.createElement('button');
         heroButton.className = 'library-hero-btn';
-        heroButton.textContent = featuredBook?.storyFile ? 'Leer ahora' : 'Muy pronto';
+
+        // Show progress on hero if applicable
+        const heroProgress = featuredBook ? getReadingProgress(featuredBook) : null;
+        if (heroProgress && heroProgress.percent > 0) {
+            heroButton.textContent = heroProgress.percent >= 100 ? '🎉 Leer de nuevo' : `Continuar (${heroProgress.percent}%)`;
+        } else {
+            heroButton.textContent = featuredBook?.storyFile ? 'Leer ahora' : 'Muy pronto';
+        }
         heroButton.disabled = !featuredBook?.storyFile;
 
         heroActions.appendChild(heroButton);
@@ -116,7 +220,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         libraryHero.appendChild(hero);
 
         if (featuredBook?.storyFile) {
-            const openHandler = () => openBook(featuredBook);
+            const openHandler = (ev) => handleBookOpen(ev, featuredBook, heroCover.querySelector('img'));
             heroButton.addEventListener('click', openHandler);
             heroCover.addEventListener('click', openHandler);
         }
@@ -169,8 +273,19 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         });
     }
 
+    /**
+     * Handle book opening — passes cover image for cinematic transition
+     * Applied to ALL books (novels and poems alike)
+     */
+    function handleBookOpen(event, bookData, coverImgEl) {
+        event.stopPropagation();
+        // openBook now handles the cinematic transition internally
+        openBook(bookData, coverImgEl || null);
+    }
+
     function createBookCard(bookData, { label }) {
         const hasStory = Boolean(bookData?.storyFile);
+        const isNovel = bookData?.type === 'novel';
         const card = document.createElement('article');
         card.className = 'book-card';
         if (!bookData || !hasStory) card.classList.add('book-card--disabled');
@@ -178,14 +293,16 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         const coverWrapper = document.createElement('div');
         coverWrapper.className = 'book-cover-wrapper';
 
+        let coverImg = null;
+
         if (bookData?.cover) {
-            const img = document.createElement('img');
-            img.src = bookData.cover;
-            img.alt = `Portada de ${bookData.title || 'libro'}`;
-            img.loading = 'lazy';
-            img.className = 'book-cover';
-            img.onerror = function () { this.classList.add('placeholder'); this.src = ''; this.alt = 'Imagen no encontrada'; };
-            coverWrapper.appendChild(img);
+            coverImg = document.createElement('img');
+            coverImg.src = bookData.cover;
+            coverImg.alt = `Portada de ${bookData.title || 'libro'}`;
+            coverImg.loading = 'lazy';
+            coverImg.className = 'book-cover';
+            coverImg.onerror = function () { this.classList.add('placeholder'); this.src = ''; this.alt = 'Imagen no encontrada'; };
+            coverWrapper.appendChild(coverImg);
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'book-cover placeholder';
@@ -200,6 +317,18 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             coverWrapper.appendChild(tag);
         }
 
+        // Progress indicator — only for novels with reading history
+        const progress = bookData ? getReadingProgress(bookData) : null;
+        if (progress && progress.percent > 0 && isNovel) {
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'book-progress-badge';
+            progressContainer.appendChild(createProgressRing(progress.percent));
+            coverWrapper.appendChild(progressContainer);
+
+            // Also add "Continuar" label instead of "Leer"
+            card.dataset.hasProgress = 'true';
+        }
+
         const body = document.createElement('div');
         body.className = 'book-card-body';
         const titleEl = document.createElement('h4');
@@ -212,7 +341,16 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const btn = document.createElement('button');
         btn.className = 'book-open-btn';
-        btn.textContent = hasStory ? 'Leer' : 'Muy pronto';
+        if (hasStory) {
+            if (progress && progress.percent > 0) {
+                btn.textContent = progress.percent >= 100 ? '✓ Completado' : 'Continuar';
+                if (progress.percent >= 100) btn.classList.add('book-open-btn--completed');
+            } else {
+                btn.textContent = 'Leer';
+            }
+        } else {
+            btn.textContent = 'Muy pronto';
+        }
         btn.disabled = !hasStory;
 
         body.appendChild(titleEl);
@@ -222,7 +360,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         card.appendChild(body);
 
         if (hasStory) {
-            const openHandler = (ev) => { ev.stopPropagation(); openBook(bookData); };
+            const openHandler = (ev) => handleBookOpen(ev, bookData, coverImg);
             card.addEventListener('click', openHandler);
             btn.addEventListener('click', openHandler);
         }

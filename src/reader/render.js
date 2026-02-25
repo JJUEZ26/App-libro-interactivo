@@ -3,6 +3,8 @@ import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
 import {
     playPageSound,
+    preloadAudio,
+    preloadPageAudio,
     startKaraokeSync,
     stopCurrentAudio,
     toggleKaraokeAudio,
@@ -28,9 +30,9 @@ export function preloadNextImages(currentPageId) {
             if (nextPage.images) nextPage.images.forEach((url) => {
                 new Image().src = url;
             });
-            if (nextPage.sound) {
-                new Audio(`sounds/${nextPage.sound}`).preload = 'auto';
-            }
+            // Use centralized audio preloading
+            const nextSound = nextPage.bgMusic || nextPage.sound || nextPage.audio;
+            if (nextSound) preloadAudio(nextSound);
         }
     });
 }
@@ -43,6 +45,10 @@ export function renderPage(pageId) {
 
     const pageData = state.story.find((page) => page.id === pageId);
     if (!pageData) return;
+
+    // PRIMERO: Iniciar precarga de audio ANTES de tocar el DOM
+    // Esto le da al navegador tiempo para descargar mientras construimos la página
+    preloadPageAudio(pageId);
 
     const pageContent = document.createElement('div');
     pageContent.className = 'page-content';
@@ -246,9 +252,9 @@ export function renderPage(pageId) {
     } else if (pageData.sound) {
         playPageSound(pageId, pageData.sound, true);
     } else if (pageData.audio) {
-        // Si hay audio pero no es karaoke, lo tratamos como música de fondo (autoPlay true)
         const isKaraoke = pageData.karaokeLines && pageData.karaokeLines.length > 0;
-        playPageSound(pageId, pageData.audio, true);
+        // El karaoke debe iniciar pausado para que el usuario controle la reproducción
+        playPageSound(pageId, pageData.audio, !isKaraoke);
 
         if (isKaraoke) {
             startKaraokeSync();

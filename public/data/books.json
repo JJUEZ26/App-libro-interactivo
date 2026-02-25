@@ -3,9 +3,18 @@
     "id": "frankenstein",
     "title": "Frankenstein",
     "author": "Mary Shelley (adaptación)",
-    "description": "Una adaptación interactiva del clásico con decisiones y finales alternativos.",
+    "description": "Una adaptación interactiva del clásico con decisiones y finales alternativos. Tú decides el destino de Víctor y su criatura.",
     "cover": "images/monstruo_rostro.jpg",
-    "storyFile": "stories/frankenstein.json"
+    "storyFile": "stories/frankenstein.json",
+    "type": "novel",
+    "tags": [
+      "terror",
+      "ciencia ficción",
+      "novela gótica",
+      "decisiones",
+      "interactivo"
+    ],
+    "totalPages": 28
   },
   {
     "id": "pajaro-azul",
@@ -13,7 +22,14 @@
     "author": "Charles Bukowski",
     "description": "Hay un pájaro azul en mi corazón que quiere salir...",
     "cover": "images/bukowski_pajaroazul.png",
-    "storyFile": "stories/pajaro_azul.json"
+    "storyFile": "stories/pajaro_azul.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "confesión",
+      "vulnerabilidad",
+      "masculinidad"
+    ]
   },
   {
     "id": "jorge-luis-borges-remordimiento",
@@ -21,7 +37,14 @@
     "author": "Jorge Luis Borges",
     "description": "He cometido el peor de los pecados que un hombre puede cometer.",
     "cover": "images/borges_remordimiento_portada.jpg",
-    "storyFile": "stories/pecado_borges.json"
+    "storyFile": "stories/pecado_borges.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "remordimiento",
+      "existencialismo",
+      "introspección"
+    ]
   },
   {
     "id": "ya_no_sera",
@@ -30,6 +53,13 @@
     "description": "Ya no será, ya no. No viviremos juntos...",
     "cover": "images/idea_vilarino_portada.png",
     "storyFile": "stories/idea_vilarino_ya_no_sera.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "desamor",
+      "pérdida",
+      "melancolía"
+    ],
     "theme": "sepia"
   },
   {
@@ -38,31 +68,66 @@
     "author": "Jaime Gil de Biedma",
     "description": "Una meditación lúcida sobre el paso del tiempo y la madurez.",
     "cover": "images/gil_biedma_portada.png",
-    "storyFile": "stories/gil_de_biedma_no_volvere.json"
+    "storyFile": "stories/gil_de_biedma_no_volvere.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "juventud",
+      "tiempo",
+      "melancolía",
+      "madurez"
+    ]
   },
   {
-    "id": "ivan_ilich.json",
+    "id": "ivan-ilich",
     "title": "La muerte de Iván Ilich",
     "author": "Lev Tolstói",
-    "description": "",
+    "description": "Un juez respetable descubre, al borde de la muerte, que ha vivido una vida vacía. Una novela que nos obliga a preguntarnos: ¿estamos viviendo de verdad?",
     "cover": "images/ivan_ilich_portada.png",
-    "storyFile": "stories/ivan_ilich.json"
+    "storyFile": "stories/ivan_ilich.json",
+    "type": "novel",
+    "tags": [
+      "existencialismo",
+      "muerte",
+      "sentido de la vida",
+      "novela filosófica",
+      "clásico ruso"
+    ],
+    "totalPages": 106
   },
   {
     "id": "meditaciones",
     "title": "Meditaciones",
     "author": "Marco Aurelio",
-    "description": "",
+    "description": "Los pensamientos íntimos del emperador más poderoso del mundo. Reflexiones sobre la virtud, la serenidad y cómo vivir bien —escritas hace casi 2000 años, vigentes hoy.",
     "cover": "images/meditaciones.jpg",
-    "storyFile": "stories/meditaciones.json"
+    "storyFile": "stories/meditaciones.json",
+    "type": "novel",
+    "tags": [
+      "estoicismo",
+      "filosofía",
+      "autoconocimiento",
+      "virtud",
+      "clásico griego"
+    ],
+    "totalPages": 290
   },
   {
-    "id": "el extranjero",
+    "id": "el-extranjero",
     "title": "El extranjero",
     "author": "Albert Camus",
-    "description": "",
+    "description": "Hoy ha muerto mamá. O quizá ayer. No lo sé. La historia de un hombre que no siente lo que la sociedad espera —y las consecuencias devastadoras de su honestidad.",
     "cover": "images/el_extranjero.png",
-    "storyFile": "stories/el_extranjero.json"
+    "storyFile": "stories/el_extranjero.json",
+    "type": "novel",
+    "tags": [
+      "absurdo",
+      "existencialismo",
+      "alienación",
+      "novela filosófica",
+      "clásico francés"
+    ],
+    "totalPages": 162
   },
   {
     "id": "la-levedad-del-deseo",
@@ -70,7 +135,16 @@
     "author": "Obra Original",
     "description": "Una novela contemporánea sobre la rutina, el deseo y la búsqueda de sentido en la cotidianidad urbana.",
     "cover": "images/levedad_deseo_portada.png",
-    "storyFile": "stories/la_levedad_del_deseo.json"
+    "storyFile": "stories/la_levedad_del_deseo.json",
+    "type": "novel",
+    "tags": [
+      "contemporáneo",
+      "introspección",
+      "soledad urbana",
+      "deseo",
+      "original"
+    ],
+    "totalPages": 3
   },
   {
     "id": "becquer-golondrinas",
@@ -78,6 +152,14 @@
     "author": "Gustavo Adolfo Bécquer",
     "description": "Rima LIII — Un canto a la pérdida irreparable del amor. Las golondrinas volverán, pero aquellas... ésas no volverán.",
     "cover": "images/becquer_golondrinas_portada.png",
-    "storyFile": "stories/becquer_golondrinas.json"
+    "storyFile": "stories/becquer_golondrinas.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "romanticismo",
+      "pérdida",
+      "amor",
+      "nostalgia"
+    ]
   }
 ]

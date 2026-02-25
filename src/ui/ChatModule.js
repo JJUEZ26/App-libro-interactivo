@@ -8,7 +8,7 @@ export class ChatFeature {
             enableTTS: false,
             enableLiveVoice: true,
             // Mantenemos el modelo 2.0 experimental porque es el único que soporta voz
-            liveVoiceModel: 'gemini-2.0-flash-exp', 
+            liveVoiceModel: 'gemini-2.0-flash-exp',
             liveApiKey: '',
             ...options
         };
@@ -256,10 +256,10 @@ export class ChatFeature {
         header.className = 'ai-chat-header';
         const title = document.createElement('h3');
         title.textContent = 'Asistente de lectura';
-        
+
         const headerActions = document.createElement('div');
         headerActions.className = 'ai-chat-header-actions';
-        
+
         this.voiceSelect = document.createElement('select');
         this.voiceSelect.className = 'ai-chat-select';
         this.voiceSelect.setAttribute('aria-label', 'Voz del asistente');
@@ -275,12 +275,12 @@ export class ChatFeature {
         resetButton.type = 'button';
         resetButton.textContent = 'Nuevo chat';
         resetButton.setAttribute('aria-label', 'Iniciar un chat nuevo');
-        
+
         const closeButton = document.createElement('button');
         closeButton.className = 'ai-chat-close';
         closeButton.setAttribute('aria-label', 'Cerrar chat');
         closeButton.textContent = '✕';
-        
+
         headerActions.appendChild(this.voiceSelect);
         headerActions.appendChild(resetButton);
         headerActions.appendChild(closeButton);
@@ -462,7 +462,7 @@ export class ChatFeature {
 
     async loadLibraryCatalog() {
         try {
-            const response = await fetch('data/books.json');
+            const response = await fetch('/data/books.json');
             if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
             const books = await response.json();
             this.libraryCatalog = (Array.isArray(books) ? books : []).map((book) => ({
@@ -685,7 +685,7 @@ export class ChatFeature {
         if (this.liveClient) {
             this.liveClient.stop();
             // MANTENEMOS ESTA CORRECCIÓN: Borra el cliente antiguo para no reciclar conexiones fallidas
-            this.liveClient = null; 
+            this.liveClient = null;
         }
         this.isLiveActive = false;
         this.liveButton.classList.remove('active');
