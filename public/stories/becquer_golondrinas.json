@@ -52,11 +52,12 @@
     {
         "id": "estrofa2",
         "page": 3,
-        "pageClass": "layout-poem-madreselva",
+        "pageClass": "layout-madreselva-v2",
         "audio": "becquer_golondrinas.mp3",
-        "effect": "twilight_dusk, dewdrops_shimmer",
+        "effect": "twilight_dusk",
+        "loopVideo": false,
         "video": [
-            "videos/madreselva_square.mp4"
+            "videos/madreselva_borde.mp4"
         ],
         "scenes": [
             "Volverán las tupidas madreselvas\nde tu jardín las tapias a escalar",

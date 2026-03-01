@@ -95,8 +95,8 @@ export function goToPage(pageId, isGoingBack = false) {
         setTimeout(() => {
             state.isTransitioning = false;
             updateUI();
-        }, 500);
-    }, 400);
+        }, 350);
+    }, 250);
 }
 
 export function goBack() {

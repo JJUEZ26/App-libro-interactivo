@@ -3,6 +3,74 @@
    Enhanced reading/listening styles
    ======================================== */
 
+/* --- Ambient Background Video --- */
+/* The wrapper fills the full page-content area and sits behind everything */
+.ambient-bg-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ambient-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    will-change: opacity;
+    /* In windowed mode, scale up so border-hugging content (vines)
+       stays at the true edges instead of crowding the center text */
+    transform: scale(1.8);
+    transform-origin: center center;
+}
+
+/* When blending with "screen", crush near-black grays to true black
+   so the background becomes fully invisible, leaving ONLY the bright
+   elements (vines, flowers) floating over the poem.
+   contrast(2.5) aggressively kills any gray residue from AI-generated videos */
+.ambient-bg-wrapper[style*="screen"] .ambient-bg-video {
+    filter: contrast(2.5) brightness(1.2);
+}
+
+/* In fullscreen the container IS the viewport, so no extra scaling needed */
+body.fullscreen-mode .ambient-bg-video {
+    transform: scale(1);
+}
+
+/* Make sure page-content is a stacking context so the wrapper stays behind text */
+.page-content {
+    position: relative;
+}
+
+/* Text and choices must always sit above the video */
+.content-centerer {
+    position: relative;
+    z-index: 2;
+}
+
+/* Choices must always be fully clickable above the video layer */
+.content-centerer .choices {
+    position: relative;
+    z-index: 3;
+}
+
+/* Bio portrait (last page) must also sit above the video */
+.bio-portrait {
+    position: relative;
+    z-index: 3;
+}
+
+/* Subtle shadow on verses so they remain legible on any video frame */
+.ambient-bg-wrapper~.content-centerer .verse-line,
+.ambient-bg-wrapper~.content-centerer p {
+    text-shadow:
+        0 0 12px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
 /* --- Poem Intro Layout (Title + Author + Two Choices) --- */
 .poem-intro-layout {
     display: flex;
@@ -616,14 +684,12 @@ body.theme-dark .choices button.choice-secondary:hover {
 }
 
 /* ========================================
-   MADRESELVA — "Volverán las tupidas madreselvas"
-   Living vine frame that wraps the verses
-   The video acts as an organic botanical margin
+   MADRESELVA v2 — Chroma-key vine frame
+   Green is removed by WebGL (<chroma-key-video>).
+   CSS only handles positioning + masking the center.
    ======================================== */
 
-/* The content-centerer becomes a relative container so the video
-   can be positioned absolutely behind the text */
-.layout-poem-madreselva .content-centerer {
+.layout-madreselva-v2 .content-centerer {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -633,13 +699,13 @@ body.theme-dark .choices button.choice-secondary:hover {
     overflow: hidden;
 }
 
-/* The video container becomes an absolute overlay filling the page,
-   creating the "vine frame" illusion around the text */
-.layout-poem-madreselva .videos-container {
+/* Video fills the entire page area and scales UP so that the
+   vines/flowers are pushed to the extreme edges of the screen */
+.layout-madreselva-v2 .videos-container {
     position: absolute !important;
-    inset: -10%;
-    width: 120%;
-    height: 120%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -649,35 +715,37 @@ body.theme-dark .choices button.choice-secondary:hover {
     animation: madreselvaReveal 4s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
 }
 
-.layout-poem-madreselva .videos-container chroma-key-video {
+.layout-madreselva-v2 .videos-container chroma-key-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.55;
-    /* Soft edges so the vine frame fades into the background naturally */
+    opacity: 0.8;
+    /* Scale up aggressively so flowers/vines stick to the borders
+       and the center stays completely clear for text */
+    transform: scale(1.7);
+    transform-origin: center center;
+    /* Radial mask relaxed: the central hole is smaller, so flowers
+       aren't accidentally hidden now that the scale is smaller */
     -webkit-mask-image:
-        radial-gradient(ellipse 90% 85% at center, transparent 35%, black 65%);
+        radial-gradient(ellipse 45% 45% at center, transparent 20%, black 60%);
     mask-image:
-        radial-gradient(ellipse 90% 85% at center, transparent 35%, black 65%);
+        radial-gradient(ellipse 45% 45% at center, transparent 20%, black 60%);
 }
 
 /* Text sits above the vine frame */
-.layout-poem-madreselva .scenes-container {
+.layout-madreselva-v2 .scenes-container {
     position: relative;
     z-index: 2;
     text-align: center;
     max-width: 85%;
 }
 
-/* Verses get a subtle text-shadow so they remain legible
-   even with the botanical overlay behind them */
-.layout-poem-madreselva .poem-layout .verse-line {
+.layout-madreselva-v2 .poem-layout .verse-line {
     text-shadow:
         0 0 20px rgba(0, 0, 0, 0.4),
         0 0 40px rgba(0, 0, 0, 0.2);
 }
 
-/* The vine frame fades in gradually, as if growing around the page */
 @keyframes madreselvaReveal {
     0% {
         opacity: 0;
@@ -697,17 +765,19 @@ body.theme-dark .choices button.choice-secondary:hover {
     }
 }
 
-/* ==== MOBILE: TRUE FULL-PAGE BLOOMING FRAME ====
-   Instead of trying to force a radial mask, we let the video expand to
-   the whole viewport behind the text so the beautiful edges are visible. */
+/* ── FULLSCREEN: less scaling needed since container is the viewport ── */
+body.fullscreen-mode .layout-madreselva-v2 .videos-container chroma-key-video {
+    transform: scale(1.5);
+}
+
+/* ── MOBILE ── */
 @media (max-width: 768px) {
-    .layout-poem-madreselva .content-centerer {
+    .layout-madreselva-v2 .content-centerer {
         min-height: 80vh;
         padding-top: 5vh;
     }
 
-    /* Break out of the container bounds to fill the whole screen behind text */
-    .layout-poem-madreselva .videos-container {
+    .layout-madreselva-v2 .videos-container {
         position: fixed !important;
         top: 0;
         left: 0;
@@ -717,35 +787,24 @@ body.theme-dark .choices button.choice-secondary:hover {
         inset: unset;
     }
 
-    .layout-poem-madreselva .videos-container chroma-key-video {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        /* Contain: Never crop, show full natural aspect. Background fills the rest. */
-        object-position: center center;
+    .layout-madreselva-v2 .videos-container chroma-key-video {
+        transform: scale(1.8);
         opacity: 0.85;
-        /* Bright and visible */
-        /* Gentle soft gradients top and bottom so it fades into night sky */
-        -webkit-mask-image: linear-gradient(to bottom, transparent 2%, black 15%, black 85%, transparent 98%);
-        mask-image: linear-gradient(to bottom, transparent 2%, black 15%, black 85%, transparent 98%);
+        -webkit-mask-image:
+            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
+        mask-image:
+            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
     }
 
-    /* Add a dark semi-transparent veil specifically behind the text 
-       so the bright flowers don't make the verses unreadable. */
-    .layout-poem-madreselva .scenes-container {
+    .layout-madreselva-v2 .scenes-container {
         position: relative;
         z-index: 10;
         max-width: 90%;
-        padding: 30px 15px;
-        background: radial-gradient(circle at center, rgba(30, 25, 45, 0.7) 0%, rgba(30, 25, 45, 0) 70%);
-        border-radius: 20px;
     }
 
-    .layout-poem-madreselva .poem-layout .verse-line {
-        color: rgba(240, 235, 250, 0.95);
+    .layout-madreselva-v2 .poem-layout .verse-line {
         text-shadow:
             0 0 10px rgba(0, 0, 0, 0.8),
-            0 0 20px rgba(0, 0, 0, 0.6),
-            0 0 5px rgba(200, 180, 255, 0.2);
+            0 0 20px rgba(0, 0, 0, 0.6);
     }
 }

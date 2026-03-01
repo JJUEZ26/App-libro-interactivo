@@ -44,14 +44,14 @@ function clearExistingEffects() {
     if (activeDewdropsCleanup) { activeDewdropsCleanup(); activeDewdropsCleanup = null; }
     if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
 
-    const existingBirds = document.querySelectorAll('.flying-bird');
-    existingBirds.forEach(el => el.remove());
-
-    const existingOverlays = document.querySelectorAll('.effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, .sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, .fireflies-overlay');
-    existingOverlays.forEach(el => el.remove());
-
-    const existingParticles = document.querySelectorAll('.smoke-particle, .rain-drop, .falling-leaf, .time-pulse-ring, .swallow-bird, .firefly, .dewdrop');
-    existingParticles.forEach(el => el.remove());
+    // Single combined querySelectorAll for all effect elements (merged 3 calls → 1)
+    const allEffectElements = document.querySelectorAll(
+        '.flying-bird, .effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, ' +
+        '.sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, ' +
+        '.fireflies-overlay, .smoke-particle, .rain-drop, .falling-leaf, ' +
+        '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop'
+    );
+    allEffectElements.forEach(el => el.remove());
 }
 
 function startBirdEffect(getAppMode) {

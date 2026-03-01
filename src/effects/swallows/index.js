@@ -139,8 +139,8 @@ function createLandingEffect(overlay) {
         video.setAttribute('src', 'videos/golondrina_aterrizaje.mp4');
         // No 'loop' → plays once, bird lands and stays on last frame
 
-        // Size: reduced 25% from original (charHeight * 6 instead of * 8)
-        const videoSize = Math.max(90, pos.charHeight * 6);
+        // Size: generous to avoid pixelation on the canvas-based chroma-key
+        const videoSize = Math.max(160, pos.charHeight * 10);
 
         video.style.cssText = `
             position: absolute;

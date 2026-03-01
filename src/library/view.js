@@ -86,26 +86,16 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/** Wait for next paint to complete */
-function nextPaint() {
-    return new Promise(resolve => {
-        requestAnimationFrame(() => {
-            // Double rAF ensures the browser has actually painted
-            requestAnimationFrame(resolve);
-        });
-    });
-}
+
 
 /**
  * Open a book with a smooth cinematic transition.
  * 
- * ARCHITECTURE:
- *   1. Show overlay INSTANTLY
+ * ARCHITECTURE (optimized for zero-freeze):
+ *   1. Show overlay INSTANTLY (lightweight CSS-only)
  *   2. In parallel: animate cover + load story data
  *   3. When BOTH are done: switch to reader view (hidden under overlay)
- *   4. After reader paints: fade overlay out
- *   
- * This guarantees NO flash between library and reader.
+ *   4. Fade overlay out — NO blocking nextPaint()
  */
 export async function openBook(bookData, coverImgEl) {
     if (!bookData || !bookData.storyFile) return;
@@ -134,6 +124,7 @@ export async function openBook(bookData, coverImgEl) {
 
         clone = document.createElement('img');
         clone.src = coverImgEl.src;
+        clone.decoding = 'async'; // Don't block main thread for image decode
         clone.style.cssText = `
             position: fixed;
             top: ${rect.top}px;
@@ -144,7 +135,12 @@ export async function openBook(bookData, coverImgEl) {
             border-radius: 12px;
             z-index: 10002;
             will-change: transform, opacity;
-            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        left 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
         `;
         document.body.appendChild(clone);
@@ -169,8 +165,7 @@ export async function openBook(bookData, coverImgEl) {
     }
 
     // --- STEP 3: Load story IN PARALLEL with the animation ---
-    // We wait for BOTH: a minimum visual time AND the story data
-    const MIN_ANIMATION_MS = 500; // Enough for the cover to reach center
+    const MIN_ANIMATION_MS = 350; // Reduced from 500 — cover is already centered by then
 
     const [storyLoaded] = await Promise.all([
         (async () => {
@@ -200,23 +195,24 @@ export async function openBook(bookData, coverImgEl) {
     switchToReaderView();
     if (goToPageRef) goToPageRef(state.currentStoryId, true);
 
-    // Wait for the reader to actually paint
-    await nextPaint();
-
     // --- STEP 5: Fade out everything smoothly ---
-    if (clone) {
-        clone.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
-        clone.style.opacity = '0';
-        clone.style.transform = 'scale(1.05)';
-    }
-    if (titleEl) {
-        titleEl.classList.remove('visible');
-        titleEl.classList.add('fade-out');
-    }
-    overlay.classList.add('fade-out');
+    // Instead of blocking with await nextPaint(), we use a single rAF
+    // so the browser paints the reader content, then starts fade-out.
+    requestAnimationFrame(() => {
+        if (clone) {
+            clone.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+            clone.style.opacity = '0';
+            clone.style.transform = 'scale(1.05)';
+        }
+        if (titleEl) {
+            titleEl.classList.remove('visible');
+            titleEl.classList.add('fade-out');
+        }
+        overlay.classList.add('fade-out');
 
-    // Cleanup after fade completes
-    setTimeout(() => cleanup(overlay, clone, titleEl), 350);
+        // Cleanup after fade completes
+        setTimeout(() => cleanup(overlay, clone, titleEl), 350);
+    });
 }
 
 function cleanup(overlay, clone, titleEl) {
