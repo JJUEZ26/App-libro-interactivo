@@ -48,6 +48,12 @@ export class ChromaKeyVideo extends HTMLElement {
             this.canvas.width = this.video.videoWidth;
             this.canvas.height = this.video.videoHeight;
             this.style.aspectRatio = `${this.canvas.width}/${this.canvas.height}`;
+
+            const startAt = Number.parseFloat(this.getAttribute('start-at'));
+            if (Number.isFinite(startAt) && startAt > 0) {
+                this.video.currentTime = Math.min(startAt, Math.max(0, (this.video.duration || startAt) - 0.05));
+            }
+
             this.video.play().catch(e => console.warn("Auto-play prevented", e));
         });
 

@@ -5,8 +5,8 @@
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4",
       "blendMode": "screen",
-      "opacity": 0.6,
-      "speed": 0.9
+      "opacity": 0.82,
+      "speed": 0.95
     },
     "effect": "bluebird_pass",
     "page": 1,
@@ -27,8 +27,8 @@
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4",
       "blendMode": "screen",
-      "opacity": 0.6,
-      "speed": 0.9
+      "opacity": 0.82,
+      "speed": 0.95
     },
     "effect": "bluebird_pass",
     "page": 2,
@@ -50,8 +50,8 @@
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4",
       "blendMode": "screen",
-      "opacity": 0.6,
-      "speed": 0.9
+      "opacity": 0.82,
+      "speed": 0.95
     },
     "effect": "bluebird_pass",
     "page": 3,
@@ -77,8 +77,8 @@
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4",
       "blendMode": "screen",
-      "opacity": 0.25,
-      "speed": 0.9
+      "opacity": 0.42,
+      "speed": 0.95
     },
     "effect": "bluebird_pass",
     "page": 4,
