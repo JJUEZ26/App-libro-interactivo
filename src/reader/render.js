@@ -91,8 +91,12 @@ export function renderPage(pageId) {
     if (pageData.video && pageData.video.length > 0) {
         const loopAttr = pageData.loopVideo === false ? '' : 'loop';
         let videosHtml = '';
-        pageData.video.forEach(url => {
-            videosHtml += `<chroma-key-video src="${url}" ${loopAttr}></chroma-key-video>`;
+        pageData.video.forEach((videoItem) => {
+            const videoSrc = typeof videoItem === 'string' ? videoItem : videoItem.src;
+            const startAtAttr = typeof videoItem === 'object' && Number.isFinite(videoItem.startAt)
+                ? `start-at="${videoItem.startAt}"`
+                : '';
+            videosHtml += `<chroma-key-video src="${videoSrc}" ${loopAttr} ${startAtAttr}></chroma-key-video>`;
         });
         contentHtml += `<div class="videos-container">${videosHtml}</div>`;
     }
