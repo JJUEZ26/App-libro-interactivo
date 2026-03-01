@@ -774,26 +774,27 @@ body.fullscreen-mode .layout-madreselva-v2 .videos-container chroma-key-video {
 @media (max-width: 768px) {
     .layout-madreselva-v2 .content-centerer {
         min-height: 80vh;
-        padding-top: 5vh;
+        padding-top: 3vh;
     }
 
     .layout-madreselva-v2 .videos-container {
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
+        position: absolute !important;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         z-index: 0;
-        inset: unset;
+        overflow: hidden;
     }
 
     .layout-madreselva-v2 .videos-container chroma-key-video {
-        transform: scale(1.8);
-        opacity: 0.85;
+        width: 100%;
+        height: 100%;
+        transform: scale(2.05);
+        opacity: 0.92;
         -webkit-mask-image:
-            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
+            radial-gradient(ellipse 58% 52% at center, transparent 34%, black 69%);
         mask-image:
-            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
+            radial-gradient(ellipse 58% 52% at center, transparent 34%, black 69%);
     }
 
     .layout-madreselva-v2 .scenes-container {
