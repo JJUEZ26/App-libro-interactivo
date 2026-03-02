@@ -720,16 +720,6 @@ body.theme-dark .choices button.choice-secondary:hover {
     height: 100%;
     object-fit: cover;
     opacity: 0.8;
-    /* Scale up aggressively so flowers/vines stick to the borders
-       and the center stays completely clear for text */
-    transform: scale(1.7);
-    transform-origin: center center;
-    /* Radial mask relaxed: the central hole is smaller, so flowers
-       aren't accidentally hidden now that the scale is smaller */
-    -webkit-mask-image:
-        radial-gradient(ellipse 45% 45% at center, transparent 20%, black 60%);
-    mask-image:
-        radial-gradient(ellipse 45% 45% at center, transparent 20%, black 60%);
 }
 
 /* Text sits above the vine frame */
@@ -765,10 +755,7 @@ body.theme-dark .choices button.choice-secondary:hover {
     }
 }
 
-/* ── FULLSCREEN: less scaling needed since container is the viewport ── */
-body.fullscreen-mode .layout-madreselva-v2 .videos-container chroma-key-video {
-    transform: scale(1.5);
-}
+/* ── FULLSCREEN: naturally scales to cover ── */
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
@@ -788,12 +775,7 @@ body.fullscreen-mode .layout-madreselva-v2 .videos-container chroma-key-video {
     }
 
     .layout-madreselva-v2 .videos-container chroma-key-video {
-        transform: scale(1.8);
         opacity: 0.85;
-        -webkit-mask-image:
-            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
-        mask-image:
-            radial-gradient(ellipse 50% 45% at center, transparent 35%, black 70%);
     }
 
     .layout-madreselva-v2 .scenes-container {
