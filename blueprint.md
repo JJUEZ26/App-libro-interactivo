@@ -43,8 +43,9 @@ App-libro-interactivo/
 │   ├── pajaro_azul.json      # Poema - Bukowski (lectura simple)
 │   ├── pecado_borges.json    # Poema - Borges (con audio)
 │   ├── idea_vilarino_ya_no_sera.json  # Poema - Vilariño (con audio)
-│   ├── gil_de_biedma_no_volvere.json  # Poema - Gil de Biedma (lectura simple)
-│   └── ... (9 historias totales)
+│   ├── becquer_golondrinas.json    # Poema - Bécquer (con audio fantasma)
+│   ├── la_puerta.json              # Relato de misterio (convertido de PDF)
+│   └── ... (11 historias totales)
 ├── src/
 │   ├── app/                  # Core de la aplicación
 │   │   ├── init.js          # Inicialización y orquestación
@@ -683,3 +684,34 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 - Implementa una transición suave de anti-aliasing (alpha blend) en los bordes para reducir el "halo" verde ("spill suppression").
 - No requiere librerías externas ni procesado en servidor; funciona client-side permitiendo que el video flote sobre CSS cambiante.
 - Integrado directamente en el motor de renderizado (`render.js`) a través de la propiedad de datos `"video": ["rutadelvideo.mp4"]`.
+
+---
+
+### Sistema de Audio Fantasma "Ghost Echo" (v1.0 — Marzo 2026)
+**Módulo**: `src/reader/audio.js`  
+**Propósito**: Crear una experiencia sonora que respira, baja, sube, y nunca muere. Diseñado para el poema de Bécquer pero reutilizable en cualquier lectura.
+
+**Filosofía**:
+> La melodía no es decoración; es la presencia emocional que acompaña al lector. Cuando el sonido termina abruptamente, el alma del poema se rompe. El sistema Ghost Echo resuelve esto con una segunda capa de audio "fantasma" que anticipa el final y asegura continuidad.
+
+**Flujo Emocional**:
+1. **Nacimiento** — Audio principal arranca con fade-in suave (0 → volumen deseado en ~3s)
+2. **Vida** — La melodía acompaña al lector a volumen pleno
+3. **Anticipación** — Cuando quedan ~18s del audio principal, el "fantasma" se despierta: la misma melodía desde el inicio a volumen casi imperceptible (~3%)
+4. **Despedida** — El audio principal hace fade-out en sus últimos ~8 segundos
+5. **Susurro** — El fantasma sube suavemente a ~20% y se convierte en el acompañante
+6. **Renacimiento** — Tras 4 segundos de solo fantasma (un respiro melancólico), el audio principal renace desde 0 con fade-in, y el ciclo se repite infinitamente
+
+**Propiedades JSON**:
+- `ghostEcho: true` — Activa el sistema fantasma en la página
+- `fadeIn: true` — Activa el fade-in inicial del audio principal
+- `volume: 0.55` — Volumen base (multiplicado por el volumen global del usuario)
+
+**Curva de Volumen Emocional (Bécquer)**:
+- Estrofa 1: `0.55` (esperanza, la melodía llena el espacio)
+- Estrofa 2 (Pérdida 1): `0.50` (la primera herida)
+- Estrofa 3 (Madreselvas): `0.50` (naturaleza aún viva)
+- Estrofa 4 (Pérdida 2): `0.45` (lágrimas caen)
+- Estrofa 5 (Palabras ardientes): `0.40` (la voz se apaga)
+- Estrofa 6 (Final): `0.35` (desolación, casi un susurro)
+- Biografía: `0.20` (un recuerdo distante)

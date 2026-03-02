@@ -2,6 +2,11 @@
     {
         "id": "intro",
         "page": 0,
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.70,
+        "delay": 1000,
+        "fadeIn": true,
+        "ghostEcho": true,
         "effect": "twilight_golden",
         "scenes": [
             "<h1 class='poem-title-display becquer-title'>Volverán las oscuras golondrinas</h1><span class='poem-author-display'>Gustavo Adolfo Bécquer — Rima LIII</span>"
@@ -17,7 +22,10 @@
         "id": "estrofa1",
         "page": 1,
         "pageClass": "layout-poem-balcony",
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.73,
+        "fadeIn": false,
+        "ghostEcho": true,
         "effect": "twilight_sunset",
         "video": [
             "videos/golondrinas_processed.mp4"
@@ -36,7 +44,9 @@
     {
         "id": "perdida1",
         "page": 2,
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.76,
+        "ghostEcho": true,
         "effect": "twilight_dusk_early, swallows_fading",
         "scenes": [
             "Pero aquellas que el vuelo refrenaban\ntu hermosura y mi dicha a contemplar,",
@@ -53,7 +63,9 @@
         "id": "estrofa2",
         "page": 3,
         "pageClass": "layout-madreselva-v2",
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.80,
+        "ghostEcho": true,
         "effect": "twilight_dusk",
         "loopVideo": false,
         "video": [
@@ -73,7 +85,9 @@
     {
         "id": "perdida2",
         "page": 4,
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.85,
+        "ghostEcho": true,
         "effect": "twilight_dusk_late, dewdrops_tears, swallows_fading",
         "scenes": [
             "Pero aquellas cuajadas de rocío\ncuyas gotas mirábamos temblar",
@@ -89,7 +103,9 @@
     {
         "id": "estrofa3",
         "page": 5,
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.90,
+        "ghostEcho": true,
         "effect": "twilight_night, fireflies_subtle",
         "scenes": [
             "Volverán del amor en tus oídos\nlas palabras ardientes a sonar,",
@@ -105,7 +121,9 @@
     {
         "id": "final",
         "page": 6,
-        "audio": "becquer_golondrinas.mp3",
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 1.0,
+        "ghostEcho": true,
         "effect": "twilight_deep_night",
         "delayedChoices": true,
         "scenes": [
@@ -122,8 +140,10 @@
     {
         "id": "biografia",
         "page": 7,
-        "audio": "becquer_golondrinas.mp3",
-        "volume": 0.4,
+        "audio": "fuala_golondrinas.mp3",
+        "volume": 0.25,
+        "fadeIn": true,
+        "ghostEcho": true,
         "effect": "twilight_night, fireflies_subtle",
         "forceShowChoices": true,
         "scenes": [

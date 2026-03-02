@@ -1,0 +1,199 @@
+[
+    {
+        "id": 0,
+        "images": [
+            "images/puerta_portada.png"
+        ],
+        "scenes": [
+            "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; margin-top:1rem; font-size:2.5rem; letter-spacing:2px;\">LA PUERTA</h1>",
+            "<p style=\"text-align:center; font-style:italic; opacity:0.7;\">Un escrito original</p>"
+        ],
+        "effect": "sfx_door_loud",
+        "forceShowChoices": true,
+        "sound": "on_the_nature2.mp3",
+        "delay": 2000,
+        "fadeIn": true,
+        "ghostEcho": true,
+        "volume": 0.80,
+        "choices": [
+            {
+                "text": "Comenzar historia",
+                "page": 1
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "scenes": [
+            "Hoy acaba de morir mi mejor amigo.",
+            "Sentí que alguna vez lo fue."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.90,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 2
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "scenes": [
+            "Nuestra amistad se formó como se forman muchas, por la inercia laboral. Momentos de ocio compartido fueron generando conversaciones profundas. En el camino descubrimos que no compartíamos tantas aficiones en común.",
+            "Sin embargo, lo que determinó el inicio de nuestra amistad fue una coincidencia literaria poco común. Desde muy jóvenes, cada uno, desde su realidad, fue trazando un camino de búsqueda parecido al del otro. Habíamos llegado a las mismas preguntas, y esas dudas derivaron en libros y autores poco comunes.",
+            "Fue realmente emocionante encontrar a alguien que hubiera leído a Camus o Dostoievski y otros escritores o temas de los cuales hasta entonces nunca había tenido la oportunidad de discutir con nadie. De esta coincidencia derivaron lluvias incesantes de conversaciones y discusiones. Hablábamos de tal autor, de aquel libro, de aquella idea.",
+            "En escasas ocasiones las discusiones terminaban en reflexiones esperanzadoras. Ambos buscábamos activamente ser mejores, acercarnos a la virtud, luchar, enfrentarnos a nuestras debilidades. Compartíamos una ambiciosa meta."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.60,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 3
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "scenes": [
+            "Por años compartimos y sobrellevamos juntos el absurdo, una admiración sincera nos mantenía leales.",
+            "Pero con el tiempo y bajo el peso de las circunstancias, la inercia resquebrajó nuestra amistad. La duda que alguna vez tuve sobre su incondicionalidad se volvió una triste certeza al comprobar que, en las dificultades, no estaba presente.",
+            "Él había elegido otro camino, aunque eso significó sacrificar nuestra amistad... En el fondo lo comprendí..."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.50,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 4
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "scenes": [
+            "A pesar de aquel resquebrajamiento, por voluntad del azar seguíamos trabajando juntos, y las discusiones no desaparecieron.",
+            "A veces sobre política: cada uno había forjado su criterio sobre qué sistema económico y social convenía más, y era ahí donde más solíamos divergir. Él defendía que la derecha era la mejor opción; yo respondía que, aunque en la izquierda hubiera corrupción y muchas ideas utópicas, algunas debían escucharse como contrapeso.",
+            "Esas discusiones solían ser las más acaloradas, y también las más fáciles de sostener, los temas importantes y personales ya no los compartíamos."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.40,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 5
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "scenes": [
+            "Una tarde cotidiana, en la silenciosa hora de almuerzo, entre correos y bromas sobre Sísifo, discutimos si aquel funcionario burocrático y enfermo del subsuelo era un alter ego de Dostoievski o si, por medio de él, este nos advertía de no caer tan bajo.",
+            "Compartíamos un miedo atroz al subsuelo.",
+            "Otra mañana, antes del café del mediodía, con un tono burlón y resignado, nos cuestionamos si valía la pena abrir «la puerta»; esa puerta de la que en algún libro habían hablado Hermann Hesse, Séneca y muchos otros."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.35,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 6
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "scenes": [
+            "Hoy, sin que yo lo previera, sin creer realmente que sus palabras pudieran volverse hechos, él abrió la puerta.",
+            "Se resignó. Decidió que esta vida no compensa la náusea, el vacío y la frustración.",
+            "Tomó la decisión que, en muchas noches envuelto en llanto, yo no pude tomar."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.60,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 7
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "scenes": [
+            "Quizá fue un momento de impulsividad. A lo mejor, si hubiéramos seguido siendo amigos, yo le habría dado otra respuesta cuando me buscó. Pero yo guardaba rencor y cargaba a cuestas mi propia roca, cegadora…",
+            "Si yo le hubiera dicho: <span class=\"anim-text-fade-out\" style=\"animation-delay: 2s;\">«Hablemos».</span> Si yo le hubiera dicho: «No importan las decisiones que has tomado; tú y yo sabemos que no hay persona en el mundo que nos entienda mejor que el otro. Todo esto va a pasar. No es tan terrible lo que está sucediendo, aunque así lo sientas. El dolor termina cediendo. La pérdida, aunque nunca deja de doler y aunque nunca vas a dejar de llorar, llega a un momento en el que se hace menos frecuente. Aguanta un poco más. Tú puedes. <span class=\"anim-text-fade-out\" style=\"animation-delay: 15s;\">Ven, conversemos».</span>"
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.65,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 8
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "scenes": [
+            "Pero no le dije nada de eso.",
+            "Por el contrario, envuelto en un enojo visceral —producido por mis propias lamentaciones— le dije que, si encontraba la mejor manera de suicidarse, una opción 100% efectiva, me la compartiera antes de consumarla.",
+            "Le dije que él no tenía ni puta idea de lo que es estar realmente solo y perdido. Le dije que su dolor era causado por nimiedades.",
+            "Yo lo empujé. Lo persuadí a abrir la puerta. Y él lo hizo."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.85,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 9
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "scenes": [
+            "Al final, no soy tan estoico como pensaba. En los momentos importantes, cuando mi cabeza debió permanecer erguida ante «las azarosas garras del destino», no se mantuvo firme; no como la de aquel poeta.",
+            "Aunque hoy la culpa sea el detonante, la causa la encuentro al mirar hacia atrás. Al recordar, solo veo lo perdido: a quienes amé y ya no están; los pequeños pasos que nunca conocí; la felicidad con la que algún día soñé.",
+            "La lamentación escrita deja una brisa de desahogo, pero sé que de esto no sacaré absolución, y mucho menos justificación. Por momentos lo intenté; incluso pensé que lo iba a lograr. Si aquella mariposa hubiera aleteado hacia otro rumbo, quizá habría llegado a ser feliz."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.95,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 10
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "scenes": [
+            "Por ahora tengo una puerta que abrir."
+        ],
+        "pageClass": "final-door-page",
+        "effect": "door_of_light, sfx_door_soft",
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.95,
+        "choices": [
+            {
+                "text": "Volver a la biblioteca",
+                "page": -1
+            },
+            {
+                "text": "Comenzar desde el inicio",
+                "page": 0
+            }
+        ]
+    }
+]

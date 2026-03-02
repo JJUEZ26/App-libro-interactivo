@@ -692,3 +692,272 @@
 .toast.warning {
     border-left: 4px solid var(--color-warning);
 }
+
+/* ========================================
+   DUST DISSOLVE TEXT SCENE EFFECT (ENDGAME SNAP)
+   ======================================== */
+
+@keyframes textDustAway {
+    0% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translate(0, 0) scale(1) skew(0deg);
+        letter-spacing: normal;
+    }
+
+    40% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translate(0, 0) scale(1);
+    }
+
+    70% {
+        opacity: 0.8;
+        filter: drop-shadow(2px 0px 1px rgba(0, 0, 0, 0.5)) blur(2px);
+        transform: translate(10px, -5px) skew(-5deg) scale(0.98);
+    }
+
+    100% {
+        opacity: 0;
+        filter: drop-shadow(10px -10px 5px rgba(0, 0, 0, 0.1)) blur(12px);
+        transform: translate(30px, -20px) skew(-15deg) scale(0.95);
+        letter-spacing: 4px;
+    }
+}
+
+.anim-text-fade-out {
+    display: inline-block;
+    animation: textDustAway 10s forwards ease-in;
+    transform-origin: left center;
+}
+
+/* ========================================
+   DOOR OF LIGHT — CINEMATIC MULTI-LAYER EFFECT
+   Simula una puerta real abriéndose con luz
+   inundante, rayos divergentes y polvo flotante.
+   ======================================== */
+
+/* --- Capa base del overlay (compartida por todas las capas) --- */
+.door-light-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* --- CAPA 1: Rendija de Luz (la puerta abriéndose) --- */
+@keyframes doorSlitOpen {
+    0% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+    }
+
+    5% {
+        clip-path: inset(0 98% 0 0);
+        opacity: 0.6;
+    }
+
+    15% {
+        clip-path: inset(0 95% 0 0);
+        opacity: 0.9;
+    }
+
+    35% {
+        clip-path: inset(0 75% 0 0);
+        opacity: 1;
+    }
+
+    60% {
+        clip-path: inset(0 30% 0 0);
+    }
+
+    85% {
+        clip-path: inset(0 5% 0 0);
+    }
+
+    100% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 1;
+    }
+}
+
+.door-light-slit {
+    background: #fff;
+    animation: doorSlitOpen 7s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    animation-delay: 2s;
+}
+
+/* --- CAPA 2: Halo Difuso (resplandor envolvente) --- */
+@keyframes doorHaloExpand {
+    0% {
+        opacity: 0;
+        background: radial-gradient(ellipse 5% 100% at 0% 50%,
+                rgba(255, 255, 255, 0.95) 0%,
+                rgba(255, 255, 255, 0) 100%);
+    }
+
+    20% {
+        opacity: 0.7;
+        background: radial-gradient(ellipse 30% 120% at 10% 50%,
+                rgba(255, 255, 255, 0.9) 0%,
+                rgba(255, 255, 255, 0) 100%);
+    }
+
+    50% {
+        opacity: 0.9;
+        background: radial-gradient(ellipse 70% 140% at 30% 50%,
+                rgba(255, 255, 255, 0.8) 0%,
+                rgba(255, 255, 255, 0) 100%);
+    }
+
+    100% {
+        opacity: 1;
+        background: #fff;
+    }
+}
+
+.door-light-halo {
+    animation: doorHaloExpand 8s ease-out forwards;
+    animation-delay: 2.3s;
+}
+
+/* --- CAPA 3: Rayos de luz divergentes --- */
+@keyframes doorRaysAppear {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.5;
+    }
+
+    60% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.door-light-rays {
+    background:
+        /* Rayo central */
+        linear-gradient(95deg,
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0) 60%),
+        /* Rayo superior */
+        linear-gradient(75deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 50%),
+        /* Rayo inferior */
+        linear-gradient(115deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 50%),
+        /* Rayo diagonal suave */
+        linear-gradient(85deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0) 45%);
+    animation: doorRaysAppear 9s ease-in-out forwards;
+    animation-delay: 2.5s;
+}
+
+
+
+/* ========================================
+   DOOR FINAL PAGE OVERRIDES
+   ======================================== */
+.final-door-page .content-centerer {
+    min-height: 80vh !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 5vh;
+}
+
+/* Los botones por defecto están ocultos — serán revelados
+   por la clase .door-choices-cinematic que JS agrega después de 13s */
+.final-door-page .choices {
+    position: fixed !important;
+    bottom: 30vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    width: 90% !important;
+    max-width: 500px !important;
+    z-index: 10000 !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    /* Sin animación CSS automática — JS controla cuándo aparecen */
+}
+
+/* Cuando JS agrega esta clase, los botones emergen con una
+   animación cinemática: blur-in + fade + slide-up suave */
+@keyframes doorChoicesCinematic {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(30px);
+        filter: blur(8px);
+    }
+
+    10% {
+        visibility: visible;
+    }
+
+    50% {
+        filter: blur(2px);
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        filter: blur(0);
+    }
+}
+
+.choices.door-choices-cinematic {
+    animation: doorChoicesCinematic 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Botones oscuros y claramente visibles sobre el blanco incandescente */
+.final-door-page .choices button,
+.final-door-page .choices.door-choices-cinematic button,
+.page-content.final-door-page .choices button {
+    background-color: rgba(20, 20, 20, 0.85) !important;
+    background: rgba(20, 20, 20, 0.85) !important;
+    border: none !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 0.8px;
+    padding: 14px 32px !important;
+    border-radius: 30px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 260px;
+    text-transform: none;
+    opacity: 1 !important;
+}
+
+.final-door-page .choices button:hover {
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
+}

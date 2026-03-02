@@ -161,5 +161,22 @@
       "amor",
       "nostalgia"
     ]
+  },
+  {
+    "id": "la-puerta",
+    "title": "La Puerta",
+    "author": "Obra Original",
+    "description": "Hay puertas que, una vez abiertas, no se pueden cerrar. Una confesión desgarradora sobre la amistad, la culpa y el peso irreversible de las palabras.",
+    "cover": "images/puerta_portada.png",
+    "storyFile": "stories/la_puerta.json",
+    "type": "novel",
+    "tags": [
+      "confesión",
+      "culpa",
+      "amistad",
+      "existencialismo",
+      "original"
+    ],
+    "totalPages": 11
   }
 ]

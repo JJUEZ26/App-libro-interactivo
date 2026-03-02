@@ -4,6 +4,7 @@ import { startTimePulseEffect } from './time-pulse/index.js';
 import { startSwallowsEffect } from './swallows/index.js';
 import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
 import { startDewdropsEffect } from './dewdrops/index.js';
+import { startCracksEffect } from './cracks/index.js';
 
 /**
  * Returns the correct container for visual effects.
@@ -28,8 +29,9 @@ let activeSwallowsCleanup = null;
 let activeTwilightCleanup = null;
 let activeDewdropsCleanup = null;
 let activeFirefliesCleanup = null;
+let activeCracksCleanup = null;
 
-function clearExistingEffects() {
+function clearExistingEffects(nextEffects = []) {
     if (activeEffectInterval) { clearInterval(activeEffectInterval); activeEffectInterval = null; }
     if (activeSmokeInterval) { clearInterval(activeSmokeInterval); activeSmokeInterval = null; }
     if (activeRainInterval) { clearInterval(activeRainInterval); activeRainInterval = null; }
@@ -44,12 +46,17 @@ function clearExistingEffects() {
     if (activeDewdropsCleanup) { activeDewdropsCleanup(); activeDewdropsCleanup = null; }
     if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
 
+    const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
+    if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
+
     // Single combined querySelectorAll for all effect elements (merged 3 calls → 1)
+    const cracksQuery = keepCracks ? '' : ', #cracks-overlay';
     const allEffectElements = document.querySelectorAll(
         '.flying-bird, .effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, ' +
         '.sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, ' +
         '.fireflies-overlay, .smoke-particle, .rain-drop, .falling-leaf, ' +
-        '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop'
+        '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop, ' +
+        '.door-light-overlay, .door-choices-cinematic' + cracksQuery
     );
     allEffectElements.forEach(el => el.remove());
 }
@@ -168,9 +175,9 @@ export function stopLibraryBeetle() {
 }
 
 export function handlePageEffects(effectString, { getAppMode }) {
-    clearExistingEffects();
+    const effects = effectString ? effectString.split(',').map(e => e.trim()) : [];
+    clearExistingEffects(effects);
     if (!effectString) return;
-    const effects = effectString.split(',').map(e => e.trim());
 
     // Efectos existentes
     if (effects.includes('bluebird_pass')) startBirdEffect(getAppMode);
@@ -245,5 +252,136 @@ export function handlePageEffects(effectString, { getAppMode }) {
         activeFirefliesCleanup = startFirefliesEffect('subtle');
     } else if (effects.includes('fireflies_bright')) {
         activeFirefliesCleanup = startFirefliesEffect('bright');
+    }
+
+    // --- Grietas SVG ---
+    const cracksEffect = effects.find(e => e.startsWith('cracks_'));
+    if (cracksEffect) {
+        const stage = cracksEffect.replace('cracks_', '');
+        // Guardamos el cleanup si no había uno
+        const cleanup = startCracksEffect(stage);
+        if (!activeCracksCleanup) {
+            activeCracksCleanup = cleanup;
+        }
+    }
+
+    // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---
+    if (effects.includes('door_of_light')) {
+        const container = getEffectsContainer();
+
+        // Capa 1: Rendija de luz (la "puerta" abriéndose desde la izquierda)
+        const lightSlit = document.createElement('div');
+        lightSlit.className = 'door-light-overlay door-light-slit';
+        container.appendChild(lightSlit);
+
+        // Capa 2: Halo difuso (el resplandor general que inunda)
+        const halo = document.createElement('div');
+        halo.className = 'door-light-overlay door-light-halo';
+        container.appendChild(halo);
+
+        // Capa 3: Rayos de luz divergentes
+        const rays = document.createElement('div');
+        rays.className = 'door-light-overlay door-light-rays';
+        container.appendChild(rays);
+
+        // Los botones finales aparecen 4 segundos DESPUÉS de que la luz
+        // haya completado su animación (~7s animación + 2s delay = 9s total),
+        // es decir a los 13 segundos desde que se renderiza la página.
+        const LIGHT_TOTAL_DURATION = 13000; // 2s delay + 7s anim + 4s extra
+        setTimeout(() => {
+            const choices = document.querySelector('.final-door-page .choices');
+            if (choices) {
+                // Mover al frente del overlay para estar por encima de todo
+                container.appendChild(choices);
+                choices.style.pointerEvents = 'auto';
+
+                // Posicionar el contenedor de choices directamente (los selectores
+                // CSS que usaban .final-door-page ya no aplican al moverlo)
+                choices.style.cssText = `
+                    position: fixed !important;
+                    bottom: 30vh;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 90%;
+                    max-width: 500px;
+                    z-index: 10000;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+                    pointer-events: auto;
+                `;
+
+                // Forzar la animación de entrada cinemática
+                choices.classList.add('door-choices-cinematic');
+
+                // IMPORTANTE: Al mover los botones fuera de .final-door-page,
+                // los selectores CSS que dependen de ese ancestro dejan de aplicar.
+                // Aplicamos los estilos INLINE para garantizar visibilidad.
+                choices.querySelectorAll('button').forEach(btn => {
+                    btn.style.cssText = `
+                        background: rgba(20, 20, 20, 0.85) !important;
+                        border: none !important;
+                        color: #fff !important;
+                        font-weight: 500;
+                        font-size: 0.95rem;
+                        letter-spacing: 0.8px;
+                        padding: 14px 32px;
+                        border-radius: 30px;
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                        min-width: 260px;
+                        cursor: pointer;
+                        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                        position: relative;
+                        z-index: 10001;
+                    `;
+                    btn.addEventListener('mouseenter', () => {
+                        btn.style.background = 'rgba(0, 0, 0, 0.95)';
+                        btn.style.transform = 'translateY(-2px)';
+                        btn.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.35)';
+                    });
+                    btn.addEventListener('mouseleave', () => {
+                        btn.style.background = 'rgba(20, 20, 20, 0.85)';
+                        btn.style.transform = 'translateY(0)';
+                        btn.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+                    });
+
+                    // Limpiar TODO al hacer clic (evita botones fantasma)
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll(
+                            '.door-light-overlay, .door-choices-cinematic'
+                        ).forEach(el => el.remove());
+                    });
+                });
+            }
+        }, LIGHT_TOTAL_DURATION);
+    }
+
+    // --- Sonido de Puerta (con fade-in para suavizarlo) ---
+    if (effects.includes('sfx_door_loud')) {
+        const audio = new Audio('sounds/efectosonido_puerta.mp4');
+        const targetVol = 0.11;
+        audio.volume = 0;
+        audio.play().then(() => {
+            // Fade-in rápido de 200ms para que no sea un golpe seco
+            let vol = 0;
+            const fadeIn = setInterval(() => {
+                vol = Math.min(vol + 0.015, targetVol);
+                audio.volume = vol;
+                if (vol >= targetVol) clearInterval(fadeIn);
+            }, 20);
+        }).catch(e => console.warn('Bloqueado:', e));
+    } else if (effects.includes('sfx_door_soft')) {
+        const audio = new Audio('sounds/efectosonido_puerta.mp4');
+        const targetVol = 0.04;
+        audio.volume = 0;
+        audio.play().then(() => {
+            let vol = 0;
+            const fadeIn = setInterval(() => {
+                vol = Math.min(vol + 0.006, targetVol);
+                audio.volume = vol;
+                if (vol >= targetVol) clearInterval(fadeIn);
+            }, 25);
+        }).catch(e => console.warn('Bloqueado:', e));
     }
 }

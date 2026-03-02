@@ -1,6 +1,15 @@
 {
-  "featuredBookId": "la-levedad-del-deseo",
+  "featuredBookId": "la-puerta",
   "sections": [
+    {
+      "id": "escritos-originales",
+      "title": "Escritos originales",
+      "subtitle": "Textos nacidos de la experiencia propia. Sin ficción, sin filtros.",
+      "bookIds": [
+        "la-puerta",
+        "la-levedad-del-deseo"
+      ]
+    },
     {
       "id": "poemas",
       "title": "Poemas",
@@ -44,13 +53,6 @@
       "id": "viajes-interiores",
       "title": "Viajes interiores",
       "subtitle": "Explora la introspección y la memoria.",
-      "bookIds": [],
-      "placeholderCount": 3
-    },
-    {
-      "id": "misterio-calido",
-      "title": "Misterio cálido",
-      "subtitle": "Suspenso ligero para leer de noche.",
       "bookIds": [],
       "placeholderCount": 3
     },
