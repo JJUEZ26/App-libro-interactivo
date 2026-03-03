@@ -5,8 +5,7 @@
             "images/puerta_portada.png"
         ],
         "scenes": [
-            "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; margin-top:1rem; font-size:2.5rem; letter-spacing:2px;\">LA PUERTA</h1>",
-            "<p style=\"text-align:center; font-style:italic; opacity:0.7;\">Un escrito original</p>"
+            "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:3px; padding: 0 1rem;\">LA PUERTA</h1>"
         ],
         "effect": "sfx_door_loud",
         "forceShowChoices": true,
@@ -41,10 +40,10 @@
     {
         "id": 2,
         "scenes": [
-            "Nuestra amistad se formó como se forman muchas, por la inercia laboral. Momentos de ocio compartido fueron generando conversaciones profundas. En el camino descubrimos que no compartíamos tantas aficiones en común.",
-            "Sin embargo, lo que determinó el inicio de nuestra amistad fue una coincidencia literaria poco común. Desde muy jóvenes, cada uno, desde su realidad, fue trazando un camino de búsqueda parecido al del otro. Habíamos llegado a las mismas preguntas, y esas dudas derivaron en libros y autores poco comunes.",
-            "Fue realmente emocionante encontrar a alguien que hubiera leído a Camus o Dostoievski y otros escritores o temas de los cuales hasta entonces nunca había tenido la oportunidad de discutir con nadie. De esta coincidencia derivaron lluvias incesantes de conversaciones y discusiones. Hablábamos de tal autor, de aquel libro, de aquella idea.",
-            "En escasas ocasiones las discusiones terminaban en reflexiones esperanzadoras. Ambos buscábamos activamente ser mejores, acercarnos a la virtud, luchar, enfrentarnos a nuestras debilidades. Compartíamos una ambiciosa meta."
+            "Nuestra amistad se formó como muchas otras, gracias a la inercia laboral. Momentos de ocio compartido permitieron conversaciones extensas y personales. En el camino descubrimos que no compartíamos tantas aficiones como suele ser habitual.",
+            "Sin embargo, donde germinó nuestra amistad fue en una coincidencia literaria poco común. Desde muy jóvenes, cada uno, desde su realidad, fue trazando un camino de búsqueda parecido al del otro. Habíamos llegado a las mismas preguntas, y esas dudas desembocaron en libros y autores poco convencionales.",
+            "Fue realmente emocionante encontrar a alguien que también hubiera leído a autores como Nietzsche o Camus, o que también divagara en discusiones antropológicas y filosóficas, hasta entonces nunca había tenido la oportunidad de discutir esos temas con nadie. Pasábamos largas horas hablando de tal autor, de aquel libro, de aquella idea.",
+            "En contadas ocasiones las discusiones terminaban en reflexiones esperanzadoras. Ambos buscábamos activamente ser mejores, acercarnos a la virtud, luchar, enfrentarnos a nuestras debilidades. Compartíamos una ambiciosa meta."
         ],
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
@@ -77,7 +76,7 @@
         "id": 4,
         "scenes": [
             "A pesar de aquel resquebrajamiento, por voluntad del azar seguíamos trabajando juntos, y las discusiones no desaparecieron.",
-            "A veces sobre política: cada uno había forjado su criterio sobre qué sistema económico y social convenía más, y era ahí donde más solíamos divergir. Él defendía que la derecha era la mejor opción; yo respondía que, aunque en la izquierda hubiera corrupción y muchas ideas utópicas, algunas debían escucharse como contrapeso.",
+            "A veces sobre política: cada uno había forjado su criterio a medias, sobre qué sistema económico y social convenía más, y era ahí donde más solíamos divergir. Él estaba claramente inclinado hacia la derecha, y yo defendía que, aunque no me consideraba de izquierda, habían muchas ideas que hoy servían de contrapeso a la realidad desequilibrada en la que vivíamos.",
             "Esas discusiones solían ser las más acaloradas, y también las más fáciles de sostener, los temas importantes y personales ya no los compartíamos."
         ],
         "sound": "on_the_nature2.mp3",
@@ -93,9 +92,9 @@
     {
         "id": 5,
         "scenes": [
-            "Una tarde cotidiana, en la silenciosa hora de almuerzo, entre correos y bromas sobre Sísifo, discutimos si aquel funcionario burocrático y enfermo del subsuelo era un alter ego de Dostoievski o si, por medio de él, este nos advertía de no caer tan bajo.",
-            "Compartíamos un miedo atroz al subsuelo.",
-            "Otra mañana, antes del café del mediodía, con un tono burlón y resignado, nos cuestionamos si valía la pena abrir «la puerta»; esa puerta de la que en algún libro habían hablado Hermann Hesse, Séneca y muchos otros."
+            "Una tarde cotidiana, en la silenciosa hora de almuerzo, entre correos y bromas sobre Sísifo, discutimos si aquel funcionario burocrático y enfermo del subsuelo era un alter ego de Dostoievski o si, por medio de él, este nos advertía de no caer tan profundo.",
+            "Compartíamos un miedo atroz a ese subsuelo.",
+            "Otra mañana, antes del café del mediodía, con un tono burlón y resignado, nos cuestionamos si valía la pena abrir «la puerta»: esa puerta de la que en algún libro habían hablado Hermann Hesse, Séneca y muchos otros."
         ],
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
@@ -111,8 +110,8 @@
         "id": 6,
         "scenes": [
             "Hoy, sin que yo lo previera, sin creer realmente que sus palabras pudieran volverse hechos, él abrió la puerta.",
-            "Se resignó. Decidió que esta vida no compensa la náusea, el vacío y la frustración.",
-            "Tomó la decisión que, en muchas noches envuelto en llanto, yo no pude tomar."
+            "Se rindió. Concluyó que la náusea y el sinsentido pesaban más que las cosas buenas de la vida.",
+            "Tomó la decisión que yo, aun bajo el peso de la desesperación, no pude tomar."
         ],
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
@@ -145,8 +144,8 @@
         "scenes": [
             "Pero no le dije nada de eso.",
             "Por el contrario, envuelto en un enojo visceral —producido por mis propias lamentaciones— le dije que, si encontraba la mejor manera de suicidarse, una opción 100% efectiva, me la compartiera antes de consumarla.",
-            "Le dije que él no tenía ni puta idea de lo que es estar realmente solo y perdido. Le dije que su dolor era causado por nimiedades.",
-            "Yo lo empujé. Lo persuadí a abrir la puerta. Y él lo hizo."
+            "Le dije que él no tenía ni puta idea de lo que es estar realmente solo y perdido. Le dije que él nunca había conocido una pérdida real, que su dolor era causado por nimiedades.",
+            "Yo lo empujé. El rencor y sufrimiento acumulado me desbordaron y dije cosas que no pensaba. Yo lo conduje hasta esa puerta. Y él la abrió."
         ],
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
@@ -163,7 +162,7 @@
         "scenes": [
             "Al final, no soy tan estoico como pensaba. En los momentos importantes, cuando mi cabeza debió permanecer erguida ante «las azarosas garras del destino», no se mantuvo firme; no como la de aquel poeta.",
             "Aunque hoy la culpa sea el detonante, la causa la encuentro al mirar hacia atrás. Al recordar, solo veo lo perdido: a quienes amé y ya no están; los pequeños pasos que nunca conocí; la felicidad con la que algún día soñé.",
-            "La lamentación escrita deja una brisa de desahogo, pero sé que de esto no sacaré absolución, y mucho menos justificación. Por momentos lo intenté; incluso pensé que lo iba a lograr. Si aquella mariposa hubiera aleteado hacia otro rumbo, quizá habría llegado a ser feliz."
+            "La lamentación escrita me deja una brisa de desahogo, pero sé que de esto no sacaré absolución, y mucho menos justificación. Quiero confesar que por momentos lo intenté; incluso pensé que lo iba a lograr. Si el aleteo de aquella mariposa hubiera sido distinto, quizá habría llegado a ser feliz..."
         ],
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
@@ -178,7 +177,7 @@
     {
         "id": 10,
         "scenes": [
-            "Por ahora tengo una puerta que abrir."
+            "Pero ahora, tengo una puerta que abrir."
         ],
         "pageClass": "final-door-page",
         "effect": "door_of_light, sfx_door_soft",
