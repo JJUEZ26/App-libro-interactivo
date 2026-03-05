@@ -32,13 +32,16 @@ App-libro-interactivo/
 │   ├── data/
 │   │   ├── books.json            # Catálogo de libros (ID, portada, storyFile...)
 │   │   └── library-sections.json # Secciones de la biblioteca (orden y agrupación)
-│   ├── images/                   # Portadas e imágenes de historias
+│   ├── images/                   # Portadas e imágenes (formato WebP optimizado)
 │   ├── sounds/                   # Audio: música, efectos, narraciones
 │   ├── stories/                  # JSON de cada historia/poema con páginas
-│   └── videos/                   # Videos de fondo y efectos visuales
+│   ├── videos/                   # Videos de fondo y efectos visuales
+│   ├── offline.html              # Página offline (PWA fallback)
+│   └── pcm-processor.js          # AudioWorklet para captura de micrófono
 │
 └── src/                          # Código fuente (ES Modules)
     ├── main.js                   # Entry point → importa init.js + chroma-video + registra SW
+    │                              #   (SW se registra después de load para no bloquear)
     │
     ├── app/                      # Core de la aplicación
     │   ├── init.js               # Orquestador principal — conecta TODOS los módulos
@@ -50,7 +53,7 @@ App-libro-interactivo/
     │   └── pajaro-azul/styles.css # Estilos específicos para Pájaro Azul
     │
     ├── components/               # Web Components
-    │   └── chroma-video.js       # <chroma-key-video> — video con green screen removal
+    │   └── chroma-video.js       # <chroma-key-video> — chromakey via WebGL shader (+fallback Canvas2D)
     │
     ├── effects/                  # Sistema de efectos visuales
     │   ├── index.js              # Orquestador de efectos (handlePageEffects)
@@ -79,19 +82,21 @@ App-libro-interactivo/
     │
     ├── ui/                       # Componentes de interfaz
     │   ├── ChatModule.js         # Chat con IA (Gemini) — panel flotante
-    │   ├── GeminiLiveClient.js   # WebSocket para voz en vivo (Gemini Live)
+    │   ├── GeminiLiveClient.js   # WebSocket para voz en vivo (AudioWorklet + fallback)
     │   └── index.js              # Temas, font-size, fullscreen, settings
     │
     ├── utils/                    # Utilidades
-    │   └── storage.js            # LocalStorage: guardar/cargar progreso, temas
+    │   ├── storage.js            # LocalStorage: guardar/cargar progreso, temas (try/catch safe)
+    │   └── sanitize.js           # Sanitizador HTML anti-XSS para contenido de historias
     │
     └── styles/                   # Sistema de estilos CSS
         ├── index.css             # Barrel file: importa todos los CSS
         ├── base.css              # Reset, variables CSS, tipografía base
         ├── animations.css        # Keyframes y transiciones
+        ├── chat.css              # Chat IA: estilos dedicados (mobile-first, safe-area)
         ├── layout.css            # Grid/flex principal
         ├── library.css           # Estilos de biblioteca y cards
-        ├── reader.css            # Estilos del lector
+        ├── reader.css            # Estilos del lector (scrollbar whisper + progress bar)
         ├── poem-experience.css   # Estilos de experiencia poética
         ├── ui.css                # Componentes UI (botones, sliders, modales)
         └── utilities.css         # Clases helper
@@ -121,6 +126,8 @@ App-libro-interactivo/
 3. **NO instalar frameworks** (React, Vue, etc.) — este proyecto es vanilla JS puro
 4. **NO usar `public/...` como ruta en código JS/CSS** — Vite sirve `public/` en la raíz (usar `/sounds/`, `/images/`, etc.)
 5. **NO romper el Service Worker** — si cacheas archivos que no existen, la instalación falla silenciosamente
+6. **NO usar innerHTML sin sanitizar** — todo contenido de historias pasa por `sanitizeHTML()` de `utils/sanitize.js`
+7. **NO agregar imágenes en PNG/JPG** — usar WebP para portadas (ver `scripts/convert-to-webp.js`)
 
 ### ✅ SIEMPRE hacer:
 1. **Verificar el build** después de cada cambio: `npx vite build`
@@ -130,6 +137,8 @@ App-libro-interactivo/
 5. **Actualizar `blueprint.md`** si agregas features significativas
 6. **NUNCA exponer API keys** en el frontend — las llaves van en Vercel env vars y se acceden via `/api/`
 7. **Proteger localStorage** — siempre usar try/catch en JSON.parse (datos pueden corromperse en mobile)
+8. **Usar `state.storyIndex`** para buscar páginas por ID — es un Map O(1), no usar `.find()` que es O(n)
+9. **Imágenes en WebP** — las portadas e imágenes internas ya usan formato WebP optimizado
 
 ---
 
@@ -137,7 +146,7 @@ App-libro-interactivo/
 
 ### Agregar un nuevo libro/poema:
 1. Crear el JSON de historia en `public/stories/mi_libro.json`
-2. Agregar la portada en `public/images/mi_libro_portada.png`
+2. Agregar la portada en `public/images/mi_libro_portada.webp` (formato WebP, max 1200px ancho)
 3. Añadir la entrada en `public/data/books.json` con su ID, metadata y storyFile
 4. Agregar el ID en la sección correspondiente de `public/data/library-sections.json`
 5. Si tiene audio, colocar el MP3 en `public/sounds/`
@@ -202,9 +211,30 @@ App-libro-interactivo/
 
 ## 🐛 Problemas Conocidos
 
-1. **`GeminiLiveClient.js`** usa `createScriptProcessor` (deprecado) — necesita migración a AudioWorklet
-2. **Imágenes grandes** (~5-6MB) en portadas — deberían convertirse a WebP
+1. ~~**`GeminiLiveClient.js`** deprecado~~ → ✅ Migrado a AudioWorklet (con fallback)
+2. ~~**Imágenes grandes**~~ → ✅ Convertidas a WebP (48 MB → 3.7 MB, −92%)
 3. **Sin tests automatizados** — oportunidad de mejora
+
+---
+
+## 🔒 Seguridad
+
+| Medida | Implementación |
+|--------|----------------|
+| API Key protegida | Validación de origen en `/api/live-key` y `/api/chat` |
+| Rate limiting | 15 req/min por IP en `/api/chat` |
+| XSS prevention | `sanitizeHTML()` en todo contenido renderizado con innerHTML |
+| localStorage seguro | try/catch en todos los JSON.parse |
+| beforeunload | Advertencia al cerrar con audio activo |
+
+## 🎨 Diseño UX
+
+| Elemento | Filosofía |
+|----------|----------|
+| Scrollbar | «Whisper» — invisible por defecto, aparece al scroll, desaparece 1.2s después |
+| Progress bar | Línea 2px casi invisible, revela info (página, %) solo en hover |
+| Chat IA | Pantalla completa en móvil (<480px), CSS propio en `chat.css` |
+| Portadas | WebP optimizado, max 1200px, ~92% menos peso |
 
 ---
 
@@ -216,3 +246,4 @@ App-libro-interactivo/
 | 2026-02-28 | Auditoría de rendimiento (openBook, renderPage) | 5 fixes de performance |
 | 2026-03-04 | **Auditoría completa** (limpieza, organización, optimización) | ~25 archivos eliminados, deps limpiadas, guía IA creada |
 | 2026-03-04 | **Hardening de seguridad + PWA** | API keys protegidas, rate limiting, SW registrado, teclado, localStorage seguro |
+| 2026-03-04 | **Hardening profundo + UX** | XSS sanitizer, ChromaKey WebGL, AudioWorklet, imágenes WebP (−92%), offline fallback, ícono PWA, OG/SEO tags, whisper scrollbar + progress bar |
