@@ -21,7 +21,7 @@ import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.j
 import { handlePageEffects } from '../effects/index.js';
 
 export function initApp() {
-    console.log('Iniciando Lecturas Interactivas v4.2 (Corrección Audio & Estilos)');
+    console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
 
     const elements = {
         appContainer: getEl('app-container'),
@@ -149,6 +149,37 @@ export function initApp() {
         );
     }
 
+    // =============================================
+    // NAVEGACIÓN POR TECLADO (Accesibilidad)
+    // =============================================
+    document.addEventListener('keydown', (event) => {
+        if (state.appMode !== 'reader' || state.isTransitioning) return;
+        // No capturar teclas si el usuario está escribiendo en un input
+        if (event.target.closest('input, textarea, [contenteditable]')) return;
+
+        switch (event.key) {
+            case 'ArrowLeft':
+                event.preventDefault();
+                goBack();
+                break;
+            case 'ArrowRight':
+                event.preventDefault();
+                goForward();
+                break;
+            case 'Escape':
+                event.preventDefault();
+                switchToLibraryView();
+                break;
+        }
+    });
+
+    // Advertir al cerrar pestaña si hay lectura activa con audio
+    window.addEventListener('beforeunload', (event) => {
+        if (state.appMode === 'reader' && state.currentAudio && !state.currentAudio.paused) {
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
     if (elements.navToggle) elements.navToggle.addEventListener('click', openNav);
     if (elements.navClose) elements.navClose.addEventListener('click', closeNav);
     if (elements.restartBtn) elements.restartBtn.addEventListener('click', restartStory);

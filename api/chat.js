@@ -1,5 +1,21 @@
 const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
+// ==============================================
+// Rate limiting en memoria (reset con cada deploy)
+// ==============================================
+const rateLimitMap = new Map();
+const MAX_REQUESTS_PER_MINUTE = 15;
+
+function isRateLimited(ip) {
+    const now = Date.now();
+    const requests = rateLimitMap.get(ip) || [];
+    const recent = requests.filter(t => now - t < 60000);
+    if (recent.length >= MAX_REQUESTS_PER_MINUTE) return true;
+    recent.push(now);
+    rateLimitMap.set(ip, recent);
+    return false;
+}
+
 function readJsonBody(req) {
     return new Promise((resolve, reject) => {
         if (req.body && typeof req.body === 'object') {
@@ -30,6 +46,15 @@ module.exports = async (req, res) => {
         res.statusCode = 405;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ error: 'Método no permitido. Usa POST.' }));
+        return;
+    }
+
+    // Rate limiting por IP
+    const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+    if (isRateLimited(ip)) {
+        res.statusCode = 429;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ error: 'Demasiadas solicitudes. Espera un momento.' }));
         return;
     }
 

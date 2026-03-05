@@ -15,7 +15,7 @@ export class GeminiLiveClient {
         this.mediaStream = null;
         this.processor = null;
         this.inputSampleRate = 16000;
-        
+
         // Contexto de salida (Reproducción) - Lo creamos UNA sola vez
         this.outputContext = null;
         this.nextPlayTime = 0;
@@ -27,7 +27,7 @@ export class GeminiLiveClient {
         if (!this.outputContext) {
             this.outputContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
         }
-        
+
         await this.connect();
         await this.startRecording();
     }
@@ -81,7 +81,7 @@ export class GeminiLiveClient {
             try {
                 const arrayBuffer = await data.arrayBuffer();
                 this.playAudioChunk(arrayBuffer);
-                this.onAudio?.(); 
+                this.onAudio?.();
             } catch (e) {
                 console.error("Error decodificando audio", e);
             }
@@ -89,7 +89,7 @@ export class GeminiLiveClient {
             // Manejo de mensajes de control (texto)
             try {
                 // Aquí podrías procesar 'turn_complete' si quisieras
-            } catch (e) {}
+            } catch (e) { }
         }
     }
 
@@ -108,14 +108,32 @@ export class GeminiLiveClient {
             });
 
             const source = this.audioContext.createMediaStreamSource(this.mediaStream);
-            this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
 
+            // Intentar usar AudioWorklet (moderno, off-main-thread)
+            if (this.audioContext.audioWorklet) {
+                try {
+                    await this.audioContext.audioWorklet.addModule('/pcm-processor.js');
+                    this.workletNode = new AudioWorkletNode(this.audioContext, 'pcm-processor');
+                    this.workletNode.port.onmessage = (e) => {
+                        const float32Data = e.data;
+                        const pcm16 = this.convertFloat32ToInt16(float32Data);
+                        this.sendAudioChunk(pcm16);
+                    };
+                    source.connect(this.workletNode);
+                    this.workletNode.connect(this.audioContext.destination);
+                    return;
+                } catch (workletErr) {
+                    console.warn('AudioWorklet no disponible, usando fallback:', workletErr);
+                }
+            }
+
+            // Fallback: createScriptProcessor (deprecado pero funcional)
+            this.processor = this.audioContext.createScriptProcessor(4096, 1, 1);
             this.processor.onaudioprocess = (e) => {
                 const inputData = e.inputBuffer.getChannelData(0);
                 const pcm16 = this.convertFloat32ToInt16(inputData);
                 this.sendAudioChunk(pcm16);
             };
-
             source.connect(this.processor);
             this.processor.connect(this.audioContext.destination);
 
@@ -143,6 +161,10 @@ export class GeminiLiveClient {
         // Detener micrófono
         if (this.mediaStream) {
             this.mediaStream.getTracks().forEach(track => track.stop());
+        }
+        if (this.workletNode) {
+            this.workletNode.disconnect();
+            this.workletNode = null;
         }
         if (this.processor) {
             this.processor.disconnect();
@@ -202,7 +224,7 @@ export class GeminiLiveClient {
         // Si el próximo tiempo de reproducción es menor que ahora, empezamos ya.
         // Si no, programamos para cuando termine el anterior.
         const startTime = Math.max(now, this.nextPlayTime);
-        
+
         source.start(startTime);
         this.nextPlayTime = startTime + buffer.duration;
     }

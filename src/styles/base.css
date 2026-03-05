@@ -4,7 +4,7 @@
    ======================================== */
 
 /* Cargar Fuentes Premium */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700;900&family=Cormorant+Garamond:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap');
+/* Fuentes cargadas via <link> en index.html para evitar bloqueo de renderizado */
 
 :root {
     /* ========================================

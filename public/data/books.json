@@ -4,7 +4,7 @@
     "title": "Frankenstein",
     "author": "Mary Shelley (adaptación)",
     "description": "Una adaptación interactiva del clásico con decisiones y finales alternativos. Tú decides el destino de Víctor y su criatura.",
-    "cover": "images/monstruo_rostro.jpg",
+    "cover": "images/monstruo_rostro.webp",
     "storyFile": "stories/frankenstein.json",
     "type": "novel",
     "tags": [
@@ -21,7 +21,7 @@
     "title": "Pájaro Azul",
     "author": "Charles Bukowski",
     "description": "Hay un pájaro azul en mi corazón que quiere salir...",
-    "cover": "images/bukowski_pajaroazul.png",
+    "cover": "images/bukowski_pajaroazul.webp",
     "storyFile": "stories/pajaro_azul.json",
     "type": "poem",
     "tags": [
@@ -36,7 +36,7 @@
     "title": "El remordimiento",
     "author": "Jorge Luis Borges",
     "description": "He cometido el peor de los pecados que un hombre puede cometer.",
-    "cover": "images/borges_remordimiento_portada.jpg",
+    "cover": "images/borges_remordimiento_portada.webp",
     "storyFile": "stories/pecado_borges.json",
     "type": "poem",
     "tags": [
@@ -51,7 +51,7 @@
     "title": "Ya no",
     "author": "Idea Vilariño",
     "description": "Ya no será, ya no. No viviremos juntos...",
-    "cover": "images/idea_vilarino_portada.png",
+    "cover": "images/idea_vilarino_portada.webp",
     "storyFile": "stories/idea_vilarino_ya_no_sera.json",
     "type": "poem",
     "tags": [
@@ -67,7 +67,7 @@
     "title": "No volveré a ser joven",
     "author": "Jaime Gil de Biedma",
     "description": "Una meditación lúcida sobre el paso del tiempo y la madurez.",
-    "cover": "images/gil_biedma_portada.png",
+    "cover": "images/gil_biedma_portada.webp",
     "storyFile": "stories/gil_de_biedma_no_volvere.json",
     "type": "poem",
     "tags": [
@@ -83,7 +83,7 @@
     "title": "La muerte de Iván Ilich",
     "author": "Lev Tolstói",
     "description": "Un juez respetable descubre, al borde de la muerte, que ha vivido una vida vacía. Una novela que nos obliga a preguntarnos: ¿estamos viviendo de verdad?",
-    "cover": "images/ivan_ilich_portada.png",
+    "cover": "images/ivan_ilich_portada.webp",
     "storyFile": "stories/ivan_ilich.json",
     "type": "novel",
     "tags": [
@@ -100,7 +100,7 @@
     "title": "Meditaciones",
     "author": "Marco Aurelio",
     "description": "Los pensamientos íntimos del emperador más poderoso del mundo. Reflexiones sobre la virtud, la serenidad y cómo vivir bien —escritas hace casi 2000 años, vigentes hoy.",
-    "cover": "images/meditaciones.jpg",
+    "cover": "images/meditaciones.webp",
     "storyFile": "stories/meditaciones.json",
     "type": "novel",
     "tags": [
@@ -117,7 +117,7 @@
     "title": "El extranjero",
     "author": "Albert Camus",
     "description": "Hoy ha muerto mamá. O quizá ayer. No lo sé. La historia de un hombre que no siente lo que la sociedad espera —y las consecuencias devastadoras de su honestidad.",
-    "cover": "images/el_extranjero.png",
+    "cover": "images/el_extranjero.webp",
     "storyFile": "stories/el_extranjero.json",
     "type": "novel",
     "tags": [
@@ -134,7 +134,7 @@
     "title": "La levedad del deseo",
     "author": "Obra Original",
     "description": "Una novela contemporánea sobre la rutina, el deseo y la búsqueda de sentido en la cotidianidad urbana.",
-    "cover": "images/levedad_deseo_portada.png",
+    "cover": "images/levedad_deseo_portada.webp",
     "storyFile": "stories/la_levedad_del_deseo.json",
     "type": "novel",
     "tags": [
@@ -151,7 +151,7 @@
     "title": "Volverán las oscuras golondrinas",
     "author": "Gustavo Adolfo Bécquer",
     "description": "Rima LIII — Un canto a la pérdida irreparable del amor. Las golondrinas volverán, pero aquellas... ésas no volverán.",
-    "cover": "images/becquer_golondrinas_portada.png",
+    "cover": "images/becquer_golondrinas_portada.webp",
     "storyFile": "stories/becquer_golondrinas.json",
     "type": "poem",
     "tags": [
@@ -167,7 +167,7 @@
     "title": "La Puerta",
     "author": "Obra Original",
     "description": "Hay puertas que, una vez abiertas, no se pueden cerrar. Una confesión desgarradora sobre la amistad, la culpa y el peso irreversible de las palabras.",
-    "cover": "images/puerta_portada.png",
+    "cover": "images/puerta_portada.webp",
     "storyFile": "stories/la_puerta.json",
     "type": "novel",
     "tags": [

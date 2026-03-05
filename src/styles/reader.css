@@ -99,12 +99,60 @@
     color: var(--text-color);
     overflow-y: auto;
     height: 100%;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
     display: flex;
     flex-direction: column;
     user-select: text;
     -webkit-user-select: text;
+
+    /* Firefox: scrollbar ultra-sutil */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+/* Firefox: mostrar scrollbar solo al hacer scroll */
+.page-content.is-scrolling {
+    scrollbar-color: rgba(128, 128, 128, 0.2) transparent;
+}
+
+/* Webkit (Chrome, Safari, Edge): scrollbar fantasma */
+.page-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 999px;
+    transition: background 0.4s ease;
+}
+
+/* Aparece al hacer scroll (se activa via JS) */
+.page-content.is-scrolling::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.18);
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.35);
+}
+
+/* Temas de scrollbar */
+body.theme-dark .page-content.is-scrolling::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.theme-dark .page-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+body.theme-sepia .page-content.is-scrolling::-webkit-scrollbar-thumb {
+    background: rgba(93, 64, 55, 0.12);
+}
+
+body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(93, 64, 55, 0.25);
 }
 
 .content-centerer {
@@ -225,44 +273,83 @@
     transform: translateY(-2px);
 }
 
+/* =========================
+   BARRA DE PROGRESO — Diseño «whisper»
+   Invisible hasta que la necesites.
+   ========================= */
+
 #app-footer {
     width: 100%;
     max-width: 900px;
-    margin: 0 auto 8px;
+    margin: 0 auto 6px;
     display: flex;
     flex-direction: column;
+    gap: 0;
+    padding: 0 20px;
+    transition: gap 0.3s ease;
+}
+
+#app-footer:hover {
     gap: 6px;
 }
 
+/* — CONTENEDOR de la barra — */
 #progress-bar-container {
     width: 100%;
-    height: 4px;
-    background-color: rgba(0, 0, 0, 0.14);
-    margin-top: 8px;
+    height: 2px;
+    background-color: rgba(128, 128, 128, 0.08);
+    margin-top: 6px;
     border-radius: 999px;
     position: relative;
-    transition: background-color 0.3s ease;
+    transition: height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.3s ease;
+    overflow: visible;
 }
 
-#progress-bar-container:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+#app-footer:hover #progress-bar-container {
+    height: 4px;
+    background-color: rgba(128, 128, 128, 0.1);
 }
 
+#progress-bar-container.scrubbing {
+    height: 5px;
+    background-color: rgba(128, 128, 128, 0.12);
+}
+
+/* — RELLENO (progreso visual) — */
+#progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.3s ease;
+    z-index: 1;
+    background: var(--accent-color);
+    opacity: 0.25;
+}
+
+#app-footer:hover #progress-fill {
+    opacity: 0.55;
+}
+
+#progress-bar-container.scrubbing #progress-fill {
+    opacity: 0.7;
+}
+
+/* — SLIDER (invisible Range Input) — */
 #progress-slider {
     position: absolute;
-    inset: -12px 0;
+    inset: -14px 0;
     width: 100%;
-    height: 28px;
+    height: 30px;
     margin: 0;
     background: transparent;
     appearance: none;
+    -webkit-appearance: none;
     cursor: pointer;
-    opacity: 1;
     z-index: 3;
-}
-
-#progress-slider:active {
-    cursor: pointer;
 }
 
 #progress-slider:focus {
@@ -274,66 +361,120 @@
     opacity: 0.3;
 }
 
+/* — THUMB: invisible por defecto, materializa en hover — */
 #progress-slider::-webkit-slider-runnable-track {
-    height: 4px;
+    height: 2px;
     background: transparent;
 }
 
 #progress-slider::-webkit-slider-thumb {
     appearance: none;
-    width: 12px;
-    height: 12px;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
     border-radius: 50%;
     background: var(--accent-color);
     border: 2px solid var(--bg-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-4px);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        height 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        transform 0.25s ease;
 }
 
-#progress-bar-container:hover #progress-slider::-webkit-slider-thumb,
-#progress-bar-container.scrubbing #progress-slider::-webkit-slider-thumb,
+#app-footer:hover #progress-slider::-webkit-slider-thumb {
+    width: 12px;
+    height: 12px;
+    transform: translateY(-5px);
+}
+
+#progress-bar-container.scrubbing #progress-slider::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    transform: translateY(-5px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
 #progress-slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-    transform: translateY(-4px) scale(1.05);
+    width: 14px;
+    height: 14px;
+    transform: translateY(-5px);
+    box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.15);
 }
 
+/* — Firefox thumb — */
 #progress-slider::-moz-range-track {
-    height: 4px;
+    height: 2px;
     background: transparent;
 }
 
 #progress-slider::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
+    width: 0;
+    height: 0;
     border-radius: 50%;
     background: var(--accent-color);
     border: 2px solid var(--bg-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: scale(1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+    transition: width 0.25s ease, height 0.25s ease;
 }
 
-#progress-bar-container:hover #progress-slider::-moz-range-thumb,
-#progress-bar-container.scrubbing #progress-slider::-moz-range-thumb,
-#progress-slider:focus-visible::-moz-range-thumb {
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
+#app-footer:hover #progress-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
 }
 
+#progress-bar-container.scrubbing #progress-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* — FOOTER INFO: oculta por defecto, revela en hover — */
 .progress-footer-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    justify-content: flex-start;
+    justify-content: space-between;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.35s ease 0.1s, max-height 0.35s ease;
+    pointer-events: none;
+}
+
+#app-footer:hover .progress-footer-row {
+    opacity: 1;
+    max-height: 28px;
+    pointer-events: auto;
+}
+
+#progress-bar-container.scrubbing~.progress-footer-row {
+    opacity: 1;
+    max-height: 28px;
+    pointer-events: auto;
 }
 
 #progress-page-label {
-    margin-top: 0;
+    margin: 0;
     text-align: left;
-    font-size: 0.8rem;
-    font-style: italic;
-    opacity: 0.7;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    opacity: 0.45;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.progress-percentage {
+    font-size: 0.68rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    letter-spacing: 0.04em;
+    opacity: 0.35;
+    white-space: nowrap;
+    color: var(--text-color);
 }
 
 /* =========================
@@ -440,34 +581,35 @@
     z-index: 20;
     background: transparent;
     color: var(--text-color);
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: none;
     border-radius: 999px;
-    width: 34px;
-    height: 24px;
+    width: 28px;
+    height: 22px;
     padding: 0;
-    font-weight: 600;
+    font-weight: 500;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     box-shadow: none;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    opacity: 0.3;
+    transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
 .highlight-panel-toggle:hover {
+    opacity: 0.7;
+    background: rgba(128, 128, 128, 0.08);
     transform: translateY(-1px);
-    border-color: rgba(0, 0, 0, 0.35);
-    background: rgba(0, 0, 0, 0.05);
 }
 
 .highlight-panel-toggle.active {
+    opacity: 1;
     background: var(--text-color);
     color: var(--bg-color);
-    border-color: var(--text-color);
 }
 
 .highlight-panel-icon {
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1;
 }
 
@@ -827,6 +969,67 @@ body.fullscreen-mode .flying-bird {
 }
 
 
+
+
+/* =========================
+   MOBILE: Sin hover, mostrar info siempre (sutil)
+   ========================= */
+@media (hover: none) {
+
+    /* En touch: footer info siempre visible pero tenue */
+    .progress-footer-row {
+        opacity: 1;
+        max-height: 28px;
+        pointer-events: auto;
+    }
+
+    #progress-page-label {
+        opacity: 0.35;
+        font-size: 0.65rem;
+    }
+
+    .progress-percentage {
+        opacity: 0.25;
+    }
+
+    /* Thumb siempre visible (no hay hover) */
+    #progress-slider::-webkit-slider-thumb {
+        width: 10px;
+        height: 10px;
+        transform: translateY(-4px);
+    }
+
+    #progress-slider::-moz-range-thumb {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Barra un poco más visible para toque */
+    #progress-bar-container {
+        height: 3px;
+    }
+
+    #progress-fill {
+        opacity: 0.35;
+    }
+
+    /* Scrollbar siempre mínimamente visible en touch */
+    .page-content {
+        scrollbar-color: rgba(128, 128, 128, 0.1) transparent;
+    }
+
+    .page-content::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .page-content::-webkit-scrollbar-thumb {
+        background: rgba(128, 128, 128, 0.1);
+    }
+
+    .page-content.is-scrolling::-webkit-scrollbar-thumb {
+        background: rgba(128, 128, 128, 0.2);
+    }
+}
 
 
 /* =========================

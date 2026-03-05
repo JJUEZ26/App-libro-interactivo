@@ -11,6 +11,10 @@ export async function loadStory(storyFilePath) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status} cargando ${finalPath}`);
         state.story = await response.json();
         state.totalPagesInStory = state.story.length;
+
+        // Crear índice para búsquedas O(1) por ID
+        // En vez de state.story.find(p => p.id === pageId) que es O(n)
+        state.storyIndex = new Map(state.story.map(page => [page.id, page]));
     } catch (error) {
         console.error('Error al cargar historia:', error);
         // Mejor manejo de error visual
@@ -24,5 +28,6 @@ export async function loadStory(storyFilePath) {
             `;
         }
         state.story = null;
+        state.storyIndex = null;
     }
 }

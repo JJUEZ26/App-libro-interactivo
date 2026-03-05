@@ -2,7 +2,7 @@
     {
         "id": 0,
         "images": [
-            "images/puerta_portada.png"
+            "images/puerta_portada.webp"
         ],
         "scenes": [
             "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:3px; padding: 0 1rem;\">LA PUERTA</h1>"

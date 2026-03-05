@@ -2,6 +2,7 @@ export const state = {
     appMode: 'library',
     currentBook: null,
     story: null,
+    storyIndex: null,  // Map<pageId, pageData> — índice O(1)
     currentStoryId: -1,
     pageHistory: [],
     fontSize: 1.1,

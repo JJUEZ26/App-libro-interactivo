@@ -1,24 +1,29 @@
 {
   "name": "Lecturas Interactivas",
   "short_name": "Lecturas",
-  "description": "Plataforma inmersiva de narrativa adaptativa con decisiones interactivas.",
+  "description": "Plataforma inmersiva de narrativa adaptativa con decisiones interactivas, efectos visuales y asistente de IA.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#0f1219",
+  "theme_color": "#1a1a2e",
   "orientation": "portrait",
+  "categories": [
+    "books",
+    "education",
+    "entertainment"
+  ],
   "icons": [
     {
-      "src": "images/monstruo_rostro.jpg",
-      "type": "image/jpeg",
-      "sizes": "192x192",
+      "src": "images/app-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
       "purpose": "any"
     },
     {
-      "src": "images/monstruo_rostro.jpg",
-      "type": "image/jpeg",
-      "sizes": "512x512",
-      "purpose": "any"
+      "src": "images/app-icon-512.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
     }
   ]
 }

@@ -1,6 +1,7 @@
 import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
+import { sanitizeHTML } from '../utils/sanitize.js';
 import {
     playPageSound,
     preloadAudio,
@@ -21,11 +22,11 @@ export function setRenderDependencies({ elements: elementsRef, goToPage: goToPag
 
 export function preloadNextImages(currentPageId) {
     if (!state.story) return;
-    const currentPage = state.story.find((page) => page.id === currentPageId);
+    const currentPage = state.storyIndex?.get(currentPageId) || state.story.find((page) => page.id === currentPageId);
     if (!currentPage || !currentPage.choices) return;
 
     currentPage.choices.forEach((choice) => {
-        const nextPage = state.story.find((page) => page.id === choice.page);
+        const nextPage = state.storyIndex?.get(choice.page) || state.story.find((page) => page.id === choice.page);
         if (nextPage) {
             if (nextPage.images) nextPage.images.forEach((url) => {
                 new Image().src = url;
@@ -43,7 +44,7 @@ export function renderPage(pageId) {
     elements.pageWrapper.querySelectorAll('.page-content').forEach((node) => node.remove());
     if (!state.story) return;
 
-    const pageData = state.story.find((page) => page.id === pageId);
+    const pageData = state.storyIndex?.get(pageId) || state.story.find((page) => page.id === pageId);
     if (!pageData) return;
 
     // PRIMERO: Iniciar precarga de audio en background (no bloquea)
@@ -99,7 +100,7 @@ export function renderPage(pageId) {
 
     if (pageData.karaokeLines) {
         if (pageData.audioText) {
-            contentHtml += `<p class="audio-hint">${pageData.audioText}</p>`;
+            contentHtml += `<p class="audio-hint">${sanitizeHTML(pageData.audioText)}</p>`;
         }
 
         contentHtml += `
@@ -113,7 +114,7 @@ export function renderPage(pageId) {
 
         contentHtml += `<div class="karaoke-container">`;
         pageData.karaokeLines.forEach((line) => {
-            contentHtml += `<p class="karaoke-line clickable" data-start="${line.start}" data-end="${line.end}">${line.text}</p>`;
+            contentHtml += `<p class="karaoke-line clickable" data-start="${line.start}" data-end="${line.end}">${sanitizeHTML(line.text)}</p>`;
         });
         contentHtml += `</div>`;
     } else if (pageData.scenes && pageData.scenes.length > 0) {
@@ -121,7 +122,7 @@ export function renderPage(pageId) {
 
         if (isPoemIntro) {
             const introHtml = pageData.scenes
-                .map((scene) => `<div class="poem-intro-content">${scene}</div>`)
+                .map((scene) => `<div class="poem-intro-content">${sanitizeHTML(scene)}</div>`)
                 .join('');
             contentHtml += `<div class="scenes-container poem-intro-layout">${introHtml}</div>`;
         } else {
@@ -135,14 +136,14 @@ export function renderPage(pageId) {
                     const linesHtml = lines.map((line) => {
                         const delay = verseIndex * 0.6;
                         verseIndex++;
-                        return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${line}</span>`;
+                        return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${sanitizeHTML(line)}</span>`;
                     }).join('');
                     return `<div class="stanza">${linesHtml}</div>`;
                 }).join('');
                 contentHtml += `<div class="scenes-container poem-layout">${stanzasHtml}</div>`;
             } else {
                 const scenesHtml = pageData.scenes
-                    .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${scene.replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
+                    .map((scene, index) => `<p class="fade-in-text" style="animation-delay: ${index * 0.2}s">${sanitizeHTML(scene).replace(/\n/g, '</p><p class="fade-in-text">')}</p>`)
                     .join('');
                 contentHtml += `<div class="scenes-container">${scenesHtml}</div>`;
             }
@@ -236,6 +237,16 @@ export function renderPage(pageId) {
     // =====================================================
     pageContent.appendChild(contentCenterer);
     elements.pageWrapper.appendChild(pageContent);
+
+    // — Scrollbar auto-hide: aparece al hacer scroll, desaparece al detenerse —
+    let scrollTimeout = null;
+    pageContent.addEventListener('scroll', () => {
+        pageContent.classList.add('is-scrolling');
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            pageContent.classList.remove('is-scrolling');
+        }, 1200);
+    }, { passive: true });
 
     // =====================================================
     // DEFER HEAVY WORK: Bind events + start audio/effects

@@ -1,9 +1,10 @@
-const CACHE_NAME = 'lecturas-interactivas-cache-v3';
+const CACHE_NAME = 'lecturas-interactivas-cache-v4';
 
-// Solo cachear recursos que sabemos que existen
+// Recursos esenciales que se cachean al instalar
 const urlsToCache = [
   '/',
   '/index.html',
+  '/offline.html',
   '/data/books.json',
   '/data/library-sections.json'
 ];
@@ -44,6 +45,19 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
+  // Ignorar requests a API endpoints (no cachear respuestas de IA)
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return new Response(
+          JSON.stringify({ error: 'Sin conexión. Intenta de nuevo cuando tengas internet.' }),
+          { status: 503, headers: { 'Content-Type': 'application/json' } }
+        );
+      })
+    );
+    return;
+  }
+
   // Para archivos de datos JSON: Network First (siempre tener la última versión)
   if (url.pathname.endsWith('.json')) {
     event.respondWith(
@@ -83,7 +97,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Para todo lo demás: Network First con fallback a cache
+  // Para navegación (HTML pages): Network First con fallback a offline.html
   event.respondWith(
     fetch(event.request)
       .then(response => {
@@ -95,6 +109,13 @@ self.addEventListener('fetch', event => {
         }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => {
+        // Si es una navegación (el usuario quiere ver una página), mostrar offline.html
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline.html');
+        }
+        return caches.match(event.request);
+      })
   );
 });
+

@@ -80,22 +80,9 @@ coverage/
 .tmp/
 
 # ========================================
-# PYTHON (si usas backend)
+# AI WORKSPACE
 # ========================================
-__pycache__/
-*.py[cod]
-*$py.class
-venv/
-env/
-ENV/
-
-# ========================================
-# DOCUMENTOS DE TRABAJO (OPCIONAL)
-# Descomenta si no quieres subir tus notas
-# ========================================
-# PROGRESO_*.md
-# NOTAS.md
-# TODO.md
+.gemini/
 
 # ========================================
 # ARCHIVOS GRANDES / MEDIA (SI SUBES A OTRO LADO)

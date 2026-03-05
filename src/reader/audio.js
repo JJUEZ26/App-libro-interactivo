@@ -6,13 +6,22 @@ import { state } from '../app/state.js';
 
 /** Cache de Audio precargados para eliminar latencia */
 const audioCache = new Map();
+const MAX_AUDIO_CACHE = 8;
 
 /**
  * Precarga un archivo de audio en background.
  * Si ya está en cache, no hace nada.
+ * Evicta el más antiguo si el cache está lleno.
  */
 export function preloadAudio(soundFile) {
     if (!soundFile || audioCache.has(soundFile)) return;
+
+    // Evictar el más antiguo si estamos al límite
+    if (audioCache.size >= MAX_AUDIO_CACHE) {
+        const oldest = audioCache.keys().next().value;
+        audioCache.delete(oldest);
+    }
+
     const audio = new Audio(`sounds/${soundFile}`);
     audio.preload = 'auto';
     audio.load();

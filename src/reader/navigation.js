@@ -47,11 +47,23 @@ function updateScrubberIndicator(value, totalPages) {
     const safeTotal = totalPages > 0 ? totalPages : 1;
     const safeValue = Math.min(Math.max(value, 1), safeTotal);
     const percent = safeTotal > 1 ? ((safeValue - 1) / (safeTotal - 1)) * 100 : 0;
+    const percentRounded = Math.round(percent);
+
     if (elements?.progressPageLabel) {
-        elements.progressPageLabel.textContent = `Página ${safeValue} / ${safeTotal}`;
+        elements.progressPageLabel.textContent = `Página ${safeValue} de ${safeTotal}`;
     }
     if (elements?.progressMarker) {
         elements.progressMarker.style.left = `${percent}%`;
+    }
+    // Actualizar barra de relleno visual
+    const progressFill = document.getElementById('progress-fill');
+    if (progressFill) {
+        progressFill.style.width = `${percent}%`;
+    }
+    // Actualizar porcentaje
+    const progressPct = document.getElementById('progress-percentage');
+    if (progressPct) {
+        progressPct.textContent = `${percentRounded}%`;
     }
 }
 
@@ -68,7 +80,7 @@ export function goToPage(pageId, isGoingBack = false) {
         return;
     }
 
-    if (!state.story.some((page) => page.id === pageId)) return;
+    if (!(state.storyIndex?.has(pageId) ?? state.story.some((page) => page.id === pageId))) return;
 
     state.isTransitioning = true;
     if (elements?.pageWrapper) {

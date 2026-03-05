@@ -12,7 +12,7 @@
   },
   {
     "id": 999,
-    "images": ["images/monstruo_rostro.jpg"],
+    "images": ["images/monstruo_rostro.webp"],
     "sound": "monstruoinicio.mp3",
     "choices": [
     { "text": "Continuar", "page": 0}
@@ -55,7 +55,7 @@
   },
   {
     "id": 3,
-    "images": ["images/victor_conpala.png"],
+    "images": ["images/victor_conpala.webp"],
     "scenes": [],
     "choices": [
       { "text": "Continuar", "page": 4 }
@@ -121,7 +121,7 @@
     "scenes": [
       "                    Una vida de ecos y sombras"
     ],
-    "images": ["images/vidadeecos.png"],
+    "images": ["images/vidadeecos.webp"],
     "choices": [
       { "text": "Continuar", "page": 15 }
     ]
@@ -290,7 +290,7 @@
 },
 {
   "id": 29,
-  "images": ["images/victorduda.png"],
+  "images": ["images/victorduda.webp"],
   "scenes": [],
   "sound": "monstruoinicio.mp3",
   "choices": [

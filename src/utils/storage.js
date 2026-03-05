@@ -55,8 +55,14 @@ export function savePageHistory({ currentBook, pageHistory, localStorageRef = lo
 }
 
 export function loadPageHistory(bookId, localStorageRef = localStorage) {
-    const savedHistory = localStorageRef.getItem(getPageHistoryKey(bookId));
-    return savedHistory ? JSON.parse(savedHistory) : null;
+    try {
+        const savedHistory = localStorageRef.getItem(getPageHistoryKey(bookId));
+        return savedHistory ? JSON.parse(savedHistory) : null;
+    } catch {
+        // Si los datos están corruptos, limpiar y devolver null
+        localStorageRef.removeItem(getPageHistoryKey(bookId));
+        return null;
+    }
 }
 
 export function getHighlightsKey(bookId) {
@@ -70,6 +76,12 @@ export function saveHighlights(bookId, highlights, localStorageRef = localStorag
 
 export function loadHighlights(bookId, localStorageRef = localStorage) {
     if (!bookId) return [];
-    const stored = localStorageRef.getItem(getHighlightsKey(bookId));
-    return stored ? JSON.parse(stored) : [];
+    try {
+        const stored = localStorageRef.getItem(getHighlightsKey(bookId));
+        return stored ? JSON.parse(stored) : [];
+    } catch {
+        // Si los datos están corruptos, limpiar y devolver vacío
+        localStorageRef.removeItem(getHighlightsKey(bookId));
+        return [];
+    }
 }

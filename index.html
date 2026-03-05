@@ -8,10 +8,29 @@
     <meta name="description"
         content="Plataforma inmersiva de narrativa adaptativa. Lee clásicos de la literatura con decisiones interactivas, efectos visuales, y asistente de IA.">
 
+    <!-- Open Graph (WhatsApp, Facebook, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lecturas Interactivas — Leer nunca fue tan inmersivo">
+    <meta property="og:description"
+        content="Lee clásicos de la literatura con decisiones interactivas, efectos visuales, audio inmersivo y un asistente de IA.">
+    <meta property="og:site_name" content="Lecturas Interactivas">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lecturas Interactivas">
+    <meta name="twitter:description"
+        content="Plataforma inmersiva de narrativa adaptativa con IA, efectos visuales y audio.">
+
     <!-- Optimizaciones PWA para iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lecturas Interactivas">
+
+    <!-- Fuentes Premium (no-bloqueantes) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700;900&family=Cormorant+Garamond:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap">
 
     <link rel="stylesheet" href="src/styles/index.css">
     <link rel="manifest" href="manifest.webmanifest">
@@ -160,6 +179,7 @@
 
                 <footer id="app-footer">
                     <div id="progress-bar-container">
+                        <div id="progress-fill" style="width: 0%"></div>
                         <input type="range" id="progress-slider" min="1" max="1" step="1" value="1"
                             aria-label="Deslizar para avanzar páginas">
                     </div>
@@ -169,6 +189,7 @@
                             <span class="highlight-panel-icon" aria-hidden="true">⋯</span>
                         </button>
                         <div id="progress-page-label" aria-live="polite">Página 1 / 1</div>
+                        <div id="progress-percentage" class="progress-percentage"></div>
                     </div>
                 </footer>
                 <aside id="highlight-panel" class="highlight-panel" aria-label="Panel de citas" aria-hidden="true">
