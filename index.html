@@ -49,7 +49,12 @@
         <!-- BARRA SUPERIOR -->
         <header id="app-header">
             <div class="header-left">
-                <h1 id="main-title">Lecturas Interactivas <span style="font-size: 0.4em; vertical-align: super; opacity: 0.6; font-weight: normal; letter-spacing: 1px;" title="Version indicator">v2</span></h1>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <h1 id="main-title">Lecturas Interactivas</h1>
+                    <span id="app-version"
+                        style="font-size: 0.8rem; opacity: 0.6; font-weight: normal; letter-spacing: 1px; color: var(--color-text-secondary, #aaa);"
+                        title="Version indicator">v2</span>
+                </div>
                 <button id="back-to-library" class="icon-btn hidden" aria-label="Volver a la biblioteca">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
