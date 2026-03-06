@@ -715,3 +715,11 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 - Estrofa 5 (Palabras ardientes): `0.40` (la voz se apaga)
 - Estrofa 6 (Final): `0.35` (desolación, casi un susurro)
 - Biografía: `0.20` (un recuerdo distante)
+
+---
+
+### Indicador Visual de Despliegue (Marzo 2026)
+**Objetivo**: Añadir un pequeño identificador visual en la página principal para confirmar rápidamente actualizaciones en el entorno de producción (especialmente para instalaciones PWA cacheadas).
+**Implementación**:
+- Se añadió un pequeño texto "v2" junto al título principal "Lecturas Interactivas" en el header (`index.html`).
+- Estilo sutil: `font-size: 0.4em`, `opacity: 0.6`, no intrusivo y alineado verticalmente (`super`).
