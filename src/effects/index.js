@@ -5,6 +5,7 @@ import { startSwallowsEffect } from './swallows/index.js';
 import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
 import { startDewdropsEffect } from './dewdrops/index.js';
 import { startCracksEffect } from './cracks/index.js';
+import { startPobresEffect } from './pobres/index.js';
 
 /**
  * Returns the correct container for visual effects.
@@ -30,6 +31,7 @@ let activeTwilightCleanup = null;
 let activeDewdropsCleanup = null;
 let activeFirefliesCleanup = null;
 let activeCracksCleanup = null;
+let activePobresCleanup = null;
 
 function clearExistingEffects(nextEffects = []) {
     if (activeEffectInterval) { clearInterval(activeEffectInterval); activeEffectInterval = null; }
@@ -45,6 +47,7 @@ function clearExistingEffects(nextEffects = []) {
     if (activeTwilightCleanup) { activeTwilightCleanup(); activeTwilightCleanup = null; }
     if (activeDewdropsCleanup) { activeDewdropsCleanup(); activeDewdropsCleanup = null; }
     if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
+    if (activePobresCleanup) { activePobresCleanup(); activePobresCleanup = null; }
 
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
@@ -56,6 +59,7 @@ function clearExistingEffects(nextEffects = []) {
         '.sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, ' +
         '.fireflies-overlay, .smoke-particle, .rain-drop, .falling-leaf, ' +
         '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop, ' +
+        '.pobres-overlay, .pobres-bg-overlay, ' +
         '.door-light-overlay, .door-choices-cinematic' + cracksQuery
     );
     allEffectElements.forEach(el => el.remove());
@@ -263,6 +267,12 @@ export function handlePageEffects(effectString, { getAppMode }) {
         if (!activeCracksCleanup) {
             activeCracksCleanup = cleanup;
         }
+    }
+
+    // --- Flores en el Hormigón (Gata Cattana) ---
+    const pobresEffect = effects.find(e => e.startsWith('pobres_'));
+    if (pobresEffect) {
+        activePobresCleanup = startPobresEffect(pobresEffect);
     }
 
     // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---

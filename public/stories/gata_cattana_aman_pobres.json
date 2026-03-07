@@ -1,0 +1,195 @@
+[
+    {
+        "id": "intro",
+        "page": 0,
+        "effect": "pobres_intro",
+        "scenes": [
+            "<h1 class='poem-title-display gata-title'>Como aman los pobres</h1><span class='poem-author-display'>Gata Cattana — <em>La escala de Mohs</em>, 2016</span>"
+        ],
+        "forceShowChoices": true,
+        "choices": [
+            {
+                "text": "Leer el poema",
+                "page": "estrofa1"
+            }
+        ]
+    },
+    {
+        "id": "estrofa1",
+        "page": 1,
+        "effect": "pobres_tierra",
+        "scenes": [
+            "No aman de igual forma\nlos ricos y los pobres.",
+            "Los pobres aman con las manos.\nLos pobres aman en la carne y con gula,\nen las peores estampas,\nen condiciones famélicas y con\ntodo en su contra."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa2"
+            }
+        ]
+    },
+    {
+        "id": "estrofa2",
+        "page": 2,
+        "effect": "pobres_tierra",
+        "scenes": [
+            "Los pobres aman sin bonitos decorados.\nEntienden de lunes y de tedios domingueros\ny de gastos imprevistos\nde facturas y de angustias\nque embisten\nmes a mes\na quemarropa."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa3"
+            }
+        ]
+    },
+    {
+        "id": "estrofa3",
+        "page": 3,
+        "effect": "pobres_flama",
+        "scenes": [
+            "El amor de los pobres\nno sale por la ventana\naunque el dinero entre\npor la puerta,",
+            "<span class='gata-parenthesis'>(que nunca entra),</span>\n<span class='gata-parenthesis'>(aunque no haya ventanas).</span>",
+            "Los pobres han aprendido\na amarse a oscuras por eso mismo."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa4"
+            }
+        ]
+    },
+    {
+        "id": "estrofa4",
+        "page": 4,
+        "effect": "pobres_flama",
+        "scenes": [
+            "Han aprendido a amarse mal alimentados\nmal vestidos, malqueridos,\nporque el hambre agudiza el ingenio\ny en sus jardines también crecen las flores",
+            "<span class='gata-parenthesis'>(aunque no haya jardines).</span>"
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa5"
+            }
+        ]
+    },
+    {
+        "id": "estrofa5",
+        "page": 5,
+        "effect": "pobres_flama",
+        "scenes": [
+            "Los pobres han aprendido a aprovechar\nlos vis a vis, entre jornada y jornada\nde trabajo,",
+            "<span class='gata-parenthesis'>(aunque no haya trabajo)</span>",
+            "y saben darse placeres nunca tasados\nde valor incalculable\ny han aprendido a disfrutar las circunstancias\ny la sopa de sobre,\nel viejo colchón y la cuesta de enero."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa6"
+            }
+        ]
+    },
+    {
+        "id": "estrofa6",
+        "page": 6,
+        "effect": "pobres_brasa",
+        "scenes": [
+            "Y parece que su amor se yergue\nindestructible a pesar de,\na pesar de las miles de plagas,\nde los sueños frustrados y fracasos andantes,\nde las crisis cíclicas y de hambrunas y de guerras,",
+            "más valiente que Heracles,\nmás Odiseo que Odiseo."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa7"
+            }
+        ]
+    },
+    {
+        "id": "estrofa7",
+        "page": 7,
+        "effect": "pobres_brasa",
+        "scenes": [
+            "Y parece que su amor se extiende y se multiplica\nal ritmo que se multiplican los pobres,\nal ritmo que se multiplican los infortunios\ny los desastres naturales que golpean\nsiempre en las casas de los pobres.",
+            "Y ese amor está a la altura de Urano,\na la altura de Urano y de Gea juntos,\ny es la única arma\nque tienen los pobres\npara defenderse."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa8"
+            }
+        ]
+    },
+    {
+        "id": "estrofa8",
+        "page": 8,
+        "effect": "pobres_rosa",
+        "scenes": [
+            "Por eso han aprendido a cultivar flores\ny a cantar bien sus penas\ny han inventado las mejores obras\ny los mejores instrumentos.",
+            "Por eso entienden de arte y saben\nencontrarlo donde lo haya,\naunque no lo haya,",
+            "<span class='gata-parenthesis gata-parenthesis--bright'>(que siempre lo hay).</span>"
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "estrofa9"
+            }
+        ]
+    },
+    {
+        "id": "estrofa9",
+        "page": 9,
+        "effect": "pobres_rosa",
+        "scenes": [
+            "Y han aprendido a aprovechar el carisma\ny la jerga,\ny a escribir poemas inmortales\nsobre amores complicados,\ny saben de cosquillas,\ny saben de boleros\ny saben de desnudos\ny de darlo todo,",
+            "que no es más que lo puesto,\nlas manos y la lengua\nla forma de otear el horizonte\ny los cánticos en contra del patrón."
+        ],
+        "choices": [
+            {
+                "text": "",
+                "page": "final"
+            }
+        ]
+    },
+    {
+        "id": "final",
+        "page": 10,
+        "effect": "pobres_corazon",
+        "delayedChoices": true,
+        "scenes": [
+            "yo solo sé amar de esta manera",
+            "yo te amo como aman los pobres",
+            "y me temo\nque por mucho mucho tiempo\nesto seguirá siendo así"
+        ],
+        "choices": [
+            {
+                "text": "Sobre la autora",
+                "page": "biografia"
+            }
+        ]
+    },
+    {
+        "id": "biografia",
+        "page": 11,
+        "effect": "pobres_bio",
+        "forceShowChoices": true,
+        "scenes": [
+            "<div class='gata-bio-portrait-container'><img src='images/gata_cattana_retrato.webp' class='bio-portrait gata-bio-portrait' alt='Gata Cattana, retrato ilustrado'><div class='gata-bio-badge'>1991 — 2017</div></div>",
+            "<strong class='gata-bio-name'>Gata Cattana</strong><span class='gata-bio-real-name'>Ana Isabel García Llorente</span>",
+            "Nació el 11 de mayo de 1991 en Adamuz, Córdoba. Rapera, poeta y politóloga, fue una de las voces más singulares de su generación: construyó puentes entre el hip-hop y la lírica clásica, entre la calle y las referencias mitológicas, entre el feminismo y la belleza.",
+            "Estudió Ciencias Políticas en Granada y se instaló en Madrid, donde publicó en 2016 <em>\"La Escala de Mohs\"</em>, su único libro de poemas en vida. También dejó los EPs <em>\"Los siete contra Tebas\"</em> (2012) y <em>\"Anclas\"</em> (2015), y el álbum póstumo <em>\"Banzai\"</em> (2017).",
+            "El 2 de marzo de 2017, a los 25 años, murió en Madrid a causa de un shock anafiláctico. En 2023, el documental <em>\"Eterna\"</em> rindió homenaje a su vida y obra.",
+            "<em class='gata-bio-quote'>\"Hay gente que escribe poemas y luego hay gente que vive a la velocidad de un poema. Gata Cattana era de las segundas.\"</em>"
+        ],
+        "choices": [
+            {
+                "text": "Volver a leer el poema",
+                "page": "intro"
+            },
+            {
+                "text": "Volver a la biblioteca",
+                "page": -1
+            }
+        ]
+    }
+]

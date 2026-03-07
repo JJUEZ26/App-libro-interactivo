@@ -790,3 +790,187 @@ body.theme-dark .choices button.choice-secondary:hover {
             0 0 20px rgba(0, 0, 0, 0.6);
     }
 }
+
+
+/* ========================================
+   GATA CATTANA — "Como aman los pobres"
+   Raw, earthy, defiant, tender.
+   ======================================== */
+
+/* --- Title identity --- */
+.gata-title {
+    font-style: normal;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: #e8c9a0;
+    text-shadow: 0 0 40px rgba(180, 80, 30, 0.3), 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* --- The parentheses: whispers, smaller, italicized, softer ---
+     "(aunque no haya jardines)" should feel like an aside, a
+     quiet acknowledgement between equals.  */
+.gata-parenthesis {
+    display: block;
+    font-style: italic;
+    font-size: 0.88em;
+    opacity: 0.55;
+    letter-spacing: 0.04em;
+    margin: 0.2em 0;
+    color: inherit;
+    animation-delay: 0.3s !important; /* slightly after surrounding lines */
+    padding-inline-start: 1.2em;
+}
+
+/* Bright parenthesis: "(que siempre lo hay)" — this one is affirming */
+.gata-parenthesis--bright {
+    opacity: 0.85;
+    color: #F4A460;
+    font-style: italic;
+    text-shadow: 0 0 20px rgba(200, 120, 40, 0.3);
+}
+
+/* --- Final stanza: dramatic, slow reveal, big presence ---
+     "yo solo sé amar de esta manera" lands like a confession.  */
+.poem-layout .stanza .verse-line.gata-final-verse {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #e8c9a0;
+    text-shadow: 0 0 50px rgba(180, 60, 20, 0.4), 0 2px 6px rgba(0,0,0,0.7);
+}
+
+/* --- Verse text on the pobres dark background ---
+     Text needs warmth and legibility against dark overlays. */
+.pobres-overlay ~ .content-centerer .verse-line,
+.pobres-bg-overlay ~ .content-centerer .verse-line,
+body .pobres-bg-tierra ~ .content-centerer .verse-line,
+body .pobres-bg-flama ~ .content-centerer .verse-line {
+    color: rgba(240, 220, 190, 0.95);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* Make all verses on pobres pages warmer */
+#app-container .pobres-bg-overlay ~ .content-centerer {
+    color: rgba(235, 215, 185, 0.95);
+}
+
+/* --- Biography page: special tribute treatment ---
+     This is the most emotionally important part.
+     It must feel like a shrine, not a wiki entry. */
+
+.gata-bio-portrait-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.gata-bio-portrait {
+    display: block;
+    width: clamp(140px, 35vw, 200px);
+    height: auto;
+    border-radius: 50%;
+    border: 3px solid rgba(200, 100, 50, 0.5);
+    box-shadow:
+        0 0 30px rgba(180, 60, 20, 0.25),
+        0 0 80px rgba(180, 60, 20, 0.1),
+        0 8px 30px rgba(0,0,0,0.5);
+    margin: 0 auto;
+    filter: sepia(30%) contrast(1.05) brightness(0.95);
+    transition: filter 1s ease, box-shadow 1s ease;
+    animation: bioPortraitAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.gata-bio-portrait:hover {
+    filter: sepia(0%) contrast(1.05) brightness(1.0);
+    box-shadow:
+        0 0 50px rgba(200, 80, 30, 0.4),
+        0 0 100px rgba(200, 80, 30, 0.15),
+        0 12px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes bioPortraitAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+        filter: sepia(80%) blur(4px);
+    }
+    60% {
+        opacity: 0.9;
+        filter: sepia(40%) blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: sepia(30%) contrast(1.05) brightness(0.95);
+    }
+}
+
+.gata-bio-badge {
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+    background: rgba(180, 50, 20, 0.85);
+    color: rgba(255, 240, 220, 0.95);
+    font-size: 0.72rem;
+    font-family: var(--font-body);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 150, 80, 0.3);
+    white-space: nowrap;
+    animation: badgeFadeIn 1s ease 2s both;
+}
+
+@keyframes badgeFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.gata-bio-name {
+    display: block;
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: #e8c9a0;
+    text-align: center;
+    margin-bottom: 0.1em;
+    text-shadow: 0 0 30px rgba(180, 80, 30, 0.25);
+}
+
+.gata-bio-real-name {
+    display: block;
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* The closing quote — italic, emotional, set apart */
+.gata-bio-quote {
+    display: block;
+    font-style: italic;
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    line-height: 1.7;
+    opacity: 0.65;
+    color: #ddb88a;
+    text-align: center;
+    border-left: 2px solid rgba(200, 100, 50, 0.35);
+    padding-left: 1.2rem;
+    margin-top: 0.8rem;
+}
+
+/* --- Gata-specific author display tweak ---
+     The subtitle line under the title. */
+.poem-author-display:has(+ *) em,
+.poem-author-display em {
+    font-style: italic;
+    opacity: 0.75;
+}

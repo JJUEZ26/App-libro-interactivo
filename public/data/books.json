@@ -1,5 +1,22 @@
 [
   {
+    "id": "gata-cattana-aman-pobres",
+    "title": "Como aman los pobres",
+    "author": "Gata Cattana",
+    "description": "yo te amo como aman los pobres y me temo que por mucho mucho tiempo esto seguirá siendo así.",
+    "cover": "images/gata_cattana_portada.webp",
+    "storyFile": "stories/gata_cattana_aman_pobres.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "amor",
+      "clase social",
+      "feminismo",
+      "hip-hop",
+      "contemporáneo"
+    ]
+  },
+  {
     "id": "frankenstein",
     "title": "Frankenstein",
     "author": "Mary Shelley (adaptación)",

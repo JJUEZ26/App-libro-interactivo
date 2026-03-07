@@ -723,3 +723,26 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 **Implementación**:
 - Se añadió un pequeño texto "v2" junto al título principal "Lecturas Interactivas" en el header (`index.html`).
 - Estilo sutil: `font-size: 0.4em`, `opacity: 0.6`, no intrusivo y alineado verticalmente (`super`).
+
+---
+
+### Poema "Como Aman los Pobres" — Gata Cattana (Marzo 2026)
+**Autora**: Ana Isabel García Llorente, *Gata Cattana* (Adamuz, Córdoba, 1991 — Madrid, 2017). Rapera, poeta y politóloga feminista. Poemario *"La Escala de Mohs"* (2016).
+
+**Efecto visual**: "Flores en el Hormigón" — sistema de partículas SVG que brotan desde el borde inferior de la pantalla. 7 intensidades (intro → tierra → flama → brasa → rosa → corazón → bio) con paletas de color que evolucionan de tierra/ocre a rojo vivo y carmesí a medida que el poema crece emocionalmente.
+
+**Componentes nuevos**:
+- `src/effects/pobres/index.js`: Motor SVG para flores silvestres. 3 formas (simple, wild, poppy), tallos verdes, centro brillante. Animación `flowerBloom` con overshoot elástico.
+- `public/stories/gata_cattana_aman_pobres.json`: 12 páginas. Paréntesis con clase `gata-parenthesis` para renderizado en susurro.
+- `public/images/gata_cattana_portada.webp`: Portada artística (manos trabajadoras + flores en hormigón).
+- `public/images/gata_cattana_retrato.webp`: Retrato ilustrado para la página de homenaje.
+- `src/styles/poem-experience.css`: Estilos `.gata-*`: título en lowercase warmth, paréntesis-susurros, retrato circular con sepia, badge "1991 — 2017", cita de cierre.
+
+**Paleta emocional**:
+- Pág 1–2 (tierra): carbón oscuro + ocre (`#D2691E`)
+- Pág 3–5 (flama): rojo oscuro (`#B22222`) — amor sin ventanas
+- Pág 6–7 (brasa): naranja vivo (`#FF4500`) — Heracles, Urano, Gea
+- Pág 8–9 (rosa): carmesí (`#E8174D`) — flores, arte, boleros
+- Pág 10 (corazón): rojo puro (`#FF1744`) — confesión final
+- Pág 11 (bio): morado (`#6B2D5E`) — tributo, eternidad
+
