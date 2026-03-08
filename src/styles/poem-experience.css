@@ -1235,7 +1235,11 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 .gata-bio-portrait-container {
     position: relative;
     display: inline-block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    width: auto;
+    /* Use margin to align left instead of flex */
+    margin-left: 0;
+    margin-right: auto;
 }
 
 .gata-bio-portrait {
@@ -1286,7 +1290,9 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 .gata-bio-badge {
     position: absolute;
     bottom: -10px;
-    right: -20px; /* Adjusting offset since portrait is now left aligned and smaller */
+    right: -10px; /* Position relative to the inline-block container */
+    transform: none;
+    z-index: 10;
     background: rgba(180, 50, 20, 0.85);
     color: rgba(255, 240, 220, 0.95);
     font-size: 0.72rem;
