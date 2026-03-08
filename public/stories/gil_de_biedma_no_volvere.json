@@ -72,11 +72,38 @@
         "effect": "sepia_medium",
         "forceShowChoices": true,
         "images": [],
+        "discoverAuthor": "Jaime Gil de Biedma",
+        "discoveries": [
+            {
+                "title": "Contra Jaime Gil de Biedma",
+                "type": "poem",
+                "year": "1968",
+                "line": "Un poema donde el autor se enfrenta a sí mismo. Desdoblamiento y autodestrucción.",
+                "available": false
+            },
+            {
+                "title": "Pandémica y celeste",
+                "type": "poem",
+                "year": "1966",
+                "line": "Amor físico y amor sagrado. Dos formas de desear en un solo poema.",
+                "available": false
+            },
+            {
+                "title": "Retrato del artista en 1956",
+                "type": "book",
+                "year": "1991",
+                "line": "Su diario personal. La vida detrás de los poemas, sin filtros.",
+                "available": false
+            }
+        ],
         "scenes": [
-            "<img src='images/gil_de_biedma_retrato.webp' class='bio-portrait' alt='Jaime Gil de Biedma'>",
-            "<strong>Jaime Gil de Biedma (1929-1990)</strong>",
-            "Poeta español de la Generación del 50, conocido por su poesía reflexiva, irónica y profundamente personal.",
-            "'No volveré a ser joven' (1968) es uno de sus poemas más célebres, una meditación lúcida sobre el paso del tiempo y la desilusión que llega con la madurez, cuando uno descubre que la vida no es el escenario glorioso que imaginaba en la juventud."
+            "<div class='bio-portrait-container bio--biedma'><img src='images/gil_de_biedma_retrato.webp' class='bio-portrait' alt='Jaime Gil de Biedma'><div class='bio-badge'>1929 — 1990</div></div>",
+            "<strong class='bio-name'>Jaime Gil de Biedma</strong>",
+            "Nació en Barcelona en 1929, en una familia de la alta burguesía. Estudió Derecho y trabajó como ejecutivo en la Compañía General de Tabacos de Filipinas. Al mismo tiempo, pertenecía a la Generación del 50, junto a Ángel González, José Agustín Goytisolo y Carlos Barral.",
+            "Fue homosexual en la España de Franco. Viajó frecuentemente a Filipinas y pasó temporadas en Oxford y París. Publicó tres libros de poesía: <em>\"Compañeros de viaje\"</em> (1959), <em>\"Moralidades\"</em> (1966) y <em>\"Poemas póstumos\"</em> (1968). Después dejó de publicar. En entrevistas explicó que había dicho lo que tenía que decir y que no veía sentido en repetirse.",
+            "Murió en Barcelona el 8 de enero de 1990, a los 60 años, a causa de complicaciones derivadas del sida.",
+            "'No volveré a ser joven' pertenece a <em>\"Poemas póstumos\"</em>, su último libro. Lo escribió a los 39 años. El poema trata sobre el momento en que la madurez deja de ser una idea abstracta y se convierte en un hecho. Gil de Biedma había vivido hasta entonces como si la juventud fuese el escenario y la vejez un detalle de atrezo. El poema registra el instante en que comprende que es al revés.",
+            "<em class='bio-quote'>\"Envejecer, morir, es el único argumento de la obra.\"</em>"
         ],
         "choices": [
             {

@@ -57,10 +57,333 @@ body.fullscreen-mode .ambient-bg-video {
     z-index: 3;
 }
 
-/* Bio portrait (last page) must also sit above the video */
+/* ========================================
+   UNIFIED BIO PORTRAIT SYSTEM
+   Premium treatment for every poet.
+   Each author keeps unique visual identity.
+   ======================================== */
+
+/* --- Container: shared layout for portrait + badge --- */
+.bio-portrait-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    z-index: 3;
+}
+
+/* cache burst 1 */
+
+/* --- Base Portrait: shared animation & polish --- */
 .bio-portrait {
+    display: block;
+    margin: 0 auto;
     position: relative;
     z-index: 3;
+    animation: bioPortraitAppearBase 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    transition: filter 1s ease, box-shadow 1s ease, transform 0.6s ease;
+}
+
+.bio-portrait:hover {
+    transform: scale(1.03);
+}
+
+@keyframes bioPortraitAppearBase {
+    0% {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+
+    60% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Bio Name: author name below portrait --- */
+.bio-name {
+    display: block;
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(1.5rem, 4.5vw, 2rem);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin-bottom: 0.15em;
+    animation: bioNameReveal 1.8s ease 1.2s both;
+}
+
+.bio-real-name {
+    display: block;
+    font-family: var(--font-body);
+    font-size: clamp(0.78rem, 2vw, 0.9rem);
+    font-weight: 300;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    text-align: center;
+    margin-bottom: 1.4rem;
+    animation: bioNameReveal 1.8s ease 1.6s both;
+}
+
+@keyframes bioNameReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Bio Badge: dates below portrait --- */
+.bio-badge {
+    position: absolute;
+    bottom: -8px;
+    right: 0;
+    font-size: 0.72rem;
+    font-family: var(--font-body);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    animation: badgeFadeInBase 1s ease 2s both;
+}
+
+@keyframes badgeFadeInBase {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Bio Quote: closing quote --- */
+.bio-quote {
+    display: block;
+    font-style: italic;
+    font-size: clamp(0.88rem, 2.4vw, 1.02rem);
+    line-height: 1.7;
+    opacity: 0.6;
+    text-align: center;
+    border-left: 2px solid currentColor;
+    border-left-color: inherit;
+    padding-left: 1.2rem;
+    margin-top: 0.8rem;
+    animation: bioNameReveal 1.8s ease 2.2s both;
+}
+
+
+/* ================================================
+   PER-POET VISUAL IDENTITIES
+   Each modifier respects the poem's essence.
+   ================================================ */
+
+/* --- BUKOWSKI: Raw, gritty, rectangular ---
+     Smoke, whiskey, no polished circles.
+     The photo stays raw like Bukowski himself. */
+.bio--bukowski .bio-portrait {
+    width: clamp(130px, 32vw, 180px);
+    height: auto;
+    border-radius: 4px;
+    border: 2px solid rgba(160, 140, 120, 0.35);
+    box-shadow:
+        0 0 15px rgba(100, 80, 60, 0.25),
+        0 8px 28px rgba(0, 0, 0, 0.5);
+    filter: grayscale(60%) contrast(1.15) brightness(0.9);
+}
+
+.bio--bukowski .bio-portrait:hover {
+    filter: grayscale(30%) contrast(1.1) brightness(0.95);
+    box-shadow:
+        0 0 25px rgba(100, 80, 60, 0.35),
+        0 12px 36px rgba(0, 0, 0, 0.55);
+}
+
+.bio--bukowski .bio-badge {
+    background: rgba(80, 60, 40, 0.8);
+    color: rgba(220, 200, 170, 0.9);
+    border: 1px solid rgba(160, 130, 90, 0.3);
+}
+
+.bio--bukowski .bio-name {
+    color: rgba(220, 200, 170, 0.95);
+    text-shadow: 0 0 24px rgba(100, 80, 60, 0.2);
+}
+
+.bio--bukowski .bio-quote {
+    color: rgba(200, 180, 150, 0.65);
+    border-left-color: rgba(160, 130, 90, 0.3);
+}
+
+/* --- BORGES: Tall, intellectual, sepia weight ---
+     B&W photograph, rounded rectangle (not circle).
+     Gravity and memory, like aged paper. */
+.bio--borges .bio-portrait {
+    width: clamp(140px, 34vw, 190px);
+    height: auto;
+    border-radius: 12px;
+    border: 2px solid rgba(180, 150, 100, 0.3);
+    box-shadow:
+        0 0 20px rgba(140, 110, 60, 0.2),
+        0 0 50px rgba(140, 110, 60, 0.08),
+        0 8px 24px rgba(0, 0, 0, 0.4);
+    filter: sepia(40%) contrast(1.1) brightness(0.92);
+}
+
+.bio--borges .bio-portrait:hover {
+    filter: sepia(20%) contrast(1.08) brightness(0.96);
+    box-shadow:
+        0 0 30px rgba(140, 110, 60, 0.3),
+        0 0 70px rgba(140, 110, 60, 0.12),
+        0 12px 34px rgba(0, 0, 0, 0.45);
+}
+
+.bio--borges .bio-badge {
+    background: rgba(120, 90, 40, 0.8);
+    color: rgba(240, 225, 190, 0.95);
+    border: 1px solid rgba(180, 150, 100, 0.3);
+}
+
+.bio--borges .bio-name {
+    color: rgba(225, 200, 160, 0.95);
+    text-shadow: 0 0 28px rgba(140, 110, 60, 0.2);
+}
+
+.bio--borges .bio-quote {
+    color: rgba(210, 190, 150, 0.6);
+    border-left-color: rgba(180, 150, 100, 0.3);
+}
+
+/* --- GIL DE BIEDMA: Soft square, autumn warmth ---
+     Sepia tones, the passing of time.
+     A seated portrait, pensive and formal. */
+.bio--biedma .bio-portrait {
+    width: clamp(140px, 35vw, 200px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center 15%;
+    border-radius: 16px;
+    border: 2px solid rgba(170, 130, 70, 0.3);
+    box-shadow:
+        0 0 18px rgba(160, 120, 50, 0.2),
+        0 0 45px rgba(160, 120, 50, 0.08),
+        0 8px 24px rgba(0, 0, 0, 0.38);
+    filter: sepia(50%) contrast(1.05) brightness(0.93);
+}
+
+.bio--biedma .bio-portrait:hover {
+    filter: sepia(25%) contrast(1.04) brightness(0.97);
+    box-shadow:
+        0 0 28px rgba(160, 120, 50, 0.28),
+        0 0 60px rgba(160, 120, 50, 0.1),
+        0 12px 34px rgba(0, 0, 0, 0.42);
+}
+
+.bio--biedma .bio-badge {
+    background: rgba(140, 100, 40, 0.82);
+    color: rgba(240, 225, 195, 0.95);
+    border: 1px solid rgba(170, 130, 70, 0.3);
+}
+
+.bio--biedma .bio-name {
+    color: rgba(220, 195, 150, 0.95);
+    text-shadow: 0 0 26px rgba(160, 120, 50, 0.2);
+}
+
+.bio--biedma .bio-quote {
+    color: rgba(200, 175, 130, 0.6);
+    border-left-color: rgba(170, 130, 70, 0.3);
+}
+
+/* --- VILARIÑO: Vertical rectangle, cold rain ---
+     Stark, stripped, like her poetry.
+     Muted tones with a touch of green from the garden photo. */
+.bio--vilarino .bio-portrait {
+    width: clamp(120px, 30vw, 160px);
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(140, 160, 170, 0.3);
+    box-shadow:
+        0 0 16px rgba(100, 130, 150, 0.18),
+        0 0 40px rgba(100, 130, 150, 0.06),
+        0 8px 24px rgba(0, 0, 0, 0.35);
+    filter: grayscale(20%) contrast(1.05) brightness(0.92);
+}
+
+.bio--vilarino .bio-portrait:hover {
+    filter: grayscale(5%) contrast(1.03) brightness(0.96);
+    box-shadow:
+        0 0 24px rgba(100, 130, 150, 0.25),
+        0 0 55px rgba(100, 130, 150, 0.1),
+        0 12px 34px rgba(0, 0, 0, 0.4);
+}
+
+.bio--vilarino .bio-badge {
+    background: rgba(80, 100, 110, 0.8);
+    color: rgba(210, 220, 225, 0.95);
+    border: 1px solid rgba(140, 160, 170, 0.3);
+}
+
+.bio--vilarino .bio-name {
+    color: rgba(200, 210, 215, 0.95);
+    text-shadow: 0 0 22px rgba(100, 130, 150, 0.15);
+}
+
+.bio--vilarino .bio-quote {
+    color: rgba(180, 195, 205, 0.55);
+    border-left-color: rgba(140, 160, 170, 0.3);
+}
+
+/* --- BÉCQUER: Romantic oval, twilight purple ---
+     Soft, dreamy, elegiac.
+     The absence of his own photo becomes part of the melancholy. */
+.bio--becquer .bio-portrait {
+    width: clamp(140px, 34vw, 190px);
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center 20%;
+    border-radius: 50%;
+    border: 2px solid rgba(170, 150, 200, 0.3);
+    box-shadow:
+        0 0 20px rgba(150, 130, 190, 0.2),
+        0 0 50px rgba(150, 130, 190, 0.08),
+        0 8px 24px rgba(0, 0, 0, 0.4);
+    filter: sepia(25%) contrast(1.05) brightness(0.9) hue-rotate(-15deg);
+}
+
+.bio--becquer .bio-portrait:hover {
+    filter: sepia(10%) contrast(1.04) brightness(0.95) hue-rotate(-10deg);
+    box-shadow:
+        0 0 30px rgba(150, 130, 190, 0.28),
+        0 0 70px rgba(150, 130, 190, 0.12),
+        0 12px 34px rgba(0, 0, 0, 0.45);
+}
+
+.bio--becquer .bio-badge {
+    background: rgba(100, 80, 130, 0.82);
+    color: rgba(225, 215, 240, 0.95);
+    border: 1px solid rgba(170, 150, 200, 0.3);
+}
+
+.bio--becquer .bio-name {
+    color: rgba(215, 205, 235, 0.95);
+    text-shadow: 0 0 28px rgba(150, 130, 190, 0.2);
+}
+
+.bio--becquer .bio-quote {
+    color: rgba(195, 185, 220, 0.55);
+    border-left-color: rgba(170, 150, 200, 0.3);
 }
 
 /* Subtle shadow on verses so they remain legible on any video frame */
@@ -804,7 +1127,7 @@ body.theme-dark .choices button.choice-secondary:hover {
     letter-spacing: 0.06em;
     text-transform: lowercase;
     color: #e8c9a0;
-    text-shadow: 0 0 40px rgba(180, 80, 30, 0.3), 0 2px 8px rgba(0,0,0,0.6);
+    text-shadow: 0 0 34px rgba(180, 80, 30, 0.26), 0 2px 8px rgba(0, 0, 0, 0.58);
 }
 
 /* --- The parentheses: whispers, smaller, italicized, softer ---
@@ -813,21 +1136,71 @@ body.theme-dark .choices button.choice-secondary:hover {
 .gata-parenthesis {
     display: block;
     font-style: italic;
-    font-size: 0.88em;
-    opacity: 0.55;
-    letter-spacing: 0.04em;
-    margin: 0.2em 0;
-    color: inherit;
-    animation-delay: 0.3s !important; /* slightly after surrounding lines */
+    font-size: 0.84em;
+    opacity: 0;
+    letter-spacing: 0.03em;
+    margin: 0.28em 0 0.08em;
+    color: rgba(236, 216, 188, 0.72);
     padding-inline-start: 1.2em;
+    transform: translateX(0.45em);
+    filter: blur(1.4px);
+    animation:
+        gataWhisperEntry 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards,
+        gataWhisperBreath 5.2s ease-in-out 2.2s infinite;
 }
 
 /* Bright parenthesis: "(que siempre lo hay)" — this one is affirming */
 .gata-parenthesis--bright {
-    opacity: 0.85;
-    color: #F4A460;
+    color: #efab72;
     font-style: italic;
-    text-shadow: 0 0 20px rgba(200, 120, 40, 0.3);
+    text-shadow: 0 0 18px rgba(200, 120, 40, 0.25);
+    animation:
+        gataWhisperEntry 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.28s forwards,
+        gataWhisperWarmth 4.8s ease-in-out 2s infinite;
+}
+
+@keyframes gataWhisperEntry {
+    0% {
+        opacity: 0;
+        transform: translateX(0.45em) translateY(0.1em);
+        filter: blur(1.8px);
+    }
+
+    65% {
+        opacity: 0.46;
+    }
+
+    100% {
+        opacity: 0.66;
+        transform: translateX(0) translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes gataWhisperBreath {
+
+    0%,
+    100% {
+        opacity: 0.58;
+    }
+
+    50% {
+        opacity: 0.72;
+    }
+}
+
+@keyframes gataWhisperWarmth {
+
+    0%,
+    100% {
+        opacity: 0.72;
+        text-shadow: 0 0 14px rgba(200, 120, 40, 0.18);
+    }
+
+    50% {
+        opacity: 0.84;
+        text-shadow: 0 0 20px rgba(214, 130, 46, 0.26);
+    }
 }
 
 /* --- Final stanza: dramatic, slow reveal, big presence ---
@@ -837,21 +1210,21 @@ body.theme-dark .choices button.choice-secondary:hover {
     font-weight: 600;
     letter-spacing: 0.03em;
     color: #e8c9a0;
-    text-shadow: 0 0 50px rgba(180, 60, 20, 0.4), 0 2px 6px rgba(0,0,0,0.7);
+    text-shadow: 0 0 50px rgba(180, 60, 20, 0.4), 0 2px 6px rgba(0, 0, 0, 0.7);
 }
 
 /* --- Verse text on the pobres dark background ---
      Text needs warmth and legibility against dark overlays. */
-.pobres-overlay ~ .content-centerer .verse-line,
-.pobres-bg-overlay ~ .content-centerer .verse-line,
-body .pobres-bg-tierra ~ .content-centerer .verse-line,
-body .pobres-bg-flama ~ .content-centerer .verse-line {
+.pobres-overlay~.content-centerer .verse-line,
+.pobres-bg-overlay~.content-centerer .verse-line,
+body .pobres-bg-tierra~.content-centerer .verse-line,
+body .pobres-bg-flama~.content-centerer .verse-line {
     color: rgba(240, 220, 190, 0.95);
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Make all verses on pobres pages warmer */
-#app-container .pobres-bg-overlay ~ .content-centerer {
+#app-container .pobres-bg-overlay~.content-centerer {
     color: rgba(235, 215, 185, 0.95);
 }
 
@@ -868,41 +1241,45 @@ body .pobres-bg-flama ~ .content-centerer .verse-line {
 .gata-bio-portrait {
     display: block;
     width: clamp(140px, 35vw, 200px);
-    height: auto;
-    border-radius: 50%;
-    border: 3px solid rgba(200, 100, 50, 0.5);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 60% center;
+    border-radius: 50% !important;
+    border: 2px solid rgba(209, 157, 112, 0.38);
     box-shadow:
-        0 0 30px rgba(180, 60, 20, 0.25),
-        0 0 80px rgba(180, 60, 20, 0.1),
-        0 8px 30px rgba(0,0,0,0.5);
+        0 0 20px rgba(138, 86, 47, 0.2),
+        0 0 52px rgba(138, 86, 47, 0.1),
+        0 8px 24px rgba(0, 0, 0, 0.46);
     margin: 0 auto;
-    filter: sepia(30%) contrast(1.05) brightness(0.95);
+    filter: grayscale(34%) contrast(1.07) brightness(0.94);
     transition: filter 1s ease, box-shadow 1s ease;
     animation: bioPortraitAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
 .gata-bio-portrait:hover {
-    filter: sepia(0%) contrast(1.05) brightness(1.0);
+    filter: grayscale(10%) contrast(1.06) brightness(1.0);
     box-shadow:
-        0 0 50px rgba(200, 80, 30, 0.4),
-        0 0 100px rgba(200, 80, 30, 0.15),
-        0 12px 40px rgba(0,0,0,0.5);
+        0 0 32px rgba(173, 109, 60, 0.3),
+        0 0 80px rgba(173, 109, 60, 0.14),
+        0 12px 34px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes bioPortraitAppear {
     0% {
         opacity: 0;
         transform: scale(0.85);
-        filter: sepia(80%) blur(4px);
+        filter: grayscale(80%) blur(4px);
     }
+
     60% {
         opacity: 0.9;
-        filter: sepia(40%) blur(0);
+        filter: grayscale(52%) blur(0);
     }
+
     100% {
         opacity: 1;
         transform: scale(1);
-        filter: sepia(30%) contrast(1.05) brightness(0.95);
+        filter: grayscale(34%) contrast(1.07) brightness(0.94);
     }
 }
 
@@ -925,8 +1302,15 @@ body .pobres-bg-flama ~ .content-centerer .verse-line {
 }
 
 @keyframes badgeFadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .gata-bio-name {
@@ -973,4 +1357,23 @@ body .pobres-bg-flama ~ .content-centerer .verse-line {
 .poem-author-display em {
     font-style: italic;
     opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+    .gata-parenthesis {
+        font-size: 0.8em;
+        padding-inline-start: 0.62em;
+        letter-spacing: 0.02em;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .gata-parenthesis,
+    .gata-parenthesis--bright {
+        animation: none;
+        opacity: 0.68;
+        transform: none;
+        filter: none;
+    }
 }

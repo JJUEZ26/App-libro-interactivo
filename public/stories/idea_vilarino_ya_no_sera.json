@@ -240,14 +240,39 @@
     "page": 12,
     "forceShowChoices": true,
     "isPortrait": true,
-    "images": [
-      "images/idea_vilarino_retrato.webp"
+    "images": [],
+    "discoverAuthor": "Idea Vilariño",
+    "discoveries": [
+      {
+        "title": "Si te quiero",
+        "type": "poem",
+        "year": "1960",
+        "line": "El reverso de 'Ya no'. Lo que se siente antes de perder.",
+        "available": false
+      },
+      {
+        "title": "Nocturnos",
+        "type": "poem",
+        "year": "1955",
+        "line": "Poemas escritos de noche. Insomnio, muerte, el ruido del silencio.",
+        "available": false
+      },
+      {
+        "title": "Poemas de amor",
+        "type": "book",
+        "year": "1957",
+        "line": "Toda su poesía amorosa reunida. El ciclo completo del deseo y la pérdida.",
+        "available": false
+      }
     ],
     "scenes": [
-      "<strong>Idea Vilariño (1920-2009)</strong>",
-      "Poeta, ensayista y crítica literaria uruguaya.",
-      "Su escritura es reconocida por un tono sobrio, directo y sin adornos, capaz de decir mucho con muy pocas palabras. En sus poemas aparecen con fuerza el amor, la pérdida, la soledad y la muerte, pero también esa lucidez de quien mira de frente lo que duele.",
-      "\u201cYa no\u201d pertenece a esa zona de su obra donde el lenguaje se vuelve casi seco, como si cada verso fuera lo único que se puede decir cuando ya no queda nada que explicar."
+      "<div class='bio-portrait-container bio--vilarino'><img src='images/idea_vilarino_retrato.webp' class='bio-portrait' alt='Idea Vilariño'><div class='bio-badge'>1920 — 2009</div></div>",
+      "<strong class='bio-name'>Idea Vilariño</strong>",
+      "Nació en Montevideo en 1920. Su padre, Leandro Vilariño, era poeta y anarquista. Su madre enseñaba piano. Perteneció a la Generación del 45, el grupo intelectual más importante de la historia de Uruguay, junto a Mario Benedetti, Juan Carlos Onetti e Ida Vitale.",
+      "Mantuvo con Onetti una relación que duró años y que marcó la vida de ambos. Él estaba casado. La correspondencia entre los dos fue publicada décadas después de la muerte de Onetti. Vilariño también fue crítica musical; sus estudios sobre el ritmo en la poesía y en el tango son todavía referencia académica.",
+      "Vivió sola en Montevideo la mayor parte de su vida adulta. Rechazó sistemáticamente premios y homenajes públicos. Murió el 28 de abril de 2009, a los 89 años.",
+      "'Ya no' fue escrito a finales de los años 50, durante la ruptura con Onetti. El poema es un inventario: enumera, una por una, las cosas que ya no van a suceder. No argumenta, no explica, no se queja. Describe. Esa sequedad es lo que lo distingue de otros poemas de desamor. Vilariño no dice que sufre; dice lo que ha perdido, y deja que el lector haga el resto.",
+      "<em class='bio-quote'>\"No volveré a tocarte. No te veré morir.\"</em>"
     ],
     "choices": [
       {

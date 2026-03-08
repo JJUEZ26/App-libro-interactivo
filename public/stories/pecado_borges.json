@@ -195,10 +195,38 @@
     "page": 10,
     "forceShowChoices": true,
     "images": [],
+    "discoverAuthor": "Jorge Luis Borges",
+    "discoveries": [
+      {
+        "title": "El Aleph",
+        "type": "book",
+        "year": "1949",
+        "line": "El punto del universo donde convergen todos los puntos. Su cuento más célebre.",
+        "available": false
+      },
+      {
+        "title": "Ficciones",
+        "type": "book",
+        "year": "1944",
+        "line": "Laberintos, bibliotecas infinitas, mundos inventados. El libro que redefinió la narrativa.",
+        "available": false
+      },
+      {
+        "title": "Poema de los dones",
+        "type": "poem",
+        "year": "1960",
+        "line": "Sobre la ceguera y los libros. La ironía como forma del destino.",
+        "available": false
+      }
+    ],
     "scenes": [
-      "<img src='images/biografia_borges.webp' class='bio-portrait' alt='jorge borges'>",
-      "Fue uno de los escritores más influyentes de la literatura argentina y universal del siglo XX. Lector apasionado desde la infancia, dedicó su vida a los libros, las palabras y las ideas, incluso cuando la ceguera fue apagando su vista.",
-      "\"El remordimiento\" (1975) fue escrito poco después de la muerte de su madre, Leonor Acevedo, una presencia decisiva en su vida personal y literaria. En este poema, Borges se aparta del juego intelectual que suele caracterizar su obra y se muestra vulnerable: un Borges humano, que reflexiona sobre su vida y se culpa por no haber sido feliz."
+      "<div class='bio-portrait-container bio--borges'><img src='images/biografia_borges.webp' class='bio-portrait' alt='Jorge Luis Borges'><div class='bio-badge'>1899 — 1986</div></div>",
+      "<strong class='bio-name'>Jorge Luis Borges</strong>",
+      "Nació en Buenos Aires en 1899. Su familia era bilingüe: aprendió a leer en inglés antes que en español, en la biblioteca de su padre. Estudió en Ginebra durante la Primera Guerra Mundial y regresó a Argentina en 1921, donde comenzó a publicar poesía y ensayo.",
+      "En 1955 fue nombrado director de la Biblioteca Nacional de Argentina. Para entonces ya estaba prácticamente ciego. Ocupó el cargo durante dieciocho años. Dictaba sus textos a su madre, Leonor Acevedo, y más tarde a distintas colaboradoras. Fue candidato al Nobel de Literatura durante más de dos décadas. No lo obtuvo.",
+      "Su obra abarca poesía, cuento y ensayo. Es considerado uno de los escritores más influyentes del siglo XX en cualquier lengua. Murió en Ginebra el 14 de junio de 1986.",
+      "\"El Remordimiento\" fue publicado en <em>\"La moneda de hierro\"</em> (1976), un año después de la muerte de su madre. Es un poema atípico en su producción. No hay laberintos, espejos ni bibliotecas infinitas. Borges se limita a constatar que dedicó su vida al arte y que eso no lo hizo feliz. La culpa que describe no es filosófica sino personal: sus padres lo engendraron para la vida, y él eligió otra cosa.",
+      "<em class='bio-quote'>\"He cometido el peor de los pecados que un hombre puede cometer. No he sido feliz.\"</em>"
     ],
     "choices": [
       {

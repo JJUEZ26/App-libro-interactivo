@@ -3,7 +3,7 @@
 @import url('./layout.css');
 @import url('./ui.css');
 @import url('./library.css');
-@import url('./reader.css');
+@import url('./reader.css?v=2');
 @import url('./utilities.css');
 @import url('../books/pajaro-azul/styles.css');
 @import url('../effects/overlay/styles.css');
@@ -14,4 +14,5 @@
 @import url('../effects/leaves/styles.css');
 @import url('../effects/transition/styles.css');
 @import url('./poem-experience.css');
+@import url('./discoveries.css');
 @import url('./chat.css');

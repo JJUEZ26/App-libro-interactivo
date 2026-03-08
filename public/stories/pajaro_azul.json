@@ -73,11 +73,38 @@
     "page": 4,
     "forceShowChoices": true,
     "images": [],
+    "discoverAuthor": "Charles Bukowski",
+    "discoveries": [
+      {
+        "title": "El amor es un perro del infierno",
+        "type": "poem",
+        "year": "1977",
+        "line": "Su poemario más conocido. Sexo, soledad y noches largas en Los Ángeles.",
+        "available": false
+      },
+      {
+        "title": "La senda del perdedor",
+        "type": "book",
+        "year": "1982",
+        "line": "Novela autobiográfica sobre su infancia. El origen de todo.",
+        "available": false
+      },
+      {
+        "title": "Factotum",
+        "type": "book",
+        "year": "1975",
+        "line": "Cien empleos, ninguna vocación. La vida antes de la literatura.",
+        "available": false
+      }
+    ],
     "scenes": [
-      "<img src='images/bukowski_retrato.webp' class='bio-portrait' alt='Charles Bukowski'>",
-      "<strong>Charles Bukowski (1920-1994)</strong>",
-      "Escritor estadounidense y símbolo del 'realismo sucio', conocido por su vida de excesos y su dura fachada ante el mundo.",
-      "'El Pájaro Azul' (1992) es quizás su confesión más honesta: un vistazo a la vulnerabilidad y la belleza que mantuvo cautivas en su interior para sobrevivir a un mundo hostil."
+      "<div class='bio-portrait-container bio--bukowski'><img src='images/bukowski_retrato.webp' class='bio-portrait' alt='Charles Bukowski'><div class='bio-badge'>1920 — 1994</div></div>",
+      "<strong class='bio-name'>Charles Bukowski</strong><span class='bio-real-name'>Heinrich Karl Bukowski</span>",
+      "Nació en Andernach, Alemania, en 1920. A los dos años su familia emigró a Los Ángeles. Su padre era violento; las palizas fueron frecuentes durante toda su infancia. A los trece descubrió el alcohol. A los veintiuno dejó de escribir y pasó una década bebiendo en habitaciones de pensión por todo Estados Unidos.",
+      "Entre 1952 y 1969 trabajó como empleado de clasificación en el servicio postal norteamericano. A los 49 años, el editor John Martin le propuso un salario fijo a cambio de que dejara el correo y se dedicara a escribir. Aceptó. Al día siguiente entregó su renuncia.",
+      "Publicó más de cuarenta libros entre novelas, cuentos y poesía. Se casó dos veces. Con Linda Lee Beighle, su segunda esposa, vivió sus años más estables. Murió de leucemia en San Pedro, California, el 9 de marzo de 1994. En su lápida hay una inscripción que dice <em>\"Don't try\"</em>.",
+      "'El Pájaro Azul' pertenece a <em>\"The Last Night of the Earth Poems\"</em>, publicado en 1992. Es probablemente su texto más desprovisto de fachada. Durante décadas construyó una imagen pública de hombre duro e insensible; en este poema admite que esa imagen era una estrategia de supervivencia, y que había algo dentro de él que mantuvo cautivo a propósito.",
+      "<em class='bio-quote'>\"Hay un pájaro azul en mi corazón que quiere salir, pero soy demasiado listo.\"</em>"
     ],
     "choices": [
       {

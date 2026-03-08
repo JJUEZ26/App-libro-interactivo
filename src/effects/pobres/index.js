@@ -1,29 +1,26 @@
 /**
- * Efecto "Flores en el Hormigón" — Gata Cattana
- * 
- * Flores silvestres que crecen desde el borde inferior de la pantalla.
- * Delicadas, inesperadas, como el amor de los pobres:
- * germinan donde no deberían poder germinar.
+ * Efecto "Como aman los pobres" (version sobria).
+ * Menos literal, menos infantil, mas atmosferico.
  */
 
 const FLOWER_COLORS = {
-    tierra: ['#8B4513', '#A0522D', '#D2691E', '#C19A6B'],
-    flama: ['#B22222', '#CD5C5C', '#DC143C', '#8B0000'],
-    brasa: ['#FF4500', '#FF6347', '#E2642A', '#CC4400'],
-    rosa: ['#E8174D', '#F72B5A', '#FF1744', '#C2185B'],
-    bio: ['#6B2D5E', '#8E3A78', '#B5458F', '#7B1FA2'],
-    intro: ['#555555', '#6B6B6B', '#7A7A7A', '#888888'],
-    corazon: ['#FF1744', '#F50057', '#D50000', '#FF0000']
+    tierra: ['#6f4a35', '#8a5a3f', '#a06a4c', '#b78a66'],
+    flama: ['#8f3e35', '#aa4e43', '#c45b49', '#7d352f'],
+    brasa: ['#b55735', '#cb6a3c', '#dd7d46', '#9b462a'],
+    rosa: ['#973e55', '#ad4d64', '#c06374', '#7f344a'],
+    bio: ['#5f3b5f', '#744772', '#8a5484', '#4f2f4f'],
+    intro: ['#4f4f4f', '#636363', '#767676', '#8a8a8a'],
+    corazon: ['#8f2c3f', '#a83649', '#c24a58', '#772634']
 };
 
 const INTENSITIES = {
-    pobres_intro: { count: 3, speed: 'slow', bloom: 'small' },
-    pobres_tierra: { count: 5, speed: 'slow', bloom: 'small' },
-    pobres_flama: { count: 8, speed: 'medium', bloom: 'medium' },
-    pobres_brasa: { count: 11, speed: 'medium', bloom: 'medium' },
-    pobres_rosa: { count: 14, speed: 'fast', bloom: 'large' },
-    pobres_corazon: { count: 20, speed: 'fast', bloom: 'large' },
-    pobres_bio: { count: 6, speed: 'slow', bloom: 'medium' },
+    pobres_intro: { count: 2, speed: 'slow', bloom: 'small' },
+    pobres_tierra: { count: 3, speed: 'slow', bloom: 'small' },
+    pobres_flama: { count: 5, speed: 'medium', bloom: 'medium' },
+    pobres_brasa: { count: 7, speed: 'medium', bloom: 'medium' },
+    pobres_rosa: { count: 9, speed: 'fast', bloom: 'large' },
+    pobres_corazon: { count: 11, speed: 'fast', bloom: 'large' },
+    pobres_bio: { count: 4, speed: 'slow', bloom: 'medium' }
 };
 
 function getColorPalette(effectName) {
@@ -37,157 +34,109 @@ function getColorPalette(effectName) {
     return FLOWER_COLORS.tierra;
 }
 
+function isMobileViewport() {
+    return window.matchMedia('(max-width: 768px)').matches;
+}
+
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 /**
- * Draws a wildflower as an SVG path
+ * Draws a more abstract "bloom" so the look feels less cartoonish.
  */
-function createFlowerSVG(color, size, type) {
+function createFlowerSVG(color, size) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('width', size);
-    svg.setAttribute('height', size * 1.6);
-    svg.setAttribute('viewBox', `0 0 ${size} ${size * 1.6}`);
+    svg.setAttribute('height', size * 1.7);
+    svg.setAttribute('viewBox', `0 0 ${size} ${size * 1.7}`);
     svg.style.overflow = 'visible';
 
     const cx = size / 2;
-    const stemH = size * 0.8;
+    const topY = size * 0.52;
+    const stemBottomY = size * 1.68;
 
-    // Stem
-    const stem = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    stem.setAttribute('x1', cx);
-    stem.setAttribute('y1', size * 1.6);
-    stem.setAttribute('x2', cx + (Math.random() - 0.5) * size * 0.3);
-    stem.setAttribute('y2', size * 0.5);
-    stem.setAttribute('stroke', '#3a5a2a');
-    stem.setAttribute('stroke-width', Math.max(1, size * 0.05));
+    const stem = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const stemDrift = (Math.random() - 0.5) * size * 0.16;
+    stem.setAttribute(
+        'd',
+        `M ${cx} ${stemBottomY} Q ${cx + stemDrift} ${size * 1.1} ${cx + stemDrift * 0.8} ${topY + size * 0.12}`
+    );
+    stem.setAttribute('stroke', 'rgba(115, 92, 72, 0.48)');
+    stem.setAttribute('stroke-width', Math.max(1, size * 0.035));
     stem.setAttribute('stroke-linecap', 'round');
+    stem.setAttribute('fill', 'none');
     svg.appendChild(stem);
 
-    if (type === 'simple') {
-        // 5-petal flower
-        const petalCount = 5;
-        const r = size * 0.28;
-        for (let i = 0; i < petalCount; i++) {
-            const angle = (i / petalCount) * Math.PI * 2 - Math.PI / 2;
-            const px = cx + Math.cos(angle) * r;
-            const py = size * 0.5 + Math.sin(angle) * r;
-            const petal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-            petal.setAttribute('cx', px);
-            petal.setAttribute('cy', py);
-            petal.setAttribute('rx', size * 0.13);
-            petal.setAttribute('ry', size * 0.22);
-            petal.setAttribute('fill', color);
-            petal.setAttribute('opacity', '0.85');
-            petal.setAttribute('transform', `rotate(${(i / petalCount) * 360}, ${px}, ${py})`);
-            svg.appendChild(petal);
-        }
-        // Center
-        const center = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        center.setAttribute('cx', cx);
-        center.setAttribute('cy', size * 0.5);
-        center.setAttribute('r', size * 0.12);
-        center.setAttribute('fill', '#F4C542');
-        svg.appendChild(center);
+    const petalCount = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < petalCount; i += 1) {
+        const angle = (i / petalCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.28;
+        const radius = size * (0.18 + Math.random() * 0.09);
+        const petal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        const px = cx + Math.cos(angle) * radius * 0.8;
+        const py = topY + Math.sin(angle) * radius * 0.6;
 
-    } else if (type === 'wild') {
-        // Ragged wildflower with irregular petals
-        const petalCount = 6 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < petalCount; i++) {
-            const angle = (i / petalCount) * Math.PI * 2;
-            const r = size * (0.2 + Math.random() * 0.15);
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            const x1 = cx + Math.cos(angle) * r * 0.3;
-            const y1 = size * 0.5 + Math.sin(angle) * r * 0.3;
-            const x2 = cx + Math.cos(angle) * r;
-            const y2 = size * 0.5 + Math.sin(angle) * r;
-            const ctrl1x = cx + Math.cos(angle - 0.4) * r * 0.7;
-            const ctrl1y = size * 0.5 + Math.sin(angle - 0.4) * r * 0.7;
-            const ctrl2x = cx + Math.cos(angle + 0.4) * r * 0.7;
-            const ctrl2y = size * 0.5 + Math.sin(angle + 0.4) * r * 0.7;
-            path.setAttribute('d', `M ${cx} ${size * 0.5} C ${ctrl1x} ${ctrl1y} ${x1} ${y1} ${x2} ${y2} C ${ctrl2x} ${ctrl2y} ${cx} ${size * 0.5} Z`);
-            path.setAttribute('fill', color);
-            path.setAttribute('opacity', String(0.7 + Math.random() * 0.3));
-            svg.appendChild(path);
-        }
-        const center = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        center.setAttribute('cx', cx);
-        center.setAttribute('cy', size * 0.5);
-        center.setAttribute('r', size * 0.1);
-        center.setAttribute('fill', '#FFF8DC');
-        svg.appendChild(center);
-
-    } else {
-        // Poppy-like — single bold petals
-        const petalCount = 4;
-        for (let i = 0; i < petalCount; i++) {
-            const angle = (i / petalCount) * Math.PI * 2 + Math.PI / 4;
-            const petal = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-            petal.setAttribute('cx', cx + Math.cos(angle) * size * 0.18);
-            petal.setAttribute('cy', size * 0.5 + Math.sin(angle) * size * 0.18);
-            petal.setAttribute('rx', size * 0.18);
-            petal.setAttribute('ry', size * 0.28);
-            petal.setAttribute('fill', color);
-            petal.setAttribute('opacity', '0.9');
-            petal.setAttribute('transform', `rotate(${(i / petalCount) * 360 + 45}, ${cx + Math.cos(angle) * size * 0.18}, ${size * 0.5 + Math.sin(angle) * size * 0.18})`);
-            svg.appendChild(petal);
-        }
-        const center = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        center.setAttribute('cx', cx);
-        center.setAttribute('cy', size * 0.5);
-        center.setAttribute('r', size * 0.11);
-        center.setAttribute('fill', '#1a0a0a');
-        svg.appendChild(center);
+        petal.setAttribute('cx', px);
+        petal.setAttribute('cy', py);
+        petal.setAttribute('rx', String(size * (0.15 + Math.random() * 0.04)));
+        petal.setAttribute('ry', String(size * (0.25 + Math.random() * 0.06)));
+        petal.setAttribute('fill', color);
+        petal.setAttribute('opacity', String(0.26 + Math.random() * 0.26));
+        petal.setAttribute('transform', `rotate(${(angle * 180) / Math.PI}, ${px}, ${py})`);
+        svg.appendChild(petal);
     }
+
+    const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    halo.setAttribute('cx', String(cx));
+    halo.setAttribute('cy', String(topY));
+    halo.setAttribute('r', String(size * 0.2));
+    halo.setAttribute('fill', color);
+    halo.setAttribute('opacity', '0.16');
+    svg.appendChild(halo);
 
     return svg;
 }
 
-/**
- * Spawns a flower that grows from the bottom of the screen
- */
 function spawnFlower(overlay, colors, sizeConfig, speedConfig) {
     const wrapper = document.createElement('div');
     wrapper.className = 'pobres-flower';
 
-    // Random position along the bottom
-    const x = 3 + Math.random() * 94; // 3-97%
-    const delay = Math.random() * 4000;
+    const x = 4 + Math.random() * 92;
+    const delay = Math.random() * 5000;
     wrapper.style.left = `${x}%`;
-    wrapper.style.bottom = `${-1 + Math.random() * 5}%`;
+    wrapper.style.bottom = `${-2 + Math.random() * 6}%`;
 
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const size = sizeConfig === 'small' ? 14 + Math.random() * 10 :
-        sizeConfig === 'medium' ? 18 + Math.random() * 14 :
-            22 + Math.random() * 18;
+    const size =
+        sizeConfig === 'small'
+            ? 10 + Math.random() * 7
+            : sizeConfig === 'medium'
+                ? 14 + Math.random() * 10
+                : 18 + Math.random() * 12;
 
-    const types = ['simple', 'wild', 'poppy'];
-    const type = types[Math.floor(Math.random() * types.length)];
+    wrapper.appendChild(createFlowerSVG(color, size));
 
-    const svg = createFlowerSVG(color, size, type);
-    wrapper.appendChild(svg);
+    const duration =
+        speedConfig === 'slow'
+            ? 6 + Math.random() * 2
+            : speedConfig === 'medium'
+                ? 4.8 + Math.random() * 2
+                : 3.8 + Math.random() * 1.6;
 
-    const duration = speedConfig === 'slow' ? 3.5 + Math.random() * 2 :
-        speedConfig === 'medium' ? 2.5 + Math.random() * 1.5 :
-            2 + Math.random() * 1;
-
-    // Use CSS custom properties so they don't conflict with the animation shorthand
     wrapper.style.setProperty('--bloom-duration', `${duration}s`);
     wrapper.style.setProperty('--flower-delay', `${delay}ms`);
-
-    // Slight random tilt
-    const tilt = (Math.random() - 0.5) * 20;
-    wrapper.style.setProperty('--flower-tilt', `${tilt}deg`);
+    wrapper.style.setProperty('--flower-tilt', `${(Math.random() - 0.5) * 10}deg`);
+    wrapper.style.setProperty('--flower-drift', `${(Math.random() - 0.5) * 8}px`);
 
     overlay.appendChild(wrapper);
 }
 
 /**
- * Starts the "Flowers in the Concrete" effect for the poverty poems
- * @param {string} effectName - e.g. 'pobres_terra', 'pobres_brasa', etc.
- * @returns {Function} cleanup function
+ * Starts the atmospheric effect for "Como aman los pobres".
  */
 export function startPobresEffect(effectName) {
     const container = document.getElementById('app-container') || document.body;
 
-    // Inject CSS if not already present
     if (!document.getElementById('pobres-effect-styles')) {
         const style = document.createElement('style');
         style.id = 'pobres-effect-styles';
@@ -202,51 +151,83 @@ export function startPobresEffect(effectName) {
             .pobres-flower {
                 position: absolute;
                 transform-origin: bottom center;
-                animation-name: flowerBloom;
-                animation-duration: var(--bloom-duration, 3s);
-                animation-delay: var(--flower-delay, 0ms);
-                animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-                animation-fill-mode: forwards;
-                animation-play-state: running;
+                animation-name: flowerBloom, flowerSway;
+                animation-duration: var(--bloom-duration, 5s), calc(var(--bloom-duration, 5s) * 1.8);
+                animation-delay: var(--flower-delay, 0ms), var(--flower-delay, 0ms);
+                animation-timing-function: ease-out, ease-in-out;
+                animation-fill-mode: forwards, both;
+                animation-iteration-count: 1, infinite;
+                animation-direction: normal, alternate;
                 opacity: 0;
                 z-index: 3;
+                filter: saturate(0.78) blur(0.35px);
             }
             @keyframes flowerBloom {
                 0% {
                     opacity: 0;
-                    transform: scale(0) rotate(var(--flower-tilt, 0deg)) translateY(20px);
+                    transform: scale(0.65) rotate(var(--flower-tilt, 0deg)) translateY(18px);
                 }
-                40% {
-                    opacity: 0.9;
-                }
-                70% {
-                    transform: scale(1.1) rotate(var(--flower-tilt, 0deg)) translateY(-4px);
-                    opacity: 1;
+                45% {
+                    opacity: 0.54;
                 }
                 100% {
+                    opacity: 0.32;
                     transform: scale(1) rotate(var(--flower-tilt, 0deg)) translateY(0);
-                    opacity: 0.75;
+                }
+            }
+            @keyframes flowerSway {
+                0% {
+                    transform: translateX(calc(var(--flower-drift, 0px) * -0.35)) rotate(calc(var(--flower-tilt, 0deg) * -0.35));
+                }
+                100% {
+                    transform: translateX(var(--flower-drift, 0px)) rotate(var(--flower-tilt, 0deg));
                 }
             }
 
-            /* Background overlay for the poem pages */
             .pobres-bg-overlay {
                 position: fixed;
                 inset: 0;
                 pointer-events: none;
                 z-index: 2;
-                transition: background 1.5s ease;
+                transition: background 1.3s ease, opacity 0.6s ease;
             }
-            .pobres-bg-tierra  { background: radial-gradient(ellipse at 50% 100%, rgba(80,40,20,0.60) 0%, rgba(20,15,12,0.92) 70%); }
-            .pobres-bg-flama   { background: radial-gradient(ellipse at 50% 100%, rgba(100,20,10,0.62) 0%, rgba(18,10,10,0.93) 70%); }
-            .pobres-bg-brasa   { background: radial-gradient(ellipse at 50% 100%, rgba(120,30,10,0.65) 0%, rgba(15,8,6,0.94) 70%); }
-            .pobres-bg-rosa    { background: radial-gradient(ellipse at 50% 100%, rgba(140,20,50,0.65) 0%, rgba(14,6,10,0.95) 70%); }
-            .pobres-bg-corazon { background: radial-gradient(ellipse at 50% 50%,  rgba(160,10,30,0.70) 0%, rgba(10,4,8,0.97) 70%); }
-            .pobres-bg-bio     { background: radial-gradient(ellipse at 50% 50%,  rgba(60,20,70,0.60) 0%, rgba(12,8,18,0.93) 70%); }
-            .pobres-bg-intro   { background: radial-gradient(ellipse at 50% 100%, rgba(40,35,30,0.55) 0%, rgba(16,14,12,0.90) 70%); }
 
-            /* When pobres-mode is active, make the page-wrapper transparent
-               so the atmospheric background shows through */
+            .pobres-bg-tierra {
+                background:
+                    linear-gradient(180deg, rgba(10, 9, 8, 0.7) 0%, rgba(15, 11, 9, 0.88) 45%, rgba(28, 16, 12, 0.86) 100%),
+                    radial-gradient(120% 74% at 50% 112%, rgba(125, 76, 42, 0.28) 0%, rgba(24, 13, 10, 0) 74%);
+            }
+            .pobres-bg-flama {
+                background:
+                    linear-gradient(180deg, rgba(10, 8, 8, 0.72) 0%, rgba(17, 10, 9, 0.9) 46%, rgba(33, 13, 11, 0.88) 100%),
+                    radial-gradient(120% 72% at 50% 112%, rgba(150, 60, 35, 0.3) 0%, rgba(26, 12, 11, 0) 74%);
+            }
+            .pobres-bg-brasa {
+                background:
+                    linear-gradient(180deg, rgba(11, 8, 7, 0.74) 0%, rgba(19, 10, 8, 0.92) 46%, rgba(41, 17, 10, 0.88) 100%),
+                    radial-gradient(120% 70% at 50% 112%, rgba(180, 88, 40, 0.3) 0%, rgba(30, 14, 9, 0) 74%);
+            }
+            .pobres-bg-rosa {
+                background:
+                    linear-gradient(180deg, rgba(11, 8, 10, 0.75) 0%, rgba(20, 10, 14, 0.93) 46%, rgba(38, 13, 23, 0.9) 100%),
+                    radial-gradient(120% 70% at 50% 112%, rgba(173, 73, 101, 0.31) 0%, rgba(24, 10, 14, 0) 74%);
+            }
+            .pobres-bg-corazon {
+                background:
+                    linear-gradient(180deg, rgba(12, 7, 9, 0.78) 0%, rgba(20, 9, 12, 0.95) 46%, rgba(40, 12, 18, 0.92) 100%),
+                    radial-gradient(110% 62% at 50% 110%, rgba(188, 52, 78, 0.34) 0%, rgba(24, 9, 13, 0) 72%);
+            }
+            .pobres-bg-bio {
+                background:
+                    linear-gradient(180deg, rgba(11, 9, 12, 0.72) 0%, rgba(16, 10, 18, 0.9) 45%, rgba(28, 15, 32, 0.86) 100%),
+                    radial-gradient(112% 66% at 50% 108%, rgba(112, 69, 130, 0.28) 0%, rgba(18, 12, 21, 0) 74%);
+            }
+            .pobres-bg-intro {
+                background:
+                    linear-gradient(180deg, rgba(11, 10, 9, 0.68) 0%, rgba(17, 14, 12, 0.86) 45%, rgba(24, 20, 18, 0.8) 100%),
+                    radial-gradient(120% 74% at 50% 112%, rgba(116, 102, 88, 0.22) 0%, rgba(18, 15, 13, 0) 74%);
+            }
+
             body.pobres-mode #page-wrapper {
                 background-color: transparent !important;
                 box-shadow: none !important;
@@ -258,7 +239,6 @@ export function startPobresEffect(effectName) {
             body.pobres-mode #app-container {
                 background-color: #0f0a08;
             }
-            /* Ensure poem text stays above the flower layer */
             body.pobres-mode #book-container,
             body.pobres-mode #book,
             body.pobres-mode #page-wrapper,
@@ -267,53 +247,53 @@ export function startPobresEffect(effectName) {
                 position: relative;
                 z-index: 10;
             }
+
+            @media (max-width: 768px) {
+                .pobres-overlay {
+                    opacity: 0.78;
+                }
+                .pobres-bg-overlay {
+                    opacity: 0.88;
+                }
+            }
         `;
         document.head.appendChild(style);
     }
 
-    // Mark body so CSS can make the page-wrapper transparent
     document.body.classList.add('pobres-mode');
 
-    const config = INTENSITIES[effectName] || INTENSITIES['pobres_tierra'];
+    const config = INTENSITIES[effectName] || INTENSITIES.pobres_tierra;
     const colors = getColorPalette(effectName);
+    const mobileFactor = isMobileViewport() ? 0.72 : 1;
+    const motionFactor = prefersReducedMotion() ? 0.45 : 1;
+    const densityFactor = mobileFactor * motionFactor;
+    const spawnCount = Math.max(2, Math.round(config.count * densityFactor));
 
-    // Background tint overlay
     const theme = effectName.replace('pobres_', '');
     const bgOverlay = document.createElement('div');
     bgOverlay.className = `pobres-bg-overlay pobres-bg-${theme}`;
     container.appendChild(bgOverlay);
 
-    // Flower overlay
     const overlay = document.createElement('div');
     overlay.className = 'pobres-overlay';
     container.appendChild(overlay);
 
-    // Initial batch of flowers
-    for (let i = 0; i < config.count; i++) {
+    for (let i = 0; i < spawnCount; i += 1) {
         spawnFlower(overlay, colors, config.bloom, config.speed);
     }
 
-    // Keep spawning flowers over time
-    const intervalMs = config.speed === 'slow' ? 3500 :
-        config.speed === 'medium' ? 2500 : 1800;
+    const baseInterval = config.speed === 'slow' ? 4200 : config.speed === 'medium' ? 3000 : 2200;
+    const intervalMs = Math.round(baseInterval * (isMobileViewport() ? 1.28 : 1) * (prefersReducedMotion() ? 1.65 : 1));
 
     const interval = setInterval(() => {
         const existing = overlay.querySelectorAll('.pobres-flower').length;
-        // Keep a natural density — don't overcrowd
-        const maxFlowers = config.count * 3;
+        const maxFlowers = Math.max(6, spawnCount * 2);
         if (existing < maxFlowers) {
-            const batch = Math.ceil(config.count / 3);
-            for (let i = 0; i < batch; i++) {
+            const batch = Math.max(1, Math.ceil(spawnCount / 4));
+            for (let i = 0; i < batch; i += 1) {
                 spawnFlower(overlay, colors, config.bloom, config.speed);
             }
         }
-        // Prune flowers that have finished animating (opacity 0.75 = done)
-        overlay.querySelectorAll('.pobres-flower').forEach(f => {
-            const style = window.getComputedStyle(f);
-            if (style.animationPlayState === 'finished' || parseFloat(style.opacity) < 0.1) {
-                // Leave them — they look like a garden
-            }
-        });
     }, intervalMs);
 
     return function cleanup() {

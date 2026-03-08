@@ -1,0 +1,425 @@
+/* ================================================
+   DISCOVERIES — Interactive "Discover More" Orb
+   Premium end-of-biography reading recommendations
+   ================================================ */
+
+/* --- Container --- */
+.discoveries-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2.5rem 0 1.5rem;
+    z-index: 5;
+}
+
+/* --- The Orb: a softly pulsing invitation --- */
+.discovery-orb-wrapper {
+    display: flex;
+    justify-content: center;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.discoveries--open .discovery-orb-wrapper {
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
+    position: absolute;
+}
+
+.discovery-orb {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    animation: orbAppear 2s cubic-bezier(0.16, 1, 0.3, 1) 3s both;
+}
+
+@keyframes orbAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    60% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* — Rings: concentric expanding halos — */
+.orb-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 180, 150, 0.15);
+}
+
+.orb-ring--1 {
+    animation: orbPulse1 4s ease-in-out infinite;
+}
+
+.orb-ring--2 {
+    animation: orbPulse2 4s ease-in-out 0.8s infinite;
+}
+
+.orb-ring--3 {
+    animation: orbPulse3 4s ease-in-out 1.6s infinite;
+}
+
+@keyframes orbPulse1 {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes orbPulse2 {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.25;
+    }
+
+    50% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@keyframes orbPulse3 {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(2.1);
+        opacity: 0;
+    }
+}
+
+/* — Core: the solid center dot — */
+.orb-core {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%,
+            rgba(220, 200, 160, 0.9),
+            rgba(180, 150, 100, 0.6));
+    box-shadow:
+        0 0 12px rgba(200, 170, 120, 0.3),
+        0 0 30px rgba(200, 170, 120, 0.1);
+    animation: orbCoreBreathe 3s ease-in-out infinite;
+}
+
+@keyframes orbCoreBreathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 12px rgba(200, 170, 120, 0.3), 0 0 30px rgba(200, 170, 120, 0.1);
+    }
+
+    50% {
+        transform: scale(1.12);
+        box-shadow: 0 0 18px rgba(200, 170, 120, 0.45), 0 0 40px rgba(200, 170, 120, 0.15);
+    }
+}
+
+/* — Label below the orb — */
+.orb-label {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(200, 180, 150, 0.5);
+    white-space: nowrap;
+    transition: color 0.4s ease;
+}
+
+.discovery-orb:hover .orb-label {
+    color: rgba(200, 180, 150, 0.8);
+}
+
+.discovery-orb:hover .orb-core {
+    animation-play-state: paused;
+    transform: scale(1.2);
+    box-shadow: 0 0 22px rgba(200, 170, 120, 0.5), 0 0 50px rgba(200, 170, 120, 0.2);
+}
+
+
+/* ================================================
+   EXPANDED PANEL — The 3 recommended works
+   ================================================ */
+
+.discovery-panel {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    opacity: 0;
+}
+
+.discoveries--open .discovery-panel {
+    display: flex;
+    animation: panelReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panelReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* — Header — */
+.discovery-panel-header {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+.discovery-panel-title {
+    display: block;
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(220, 200, 170, 0.9);
+    animation: panelTextIn 0.6s ease 0.2s both;
+}
+
+.discovery-panel-subtitle {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(200, 180, 150, 0.4);
+    margin-top: 0.25em;
+    animation: panelTextIn 0.6s ease 0.35s both;
+}
+
+@keyframes panelTextIn {
+    0% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* — Cards Container — */
+.discovery-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+/* — Individual Card — */
+.discovery-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(200, 180, 150, 0.1);
+    backdrop-filter: blur(6px);
+    cursor: default;
+    transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+    animation: cardSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(0.3s + var(--card-index) * 0.12s);
+}
+
+.discovery-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(200, 180, 150, 0.2);
+    transform: translateX(3px);
+}
+
+@keyframes cardSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* — Card Icon — */
+.discovery-card-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    margin-top: 2px;
+    color: rgba(200, 180, 150, 0.5);
+    transition: color 0.3s ease;
+}
+
+.discovery-card-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.discovery-card:hover .discovery-card-icon {
+    color: rgba(220, 200, 160, 0.75);
+}
+
+/* — Card Body — */
+.discovery-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.discovery-card-title {
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+    font-weight: 500;
+    color: rgba(230, 215, 188, 0.92);
+    line-height: 1.3;
+}
+
+.discovery-card-year {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: rgba(200, 180, 150, 0.4);
+}
+
+.discovery-card-line {
+    font-family: var(--font-body);
+    font-size: clamp(0.78rem, 2.2vw, 0.85rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: rgba(200, 180, 150, 0.55);
+    margin-top: 0.2rem;
+}
+
+/* — Upcoming Badge — */
+.discovery-upcoming {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(200, 180, 150, 0.45);
+    background: rgba(200, 180, 150, 0.06);
+    border: 1px solid rgba(200, 180, 150, 0.1);
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-top: 0.35rem;
+    width: fit-content;
+}
+
+/* — Upcoming Card: slightly muted — */
+.discovery-card--upcoming {
+    opacity: 0.65;
+}
+
+.discovery-card--upcoming:hover {
+    opacity: 0.8;
+}
+
+.discovery-card--upcoming .discovery-card-title {
+    color: rgba(200, 190, 170, 0.7);
+}
+
+
+/* ================================================
+   THEME ADAPTATIONS
+   ================================================ */
+
+body.theme-light .orb-core {
+    background: radial-gradient(circle at 40% 35%, rgba(120, 90, 50, 0.8), rgba(160, 130, 80, 0.5));
+    box-shadow: 0 0 12px rgba(120, 90, 50, 0.2), 0 0 30px rgba(120, 90, 50, 0.08);
+}
+
+body.theme-light .orb-ring {
+    border-color: rgba(120, 90, 50, 0.15);
+}
+
+body.theme-light .orb-label {
+    color: rgba(100, 80, 50, 0.45);
+}
+
+body.theme-light .discovery-panel-title {
+    color: rgba(80, 60, 30, 0.85);
+}
+
+body.theme-light .discovery-panel-subtitle {
+    color: rgba(100, 80, 50, 0.4);
+}
+
+body.theme-light .discovery-card {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(120, 90, 50, 0.12);
+}
+
+body.theme-light .discovery-card:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(120, 90, 50, 0.2);
+}
+
+body.theme-light .discovery-card-title {
+    color: rgba(60, 45, 20, 0.9);
+}
+
+body.theme-light .discovery-card-icon {
+    color: rgba(120, 90, 50, 0.4);
+}
+
+body.theme-light .discovery-card-line {
+    color: rgba(100, 80, 50, 0.5);
+}
+
+body.theme-sepia .orb-core {
+    background: radial-gradient(circle at 40% 35%, rgba(160, 120, 60, 0.85), rgba(140, 100, 50, 0.55));
+}
+
+body.theme-sepia .discovery-card {
+    background: rgba(160, 120, 60, 0.05);
+    border-color: rgba(160, 120, 60, 0.12);
+}

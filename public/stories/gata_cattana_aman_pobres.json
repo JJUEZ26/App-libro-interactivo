@@ -2,6 +2,9 @@
     {
         "id": "intro",
         "page": 0,
+        "images": [
+            "images/gata_cattana_portada.png"
+        ],
         "effect": "pobres_intro",
         "scenes": [
             "<h1 class='poem-title-display gata-title'>Como aman los pobres</h1><span class='poem-author-display'>Gata Cattana — <em>La escala de Mohs</em>, 2016</span>"
@@ -173,12 +176,37 @@
         "page": 11,
         "effect": "pobres_bio",
         "forceShowChoices": true,
+        "discoverAuthor": "Gata Cattana",
+        "discoveries": [
+            {
+                "title": "Lisístrata",
+                "type": "song",
+                "year": "2015",
+                "line": "Feminismo y mitología griega sobre una base de hip-hop. Su canción más conocida.",
+                "available": false
+            },
+            {
+                "title": "Julio César",
+                "type": "song",
+                "year": "2013",
+                "line": "Poder, traición y ambición. Rap político con referencias clásicas.",
+                "available": false
+            },
+            {
+                "title": "Anclas",
+                "type": "song",
+                "year": "2015",
+                "line": "EP completo. Lo que la ata, lo que la libera. Seis temas sin concesiones.",
+                "available": false
+            }
+        ],
         "scenes": [
-            "<div class='gata-bio-portrait-container'><img src='images/gata_cattana_retrato.webp' class='bio-portrait gata-bio-portrait' alt='Gata Cattana, retrato ilustrado'><div class='gata-bio-badge'>1991 — 2017</div></div>",
+            "<div class='gata-bio-portrait-container'><img src='images/gatacattana2022g.jpg' class='bio-portrait gata-bio-portrait' alt='Gata Cattana, retrato fotográfico'><div class='gata-bio-badge'>1991 — 2017</div></div>",
             "<strong class='gata-bio-name'>Gata Cattana</strong><span class='gata-bio-real-name'>Ana Isabel García Llorente</span>",
-            "Nació el 11 de mayo de 1991 en Adamuz, Córdoba. Rapera, poeta y politóloga, fue una de las voces más singulares de su generación: construyó puentes entre el hip-hop y la lírica clásica, entre la calle y las referencias mitológicas, entre el feminismo y la belleza.",
-            "Estudió Ciencias Políticas en Granada y se instaló en Madrid, donde publicó en 2016 <em>\"La Escala de Mohs\"</em>, su único libro de poemas en vida. También dejó los EPs <em>\"Los siete contra Tebas\"</em> (2012) y <em>\"Anclas\"</em> (2015), y el álbum póstumo <em>\"Banzai\"</em> (2017).",
-            "El 2 de marzo de 2017, a los 25 años, murió en Madrid a causa de un shock anafiláctico. En 2023, el documental <em>\"Eterna\"</em> rindió homenaje a su vida y obra.",
+            "Nació en Adamuz, Córdoba, el 11 de mayo de 1991. Estudió Ciencias Políticas en la Universidad de Granada. Comenzó a rapear en circuitos locales a principios de la década de 2010, combinando referencias a la mitología griega con análisis de clase y feminismo.",
+            "Publicó los EPs <em>\"Los siete contra Tebas\"</em> (2013) y <em>\"Anclas\"</em> (2015). En 2016 apareció <em>\"La Escala de Mohs\"</em>, su único libro de poemas. El álbum <em>\"Banzai\"</em> fue editado póstumamente en 2017. El documental <em>\"Eterna\"</em> (2023) recogió testimonios sobre su vida y su trabajo.",
+            "Murió en Madrid el 2 de marzo de 2017, a los 25 años, a causa de un shock anafiláctico.",
+            "'Como aman los pobres' pertenece a <em>\"La Escala de Mohs\"</em>. El poema describe el amor como una condición material: sin decorados, sin ventanas, sin jardines. Gata Cattana no idealiza la pobreza; la constata. Y dentro de esa constatación encuentra que el amor de los pobres, precisamente porque no tiene nada que ofrecer salvo sí mismo, resulta indestructible. El poema termina en primera persona. Es una declaración, no una observación.",
             "<em class='gata-bio-quote'>\"Hay gente que escribe poemas y luego hay gente que vive a la velocidad de un poema. Gata Cattana era de las segundas.\"</em>"
         ],
         "choices": [

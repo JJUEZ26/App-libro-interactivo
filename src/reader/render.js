@@ -2,6 +2,7 @@ import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
 import { sanitizeHTML } from '../utils/sanitize.js';
+import { renderDiscoveries } from './discoveries.js';
 import {
     playPageSound,
     preloadAudio,
@@ -152,6 +153,9 @@ export function renderPage(pageId) {
 
     contentCenterer.innerHTML = contentHtml;
 
+    // Renderizar descubrimientos (orbe interactivo en biografías)
+    // Placeholder removed — will inject after choices below
+
     // Renderizar opciones
     if (pageData.choices && pageData.choices.length > 0) {
         const shouldRenderChoiceButtons =
@@ -229,6 +233,12 @@ export function renderPage(pageId) {
             });
             contentCenterer.appendChild(choicesDiv);
         }
+    }
+
+    // Inject discoveries orb AFTER choices are in the DOM
+    if (pageData.discoveries && pageData.discoveries.length > 0) {
+        const authorName = pageData.discoverAuthor || '';
+        renderDiscoveries(contentCenterer, pageData.discoveries, authorName);
     }
 
     // =====================================================

@@ -93,7 +93,8 @@ export function initApp() {
                 event.target.closest('.choices') ||
                 event.target.closest('button') ||
                 event.target.closest('.karaoke-line') ||
-                event.target.closest('.audio-controls-container')
+                event.target.closest('.audio-controls-container') ||
+                event.target.closest('.discoveries-container')
             ) {
                 return;
             }
@@ -131,7 +132,8 @@ export function initApp() {
                     event.target.closest('.choices') ||
                     event.target.closest('button') ||
                     event.target.closest('.karaoke-line') ||
-                    event.target.closest('.audio-controls-container')
+                    event.target.closest('.audio-controls-container') ||
+                    event.target.closest('.discoveries-container')
                 ) {
                     return;
                 }

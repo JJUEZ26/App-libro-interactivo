@@ -734,8 +734,8 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 **Componentes nuevos**:
 - `src/effects/pobres/index.js`: Motor SVG para flores silvestres. 3 formas (simple, wild, poppy), tallos verdes, centro brillante. Animación `flowerBloom` con overshoot elástico.
 - `public/stories/gata_cattana_aman_pobres.json`: 12 páginas. Paréntesis con clase `gata-parenthesis` para renderizado en susurro.
-- `public/images/gata_cattana_portada.webp`: Portada artística (manos trabajadoras + flores en hormigón).
-- `public/images/gata_cattana_retrato.webp`: Retrato ilustrado para la página de homenaje.
+- `public/images/gata_cattana_portada.png`: Portada fotográfica hiperrealista (manos trabajadoras sobre hormigón y flor silvestre).
+- `public/images/gatacattana2022g.jpg`: Retrato fotográfico real para la página de biografía/homenaje.
 - `src/styles/poem-experience.css`: Estilos `.gata-*`: título en lowercase warmth, paréntesis-susurros, retrato circular con sepia, badge "1991 — 2017", cita de cierre.
 
 **Paleta emocional**:

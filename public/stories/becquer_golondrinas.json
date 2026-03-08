@@ -146,11 +146,38 @@
         "ghostEcho": true,
         "effect": "twilight_night, fireflies_subtle",
         "forceShowChoices": true,
+        "discoverAuthor": "Gustavo Adolfo Bécquer",
+        "discoveries": [
+            {
+                "title": "Rima XI — Yo soy ardiente",
+                "type": "poem",
+                "year": "1871",
+                "line": "Tres mujeres, una elección. El poema de amor más antologado de Bécquer.",
+                "available": false
+            },
+            {
+                "title": "Rima XXI — ¿Qué es poesía?",
+                "type": "poem",
+                "year": "1871",
+                "line": "La definición más breve y más citada de lo que significa la poesía.",
+                "available": false
+            },
+            {
+                "title": "El monte de las ánimas",
+                "type": "book",
+                "year": "1861",
+                "line": "Noche de difuntos en Soria. La leyenda más conocida del Romanticismo español.",
+                "available": false
+            }
+        ],
         "scenes": [
-            "<img src='images/becquer_retrato.webp' class='bio-portrait' alt='Gustavo Adolfo Bécquer'>",
-            "<strong>Gustavo Adolfo Bécquer (1836-1870)</strong>",
-            "Poeta y narrador español, máximo representante del Romanticismo tardío. Su obra, breve pero intensísima, se concentra en las 'Rimas', 86 poemas sobre el amor, la creación poética y la soledad.",
-            "'Rima LIII' es quizá su poema más célebre. Un canto a la pérdida irreparable: las golondrinas volverán, las flores volverán, el amor volverá... pero nunca con la misma intensidad, nunca con la misma verdad."
+            "<div class='bio-portrait-container bio--becquer'><img src='images/becquer_golondrinas_portada.webp' class='bio-portrait' alt='Gustavo Adolfo Bécquer'><div class='bio-badge'>1836 — 1870</div></div>",
+            "<strong class='bio-name'>Gustavo Adolfo Bécquer</strong><span class='bio-real-name'>Gustavo Adolfo Domínguez Bastida</span>",
+            "Nació en Sevilla en 1836. Quedó huérfano de padre a los cinco años y de madre a los diez. A los dieciocho se trasladó a Madrid con la intención de dedicarse a la literatura. Sobrevivió escribiendo artículos y adaptaciones para periódicos.",
+            "Padeció tuberculosis durante gran parte de su vida adulta. En 1861 se casó con Casta Esteban Navarro, con quien tuvo tres hijos. El matrimonio fue conflictivo y terminó en separación. Escribió las <em>Rimas</em> en un manuscrito que se perdió durante la revolución de 1868. Las reconstruyó de memoria en un cuaderno que tituló <em>\"Libro de los gorriones\"</em>.",
+            "Murió en Madrid el 22 de diciembre de 1870, a los 34 años. Su obra fue publicada póstumamente por sus amigos. Las <em>Rimas</em> constan de 86 poemas breves sobre el amor, la creación y la pérdida. Son el núcleo del Romanticismo tardío español.",
+            "La 'Rima LIII' es probablemente el poema más conocido en lengua castellana. Su estructura es una progresión: cada estrofa afirma que algo volverá —las golondrinas, las madreselvas, las palabras de amor— para luego negar que vuelva de la misma manera. Bécquer no habla de ausencia. Habla de la diferencia entre lo que regresa y lo que se ha ido, que no son la misma cosa.",
+            "<em class='bio-quote'>\"Como yo te he querido..., desengáñate, así... ¡no te querrán!\"</em>"
         ],
         "choices": [
             {
