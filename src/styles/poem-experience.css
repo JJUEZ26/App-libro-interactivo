@@ -1232,46 +1232,45 @@ body .pobres-bg-flama~.content-centerer .verse-line {
      This is the most emotionally important part.
      It must feel like a shrine, not a wiki entry. */
 
+/* --- Biography page: special tribute treatment ---
+     Reverted to standard unified layout matching the existing essence. */
+
 .gata-bio-portrait-container {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    float: left;
-    width: clamp(140px, 28vw, 190px); /* Aumentado sustancialmente el diámetro general */
-    margin: 0.2rem 1.5rem 0.95rem 0;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    z-index: 3;
 }
 
 .gata-bio-portrait {
     display: block;
-    width: 100%;
+    margin: 0 auto;
+    /* Bukowski-like sizing, but circular */
+    width: clamp(150px, 38vw, 220px);
     aspect-ratio: 1;
-    /* Al usar zoom en object-fit de forma nativa no es posible, pero podemos engañar al navegador
-       usando transform scale y recortando usando clip-path al mismo radio, o bien, si el navegador
-       es compatible, simplemente aumentamos el alto y el object-fit hará el recorte. 
-       Ya que scale afecta al borde, pasaremos el borde al contenedor interno si existiera.
-       Para hacerlo directamente con la imagen y conservar el borde, usaremos un zoom progresivo
-       al mismo tiempo que limitamos el width, pero la forma infalible en CSS es usar padding. */
     object-fit: cover;
-    object-position: 25% 15%; /* Enfocado exacto a la cabeza */
+    object-position: 50% 12%; /* Perfect framing for the face */
     border-radius: 50% !important;
-    border: 3px solid rgba(209, 157, 112, 0.45);
+    
+    /* Bukowski inspired borders & shadows */
+    border: 3px solid rgba(160, 140, 120, 0.35);
     box-shadow:
-        0 0 25px rgba(138, 86, 47, 0.25),
-        0 0 60px rgba(138, 86, 47, 0.15),
-        0 8px 30px rgba(0, 0, 0, 0.5);
-    margin: 0;
-    filter: grayscale(34%) contrast(1.1) brightness(1.05); /* Ligeramente más brillante por el fondo */
+        0 0 18px rgba(100, 80, 60, 0.25),
+        0 8px 32px rgba(0, 0, 0, 0.55);
+        
+    /* Bukowski inspired raw, earthy filter */
+    filter: grayscale(50%) contrast(1.18) brightness(0.95) sepia(20%);
+    
     transition: filter 1s ease, box-shadow 1s ease, transform 0.6s ease;
     animation: bioPortraitAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
 .gata-bio-portrait:hover {
-    filter: grayscale(10%) contrast(1.06) brightness(1.0);
+    filter: grayscale(20%) contrast(1.1) brightness(1.0) sepia(10%);
     box-shadow:
-        0 0 32px rgba(173, 109, 60, 0.3),
-        0 0 80px rgba(173, 109, 60, 0.14),
-        0 12px 34px rgba(0, 0, 0, 0.5);
+        0 0 28px rgba(100, 80, 60, 0.35),
+        0 12px 38px rgba(0, 0, 0, 0.65);
+    transform: scale(1.03);
 }
 
 @keyframes bioPortraitAppear {
@@ -1293,12 +1292,14 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     }
 }
 
+/* Restored absolute positioning for badge like standard system */
 .gata-bio-badge {
-    position: static;
-    transform: none;
+    position: absolute;
+    bottom: -8px;
+    right: 0;
     z-index: 10;
-    background: rgba(180, 50, 20, 0.85);
-    color: rgba(255, 240, 220, 0.95);
+    background: rgba(80, 60, 40, 0.85); /* Bukowski tone */
+    color: rgba(230, 210, 180, 0.95);
     font-size: 0.72rem;
     font-family: var(--font-body);
     font-weight: 400;
@@ -1306,10 +1307,8 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     padding: 3px 10px;
     border-radius: 20px;
     backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 150, 80, 0.3);
+    border: 1px solid rgba(160, 130, 90, 0.35); /* Bukowski border */
     white-space: nowrap;
-    margin-top: 0.55rem;
-    align-self: center;
     animation: badgeFadeIn 1s ease 2s both;
 }
 
@@ -1331,23 +1330,21 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     font-size: clamp(1.6rem, 5vw, 2.2rem);
     font-weight: 400;
     letter-spacing: 0.06em;
-    color: #e8c9a0;
-    text-align: left;
-    text-indent: 0;
-    margin-bottom: 0.1em;
-    text-shadow: 0 0 30px rgba(180, 80, 30, 0.25);
+    color: rgba(220, 200, 170, 0.95); /* Bukowski title color */
+    text-align: center; /* Centered like standard layout */
+    margin-bottom: 0.15em;
+    text-shadow: 0 0 24px rgba(100, 80, 60, 0.2);
 }
 
 .gata-bio-real-name {
     display: block;
     font-family: var(--font-body);
-    font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+    font-size: clamp(0.78rem, 2vw, 0.9rem);
     font-weight: 300;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     opacity: 0.5;
-    text-align: left;
-    text-indent: 0;
+    text-align: center; /* Centered */
     margin-bottom: 1.5rem;
 }
 
@@ -1374,12 +1371,6 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 }
 
 @media (max-width: 768px) {
-    .gata-bio-portrait-container {
-        width: clamp(110px, 32vw, 140px); /* Más grande en móviles también */
-        margin-right: 1.2rem;
-        margin-bottom: 0.85rem;
-    }
-
     .gata-parenthesis {
         font-size: 0.8em;
         padding-inline-start: 0.62em;
