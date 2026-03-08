@@ -1234,20 +1234,20 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 
 .gata-bio-portrait-container {
     position: relative;
-    display: inline-block;
-    margin-bottom: 2rem;
-    width: auto;
-    /* Use margin to align left instead of flex */
-    margin-left: 0;
-    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    float: left;
+    width: clamp(88px, 16vw, 112px);
+    margin: 0.2rem 1.25rem 0.95rem 0;
 }
 
 .gata-bio-portrait {
     display: block;
-    width: clamp(100px, 20vw, 150px);
+    width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    object-position: 50% 15%; /* Focusing closer to the face */
+    object-position: 18% 20%;
     border-radius: 50% !important;
     border: 2px solid rgba(209, 157, 112, 0.38);
     box-shadow:
@@ -1288,9 +1288,7 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 }
 
 .gata-bio-badge {
-    position: absolute;
-    bottom: -10px;
-    right: -10px; /* Position relative to the inline-block container */
+    position: static;
     transform: none;
     z-index: 10;
     background: rgba(180, 50, 20, 0.85);
@@ -1304,6 +1302,8 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 150, 80, 0.3);
     white-space: nowrap;
+    margin-top: 0.55rem;
+    align-self: center;
     animation: badgeFadeIn 1s ease 2s both;
 }
 
@@ -1326,7 +1326,8 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     font-weight: 400;
     letter-spacing: 0.06em;
     color: #e8c9a0;
-    text-align: center;
+    text-align: left;
+    text-indent: 0;
     margin-bottom: 0.1em;
     text-shadow: 0 0 30px rgba(180, 80, 30, 0.25);
 }
@@ -1339,7 +1340,8 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     letter-spacing: 0.18em;
     text-transform: uppercase;
     opacity: 0.5;
-    text-align: center;
+    text-align: left;
+    text-indent: 0;
     margin-bottom: 1.5rem;
 }
 
@@ -1366,6 +1368,12 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 }
 
 @media (max-width: 768px) {
+    .gata-bio-portrait-container {
+        width: 84px;
+        margin-right: 1rem;
+        margin-bottom: 0.85rem;
+    }
+
     .gata-parenthesis {
         font-size: 0.8em;
         padding-inline-start: 0.62em;
