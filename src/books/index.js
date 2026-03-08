@@ -285,13 +285,15 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
     function createBookCard(bookData, { label }) {
         const hasStory = Boolean(bookData?.storyFile);
+        const isUpcoming = !hasStory;
         const isNovel = bookData?.type === 'novel';
         const card = document.createElement('article');
         card.className = 'book-card';
-        if (!bookData || !hasStory) card.classList.add('book-card--disabled');
+        if (isUpcoming) card.classList.add('book-card--upcoming');
 
         const coverWrapper = document.createElement('div');
         coverWrapper.className = 'book-cover-wrapper';
+        if (isUpcoming) coverWrapper.classList.add('book-cover-wrapper--upcoming');
 
         let coverImg = null;
 
@@ -306,11 +308,12 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'book-cover placeholder';
-            placeholder.textContent = label || 'Próximamente';
+            // Leave it empty; the CSS will style it as a dark mysterious background.
+            // The author's name will be prominently displayed below it.
             coverWrapper.appendChild(placeholder);
         }
 
-        if (!hasStory) {
+        if (isUpcoming) {
             const tag = document.createElement('span');
             tag.className = 'book-tag';
             tag.textContent = label || 'Próximamente';
@@ -331,9 +334,15 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const body = document.createElement('div');
         body.className = 'book-card-body';
+        if (isUpcoming) body.classList.add('book-card-body--upcoming');
+
+        const displayTitle = isUpcoming
+            ? (bookData?.previewTitle || bookData?.title || 'Título en reserva')
+            : (bookData?.title || 'Título pendiente');
+
         const titleEl = document.createElement('h4');
         titleEl.className = 'book-title';
-        titleEl.textContent = bookData?.title || 'Título pendiente';
+        titleEl.textContent = displayTitle;
 
         const authorEl = document.createElement('p');
         authorEl.className = 'book-author';
@@ -353,8 +362,13 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         }
         btn.disabled = !hasStory;
 
-        body.appendChild(titleEl);
-        if (bookData?.author) body.appendChild(authorEl);
+        if (isUpcoming && bookData?.author) {
+            body.appendChild(authorEl);
+            body.appendChild(titleEl);
+        } else {
+            body.appendChild(titleEl);
+            if (bookData?.author) body.appendChild(authorEl);
+        }
         body.appendChild(btn);
         card.appendChild(coverWrapper);
         card.appendChild(body);

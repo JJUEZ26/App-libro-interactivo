@@ -201,13 +201,13 @@
             }
         ],
         "scenes": [
-            "<div class='gata-bio-portrait-container'><img src='images/gatacattana2022g.jpg' class='bio-portrait gata-bio-portrait' alt='Gata Cattana, retrato fotográfico'><div class='gata-bio-badge'>1991 — 2017</div></div>",
-            "<strong class='gata-bio-name'>Gata Cattana</strong><span class='gata-bio-real-name'>Ana Isabel García Llorente</span>",
+            "<div class='bio-portrait-container bio--gata'><div class='bio-portrait-shell'><img src='images/gatacattana2022g.jpg' class='bio-portrait' alt='Gata Cattana, retrato fotográfico'></div><div class='bio-badge'>1991 — 2017</div></div>",
+            "<strong class='bio-name'>Gata Cattana</strong><span class='bio-real-name'>Ana Isabel García Llorente</span>",
             "Nació en Adamuz, Córdoba, el 11 de mayo de 1991. Estudió Ciencias Políticas en la Universidad de Granada. Comenzó a rapear en circuitos locales a principios de la década de 2010, combinando referencias a la mitología griega con análisis de clase y feminismo.",
             "Publicó los EPs <em>\"Los siete contra Tebas\"</em> (2013) y <em>\"Anclas\"</em> (2015). En 2016 apareció <em>\"La Escala de Mohs\"</em>, su único libro de poemas. El álbum <em>\"Banzai\"</em> fue editado póstumamente en 2017. El documental <em>\"Eterna\"</em> (2023) recogió testimonios sobre su vida y su trabajo.",
             "Murió en Madrid el 2 de marzo de 2017, a los 25 años, a causa de un shock anafiláctico.",
             "'Como aman los pobres' pertenece a <em>\"La Escala de Mohs\"</em>. El poema describe el amor como una condición material: sin decorados, sin ventanas, sin jardines. Gata Cattana no idealiza la pobreza; la constata. Y dentro de esa constatación encuentra que el amor de los pobres, precisamente porque no tiene nada que ofrecer salvo sí mismo, resulta indestructible. El poema termina en primera persona. Es una declaración, no una observación.",
-            "<em class='gata-bio-quote'>\"Hay gente que escribe poemas y luego hay gente que vive a la velocidad de un poema. Gata Cattana era de las segundas.\"</em>"
+            "<em class='bio-quote'>\"Hay gente que escribe poemas y luego hay gente que vive a la velocidad de un poema. Gata Cattana era de las segundas.\"</em>"
         ],
         "choices": [
             {

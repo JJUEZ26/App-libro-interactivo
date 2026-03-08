@@ -195,5 +195,61 @@
       "original"
     ],
     "totalPages": 11
+  },
+  {
+    "id": "proximo-pizarnik",
+    "title": "Próxima obra",
+    "previewTitle": "La noche intacta",
+    "author": "Alejandra Pizarnik",
+    "description": "Una inmersión profunda en la poética del silencio y la noche.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-gata-cattana",
+    "title": "Próxima obra",
+    "previewTitle": "Las que arden",
+    "author": "Gata Cattana",
+    "description": "Nuevos versos, rap y crítica con alma del sur.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-bukowski",
+    "title": "Próxima obra",
+    "previewTitle": "Último bar abierto",
+    "author": "Charles Bukowski",
+    "description": "El realismo sucio y la crudeza de la vida urbana.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-borges",
+    "title": "Próxima obra",
+    "previewTitle": "El otro espejo",
+    "author": "Jorge Luis Borges",
+    "description": "Laberintos, espejos y el infinito como lenguaje.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-vilarino",
+    "title": "Próxima obra",
+    "previewTitle": "Después del adiós",
+    "author": "Idea Vilariño",
+    "description": "Exploración desnuda del desencuentro y el amor.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-gildebiedma",
+    "title": "Próxima obra",
+    "previewTitle": "Contra la edad",
+    "author": "Jaime Gil de Biedma",
+    "description": "Meditaciones lúcidas sobre la experiencia vital.",
+    "type": "poem"
+  },
+  {
+    "id": "proximo-becquer",
+    "title": "Próxima obra",
+    "previewTitle": "La sombra vuelve",
+    "author": "Gustavo Adolfo Bécquer",
+    "description": "La culminación del romanticismo lírico.",
+    "type": "poem"
   }
 ]

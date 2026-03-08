@@ -345,6 +345,17 @@
     scrollbar-color: var(--color-bg-tertiary) transparent;
 }
 
+/* Modificar tamaño específico para Novelas */
+.library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
+    grid-auto-columns: minmax(140px, 200px);
+}
+.library-row-section[data-section-id="novelas-bifurcaciones"] .book-card {
+    min-height: clamp(280px, 35vw, 320px);
+}
+.library-row-section[data-section-id="novelas-bifurcaciones"] .book-title {
+    font-size: var(--text-base);
+}
+
 .library-row::-webkit-scrollbar {
     height: 6px;
 }
@@ -449,13 +460,152 @@
     transform: translateY(-4px) scale(1.01);
 }
 
-.book-card--disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.book-card--upcoming {
+    cursor: default;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 18px 34px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-.book-card--disabled:hover {
-    transform: none;
+.book-card--upcoming:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 24px 44px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.book-card--upcoming .book-cover-wrapper--upcoming {
+    padding: var(--space-4) var(--space-4) var(--space-3);
+}
+
+.book-card--upcoming .book-cover.placeholder {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%),
+        linear-gradient(135deg, rgba(77, 55, 92, 0.16) 0%, rgba(14, 14, 18, 0.96) 26%, rgba(10, 10, 14, 0.98) 100%);
+    color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+        inset 0 -32px 48px rgba(0, 0, 0, 0.48),
+        0 14px 30px rgba(0, 0, 0, 0.22);
+}
+
+.book-card--upcoming .book-cover.placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 12%;
+    border-radius: calc(var(--radius-lg) - 4px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 68%);
+    opacity: 0.72;
+}
+
+.book-card--upcoming .book-cover.placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.08) 0%, transparent 34%),
+        linear-gradient(180deg, transparent 20%, rgba(255, 255, 255, 0.03) 52%, transparent 100%);
+    opacity: 0.5;
+    animation: drift 10s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(2%, 2%); }
+}
+
+.book-card--upcoming .book-card-body--upcoming {
+    padding: 0 var(--space-5) var(--space-5);
+    gap: var(--space-2);
+    min-height: 8.5rem;
+}
+
+.book-card--upcoming .book-title {
+    min-height: 2.9em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    color: rgba(229, 233, 241, 0.52);
+    filter: blur(4px);
+    opacity: 0.68;
+    transition: all var(--duration-slow) var(--ease-out);
+    font-style: italic;
+    font-family: var(--font-display);
+    font-weight: var(--font-semibold);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    text-wrap: balance;
+}
+
+.book-card--upcoming:hover .book-title {
+    filter: blur(2.6px);
+    opacity: 0.82;
+}
+
+.book-card--upcoming .book-author {
+    min-height: 2.45em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    color: rgba(244, 240, 235, 0.9);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.18;
+    margin-bottom: 0;
+    text-wrap: balance;
+}
+
+.book-card--upcoming .book-open-btn {
+    border: none;
+    background: transparent;
+    padding: 0 0 0.2rem;
+    color: rgba(217, 222, 232, 0.58);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    font-weight: var(--font-semibold);
+    position: relative;
+    border-radius: 0;
+}
+
+.book-card--upcoming .book-open-btn::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 24px;
+    height: 1px;
+    background: rgba(197, 179, 216, 0.56);
+    transition: width var(--duration-normal);
+}
+
+.book-card--upcoming:hover .book-open-btn {
+    color: rgba(229, 234, 243, 0.76);
+}
+
+.book-card--upcoming .book-open-btn:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+.book-card--upcoming:hover .book-open-btn::before {
+    width: 42px;
 }
 
 /* ========================================
@@ -522,6 +672,31 @@
     z-index: 2;
 }
 
+.book-card--upcoming .book-tag {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(221, 225, 234, 0.58);
+    box-shadow: none;
+    font-weight: var(--font-semibold);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    padding: 0.35rem 0.7rem;
+    left: calc(var(--space-4) + var(--space-2));
+    top: calc(var(--space-4) + var(--space-2));
+    transform: none;
+    width: auto;
+    text-align: left;
+    opacity: 1;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color var(--duration-normal), color var(--duration-normal);
+}
+
+.book-card--upcoming:hover .book-tag {
+    color: rgba(237, 240, 245, 0.74);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
 /* ========================================
    BOOK CARD BODY
    ======================================== */
@@ -559,6 +734,7 @@
     color: var(--color-text-secondary);
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -655,11 +831,19 @@
     .library-row {
         grid-auto-columns: minmax(220px, 300px);
     }
+
+    .library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
+        grid-auto-columns: minmax(180px, 240px);
+    }
 }
 
 @media (min-width: 1024px) {
     .library-row {
         grid-auto-columns: minmax(240px, 340px);
+    }
+
+    .library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
+        grid-auto-columns: minmax(200px, 260px);
     }
 }
 

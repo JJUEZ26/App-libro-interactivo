@@ -2,18 +2,9 @@
   "featuredBookId": "la-puerta",
   "sections": [
     {
-      "id": "escritos-originales",
-      "title": "Escritos originales",
-      "subtitle": "Textos nacidos de la experiencia propia. Sin ficción, sin filtros.",
-      "bookIds": [
-        "la-puerta",
-        "la-levedad-del-deseo"
-      ]
-    },
-    {
       "id": "poemas",
       "title": "Poemas",
-      "subtitle": "Lecturas breves para empezar el día con emoción.",
+      "subtitle": "Experiencias inmersivas donde la palabra y la atmósfera se funden.",
       "bookIds": [
         "gata-cattana-aman-pobres",
         "pajaro-azul",
@@ -26,43 +17,35 @@
     {
       "id": "novelas-bifurcaciones",
       "title": "Novelas con bifurcaciones",
-      "subtitle": "Novelas originales reescritas para que tú elijas el camino que quieras tomar.",
+      "subtitle": "Obras reinterpretadas. Tú decides el destino de la historia.",
       "bookIds": [
         "frankenstein"
       ]
     },
     {
-      "id": "novelas-filosoficas",
-      "title": "Novelas con tintes filosóficos",
-      "subtitle": "Historias que invitan a pensar y a sentir.",
+      "id": "poemas-proximos",
+      "title": "Próximamente",
+      "subtitle": "Próximas revelaciones dentro de nuestra constelación poética.",
       "bookIds": [
+        "proximo-gata-cattana",
+        "proximo-bukowski",
+        "proximo-borges",
+        "proximo-pizarnik",
+        "proximo-vilarino",
+        "proximo-gildebiedma",
+        "proximo-becquer"
+      ]
+    },
+    {
+      "id": "libros",
+      "title": "Libros",
+      "subtitle": "Explora nuestra cuidada selección de narrativa interactiva.",
+      "bookIds": [
+        "la-levedad-del-deseo",
         "ivan-ilich",
-        "el-extranjero"
-      ],
-      "placeholderCount": 2
-    },
-    {
-      "id": "filosofia",
-      "title": "Filosofía",
-      "subtitle": "Espacio listo para nuevas ideas.",
-      "bookIds": [
+        "el-extranjero",
         "meditaciones"
-      ],
-      "placeholderCount": 4
-    },
-    {
-      "id": "viajes-interiores",
-      "title": "Viajes interiores",
-      "subtitle": "Explora la introspección y la memoria.",
-      "bookIds": [],
-      "placeholderCount": 3
-    },
-    {
-      "id": "fantasia-urbana",
-      "title": "Fantasía urbana",
-      "subtitle": "Lo fantástico en la vida cotidiana.",
-      "bookIds": [],
-      "placeholderCount": 3
+      ]
     }
   ]
 }

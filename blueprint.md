@@ -743,6 +743,20 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 - Pág 3–5 (flama): rojo oscuro (`#B22222`) — amor sin ventanas
 - Pág 6–7 (brasa): naranja vivo (`#FF4500`) — Heracles, Urano, Gea
 - Pág 8–9 (rosa): carmesí (`#E8174D`) — flores, arte, boleros
-- Pág 10 (corazón): rojo puro (`#FF1744`) — confesión final
 - Pág 11 (bio): morado (`#6B2D5E`) — tributo, eternidad
+
+---
+
+### Rediseño Premium de la Homepage (Marzo 2026)
+**Objetivo**: Transformar la página principal en un portal inmersivo, editorial y altamente enfocado, con una estética "Netflix + app literaria premium".
+
+**Estructura implementada**:
+1. **Destacado (`la-puerta`)**: Puerta de entrada al ecosistema (Obras originales).
+2. **Poemas**: Posicionada como la primera fila de exploración para destacar la poesía como corazón de la app.
+3. **Novelas con bifurcaciones**: Categoría propia y diferenciada (`frankenstein`).
+4. **Próximamente**: Módulos premium para autores anunciados (Alejandra Pizarnik, Charles Baudelaire, Sylvia Plath, Federico García Lorca). Se diseñaron placeholders elegantes ("book-card--upcoming") con gradients oscuros, blurs translúcidos y títulos desenfocados, generando misterio y anticipación en lugar de "falta de contenido".
+5. **Libros**: Agrupación unificada de todas las otras obras narrativas e interactivas no ramificadas. Eliminación de todas las subsecciones vacías o dispersas.
+
+**Mejoras CSS**:
+- `.book-card--upcoming`: Sombras reactivas sutiles, overlays tipo *glassmorphism*, badge integrado pero transparente y un estilo visual que comunica "premium en desarrollo".
 

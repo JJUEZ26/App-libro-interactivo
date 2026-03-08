@@ -1235,107 +1235,6 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 /* --- Biography page: special tribute treatment ---
      Reverted to standard unified layout matching the existing essence. */
 
-.gata-bio-portrait-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 2.5rem;
-    z-index: 3;
-}
-
-.gata-bio-portrait {
-    display: block;
-    margin: 0 auto;
-    /* Bukowski-like sizing, but circular */
-    width: clamp(150px, 38vw, 220px);
-    aspect-ratio: 1;
-    object-fit: cover;
-    object-position: 50% 12%; /* Perfect framing for the face */
-    border-radius: 50% !important;
-    
-    /* Bukowski inspired borders & shadows */
-    border: 3px solid rgba(160, 140, 120, 0.35);
-    box-shadow:
-        0 0 18px rgba(100, 80, 60, 0.25),
-        0 8px 32px rgba(0, 0, 0, 0.55);
-        
-    /* Bukowski inspired raw, earthy filter */
-    filter: grayscale(50%) contrast(1.18) brightness(0.95) sepia(20%);
-    
-    transition: filter 1s ease, box-shadow 1s ease, transform 0.6s ease;
-    animation: bioPortraitAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-}
-
-.gata-bio-portrait:hover {
-    filter: grayscale(20%) contrast(1.1) brightness(1.0) sepia(10%);
-    box-shadow:
-        0 0 28px rgba(100, 80, 60, 0.35),
-        0 12px 38px rgba(0, 0, 0, 0.65);
-    transform: scale(1.03);
-}
-
-@keyframes bioPortraitAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.85);
-        filter: grayscale(80%) blur(4px);
-    }
-
-    60% {
-        opacity: 0.9;
-        filter: grayscale(52%) blur(0);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-        filter: grayscale(34%) contrast(1.07) brightness(0.94);
-    }
-}
-
-/* Restored absolute positioning for badge like standard system */
-.gata-bio-badge {
-    position: absolute;
-    bottom: -8px;
-    right: 0;
-    z-index: 10;
-    background: rgba(80, 60, 40, 0.85); /* Bukowski tone */
-    color: rgba(230, 210, 180, 0.95);
-    font-size: 0.72rem;
-    font-family: var(--font-body);
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    padding: 3px 10px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(160, 130, 90, 0.35); /* Bukowski border */
-    white-space: nowrap;
-    animation: badgeFadeIn 1s ease 2s both;
-}
-
-@keyframes badgeFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.gata-bio-name {
-    display: block;
-    font-family: var(--font-reader-title), serif;
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    color: rgba(220, 200, 170, 0.95); /* Bukowski title color */
-    text-align: center; /* Centered like standard layout */
-    margin-bottom: 0.15em;
-    text-shadow: 0 0 24px rgba(100, 80, 60, 0.2);
-}
-
 .gata-bio-real-name {
     display: block;
     font-family: var(--font-body);
@@ -1362,6 +1261,161 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     margin-top: 0.8rem;
 }
 
+.bio--gata {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    float: none;
+    width: clamp(160px, 30vw, 196px);
+    margin: 0 auto 2.15rem;
+    padding: 0;
+    border-radius: 999px;
+    isolation: isolate;
+    transform: translateX(0.9rem);
+}
+
+.bio--gata::before {
+    content: "";
+    position: absolute;
+    inset: -0.35rem;
+    border-radius: inherit;
+    background:
+        conic-gradient(from 210deg,
+            rgba(92, 173, 244, 0.94),
+            rgba(255, 132, 82, 0.72),
+            rgba(255, 214, 133, 0.9),
+            rgba(92, 173, 244, 0.94));
+    opacity: 1;
+    filter: saturate(1.06) drop-shadow(0 0 14px rgba(92, 173, 244, 0.12));
+    z-index: -2;
+    -webkit-mask: radial-gradient(circle, transparent calc(100% - 7px), #000 calc(100% - 6px));
+    mask: radial-gradient(circle, transparent calc(100% - 7px), #000 calc(100% - 6px));
+}
+
+.bio--gata::after {
+    content: "";
+    position: absolute;
+    inset: 0.55rem;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        inset 0 0 24px rgba(108, 184, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 28px rgba(108, 184, 255, 0.12),
+        0 18px 40px rgba(0, 0, 0, 0.28);
+    z-index: -1;
+}
+
+.bio--gata .bio-portrait-shell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0.38rem;
+    border-radius: 50%;
+    background:
+        linear-gradient(145deg,
+            rgba(95, 178, 246, 0.9),
+            rgba(255, 145, 88, 0.84) 48%,
+            rgba(255, 217, 138, 0.92));
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 16px 32px rgba(0, 0, 0, 0.34),
+        0 0 28px rgba(95, 178, 246, 0.16);
+    animation: bioPortraitAppearBase 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.bio--gata .bio-portrait-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0.65rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 0 22px rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+}
+
+.bio--gata .bio-portrait-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0.5rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.16), transparent 42%);
+    mix-blend-mode: screen;
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.bio--gata .bio-portrait {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: cover;
+    object-position: 72% 18%;
+    border-radius: 50%;
+    filter: grayscale(4%) contrast(1.08) brightness(0.96);
+    transform: scale(1.56);
+    transform-origin: 72% 20%;
+    transition: transform 0.9s ease, filter 0.9s ease;
+    animation: none;
+}
+
+.bio--gata:hover .bio-portrait {
+    transform: scale(1.6);
+    filter: grayscale(0%) contrast(1.05) brightness(0.98);
+}
+
+.bio--gata .bio-badge {
+    position: static;
+    transform: none;
+    z-index: 1;
+    margin-top: 0.95rem;
+    background: rgba(15, 18, 28, 0.82);
+    color: rgba(248, 235, 222, 0.96);
+    border: 1px solid rgba(103, 177, 238, 0.34);
+    box-shadow:
+        0 0 0 1px rgba(255, 136, 84, 0.12),
+        0 10px 18px rgba(0, 0, 0, 0.22);
+    animation: badgeFadeInBase 1s ease 2s both;
+}
+
+.page-content p:has(.bio--gata) {
+    text-align: center;
+    text-indent: 0;
+    margin-bottom: 2rem;
+    overflow: visible;
+}
+
+.page-content p:has(.bio--gata) + p {
+    text-indent: 0;
+    text-align: center;
+}
+
+.page-content p:has(.bio--gata) + p .bio-name,
+.page-content p:has(.bio--gata) + p .bio-real-name {
+    text-align: center;
+    text-indent: 0;
+}
+
+.page-content p:has(.bio--gata) + p .bio-name {
+    color: rgba(236, 210, 185, 0.96);
+    text-shadow:
+        0 0 28px rgba(255, 132, 82, 0.16),
+        0 0 18px rgba(92, 173, 244, 0.1);
+}
+
+.page-content p:has(.bio--gata) + p .bio-real-name {
+    color: rgba(228, 218, 208, 0.72);
+}
+
+.page-content p:has(.bio--gata) ~ p .bio-quote {
+    max-width: 42rem;
+    color: rgba(223, 191, 162, 0.68);
+    border-left-color: rgba(103, 177, 238, 0.28);
+}
+
 /* --- Gata-specific author display tweak ---
      The subtitle line under the title. */
 .poem-author-display:has(+ *) em,
@@ -1371,6 +1425,20 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 }
 
 @media (max-width: 768px) {
+    .bio--gata {
+        width: 142px;
+        margin-bottom: 1.8rem;
+        transform: translateX(0.9rem);
+    }
+
+    .bio--gata .bio-portrait {
+        transform: scale(1.48);
+    }
+
+    .bio--gata:hover .bio-portrait {
+        transform: scale(1.52);
+    }
+
     .gata-parenthesis {
         font-size: 0.8em;
         padding-inline-start: 0.62em;
