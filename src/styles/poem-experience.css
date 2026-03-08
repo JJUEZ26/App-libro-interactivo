@@ -1238,25 +1238,31 @@ body .pobres-bg-flama~.content-centerer .verse-line {
     flex-direction: column;
     align-items: flex-start;
     float: left;
-    width: clamp(88px, 16vw, 112px);
-    margin: 0.2rem 1.25rem 0.95rem 0;
+    width: clamp(140px, 28vw, 190px); /* Aumentado sustancialmente el diámetro general */
+    margin: 0.2rem 1.5rem 0.95rem 0;
 }
 
 .gata-bio-portrait {
     display: block;
     width: 100%;
     aspect-ratio: 1;
+    /* Al usar zoom en object-fit de forma nativa no es posible, pero podemos engañar al navegador
+       usando transform scale y recortando usando clip-path al mismo radio, o bien, si el navegador
+       es compatible, simplemente aumentamos el alto y el object-fit hará el recorte. 
+       Ya que scale afecta al borde, pasaremos el borde al contenedor interno si existiera.
+       Para hacerlo directamente con la imagen y conservar el borde, usaremos un zoom progresivo
+       al mismo tiempo que limitamos el width, pero la forma infalible en CSS es usar padding. */
     object-fit: cover;
-    object-position: 18% 20%;
+    object-position: 25% 15%; /* Enfocado exacto a la cabeza */
     border-radius: 50% !important;
-    border: 2px solid rgba(209, 157, 112, 0.38);
+    border: 3px solid rgba(209, 157, 112, 0.45);
     box-shadow:
-        0 0 20px rgba(138, 86, 47, 0.2),
-        0 0 52px rgba(138, 86, 47, 0.1),
-        0 8px 24px rgba(0, 0, 0, 0.46);
-    margin: 0; /* Removing auto centering */
-    filter: grayscale(34%) contrast(1.07) brightness(0.94);
-    transition: filter 1s ease, box-shadow 1s ease;
+        0 0 25px rgba(138, 86, 47, 0.25),
+        0 0 60px rgba(138, 86, 47, 0.15),
+        0 8px 30px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    filter: grayscale(34%) contrast(1.1) brightness(1.05); /* Ligeramente más brillante por el fondo */
+    transition: filter 1s ease, box-shadow 1s ease, transform 0.6s ease;
     animation: bioPortraitAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
@@ -1369,8 +1375,8 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 
 @media (max-width: 768px) {
     .gata-bio-portrait-container {
-        width: 84px;
-        margin-right: 1rem;
+        width: clamp(110px, 32vw, 140px); /* Más grande en móviles también */
+        margin-right: 1.2rem;
         margin-bottom: 0.85rem;
     }
 
