@@ -7,6 +7,136 @@ import { state } from '../app/state.js';
 /** Cache de Audio precargados para eliminar latencia */
 const audioCache = new Map();
 const MAX_AUDIO_CACHE = 8;
+const SAFE_AUDIO_START_CAP = {
+    ambient: 0.32,
+    voice: 0.45
+};
+const SAFE_AUDIO_PRIMARY_FADE_MS = 1400;
+const SAFE_AUDIO_SECONDARY_FADE_MS = 3600;
+const AUDIO_PROMPT_MESSAGE = 'Mejor con auriculares o con el volumen a media altura. El sonido empieza en suave.';
+const AUDIO_SILENT_MESSAGE = 'Puedes seguir leyendo en silencio y activar el sonido cuando quieras.';
+const AUDIO_LOADING_MESSAGE = 'Preparando el sonido…';
+const AUDIO_BUFFERING_MESSAGE = 'Afinando la entrada…';
+
+function getCurrentBookId() {
+    return state.currentBook?.id ?? null;
+}
+
+function getBookAudioDecision() {
+    const bookId = getCurrentBookId();
+    if (!bookId) return null;
+    return state.audioBookDecisions[bookId] ?? null;
+}
+
+export function getCurrentBookAudioDecision() {
+    return getBookAudioDecision();
+}
+
+function hasAudioForPage(pageData) {
+    return Boolean(pageData?.bgMusic || pageData?.sound || pageData?.audio);
+}
+
+function getPageSoundFile(pageData) {
+    return pageData?.bgMusic || pageData?.sound || pageData?.audio || null;
+}
+
+function getAudioKind(pageData) {
+    if (!hasAudioForPage(pageData)) return null;
+    return pageData?.karaokeLines?.length ? 'voice' : 'ambient';
+}
+
+function getAudioDescriptor(pageData = state.currentAudioPageData) {
+    const kind = getAudioKind(pageData);
+    if (!kind) return null;
+
+    if (kind === 'voice') {
+        return {
+            kind,
+            eyebrow: 'Voz original',
+            title: 'Lectura en voz disponible',
+            promptMessage: AUDIO_PROMPT_MESSAGE,
+            playingMessage: 'La voz ya está acompañando la lectura.',
+            pausedMessage: 'La voz está lista para continuar.'
+        };
+    }
+
+    return {
+        kind,
+        eyebrow: 'Experiencia sonora',
+        title: 'La lectura incluye sonido',
+        promptMessage: AUDIO_PROMPT_MESSAGE,
+        playingMessage: 'El ambiente ya acompaña la lectura.',
+        pausedMessage: 'El sonido está listo para volver.'
+    };
+}
+
+function getAudioCompanionElements() {
+    return {
+        root: document.getElementById('audio-presence'),
+        title: document.getElementById('audio-presence-title'),
+        primary: document.getElementById('audio-presence-primary'),
+        secondary: document.getElementById('audio-presence-secondary')
+    };
+}
+
+function setAudioStatus(status, message = '') {
+    state.audioStatus = status;
+    state.audioStatusMessage = message;
+    syncAudioExperienceUI();
+}
+
+function getPreparedAudioTargetVolume(pageData = state.currentAudioPageData) {
+    if (!pageData) return state.currentVolume;
+    const pageVolume = pageData.volume ?? 1;
+    return Math.min(state.currentVolume * pageVolume, 1);
+}
+
+function getSafeStartTarget(pageData, targetVolume) {
+    const kind = getAudioKind(pageData);
+    const cap = kind === 'voice' ? SAFE_AUDIO_START_CAP.voice : SAFE_AUDIO_START_CAP.ambient;
+    return Math.min(targetVolume, cap);
+}
+
+function clearFadeInterval(intervalRef) {
+    if (intervalRef) clearInterval(intervalRef);
+    return null;
+}
+
+function rampVolume(audio, from, to, duration, onComplete = null) {
+    if (!audio) {
+        if (onComplete) onComplete();
+        return null;
+    }
+
+    if (duration <= 0 || from === to) {
+        audio.volume = Math.max(0, Math.min(to, 1));
+        if (onComplete) onComplete();
+        return null;
+    }
+
+    const steps = Math.max(1, Math.round(duration / FADE_INTERVAL_MS));
+    const delta = (to - from) / steps;
+    let step = 0;
+    audio.volume = Math.max(0, Math.min(from, 1));
+
+    const interval = setInterval(() => {
+        if (!audio || audio !== state.currentAudio) {
+            clearInterval(interval);
+            return;
+        }
+
+        step += 1;
+        const nextVolume = step >= steps ? to : audio.volume + delta;
+        audio.volume = Math.max(0, Math.min(nextVolume, 1));
+
+        if (step >= steps) {
+            clearInterval(interval);
+            if (onComplete) onComplete();
+        }
+    }, FADE_INTERVAL_MS);
+
+    return interval;
+}
 
 /**
  * Precarga un archivo de audio en background.
@@ -55,6 +185,212 @@ export function preloadPageAudio(pageId) {
     }
 }
 
+export function createAudioExperienceMarkup(pageData) {
+    const descriptor = getAudioDescriptor(pageData);
+    if (!descriptor) return '';
+
+    return `
+        <aside id="audio-presence" class="audio-pill audio-pill--${descriptor.kind}" aria-live="polite">
+            <div class="audio-pill__icon">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+            </div>
+            <div class="audio-pill__content">
+                <span id="audio-presence-title" class="audio-pill__title">${descriptor.kind === 'voice' ? 'Voz disponible' : 'Sonido disponible'}</span>
+            </div>
+            <div class="audio-pill__actions">
+                 <button id="audio-presence-primary" type="button" class="audio-pill__btn audio-pill__btn--primary" aria-label="Activar sonido">Escuchar</button>
+                 <button id="audio-presence-secondary" type="button" class="audio-pill__btn audio-pill__btn--secondary" aria-label="Cerrar aviso">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                 </button>
+            </div>
+        </aside>
+    `;
+}
+
+export function setCurrentBookAudioDecision(decision, { fromUser = false } = {}) {
+    const bookId = getCurrentBookId();
+    if (!bookId) return;
+
+    state.audioBookDecisions[bookId] = decision;
+    if (fromUser) {
+        state.audioUserActivated = true;
+    }
+
+    if (decision === 'silent') {
+        setAudioStatus('silent', AUDIO_SILENT_MESSAGE);
+    }
+
+    syncAudioExperienceUI();
+}
+
+export function clearAudioExperienceContext() {
+    state.currentAudioPageId = null;
+    state.currentAudioPageData = null;
+    state.audioStatus = 'idle';
+    state.audioStatusMessage = '';
+}
+
+function playPreparedAudio(pageData) {
+    if (!pageData) return;
+
+    const shouldRestartKaraoke = Boolean(pageData.karaokeLines?.length);
+
+    if (!state.currentAudio || state.currentAudioFile !== getPageSoundFile(pageData)) {
+        playPageSound(pageData.id, getPageSoundFile(pageData), true);
+    } else {
+        state.currentAudio.volume = 0;
+        state.currentAudio.play()
+            .then(() => {
+                applyComfortFadeIn(state.currentAudio, pageData, getPreparedAudioTargetVolume(pageData), {
+                    ghostEcho: pageData.ghostEcho === true,
+                    fadeIn: pageData.fadeIn === true
+                });
+            })
+            .catch((err) => {
+                console.warn('Reanudación bloqueada:', err);
+                setAudioStatus('blocked', 'Toca para iniciar el sonido.');
+            });
+    }
+
+    if (shouldRestartKaraoke) {
+        startKaraokeSync();
+    }
+}
+
+function handlePrimaryAudioAction(event) {
+    event.stopPropagation();
+
+    const pageData = state.currentAudioPageData;
+    if (!pageData) return;
+
+    if (getBookAudioDecision() !== 'enabled') {
+        setCurrentBookAudioDecision('enabled', { fromUser: true });
+    }
+
+    if (!state.currentAudio || state.currentAudio.paused) {
+        playPreparedAudio(pageData);
+        return;
+    }
+
+    if (pageData.ghostEcho === true) {
+        stopCurrentAudio();
+    } else {
+        state.currentAudio.pause();
+    }
+    updatePlayButtonState(false);
+    setAudioStatus('paused', getAudioDescriptor(pageData)?.pausedMessage || '');
+}
+
+function handleSecondaryAudioAction(event) {
+    event.stopPropagation();
+    setCurrentBookAudioDecision('silent');
+    stopCurrentAudio();
+}
+
+export function bindAudioExperience(pageId, pageData) {
+    state.currentAudioPageId = pageId;
+    state.currentAudioPageData = pageData;
+
+    const { primary, secondary } = getAudioCompanionElements();
+    if (primary) {
+        primary.addEventListener('click', handlePrimaryAudioAction);
+    }
+    if (secondary) {
+        secondary.addEventListener('click', handleSecondaryAudioAction);
+    }
+
+    const decision = getBookAudioDecision();
+    if (decision === 'enabled') {
+        setAudioStatus(state.currentAudio && !state.currentAudio.paused ? 'playing' : 'preparing');
+    } else if (decision === 'silent') {
+        setAudioStatus('silent', AUDIO_SILENT_MESSAGE);
+    } else {
+        setAudioStatus('prompt', getAudioDescriptor(pageData)?.promptMessage || AUDIO_PROMPT_MESSAGE);
+    }
+}
+
+export function syncAudioExperienceUI() {
+    const descriptor = getAudioDescriptor();
+    const els = getAudioCompanionElements();
+    if (!descriptor || !els.root) return;
+
+    const status = state.audioStatus || 'prompt';
+    const decision = getBookAudioDecision();
+
+    els.root.className = `audio-pill audio-pill--${descriptor.kind}`;
+    els.root.classList.toggle('is-playing', status === 'playing');
+    els.root.classList.toggle('is-paused', status === 'paused');
+    els.root.classList.toggle('is-loading', status === 'preparing');
+    els.root.classList.toggle('is-silent', status === 'silent');
+
+    if (els.title) {
+        if (status === 'playing') {
+            els.title.textContent = descriptor.kind === 'voice' ? 'Voz sonando' : 'Sonido activo';
+        } else if (status === 'paused') {
+            els.title.textContent = 'En pausa';
+        } else if (status === 'silent') {
+            els.title.textContent = 'Silencio';
+        } else if (status === 'preparing') {
+            els.title.textContent = 'Cargando...';
+        } else {
+            els.title.textContent = descriptor.kind === 'voice' ? 'Voz disponible' : 'Sonido disponible';
+        }
+    }
+
+    if (els.primary) {
+        els.primary.disabled = status === 'preparing';
+        if (status === 'playing') {
+            els.primary.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+            els.primary.setAttribute('aria-label', 'Pausar');
+        } else if (status === 'paused') {
+            els.primary.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+            els.primary.setAttribute('aria-label', 'Reanudar');
+        } else {
+            els.primary.textContent = 'Escuchar';
+            els.primary.removeAttribute('aria-label');
+        }
+    }
+
+    if (els.secondary) {
+        const shouldHideSecondary = status === 'playing' || status === 'paused' || status === 'preparing' || decision === 'silent';
+        els.secondary.style.display = shouldHideSecondary ? 'none' : 'flex';
+    }
+
+    const instructionText = document.querySelector('.audio-instruction');
+    if (instructionText) {
+        if (status === 'playing') {
+            instructionText.textContent = 'Sonando en suave';
+            instructionText.classList.add('faded');
+        } else if (status === 'preparing') {
+            instructionText.textContent = 'Preparando…';
+            instructionText.classList.remove('faded');
+        } else if (status === 'silent') {
+            instructionText.textContent = 'Silenciado';
+            instructionText.classList.remove('faded');
+        } else {
+            instructionText.textContent = 'Pulsa para escuchar';
+            instructionText.classList.remove('faded');
+        }
+    }
+}
+
+export function syncCurrentAudioVolume() {
+    state.audioVolumeTouched = true;
+    const targetVolume = state.currentAudioPageData
+        ? getPreparedAudioTargetVolume()
+        : Math.min(state.currentVolume * (state.currentAudioBaseVolume || 1), 1);
+
+    if (state.currentAudio) {
+        state.currentAudio.volume = targetVolume;
+    }
+
+    if (ghostAudio) {
+        ghostAudio.volume = Math.min(targetVolume * GHOST_MAX_VOLUME, 1);
+    }
+}
+
 // =====================================
 // GHOST / ECHO AUDIO SYSTEM
 // =====================================
@@ -80,6 +416,7 @@ let ghostFadeInterval = null;
 let mainFadeInterval = null;
 let mainFadeInInterval = null;
 let ghostCheckInterval = null;
+let comfortFadeInterval = null;
 
 const GHOST_TRIGGER_SECONDS = 18;  // Cuántos segundos antes del final activar el fantasma
 const GHOST_MIN_VOLUME = 0.03;     // Volumen mínimo del fantasma (un susurro)
@@ -94,6 +431,7 @@ function cleanupGhost() {
     if (ghostCheckInterval) { clearInterval(ghostCheckInterval); ghostCheckInterval = null; }
     if (mainFadeInterval) { clearInterval(mainFadeInterval); mainFadeInterval = null; }
     if (mainFadeInInterval) { clearInterval(mainFadeInInterval); mainFadeInInterval = null; }
+    if (comfortFadeInterval) { clearInterval(comfortFadeInterval); comfortFadeInterval = null; }
 
     if (ghostAudio) {
         ghostAudio.pause();
@@ -279,6 +617,27 @@ function restartMainFromGhost(baseVolume) {
     startGhostSystem(state.currentAudioFile, baseVolume);
 }
 
+function applyComfortFadeIn(audio, pageData, targetVolume, { ghostEcho = false, fadeIn = false } = {}) {
+    if (!audio) return;
+
+    comfortFadeInterval = clearFadeInterval(comfortFadeInterval);
+    mainFadeInInterval = clearFadeInterval(mainFadeInInterval);
+
+    const safeTarget = getSafeStartTarget(pageData, targetVolume);
+    const attackDuration = fadeIn || ghostEcho ? MAIN_FADE_IN_DURATION : SAFE_AUDIO_PRIMARY_FADE_MS;
+
+    audio.volume = 0;
+    mainFadeInInterval = rampVolume(audio, 0, safeTarget, attackDuration, () => {
+        mainFadeInInterval = null;
+
+        if (targetVolume > safeTarget) {
+            comfortFadeInterval = rampVolume(audio, safeTarget, targetVolume, SAFE_AUDIO_SECONDARY_FADE_MS, () => {
+                comfortFadeInterval = null;
+            });
+        }
+    });
+}
+
 
 // =====================================
 // CORE AUDIO CONTROL
@@ -299,6 +658,7 @@ export function stopCurrentAudio() {
         state.currentAudio = null;
     }
     state.currentAudioFile = null;
+    state.currentAudioBaseVolume = 1;
 }
 
 export function updatePlayButtonState(isPlaying) {
@@ -312,8 +672,8 @@ export function updatePlayButtonState(isPlaying) {
     btn.setAttribute('aria-label', isPlaying ? 'Pausar' : 'Reproducir');
 
     const instructionText = document.querySelector('.audio-instruction');
-    if (instructionText && isPlaying) {
-        instructionText.classList.add('faded');
+    if (instructionText) {
+        instructionText.classList.toggle('faded', isPlaying);
     }
 }
 
@@ -323,11 +683,12 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
     let playbackRate = 1;
     let ghostEcho = false;
     let fadeIn = false;
+    let pageData = null;
 
     if (state.story && pageId) {
-        const pageData = state.story.find((page) => page.id === pageId);
+        pageData = state.story.find((page) => page.id === pageId);
         if (pageData) {
-            if (!soundFile) soundFile = pageData.sound || pageData.audio;
+            if (!soundFile) soundFile = getPageSoundFile(pageData);
             volumeMultiplier = pageData.volume ?? 1;
             playbackRate = pageData.playbackRate ?? 1;
             ghostEcho = pageData.ghostEcho === true;
@@ -340,7 +701,10 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
     // Si ya estamos reproduciendo este mismo archivo, ajustar volumen
     // y GARANTIZAR que sigue sonando (fix para el bug de 'a veces no suena')
     if (state.currentAudio && state.currentAudioFile === soundFile) {
-        const newVolume = state.currentVolume * volumeMultiplier;
+        const newVolume = getPreparedAudioTargetVolume(pageData);
+        state.currentAudioBaseVolume = volumeMultiplier;
+        state.currentAudioPageId = pageId;
+        state.currentAudioPageData = pageData;
 
         // Si el ghost echo maneja el volumen, no pisarle el fade
         if (!ghostEcho || !mainFadeInInterval) {
@@ -349,7 +713,7 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
         state.currentAudio.playbackRate = playbackRate;
 
         // VERIFICAR que realmente está sonando. Si no, reanimarlo.
-        if (state.currentAudio.paused || state.currentAudio.ended) {
+        if (autoPlay && (state.currentAudio.paused || state.currentAudio.ended)) {
             // Si terminó (ended), reiniciar desde startAt o desde 0
             if (state.currentAudio.ended) {
                 const pg = state.story?.find((p) => p.id === pageId);
@@ -380,8 +744,9 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
 
     state.currentAudio = audio;
     state.currentAudioFile = soundFile;
-
-    const pageData = state.story?.find((page) => page.id === pageId);
+    state.currentAudioBaseVolume = volumeMultiplier;
+    state.currentAudioPageId = pageId;
+    state.currentAudioPageData = pageData;
 
     // Configurar startAt inmediato si existe
     if (pageData?.startAt !== undefined) {
@@ -394,10 +759,10 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
     // El sistema fantasma se encarga del loop infinito
     audio.loop = ghostEcho ? false : !isKaraoke;
 
-    const targetVolume = state.currentVolume * volumeMultiplier;
+    const targetVolume = getPreparedAudioTargetVolume(pageData);
 
     // Si fadeIn está activado, empezar en 0 y subir suavemente
-    if (fadeIn || ghostEcho) {
+    if (fadeIn || ghostEcho || autoPlay) {
         audio.volume = 0;
     } else {
         audio.volume = targetVolume;
@@ -405,15 +770,46 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
 
     audio.playbackRate = playbackRate;
 
+    audio.addEventListener('loadstart', () => {
+        if (audio === state.currentAudio && autoPlay) {
+            setAudioStatus('preparing', pageData?.delay ? 'El sonido entra en un instante.' : AUDIO_LOADING_MESSAGE);
+        }
+    });
+
+    audio.addEventListener('waiting', () => {
+        if (audio === state.currentAudio) {
+            setAudioStatus('preparing', AUDIO_BUFFERING_MESSAGE);
+        }
+    });
+
+    audio.addEventListener('playing', () => {
+        if (audio !== state.currentAudio) return;
+        updatePlayButtonState(true);
+        setAudioStatus('playing', getAudioDescriptor(pageData)?.playingMessage || '');
+    });
+
+    audio.addEventListener('pause', () => {
+        if (audio !== state.currentAudio || audio.ended) return;
+        updatePlayButtonState(false);
+        setAudioStatus('paused', getAudioDescriptor(pageData)?.pausedMessage || '');
+    });
+
     audio.addEventListener('error', (e) => {
         console.error('Error cargando audio:', soundFile, e);
+        if (audio === state.currentAudio) {
+            setAudioStatus('error', 'No se pudo cargar este audio.');
+        }
     });
 
     audio.addEventListener('ended', () => {
         updatePlayButtonState(false);
+        if (audio === state.currentAudio && !ghostEcho) {
+            setAudioStatus('paused', 'La pieza terminó. Puedes volver a escucharla.');
+        }
     });
 
     if (autoPlay) {
+        setAudioStatus('preparing', pageData?.delay ? 'El sonido entra en un instante.' : AUDIO_LOADING_MESSAGE);
         const startPlay = () => {
             // Asegurar startAt antes de reproducir
             if (pageData?.startAt !== undefined) {
@@ -421,23 +817,13 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
             }
             audio.play()
                 .then(() => {
-                    updatePlayButtonState(true);
-                    if (fadeIn || ghostEcho) {
-                        let vol = 0;
-                        const fadeSteps = MAIN_FADE_IN_DURATION / FADE_INTERVAL_MS;
-                        const volStep = targetVolume / fadeSteps;
-                        mainFadeInInterval = setInterval(() => {
-                            if (!state.currentAudio) { clearInterval(mainFadeInInterval); mainFadeInInterval = null; return; }
-                            vol = Math.min(vol + volStep, targetVolume);
-                            state.currentAudio.volume = Math.min(vol, 1);
-                            if (vol >= targetVolume) { clearInterval(mainFadeInInterval); mainFadeInInterval = null; }
-                        }, FADE_INTERVAL_MS);
-                    }
+                    applyComfortFadeIn(audio, pageData, targetVolume, { ghostEcho, fadeIn });
                     if (ghostEcho) startGhostSystem(soundFile, volumeMultiplier);
                 })
                 .catch((err) => {
                     console.warn('Reproducción automática bloqueada:', err);
                     updatePlayButtonState(false);
+                    setAudioStatus('blocked', 'Toca para iniciar el sonido.');
                 });
         };
 
@@ -452,14 +838,32 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true)
 }
 
 export function toggleKaraokeAudio() {
+    if (!state.currentAudio && state.currentAudioPageData) {
+        setCurrentBookAudioDecision('enabled', { fromUser: true });
+        playPreparedAudio(state.currentAudioPageData);
+        return;
+    }
+
     if (!state.currentAudio) return;
 
     if (state.currentAudio.paused) {
-        state.currentAudio.play();
-        updatePlayButtonState(true);
+        setCurrentBookAudioDecision('enabled', { fromUser: true });
+        state.currentAudio.volume = 0;
+        state.currentAudio.play()
+            .then(() => {
+                applyComfortFadeIn(state.currentAudio, state.currentAudioPageData, getPreparedAudioTargetVolume(), {
+                    ghostEcho: state.currentAudioPageData?.ghostEcho === true,
+                    fadeIn: state.currentAudioPageData?.fadeIn === true
+                });
+            })
+            .catch((err) => {
+                console.warn('Reproducción manual bloqueada:', err);
+                setAudioStatus('blocked', 'Toca para iniciar el sonido.');
+            });
     } else {
         state.currentAudio.pause();
         updatePlayButtonState(false);
+        setAudioStatus('paused', getAudioDescriptor(state.currentAudioPageData)?.pausedMessage || '');
     }
 }
 

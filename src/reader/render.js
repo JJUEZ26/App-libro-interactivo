@@ -4,9 +4,14 @@ import { applyHighlightsForPage } from './highlights.js';
 import { sanitizeHTML } from '../utils/sanitize.js';
 import { renderDiscoveries } from './discoveries.js';
 import {
+    bindAudioExperience,
+    clearAudioExperienceContext,
+    createAudioExperienceMarkup,
+    getCurrentBookAudioDecision,
     playPageSound,
     preloadAudio,
     preloadPageAudio,
+    setCurrentBookAudioDecision,
     startKaraokeSync,
     stopCurrentAudio,
     toggleKaraokeAudio,
@@ -55,6 +60,12 @@ export function renderPage(pageId) {
     pageContent.className = 'page-content';
     if (pageData.pageClass) {
         pageContent.classList.add(pageData.pageClass);
+    }
+
+    const audioExperienceMarkup = createAudioExperienceMarkup(pageData);
+    if (audioExperienceMarkup) {
+        pageContent.classList.add('page-with-audio');
+        pageContent.insertAdjacentHTML('afterbegin', audioExperienceMarkup);
     }
 
     const contentCenterer = document.createElement('div');
@@ -202,12 +213,20 @@ export function renderPage(pageId) {
 
                 if (isListenChoice) {
                     btn.classList.add('choice-primary');
+                    const cleanText = choice.text.replace('🎧', '').trim();
+                    btn.innerHTML = `<svg style="vertical-align: middle; margin-right: 6px; position:relative; top:-2px;" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg> ${cleanText}`;
                 } else if (isReadChoice) {
                     btn.classList.add('choice-secondary');
                 }
 
                 btn.addEventListener('click', (event) => {
                     event.stopPropagation();
+
+                    if (isListenChoice) {
+                        setCurrentBookAudioDecision('enabled', { fromUser: true });
+                    } else if (isReadChoice) {
+                        setCurrentBookAudioDecision('silent');
+                    }
 
                     if (isRestart || isReadChoice) {
                         if (state.currentAudio) {
@@ -217,13 +236,6 @@ export function renderPage(pageId) {
                     }
 
                     if (choice.page === 'pecado' || isListenChoice) {
-                        if (state.currentAudio) {
-                            state.currentAudio.currentTime = 0;
-                            state.currentAudio.play();
-                            updatePlayButtonState(true);
-                            const firstLine = document.querySelector('.karaoke-line');
-                            if (firstLine) firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
                         if (goToPage) goToPage(choice.page);
                     } else if (goToPage) {
                         goToPage(choice.page);
@@ -286,18 +298,38 @@ export function renderPage(pageId) {
             });
         });
 
+        if (audioExperienceMarkup) {
+            bindAudioExperience(pageId, pageData);
+        } else {
+            clearAudioExperienceContext();
+        }
+
         // — Start audio (deferred so it doesn't block paint) —
+        const audioDecision = getCurrentBookAudioDecision();
+        const shouldAutoStartAudio = audioDecision === 'enabled';
         if (pageData.bgMusic) {
-            playPageSound(pageId, pageData.bgMusic, true);
+            if (shouldAutoStartAudio) {
+                playPageSound(pageId, pageData.bgMusic, true);
+            } else {
+                stopCurrentAudio();
+            }
         } else if (pageData.sound) {
-            playPageSound(pageId, pageData.sound, true);
+            if (shouldAutoStartAudio) {
+                playPageSound(pageId, pageData.sound, true);
+            } else {
+                stopCurrentAudio();
+            }
         } else if (pageData.audio) {
-            const isKaraoke = pageData.karaokeLines && pageData.karaokeLines.length > 0;
-            playPageSound(pageId, pageData.audio, !isKaraoke);
-            if (isKaraoke) {
-                startKaraokeSync();
+            if (shouldAutoStartAudio) {
+                playPageSound(pageId, pageData.audio, true);
+                if (pageData.karaokeLines?.length) {
+                    startKaraokeSync();
+                }
+            } else {
+                stopCurrentAudio();
             }
         } else {
+            clearAudioExperienceContext();
             stopCurrentAudio();
         }
 

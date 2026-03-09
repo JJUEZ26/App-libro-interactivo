@@ -654,6 +654,39 @@
     color: var(--color-text-tertiary);
 }
 
+/* Badge de audio oculto en portadas */
+.book-audio-badge {
+    position: absolute;
+    bottom: calc(var(--space-4) + var(--space-2));
+    right: calc(var(--space-4) + var(--space-2));
+    background: rgba(10, 10, 14, 0.7);
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-full);
+    padding: var(--space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.book-card:hover .book-audio-badge {
+    transform: scale(1.1) rotate(2deg);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.theme-light .book-audio-badge,
+body.theme-sepia .book-audio-badge {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--color-text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Badge de "Nuevo" / "En progreso" */
 .book-tag {
     position: absolute;

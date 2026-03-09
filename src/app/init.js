@@ -19,6 +19,7 @@ import { ChatFeature } from '../ui/ChatModule.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
 import { handlePageEffects } from '../effects/index.js';
+import { syncCurrentAudioVolume } from '../reader/audio.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
@@ -80,7 +81,7 @@ export function initApp() {
     if (elements.volumeSlider) {
         elements.volumeSlider.addEventListener('input', (event) => {
             state.currentVolume = parseFloat(event.target.value);
-            if (state.currentAudio) state.currentAudio.volume = state.currentVolume;
+            syncCurrentAudioVolume();
             saveVolume(state.currentVolume);
         });
     }

@@ -49,6 +49,22 @@
     ]
   },
   {
+    "id": "el-cordon-del-zapato",
+    "title": "el cordón del zapato",
+    "author": "Charles Bukowski",
+    "description": "no son las cosas importantes las que llevan a un hombre al manicomio...",
+    "cover": "images/bukowski_zapato_portada.png",
+    "storyFile": "stories/el_cordon_del_zapato.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "crudeza",
+      "vida urbana",
+      "tragedia",
+      "cotidianidad"
+    ]
+  },
+  {
     "id": "jorge-luis-borges-remordimiento",
     "title": "El remordimiento",
     "author": "Jorge Luis Borges",

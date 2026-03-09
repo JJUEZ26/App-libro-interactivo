@@ -1,0 +1,73 @@
+[
+  {
+    "id": "inicio",
+    "bgVideo": {
+      "src": "videos/humo_fondo_perfecto.mp4"
+    },
+    "page": 1,
+    "scenes": [
+      "una mujer, una rueda\npinchada, una\nenfermedad, un deseo; temores ante ti,\ntemores que puedes estudiar\ncomo las piezas de un\ntablero de ajedrez…",
+      "no son las cosas importantes las que\nllevan a un hombre al\nmanicomio. Está preparado para la muerte o\nel asesinato, el incesto, el robo, el incendio,\nla inundación.",
+      "No, es la serie continua de pequeñas tragedias\nlo que lleva a un hombre al\nmanicomio…\nno es la muerte de su amor\nsino el cordón de su zapato que se rompe\ncuando tiene prisa."
+    ],
+    "choices": [
+      {
+        "text": "El horror de la vida...",
+        "page": "horror"
+      }
+    ]
+  },
+  {
+    "id": "horror",
+    "bgVideo": {
+      "src": "videos/humo_fondo_perfecto.mp4"
+    },
+    "page": 2,
+    "scenes": [
+      "El horror de la vida\nes esa multitud de trivialidades\nque puede matar más deprisa que el cáncer\ny siempre están ahí:\nla matrícula del automóvil o los impuestos\no el permiso de conducir vencido\no los contratos o los despidos,\nhacerlo tú o que te lo hagan, o\nel estreñimiento\no las multas por exceso de velocidad,\npolillas o grillos o ratitas o termitas o\ncucarachas o moscas y\nla tela metálica que se\nha roto,",
+      "o pasarse\no no llegar,\no el fregadero atascado o la casera borracha,\nal presidente no le importa y el gobernador\nestá loco.",
+      "El interruptor de la luz roto, o el colchón como\nun puerco espín,\n105 dólares por la puesta a punto, el carburador y la bomba de\ngasolina en Sears Roebuck,\ny el recibo del teléfono que sube y la Bolsa\nque baja\ny la cadena del water que se ha\nroto\ny la instalación de la luz que se ha quemado,\nla luz de la entrada, la luz del frente, la luz de atrás,\nla luz del interior; está más\noscuro que el infierno y\nes el doble de caro.",
+      "y además siempre hay ladillas y uñas que se encarnan\ny gente que insiste en que son\namigos tuyos;\nsiempre hay eso y cosas peores:\ngrifos que gotean, Cristo y la Navidad,\nel salami azul, 9 días de lluvia,\n50 centavos de aguacates\ny paté de hígado\nmorado."
+    ],
+    "choices": [
+      {
+        "text": "O meterse...",
+        "page": "norm"
+      }
+    ]
+  },
+  {
+    "id": "norm",
+    "bgVideo": {
+      "src": "videos/humo_fondo_perfecto.mp4"
+    },
+    "page": 3,
+    "scenes": [
+      "O meterse\nde camarera en Norm’s con turno partido,\no de vaciador de\norinales,\no de lavacoches o de ayudante de camarero\no de ladrón de bolsos de ancianas\nque las deja gritando en las aceras\ncon los brazos rotos a los 80 años.",
+      "De pronto 2 luces rojas en tu espejo retrovisor\ny sangre en\nlos calzoncillos;\ndolor de muelas y 979 dólares por un puente\no 300 dólares por una muela\nde oro,\ny China y Rusia y Estados Unidos y\npelo largo y pelo corto y nada de\npelo y barbas y sin rostros,\ny muchos papeles de liar pero ninguna\nhierba excepto tal vez una para mear y otra para tu barriga."
+    ],
+    "choices": [
+      {
+        "text": "Con un cordón...",
+        "page": "final"
+      }
+    ]
+  },
+  {
+    "id": "final",
+    "bgVideo": {
+      "src": "videos/humo_fondo_perfecto.mp4"
+    },
+    "page": 4,
+    "scenes": [
+      "Con un cordón de zapato que se rompe\nde cada cien cordones de zapato que se rompen,\nun hombre o una mujer o una\ncosa\nva a parar al\nmanicomio.",
+      "Así que ten cuidado\nal agacharte"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

@@ -745,6 +745,15 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 - Pág 8–9 (rosa): carmesí (`#E8174D`) — flores, arte, boleros
 - Pág 11 (bio): morado (`#6B2D5E`) — tributo, eternidad
 
+### Rediseño Premium del Audio Onboarding (Marzo 2026)
+**Objetivo**: Convertir el aviso intrusivo de "Audio Disponible" en una microinteracción elegante, asegurando además que las obras informen de su naturaleza auditiva desde la misma portada.
+
+**Implementación**:
+1. **Audio Pill (`audio-pill`)**: Reemplazo del gran modal `audio-presence` por una píldora flotante estilo Dynamic Island en la parte superior del lector (`src/styles/reader.css`).
+2. **Iconos Contextuales**: Uso de iconografía sutil para activar y cerrar el sonido, evitando textos largos.
+3. **Indicador en Portadas**: Inserción de un icono discreto de audio dentro de los botones "Leer" en la biblioteca (`src/books/index.js`) para todas las obras poéticas.
+4. **Opciones en Lector**: Se incorporó el icono de auriculares junto a los botones de "Escuchar" dentro de la propia obra (`src/reader/render.js`), integrando la promesa auditiva como una invitación premium.
+
 ---
 
 ### Rediseño Premium de la Homepage (Marzo 2026)
@@ -760,3 +769,11 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 **Mejoras CSS**:
 - `.book-card--upcoming`: Sombras reactivas sutiles, overlays tipo *glassmorphism*, badge integrado pero transparente y un estilo visual que comunica "premium en desarrollo".
 
+### Poema "el cordón del zapato" — Charles Bukowski (Marzo 2026)
+**Objetivo**: Añadir el poema de Charles Bukowski asegurando una lectura rápida, fluida y con la imagen gráfica adecuada.
+
+**Implementación**:
+1. **Transcripción Literal**: Respeto total al formato y fluidez de las estrofas.
+2. **Paginación para Lectura Rápida**: Agrupaciones amplias de versos por página para minimizar los clics y acelerar la cadencia lectora.
+3. **Portada Temática**: Creación automatizada de portada con IA basada en la estética solicitada (zapatos, iluminación dark, títulos integrados "el cordón del zapato" / "Charles Bukowski").
+4. **Integración en Sistema**: Añadido exitosamente a la sección inicial de `poemas` en `library-sections.json` e incorporado el objeto de libro en `books.json`.

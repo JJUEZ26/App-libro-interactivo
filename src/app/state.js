@@ -13,9 +13,17 @@ export const state = {
     isTransitioning: false,
     currentAudio: null,
     currentAudioFile: null,
+    currentAudioBaseVolume: 1,
+    currentAudioPageId: null,
+    currentAudioPageData: null,
     currentVolume: 1,
     totalPagesInStory: 0,
-    karaokeInterval: null
+    karaokeInterval: null,
+    audioStatus: 'idle',
+    audioStatusMessage: '',
+    audioBookDecisions: {},
+    audioUserActivated: false,
+    audioVolumeTouched: false
 };
 
 export const themeColors = {

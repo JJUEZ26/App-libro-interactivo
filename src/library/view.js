@@ -1,7 +1,7 @@
 import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
-import { stopCurrentAudio } from '../reader/audio.js';
+import { clearAudioExperienceContext, stopCurrentAudio } from '../reader/audio.js';
 
 let elements = null;
 let loadStoryRef = null;
@@ -48,6 +48,7 @@ export function switchToLibraryView() {
     if (elements?.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
 
     stopCurrentAudio();
+    clearAudioExperienceContext();
     handlePageEffects(null, { getAppMode });
     startLibraryBeetle({ getAppMode });
     window.scrollTo(0, 0);
