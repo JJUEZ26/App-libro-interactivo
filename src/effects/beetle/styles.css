@@ -1,17 +1,23 @@
-/* Contenedor del escarabajo - Flotando sobre todo */
+/* ============================================
+   BEETLE / ESCARABAJO — Gregorio Samsa
+   Sale desde la G (su hogar), explora tímido,
+   al aplastarlo corre de vuelta a la G.
+   ============================================ */
+
+/* Contenedor del escarabajo */
 #beetle-container {
-    position: fixed; /* Fixed para que se mueva por toda la ventana independiente del scroll */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 120px;
+    width: 102px;
     height: auto;
-    z-index: 9999; /* Por encima de todo */
-    pointer-events: auto; /* Permitir clicks */
-    cursor: pointer; /* Manita para indicar interactividad */
+    z-index: 9999;
+    pointer-events: auto;
+    cursor: pointer;
     transform-origin: center center;
-    will-change: transform;
-    filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.4));
-    transition: opacity 0.5s ease;
+    will-change: transform, opacity;
+    filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.4));
+    transition: none;
 }
 
 #beetle-container.hiding {
@@ -29,7 +35,7 @@
 
 /* --- ANIMACIONES INTERNAS --- */
 
-/* Temblor de antenas */
+/* Temblor de antenas (siempre) */
 #beetle-container #antennae {
     animation: antennaTwitch 0.15s ease-in-out infinite alternate;
     transform-origin: 350px 300px;
@@ -39,7 +45,7 @@
     100% { transform: rotate(6deg); }
 }
 
-/* Vaivén del cuerpo (solo al caminar) */
+/* Vaivén del cuerpo al caminar */
 #beetle-container.walking #body {
     animation: bodyBob 0.2s ease-in-out infinite alternate;
     transform-origin: center center;
@@ -72,7 +78,80 @@
     100% { transform: rotate(0deg) translateY(0); }
 }
 
-/* Clase para cuando huye despavorido */
+/* ===== SNIFFING — Olfateando tímidamente ===== */
+
+/* Olfateo activo: antenas se mueven más rápido */
+#beetle-container.sniffing #antennae {
+    animation: antennaSniff 0.08s ease-in-out infinite alternate;
+}
+@keyframes antennaSniff {
+    0% { transform: rotate(-8deg) translateX(-2px); }
+    100% { transform: rotate(12deg) translateX(2px); }
+}
+
+/* Olfateo idle: micro-movimiento del cuerpo */
+#beetle-container.sniffing-idle #body {
+    animation: sniffBob 0.6s ease-in-out infinite;
+    transform-origin: center center;
+}
+@keyframes sniffBob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-1.5px) rotate(-0.8deg); }
+    60% { transform: translateY(0.5px) rotate(0.5deg); }
+}
+
+/* Antenas más inquietas cuando está quieto olfateando */
+#beetle-container.sniffing-idle #antennae {
+    animation: antennaExplore 0.3s ease-in-out infinite alternate;
+}
+@keyframes antennaExplore {
+    0% { transform: rotate(-5deg) translateY(-1px); }
+    50% { transform: rotate(2deg) translateY(1px); }
+    100% { transform: rotate(8deg) translateY(-1px); }
+}
+
+/* ===== SCARED / FLEEING — Aterrorizado ===== */
+
+/* Al ser aplastado: patas ultra-rápidas */
+#beetle-container.scared .tripod-a {
+    animation: legCycleScared 0.08s linear infinite !important;
+}
+#beetle-container.scared .tripod-b {
+    animation: legCycleScared 0.08s linear infinite reverse !important;
+}
+
+@keyframes legCycleScared {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(25deg) translateY(-8px); }
+    50% { transform: rotate(30deg) translateY(0); }
+    75% { transform: rotate(8deg) translateY(-4px); }
+    100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* Cuerpo tiembla de miedo */
+#beetle-container.scared #body {
+    animation: bodyPanic 0.1s ease-in-out infinite alternate !important;
+}
+@keyframes bodyPanic {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); }
+    100% { transform: translateY(-2px) translateX(1px) rotate(-2deg); }
+}
+
+/* Antenas frenéticas */
+#beetle-container.scared #antennae {
+    animation: antennaePanic 0.06s ease-in-out infinite alternate !important;
+}
+@keyframes antennaePanic {
+    0% { transform: rotate(-10deg) translateX(-3px); }
+    100% { transform: rotate(14deg) translateX(3px); }
+}
+
+/* ===== ENTERING HOME — Volviendo a la G ===== */
+#beetle-container.entering-home {
+    pointer-events: none;
+}
+
+/* ===== FLEEING (legacy fallback) ===== */
 #beetle-container.fleeing {
-    transition: transform 0.5s linear; /* Movimiento más fluido al huir */
+    transition: transform 0.5s linear;
 }

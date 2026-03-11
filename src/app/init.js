@@ -16,10 +16,11 @@ import {
 import { loadPreferences, saveVolume } from '../utils/storage.js';
 import { applyTheme, changeFontSize, cycleTheme, selectTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
 import { ChatFeature } from '../ui/ChatModule.js';
+import { CommandOrb } from '../ui/CommandOrb.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
-import { handlePageEffects } from '../effects/index.js';
-import { syncCurrentAudioVolume } from '../reader/audio.js';
+import { handlePageEffects, pauseAllEffectAudio, resumeEffectAudio, syncEffectAudioVolume } from '../effects/index.js';
+import { syncCurrentAudioVolume, pauseAllAudioForBackground, resumeAudioFromBackground } from '../reader/audio.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
@@ -82,6 +83,7 @@ export function initApp() {
         elements.volumeSlider.addEventListener('input', (event) => {
             state.currentVolume = parseFloat(event.target.value);
             syncCurrentAudioVolume();
+            syncEffectAudioVolume();
             saveVolume(state.currentVolume);
         });
     }
@@ -181,6 +183,26 @@ export function initApp() {
         if (state.appMode === 'reader' && state.currentAudio && !state.currentAudio.paused) {
             event.preventDefault();
             event.returnValue = '';
+        }
+    });
+
+    // Pausar/reanudar audio cuando la pestaña pierde/recupera foco
+    let wasPlayingBeforeHidden = false;
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (state.currentAudio && !state.currentAudio.paused) {
+                wasPlayingBeforeHidden = true;
+                pauseAllAudioForBackground();
+            } else {
+                wasPlayingBeforeHidden = false;
+            }
+            pauseAllEffectAudio();
+        } else {
+            if (wasPlayingBeforeHidden) {
+                resumeAudioFromBackground();
+                wasPlayingBeforeHidden = false;
+            }
+            resumeEffectAudio();
         }
     });
     if (elements.navToggle) elements.navToggle.addEventListener('click', openNav);
@@ -286,7 +308,8 @@ export function initApp() {
         elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
     }
 
-    new ChatFeature();
+    const chatFeature = new ChatFeature();
+    const commandOrb = new CommandOrb({ chatFeature });
 
     async function initializeApp() {
         loadPreferences({

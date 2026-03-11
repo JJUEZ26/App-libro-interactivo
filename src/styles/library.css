@@ -1,4 +1,4 @@
-/* ========================================
+﻿/* ========================================
    BIBLIOTECA - VISTA NETFLIX PREMIUM
    ======================================== */
 
@@ -20,7 +20,7 @@
     overflow-x: hidden;
 }
 
-/* Efecto de Partículas de Fondo */
+/* Efecto de PartÃ­culas de Fondo */
 #library-view::before {
     content: '';
     position: fixed;
@@ -86,7 +86,7 @@
         var(--shadow-2xl),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-    /* Animación de entrada */
+    /* AnimaciÃ³n de entrada */
     animation: heroEntrance 800ms var(--ease-out-expo) both;
 }
 
@@ -274,7 +274,7 @@
     flex-direction: column;
     gap: var(--space-4);
 
-    /* Animación de entrada escalonada */
+    /* AnimaciÃ³n de entrada escalonada */
     opacity: 0;
     animation: sectionEntrance 600ms var(--ease-out-expo) both;
 }
@@ -345,7 +345,7 @@
     scrollbar-color: var(--color-bg-tertiary) transparent;
 }
 
-/* Modificar tamaño específico para Novelas */
+/* Modificar tamaÃ±o especÃ­fico para Novelas */
 .library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
     grid-auto-columns: minmax(140px, 200px);
 }
@@ -404,7 +404,7 @@
     /* Transiciones suaves */
     transition: all var(--duration-normal) var(--ease-out-expo);
 
-    /* Animación de entrada */
+    /* AnimaciÃ³n de entrada */
     opacity: 0;
     animation: cardEntrance 500ms var(--ease-out-expo) both;
 }
@@ -634,6 +634,7 @@
     transition: transform var(--duration-slow) var(--ease-out-expo);
 }
 
+
 /* Ken Burns Effect en hover */
 .book-card:hover .book-cover {
     transform: scale(1.1);
@@ -654,37 +655,36 @@
     color: var(--color-text-tertiary);
 }
 
-/* Badge de audio oculto en portadas */
-.book-audio-badge {
+/* Aura sonora â€” lÃ­nea pulsante en portadas con audio */
+.book-aura {
     position: absolute;
-    bottom: calc(var(--space-4) + var(--space-2));
-    right: calc(var(--space-4) + var(--space-2));
-    background: rgba(10, 10, 14, 0.7);
-    backdrop-filter: blur(8px) saturate(140%);
-    -webkit-backdrop-filter: blur(8px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    bottom: var(--space-4);
+    left: calc(var(--space-4) + 10%);
+    right: calc(var(--space-4) + 10%);
+    height: 2.5px;
     border-radius: var(--radius-full);
-    padding: var(--space-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.95);
     z-index: 2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: transform var(--duration-normal) var(--ease-out);
+    background: linear-gradient(90deg, #5e8cf7, #8b6fcc, #a663cc);
+    opacity: 0.4;
+    animation: auraPulse 4s ease-in-out infinite;
+    pointer-events: none;
 }
 
-.book-card:hover .book-audio-badge {
-    transform: scale(1.1) rotate(2deg);
-    border-color: rgba(255, 255, 255, 0.3);
+@keyframes auraPulse {
+    0%, 100% { opacity: 0.25; transform: scaleX(0.85); }
+    50% { opacity: 0.75; transform: scaleX(1); }
 }
 
-body.theme-light .book-audio-badge,
-body.theme-sepia .book-audio-badge {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    color: var(--color-text-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.book-card:hover .book-aura {
+    opacity: 0.9;
+    transform: scaleX(1.05);
+    transition: all 0.4s ease;
+    animation-play-state: paused;
+}
+
+body.theme-light .book-aura,
+body.theme-sepia .book-aura {
+    background: linear-gradient(90deg, #3d6be0, #6b4fac, #8643ac);
 }
 
 /* Badge de "Nuevo" / "En progreso" */
@@ -881,7 +881,7 @@ body.theme-sepia .book-audio-badge {
 }
 
 /* ========================================
-   CONTAINER QUERIES (Futurístico)
+   CONTAINER QUERIES (FuturÃ­stico)
    ======================================== */
 
 .book-card {

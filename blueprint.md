@@ -687,72 +687,43 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 
 ---
 
-### Sistema de Audio Fantasma "Ghost Echo" (v1.0 — Marzo 2026)
+### Sistema de Audio Fantasma "Ghost Echo" (v1.0 — Marzo 2026, DORMANT)
 **Módulo**: `src/reader/audio.js`  
-**Propósito**: Crear una experiencia sonora que respira, baja, sube, y nunca muere. Diseñado para el poema de Bécquer pero reutilizable en cualquier lectura.
+**Estado**: ⏸️ Código presente pero inactivo. Se desactivó para priorizar estabilidad.
 
 **Filosofía**:
-> La melodía no es decoración; es la presencia emocional que acompaña al lector. Cuando el sonido termina abruptamente, el alma del poema se rompe. El sistema Ghost Echo resuelve esto con una segunda capa de audio "fantasma" que anticipa el final y asegura continuidad.
+> La melodía no es decoración; es la presencia emocional que acompaña al lector. El sistema Ghost Echo usa una segunda capa de audio "fantasma" que anticipa el final y asegura continuidad.
 
-**Flujo Emocional**:
-1. **Nacimiento** — Audio principal arranca con fade-in suave (0 → volumen deseado en ~3s)
-2. **Vida** — La melodía acompaña al lector a volumen pleno
-3. **Anticipación** — Cuando quedan ~18s del audio principal, el "fantasma" se despierta: la misma melodía desde el inicio a volumen casi imperceptible (~3%)
-4. **Despedida** — El audio principal hace fade-out en sus últimos ~8 segundos
-5. **Susurro** — El fantasma sube suavemente a ~20% y se convierte en el acompañante
-6. **Renacimiento** — Tras 4 segundos de solo fantasma (un respiro melancólico), el audio principal renace desde 0 con fade-in, y el ciclo se repite infinitamente
-
-**Propiedades JSON**:
-- `ghostEcho: true` — Activa el sistema fantasma en la página
-- `fadeIn: true` — Activa el fade-in inicial del audio principal
-- `volume: 0.55` — Volumen base (multiplicado por el volumen global del usuario)
-
-**Curva de Volumen Emocional (Bécquer)**:
-- Estrofa 1: `0.55` (esperanza, la melodía llena el espacio)
-- Estrofa 2 (Pérdida 1): `0.50` (la primera herida)
-- Estrofa 3 (Madreselvas): `0.50` (naturaleza aún viva)
-- Estrofa 4 (Pérdida 2): `0.45` (lágrimas caen)
-- Estrofa 5 (Palabras ardientes): `0.40` (la voz se apaga)
-- Estrofa 6 (Final): `0.35` (desolación, casi un susurro)
-- Biografía: `0.20` (un recuerdo distante)
+**Reactivación pendiente**: El código completo está en `audio.js` como referencia para reactivar de forma controlada.
 
 ---
 
-### Indicador Visual de Despliegue (Marzo 2026)
-**Objetivo**: Añadir un pequeño identificador visual en la página principal para confirmar rápidamente actualizaciones en el entorno de producción (especialmente para instalaciones PWA cacheadas).
-**Implementación**:
-- Se añadió un pequeño texto "v2" junto al título principal "Lecturas Interactivas" en el header (`index.html`).
-- Estilo sutil: `font-size: 0.4em`, `opacity: 0.6`, no intrusivo y alineado verticalmente (`super`).
+### Unificación del Sistema de Audio (v2.0 — Marzo 2026)
+**Módulo**: `src/reader/audio.js` + `src/reader/render.js`  
+**Propósito**: Un solo camino de reproducción para todo el audio (poemas, La Puerta, karaoke).
+
+**Cambios clave**:
+1. **`playPageSound()`** simplificada — ya no lee `ghostEcho`, `fadeIn`, ni `delay`.
+2. **`toggleCurrentAudio()`** simplificada — pause/resume directo.
+3. **`render.js`** unificada — un solo `pageSoundFile` para todos los campos de audio.
+4. **`audio.loop = true`** por defecto (excepto karaoke).
+5. **Fade-in estándar** (1.4s) para todo.
 
 ---
 
-### Poema "Como Aman los Pobres" — Gata Cattana (Marzo 2026)
-**Autora**: Ana Isabel García Llorente, *Gata Cattana* (Adamuz, Córdoba, 1991 — Madrid, 2017). Rapera, poeta y politóloga feminista. Poemario *"La Escala de Mohs"* (2016).
+### CommandOrb — Rediseño Visual con Psicología del Color (v2.0 — Marzo 2026)
+**Módulo**: `src/styles/command-orb.css`
 
-**Efecto visual**: "Flores en el Hormigón" — sistema de partículas SVG que brotan desde el borde inferior de la pantalla. 7 intensidades (intro → tierra → flama → brasa → rosa → corazón → bio) con paletas de color que evolucionan de tierra/ocre a rojo vivo y carmesí a medida que el poema crece emocionalmente.
-
-**Componentes nuevos**:
-- `src/effects/pobres/index.js`: Motor SVG para flores silvestres. 3 formas (simple, wild, poppy), tallos verdes, centro brillante. Animación `flowerBloom` con overshoot elástico.
-- `public/stories/gata_cattana_aman_pobres.json`: 12 páginas. Paréntesis con clase `gata-parenthesis` para renderizado en susurro.
-- `public/images/gata_cattana_portada.png`: Portada fotográfica hiperrealista (manos trabajadoras sobre hormigón y flor silvestre).
-- `public/images/gatacattana2022g.jpg`: Retrato fotográfico real para la página de biografía/homenaje.
-- `src/styles/poem-experience.css`: Estilos `.gata-*`: título en lowercase warmth, paréntesis-susurros, retrato circular con sepia, badge "1991 — 2017", cita de cierre.
-
-**Paleta emocional**:
-- Pág 1–2 (tierra): carbón oscuro + ocre (`#D2691E`)
-- Pág 3–5 (flama): rojo oscuro (`#B22222`) — amor sin ventanas
-- Pág 6–7 (brasa): naranja vivo (`#FF4500`) — Heracles, Urano, Gea
-- Pág 8–9 (rosa): carmesí (`#E8174D`) — flores, arte, boleros
-- Pág 11 (bio): morado (`#6B2D5E`) — tributo, eternidad
-
-### Rediseño Premium del Audio Onboarding (Marzo 2026)
-**Objetivo**: Convertir el aviso intrusivo de "Audio Disponible" en una microinteracción elegante, asegurando además que las obras informen de su naturaleza auditiva desde la misma portada.
+**Sistema de color**:
+- **Modo IA (G)**: Violeta profundo (#7c3aed → #a855f7) — creatividad, sabiduría, tecnología
+- **Modo Audio**: Ámbar cálido (#d97706 → #f59e0b) — calidez, invitación, experiencia sensorial
 
 **Implementación**:
-1. **Audio Pill (`audio-pill`)**: Reemplazo del gran modal `audio-presence` por una píldora flotante estilo Dynamic Island en la parte superior del lector (`src/styles/reader.css`).
-2. **Iconos Contextuales**: Uso de iconografía sutil para activar y cerrar el sonido, evitando textos largos.
-3. **Indicador en Portadas**: Inserción de un icono discreto de audio dentro de los botones "Leer" en la biblioteca (`src/books/index.js`) para todas las obras poéticas.
-4. **Opciones en Lector**: Se incorporó el icono de auriculares junto a los botones de "Escuchar" dentro de la propia obra (`src/reader/render.js`), integrando la promesa auditiva como una invitación premium.
+1. CSS custom properties: `--orb-color-ia`, `--orb-color-audio`
+2. G con gradiente violeta + glow, letra blanca
+3. Audio con iconos en ámbar, halo warm, EQ bars doradas
+4. Secondary orb (mini G) con mismo gradiente violeta
+5. Tooltip refinado: uppercase, tracking wider, glass effect
 
 ---
 

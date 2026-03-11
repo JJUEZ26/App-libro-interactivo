@@ -6,6 +6,7 @@ import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
 import { startDewdropsEffect } from './dewdrops/index.js';
 import { startCracksEffect } from './cracks/index.js';
 import { startPobresEffect } from './pobres/index.js';
+import { state } from '../app/state.js';
 
 /**
  * Returns the correct container for visual effects.
@@ -32,12 +33,126 @@ let activeDewdropsCleanup = null;
 let activeFirefliesCleanup = null;
 let activeCracksCleanup = null;
 let activePobresCleanup = null;
+const activeEffectAudio = new Set();
+const activeEffectFadeIntervals = new Map();
+
+function canPlayManagedEffectSounds() {
+    const bookId = state.currentBook?.id;
+    if (!bookId) return false;
+    return state.audioBookDecisions[bookId] === 'enabled';
+}
+
+function clearEffectFade(audio) {
+    const fadeInterval = activeEffectFadeIntervals.get(audio);
+    if (fadeInterval) {
+        clearInterval(fadeInterval);
+        activeEffectFadeIntervals.delete(audio);
+    }
+}
+
+function unregisterEffectAudio(audio, { resetPlayback = false } = {}) {
+    if (!audio) return;
+    clearEffectFade(audio);
+    activeEffectAudio.delete(audio);
+
+    if (resetPlayback) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+    audio.__shouldResume = false;
+}
+
+function stopAllEffectAudio() {
+    activeEffectAudio.forEach((audio) => unregisterEffectAudio(audio, { resetPlayback: true }));
+}
+
+export function pauseAllEffectAudio() {
+    activeEffectAudio.forEach((audio) => {
+        clearEffectFade(audio);
+        audio.__shouldResume = !audio.paused;
+        if (!audio.paused) audio.pause();
+    });
+}
+
+export function resumeEffectAudio() {
+    if (!canPlayManagedEffectSounds()) return;
+
+    activeEffectAudio.forEach((audio) => {
+        if (!audio.__shouldResume) return;
+        audio.__shouldResume = false;
+        audio.play().catch(() => { });
+    });
+}
+
+export function syncEffectAudioVolume() {
+    activeEffectAudio.forEach((audio) => {
+        const baseVolume = audio.__baseVolume ?? 1;
+        audio.volume = Math.min(baseVolume * (state.currentVolume || 1), 1);
+    });
+}
+
+function playManagedEffectSound(soundFile, { baseVolume = 1, fadeStep = 0.01, fadeIntervalMs = 20 } = {}) {
+    if (!soundFile || !canPlayManagedEffectSounds()) return null;
+
+    const audio = new Audio(`sounds/${soundFile}`);
+    audio.__baseVolume = baseVolume;
+    audio.__shouldResume = false;
+    audio.volume = 0;
+    activeEffectAudio.add(audio);
+
+    const cleanup = () => unregisterEffectAudio(audio);
+    audio.addEventListener('ended', cleanup, { once: true });
+    audio.addEventListener('error', cleanup, { once: true });
+
+    audio.play().then(() => {
+        const targetVolume = Math.min(baseVolume * (state.currentVolume || 1), 1);
+        let vol = 0;
+        const fadeInterval = setInterval(() => {
+            if (!activeEffectAudio.has(audio)) {
+                clearInterval(fadeInterval);
+                return;
+            }
+
+            vol = Math.min(vol + fadeStep, targetVolume);
+            audio.volume = vol;
+
+            if (vol >= targetVolume) {
+                clearInterval(fadeInterval);
+                activeEffectFadeIntervals.delete(audio);
+            }
+        }, fadeIntervalMs);
+
+        activeEffectFadeIntervals.set(audio, fadeInterval);
+    }).catch((error) => {
+        unregisterEffectAudio(audio);
+        console.warn('Bloqueado:', error);
+    });
+
+    return audio;
+}
+
+function triggerManagedEffectSounds(effects = []) {
+    if (effects.includes('sfx_door_loud')) {
+        playManagedEffectSound('efectosonido_puerta.mp4', { baseVolume: 0.11, fadeStep: 0.015, fadeIntervalMs: 20 });
+    } else if (effects.includes('sfx_door_soft')) {
+        playManagedEffectSound('efectosonido_puerta.mp4', { baseVolume: 0.04, fadeStep: 0.006, fadeIntervalMs: 25 });
+    }
+}
+
+export function replayManagedPageEffectSounds(effectString) {
+    const effects = effectString ? effectString.split(',').map((effect) => effect.trim()) : [];
+    if (effects.length === 0) return;
+    stopAllEffectAudio();
+    triggerManagedEffectSounds(effects);
+}
 
 function clearExistingEffects(nextEffects = []) {
     if (activeEffectInterval) { clearInterval(activeEffectInterval); activeEffectInterval = null; }
     if (activeSmokeInterval) { clearInterval(activeSmokeInterval); activeSmokeInterval = null; }
     if (activeRainInterval) { clearInterval(activeRainInterval); activeRainInterval = null; }
     if (activeBirdInterval) { clearInterval(activeBirdInterval); activeBirdInterval = null; }
+    stopAllEffectAudio();
 
     // Limpiar nuevos efectos
     if (activeLeavesCleanup) { activeLeavesCleanup(); activeLeavesCleanup = null; }
@@ -122,21 +237,17 @@ function startRainEffect(getAppMode) {
 }
 
 function getBeetleHideTarget() {
-    const rawCandidates = [
-        ...document.querySelectorAll('.book-card'),
-        ...document.querySelectorAll('.library-hero-card')
-    ];
-    const candidates = rawCandidates.filter((element) => {
-        const rect = element.getBoundingClientRect();
-        return rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth;
-    });
-    if (candidates.length === 0) return null;
-    const target = candidates[Math.floor(Math.random() * candidates.length)];
-    const rect = target.getBoundingClientRect();
-    return {
-        x: rect.left + rect.width * (0.2 + Math.random() * 0.6),
-        y: rect.top + rect.height * (0.65 + Math.random() * 0.25)
-    };
+    // El hogar del escarabajo es la G (el orb de IA)
+    const orb = document.querySelector('.command-orb__primary') || document.getElementById('command-orb');
+    if (orb) {
+        const rect = orb.getBoundingClientRect();
+        return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+        };
+    }
+    // Fallback: esquina inferior derecha
+    return { x: window.innerWidth - 30, y: window.innerHeight - 30 };
 }
 
 export function startLibraryBeetle({ getAppMode }) {
@@ -145,15 +256,15 @@ export function startLibraryBeetle({ getAppMode }) {
     const scheduleNext = () => {
         if (getAppMode() !== 'library') return;
 
-        // Tiempo natural: Entre 5 y 15 segundos
-        const delay = 5000 + Math.random() * 10000;
+        // Tiempo más espaciado: Entre 20 y 60 segundos (evento especial)
+        const delay = 20000 + Math.random() * 40000;
 
         activeBeetleTimeout = setTimeout(() => {
             if (getAppMode() !== 'library') return;
 
             activeBeetleCleanup = initBeetle({
                 getHideTarget: getBeetleHideTarget,
-                maxLifetimeMs: 20000 + Math.random() * 10000,
+                maxLifetimeMs: 25000 + Math.random() * 15000,
                 onCleanup: () => {
                     activeBeetleCleanup = null;
                     if (getAppMode() === 'library') scheduleNext();
@@ -366,32 +477,6 @@ export function handlePageEffects(effectString, { getAppMode }) {
             }
         }, LIGHT_TOTAL_DURATION);
     }
-
-    // --- Sonido de Puerta (con fade-in para suavizarlo) ---
-    if (effects.includes('sfx_door_loud')) {
-        const audio = new Audio('sounds/efectosonido_puerta.mp4');
-        const targetVol = 0.11;
-        audio.volume = 0;
-        audio.play().then(() => {
-            // Fade-in rápido de 200ms para que no sea un golpe seco
-            let vol = 0;
-            const fadeIn = setInterval(() => {
-                vol = Math.min(vol + 0.015, targetVol);
-                audio.volume = vol;
-                if (vol >= targetVol) clearInterval(fadeIn);
-            }, 20);
-        }).catch(e => console.warn('Bloqueado:', e));
-    } else if (effects.includes('sfx_door_soft')) {
-        const audio = new Audio('sounds/efectosonido_puerta.mp4');
-        const targetVol = 0.04;
-        audio.volume = 0;
-        audio.play().then(() => {
-            let vol = 0;
-            const fadeIn = setInterval(() => {
-                vol = Math.min(vol + 0.006, targetVol);
-                audio.volume = vol;
-                if (vol >= targetVol) clearInterval(fadeIn);
-            }, 25);
-        }).catch(e => console.warn('Bloqueado:', e));
-    }
+    // --- Sonidos puntuales integrados al sistema global de audio ---
+    triggerManagedEffectSounds(effects);
 }

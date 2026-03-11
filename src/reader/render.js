@@ -63,10 +63,6 @@ export function renderPage(pageId) {
     }
 
     const audioExperienceMarkup = createAudioExperienceMarkup(pageData);
-    if (audioExperienceMarkup) {
-        pageContent.classList.add('page-with-audio');
-        pageContent.insertAdjacentHTML('afterbegin', audioExperienceMarkup);
-    }
 
     const contentCenterer = document.createElement('div');
     contentCenterer.className = 'content-centerer';
@@ -298,35 +294,33 @@ export function renderPage(pageId) {
             });
         });
 
-        if (audioExperienceMarkup) {
+        // — Unified audio context binding —
+        const pageSoundFile = pageData.bgMusic || pageData.sound || pageData.audio || null;
+
+        if (audioExperienceMarkup && pageSoundFile) {
             bindAudioExperience(pageId, pageData);
         } else {
             clearAudioExperienceContext();
         }
 
         // — Start audio (deferred so it doesn't block paint) —
-        const audioDecision = getCurrentBookAudioDecision();
-        const shouldAutoStartAudio = audioDecision === 'enabled';
-        if (pageData.bgMusic) {
-            if (shouldAutoStartAudio) {
-                playPageSound(pageId, pageData.bgMusic, true);
-            } else {
-                stopCurrentAudio();
-            }
-        } else if (pageData.sound) {
-            if (shouldAutoStartAudio) {
-                playPageSound(pageId, pageData.sound, true);
-            } else {
-                stopCurrentAudio();
-            }
-        } else if (pageData.audio) {
-            if (shouldAutoStartAudio) {
-                playPageSound(pageId, pageData.audio, true);
+        // Unified path: one branch for all audio field types
+        if (pageSoundFile) {
+            const audioDecision = getCurrentBookAudioDecision();
+
+            if (audioDecision === 'enabled') {
+                playPageSound(pageId, pageSoundFile, true);
                 if (pageData.karaokeLines?.length) {
                     startKaraokeSync();
                 }
-            } else {
+            } else if (audioDecision === 'silent') {
+                // User explicitly chose silence — stop any running audio
                 stopCurrentAudio();
+            } else {
+                // Decision is null/undefined (prompt state).
+                // Do NOT destroy current audio — set up context so the
+                // CommandOrb toggle will work immediately when user taps.
+                playPageSound(pageId, pageSoundFile, false);
             }
         } else {
             clearAudioExperienceContext();

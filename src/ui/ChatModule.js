@@ -6,7 +6,7 @@ export class ChatFeature {
         this.options = {
             container: document.body,
             enableTTS: false,
-            enableLiveVoice: true,
+            enableLiveVoice: false, // Desactivado temporalmente según petición
             // Mantenemos el modelo 2.0 experimental porque es el único que soporta voz
             liveVoiceModel: 'gemini-2.0-flash-exp',
             liveApiKey: '',
@@ -34,10 +34,6 @@ export class ChatFeature {
     }
 
     createUI() {
-        this.fabButton = document.createElement('button');
-        this.fabButton.className = 'ai-chat-fab';
-        this.fabButton.setAttribute('aria-label', 'Abrir chat de IA');
-        this.fabButton.textContent = 'G';
 
         this.panel = document.createElement('section');
         this.panel.className = 'ai-chat-panel';
@@ -47,7 +43,7 @@ export class ChatFeature {
         const header = document.createElement('div');
         header.className = 'ai-chat-header';
         const title = document.createElement('h3');
-        title.textContent = 'Asistente de lectura';
+        title.textContent = 'Gregorio'; // Nuevo nombre de la IA
 
         const headerActions = document.createElement('div');
         headerActions.className = 'ai-chat-header-actions';
@@ -73,7 +69,7 @@ export class ChatFeature {
         closeButton.setAttribute('aria-label', 'Cerrar chat');
         closeButton.textContent = '✕';
 
-        headerActions.appendChild(this.voiceSelect);
+        // headerActions.appendChild(this.voiceSelect); // Suprimido temporalmente
         headerActions.appendChild(resetButton);
         headerActions.appendChild(closeButton);
         header.appendChild(title);
@@ -84,7 +80,7 @@ export class ChatFeature {
 
         this.statusLine = document.createElement('div');
         this.statusLine.className = 'ai-chat-status';
-        this.statusLine.textContent = 'Pregunta sobre la página actual o activa el modo voz.';
+        this.statusLine.textContent = 'Habla con la librería. Pregunta lo que desees.';
 
         const inputArea = document.createElement('div');
         inputArea.className = 'ai-chat-input-area';
@@ -117,8 +113,8 @@ export class ChatFeature {
         this.sendButton.textContent = 'Enviar';
 
         inputArea.appendChild(this.input);
-        inputArea.appendChild(this.micButton);
-        inputArea.appendChild(this.liveButton);
+        // inputArea.appendChild(this.micButton); // Suprimido temporalmente
+        // inputArea.appendChild(this.liveButton); // Suprimido temporalmente
         inputArea.appendChild(this.sendButton);
 
         this.panel.appendChild(header);
@@ -126,10 +122,8 @@ export class ChatFeature {
         this.panel.appendChild(this.statusLine);
         this.panel.appendChild(inputArea);
 
-        this.options.container.appendChild(this.fabButton);
         this.options.container.appendChild(this.panel);
 
-        this.fabButton.addEventListener('click', () => this.togglePanel());
         closeButton.addEventListener('click', () => this.closePanel());
         this.sendButton.addEventListener('click', () => this.handleSend());
         this.input.addEventListener('keydown', (event) => {
@@ -155,12 +149,14 @@ export class ChatFeature {
     openPanel() {
         this.isOpen = true;
         this.panel.classList.add('open');
+        if (state.commandOrb) state.commandOrb.onChatToggle(true);
         setTimeout(() => this.input.focus(), 200);
     }
 
     closePanel() {
         this.isOpen = false;
         this.panel.classList.remove('open');
+        if (state.commandOrb) state.commandOrb.onChatToggle(false);
         if (this.isLiveActive) this.stopLiveVoice();
     }
 
@@ -248,7 +244,7 @@ export class ChatFeature {
         this.conversationHistory = [];
         this.messageElements.clear();
         this.messagesContainer.innerHTML = '';
-        this.statusLine.textContent = 'Chat reiniciado. ¿En qué puedo ayudarte?';
+        this.statusLine.textContent = 'El hilo se ha cortado. ¿Empezamos de nuevo?';
         this.scrollToBottom();
     }
 

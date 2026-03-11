@@ -1,4 +1,4 @@
-#reader-view {
+﻿#reader-view {
     flex: 1;
     display: none;
     flex-direction: column;
@@ -40,7 +40,7 @@
     position: relative;
 }
 
-/* Textura y viñeta */
+/* Textura y viÃ±eta */
 #page-wrapper::before {
     content: "";
     position: absolute;
@@ -178,8 +178,8 @@ body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
 }
 
 /* =========================
-   MODO POEMA — Tipografía Poética
-   Cada verso respira, centrado, con serifas clásicas.
+   MODO POEMA â€” TipografÃ­a PoÃ©tica
+   Cada verso respira, centrado, con serifas clÃ¡sicas.
    ========================= */
 
 .poem-layout {
@@ -206,7 +206,7 @@ body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
     color: var(--text-color);
 }
 
-/* Override: los párrafos dentro de poem-layout no heredan formato prosa */
+/* Override: los pÃ¡rrafos dentro de poem-layout no heredan formato prosa */
 .poem-layout p,
 .poem-layout .verse-line {
     text-indent: 0;
@@ -246,178 +246,7 @@ body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
     width: 100%;
 }
 
-.page-with-audio {
-    padding-top: 4.5rem;
-}
 
-.audio-pill {
-    position: absolute;
-    top: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0.6rem 0.5rem 1rem;
-    background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.9);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-body.theme-light .audio-pill,
-body.theme-sepia .audio-pill {
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    color: rgba(0, 0, 0, 0.85);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px rgba(255, 255, 255, 0.4);
-}
-
-.audio-pill:hover {
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-}
-
-body.theme-light .audio-pill:hover,
-body.theme-sepia .audio-pill:hover {
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-}
-
-.audio-pill__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.7;
-    animation: pulseIcon 3s infinite ease-in-out;
-}
-
-@keyframes pulseIcon {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-}
-
-.audio-pill__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-}
-
-.audio-pill__title {
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: var(--font-body);
-}
-
-.audio-pill__actions {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-left: 0.25rem;
-}
-
-.audio-pill__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.audio-pill__btn--primary {
-    background: var(--accent-color);
-    color: var(--bg-color);
-    border: none;
-    padding: 0.4rem 0.8rem;
-}
-
-.audio-pill__btn--primary:hover:not(:disabled) {
-    transform: scale(1.03);
-    filter: brightness(1.1);
-}
-
-.audio-pill__btn--primary:disabled {
-    opacity: 0.5;
-    cursor: progress;
-}
-
-.audio-pill__btn--secondary {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: currentColor;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    opacity: 0.6;
-}
-
-body.theme-light .audio-pill__btn--secondary,
-body.theme-sepia .audio-pill__btn--secondary {
-    border-color: rgba(0, 0, 0, 0.15);
-}
-
-.audio-pill__btn--secondary:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-body.theme-light .audio-pill__btn--secondary:hover,
-body.theme-sepia .audio-pill__btn--secondary:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.audio-pill.is-loading .audio-pill__btn--primary {
-    background: transparent;
-    color: currentColor;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    pointer-events: none;
-}
-body.theme-light .audio-pill.is-loading .audio-pill__btn--primary,
-body.theme-sepia .audio-pill.is-loading .audio-pill__btn--primary {
-    border-color: rgba(0, 0, 0, 0.2);
-}
-
-.audio-pill.is-playing .audio-pill__icon {
-    color: var(--accent-color);
-    opacity: 1;
-}
-
-.audio-pill.is-playing .audio-pill__btn--primary {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: currentColor;
-}
-body.theme-light .audio-pill.is-playing .audio-pill__btn--primary,
-body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary {
-    border-color: rgba(0, 0, 0, 0.15);
-}
-
-.audio-pill.is-playing .audio-pill__btn--primary:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-body.theme-light .audio-pill.is-playing .audio-pill__btn--primary:hover,
-body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.audio-pill.is-silent {
-    opacity: 0;
-    pointer-events: none;
-}
 
 .choices {
     margin: 3rem 0;
@@ -449,7 +278,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
 }
 
 /* =========================
-   BARRA DE PROGRESO — Diseño «whisper»
+   BARRA DE PROGRESO â€” DiseÃ±o Â«whisperÂ»
    Invisible hasta que la necesites.
    ========================= */
 
@@ -468,7 +297,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     gap: 6px;
 }
 
-/* — CONTENEDOR de la barra — */
+/* â€” CONTENEDOR de la barra â€” */
 #progress-bar-container {
     width: 100%;
     height: 2px;
@@ -491,7 +320,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     background-color: rgba(128, 128, 128, 0.12);
 }
 
-/* — RELLENO (progreso visual) — */
+/* â€” RELLENO (progreso visual) â€” */
 #progress-fill {
     position: absolute;
     top: 0;
@@ -513,7 +342,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     opacity: 0.7;
 }
 
-/* — SLIDER (invisible Range Input) — */
+/* â€” SLIDER (invisible Range Input) â€” */
 #progress-slider {
     position: absolute;
     inset: -14px 0;
@@ -536,7 +365,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     opacity: 0.3;
 }
 
-/* — THUMB: invisible por defecto, materializa en hover — */
+/* â€” THUMB: invisible por defecto, materializa en hover â€” */
 #progress-slider::-webkit-slider-runnable-track {
     height: 2px;
     background: transparent;
@@ -578,7 +407,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.15);
 }
 
-/* — Firefox thumb — */
+/* â€” Firefox thumb â€” */
 #progress-slider::-moz-range-track {
     height: 2px;
     background: transparent;
@@ -605,7 +434,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* — FOOTER INFO: oculta por defecto, revela en hover — */
+/* â€” FOOTER INFO: oculta por defecto, revela en hover â€” */
 .progress-footer-row {
     display: flex;
     align-items: center;
@@ -942,7 +771,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     padding-top: 1rem;
 }
 
-/* Botón de Play Elegante */
+/* BotÃ³n de Play Elegante */
 .karaoke-btn {
     width: 65px;
     height: 65px;
@@ -961,7 +790,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Ajuste del ícono SVG dentro del botón */
+/* Ajuste del Ã­cono SVG dentro del botÃ³n */
 .karaoke-btn svg {
     width: 32px;
     height: 32px;
@@ -993,7 +822,7 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     cursor: default;
 }
 
-/* Animación de pulso lento y transparencia */
+/* AnimaciÃ³n de pulso lento y transparencia */
 @keyframes ghostlyPulse {
     0% {
         opacity: 0.2;
@@ -1020,10 +849,10 @@ body.theme-sepia .audio-pill.is-playing .audio-pill__btn--primary:hover {
     pointer-events: none;
     /* Ya no detecta mouse */
     animation: none;
-    /* Detiene la animación */
+    /* Detiene la animaciÃ³n */
 }
 
-/* Recuperar visibilidad al pasar el mouse cerca (si está faded) */
+/* Recuperar visibilidad al pasar el mouse cerca (si estÃ¡ faded) */
 .audio-controls-container:hover .audio-instruction.faded {
     opacity: 0.3 !important;
     transition-delay: 0.2s;
@@ -1205,7 +1034,7 @@ body.fullscreen-mode .flying-bird {
         height: 10px;
     }
 
-    /* Barra un poco más visible para toque */
+    /* Barra un poco mÃ¡s visible para toque */
     #progress-bar-container {
         height: 3px;
     }
@@ -1214,7 +1043,7 @@ body.fullscreen-mode .flying-bird {
         opacity: 0.35;
     }
 
-    /* Scrollbar siempre mínimamente visible en touch */
+    /* Scrollbar siempre mÃ­nimamente visible en touch */
     .page-content {
         scrollbar-color: rgba(128, 128, 128, 0.1) transparent;
     }
