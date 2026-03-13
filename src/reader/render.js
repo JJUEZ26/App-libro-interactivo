@@ -330,6 +330,18 @@ export function renderPage(pageId) {
         // — Initialize ambient video (deferred) —
         initAmbientVideo();
 
+        // — Bind Eterno Retorno contemplative response buttons —
+        const eternoResponses = document.querySelectorAll('.eterno-response-btn');
+        eternoResponses.forEach((btn) => {
+            btn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                // Remove selected from siblings
+                eternoResponses.forEach(b => b.classList.remove('selected'));
+                // Mark this one
+                btn.classList.add('selected');
+            });
+        });
+
         // — Defer even heavier work to NEXT frame —
         // Effects, highlights, and preloading happen after content is visible
         requestAnimationFrame(() => {

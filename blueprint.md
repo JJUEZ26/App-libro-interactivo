@@ -748,3 +748,12 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 2. **Paginación para Lectura Rápida**: Agrupaciones amplias de versos por página para minimizar los clics y acelerar la cadencia lectora.
 3. **Portada Temática**: Creación automatizada de portada con IA basada en la estética solicitada (zapatos, iluminación dark, títulos integrados "el cordón del zapato" / "Charles Bukowski").
 4. **Integración en Sistema**: Añadido exitosamente a la sección inicial de `poemas` en `library-sections.json` e incorporado el objeto de libro en `books.json`.
+
+### Refinamiento "Eterno Retorno" — Nietzsche (Marzo 2026)
+**Objetivo**: Oscurecer, hacer más elegante y directa la experiencia interactiva de "El eterno retorno", alejándola del aspecto generado por IA y dándole un tono sobrio, auténtico y contemplativo.
+
+**Implementación**:
+1. **Rediseño Gráfico**: Nuevas imágenes (portada y retrato biográfico) mucho más oscuras y solemnes, emulando fotografía histórica genuina y texturas minimalistas.
+2. **Estructura y Tono**: Título en español ("El eterno retorno"), rediseño tipográfico sumamente elegante de la pregunta inicial en portada (`.eterno-hook`), y eliminación de pantallas de diálogo irrelevantes o excesivas ("haz una pausa", etc).
+3. **Flujo de Decisión Elegante**: La pregunta final culmina directamente con las opciones de afirmación y rechazo usando botones limpios, continuados inmediatamente por la biografía del autor.
+4. **Biografía y Ambientación**: Cambio de la cita final a "Aquel que tiene un porqué para vivir, puede soportar casi cualquier cómo", y ralentización de las velocidades del canvas de fondo (halo rotatorio) para infundir un movimiento contemplativo sutil en la experiencia.

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "portada",
+    "page": 0,
+    "effect": "eterno_portada",
+    "scenes": [
+      "<div class='eterno-cover-wrapper' style='--eterno-cover-url: url(images/nietzsche_eterno_retorno_portada.png)'><div class='eterno-cover-ghost'><img src='images/nietzsche_eterno_retorno_portada.png' alt='' class='eterno-ghost-img'></div><div class='eterno-cover-content'><span class='eterno-hook-line'></span><div class='eterno-hook-question'><span class='w1'>¿Y si tuvieras que vivir</span><span class='w2'>esta misma vida</span><span class='w3'>una y otra vez?</span></div><div class='eterno-hook-separator'></div></div></div>"
+    ],
+    "forceShowChoices": true,
+    "choices": [
+      {
+        "text": "Comenzar",
+        "page": "aparicion_1"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "aparicion_1",
+    "page": 1,
+    "effect": "eterno_aparicion",
+    "scenes": [
+      "Imagina que una noche,\nen tu momento de mayor soledad,",
+      "aparece ante ti\nuna presencia extraña."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "aparicion_2"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "aparicion_2",
+    "page": 2,
+    "effect": "eterno_aparicion",
+    "scenes": [
+      "Y te dice:"
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "revelacion_1"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "revelacion_1",
+    "page": 3,
+    "effect": "eterno_revelacion",
+    "scenes": [
+      "<em class='eterno-emphasis'>Esta vida</em>\nque estás viviendo ahora,",
+      "exactamente como la has vivido,",
+      "tendrás que vivirla otra vez."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "revelacion_2"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "revelacion_2",
+    "page": 4,
+    "effect": "eterno_revelacion",
+    "scenes": [
+      "Y no solo una vez,",
+      "sino <em class='eterno-emphasis'>innumerables veces</em> más."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "revelacion_3"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "revelacion_3",
+    "page": 5,
+    "effect": "eterno_revelacion",
+    "scenes": [
+      "Volverán tus alegrías\ny tus dolores.",
+      "Tus errores y tus aciertos.",
+      "Tus dudas,\ntus pensamientos,\ntus silencios."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "revelacion_4"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "revelacion_4",
+    "page": 6,
+    "effect": "eterno_revelacion",
+    "scenes": [
+      "Regresará todo:",
+      "lo grande,\nlo pequeño,",
+      "lo que recuerdas\ny lo que apenas notaste."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "revelacion_5"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "revelacion_5",
+    "page": 7,
+    "effect": "eterno_revelacion",
+    "scenes": [
+      "Este mismo instante.",
+      "Esta misma noche.",
+      "<em class='eterno-emphasis-final'>Y tú, exactamente tú.</em>"
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "",
+        "page": "golpe_1"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "golpe_1",
+    "page": 8,
+    "effect": "eterno_golpe",
+    "scenes": [
+      "Entonces la pregunta\nya no sería si eso es posible.",
+      "La verdadera pregunta\nsería otra:"
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "golpe_2"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "golpe_2",
+    "page": 9,
+    "effect": "eterno_golpe",
+    "pageClass": "eterno-central-question",
+    "scenes": [
+      "<span class='eterno-question-mark'>¿</span>Podrías aceptar vivir tu vida así,\nuna y otra vez,\npor toda la eternidad<span class='eterno-question-mark'>?</span>"
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "",
+        "page": "cierre"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "cierre",
+    "page": 10,
+    "effect": "eterno_cierre",
+    "pageClass": "eterno-cierre-page",
+    "scenes": [
+      "Nietzsche no solo te pregunta\nqué piensas de la vida.",
+      "Te pregunta si serías capaz\nde <em class='eterno-emphasis'>afirmarla</em> eternamente."
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "¿Rechazarías esta idea?",
+        "page": "biografia"
+      },
+      {
+        "text": "¿La afirmarías eternamente?",
+        "page": "biografia"
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  },
+  {
+    "id": "biografia",
+    "page": 11,
+    "effect": "eterno_bio",
+    "forceShowChoices": true,
+    "discoverAuthor": "Friedrich Nietzsche",
+    "discoveries": [
+      {
+        "title": "Así habló Zaratustra",
+        "type": "book",
+        "year": "1883",
+        "line": "Una obra filosófica en forma de novela poética. Zaratustra baja de la montaña a enseñar el superhombre y el eterno retorno.",
+        "available": false
+      },
+      {
+        "title": "Más allá del bien y del mal",
+        "type": "book",
+        "year": "1886",
+        "line": "Una crítica radical a la moral tradicional. Nietzsche cuestiona los fundamentos de la filosofía occidental.",
+        "available": false
+      },
+      {
+        "title": "La gaya ciencia",
+        "type": "book",
+        "year": "1882",
+        "line": "Donde aparece por primera vez la idea del eterno retorno. También incluye la célebre proclamación de la muerte de Dios.",
+        "available": false
+      },
+      {
+        "title": "El crepúsculo de los ídolos",
+        "type": "book",
+        "year": "1889",
+        "line": "Un ataque frontal contra los valores establecidos. El martillo filosófico contra los falsos dioses de la cultura.",
+        "available": false
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--nietzsche'><div class='bio-portrait-shell'><img src='images/nietzsche_biografia_retrato.png' class='bio-portrait' alt='Friedrich Nietzsche, retrato histórico'></div><div class='bio-badge'>1844 — 1900</div></div>",
+      "<strong class='bio-name'>Friedrich Wilhelm Nietzsche</strong>",
+      "Nació en Röcken, Prusia, el 15 de octubre de 1844. Hijo de un pastor luterano, perdió a su padre a los cinco años. A los 24 fue nombrado catedrático de filología clásica en la Universidad de Basilea, la persona más joven en ocupar ese cargo en la historia de la institución.",
+      "Su salud fue frágil toda la vida. Migrañas constantes, problemas de visión y crisis nerviosas lo acompañaron mientras producía una de las obras filosóficas más influyentes y radicales de la historia occidental. En 1879 renunció a su cátedra y vivió como filósofo errante por pensiones baratas de Italia, Suiza y Francia.",
+      "En enero de 1889 sufrió un colapso mental en Turín. Pasó los últimos once años de su vida en un estado de demencia progresiva, primero al cuidado de su madre y luego de su hermana Elisabeth, quien manipuló y editó su obra póstuma para alinearla con ideologías que Nietzsche habría rechazado.",
+      "El concepto del <em>eterno retorno</em> aparece por primera vez en <em>\"La gaya ciencia\"</em> (1882), aforismo 341. Nietzsche lo presenta como un experimento mental: un demonio te dice que vivirás esta misma vida infinitas veces. No es una teoría cosmológica ni una predicción. Es una prueba existencial. La pregunta no es si es verdad, sino si podrías soportarlo. Si la respuesta es sí, has alcanzado lo que Nietzsche llama <em>amor fati</em>: el amor al destino, la afirmación incondicional de la vida tal como es.",
+      "Murió en Weimar el 25 de agosto de 1900. Tenía 55 años.",
+      "<em class='bio-quote'>\"Aquel que tiene un porqué para vivir, puede soportar casi cualquier cómo.\"</em>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la experiencia",
+        "page": "portada"
+      },
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ],
+    "bgMusic": "spiegel_cello_piano.m4a"
+  }
+]

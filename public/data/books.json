@@ -17,6 +17,22 @@
     ]
   },
   {
+    "id": "nietzsche-eterno-retorno",
+    "title": "El eterno retorno",
+    "author": "Friedrich Nietzsche",
+    "description": "¿Y si tuvieras que vivir esta misma vida una y otra vez? Una experiencia filosófica inmersiva sobre la idea más poderosa de Nietzsche.",
+    "cover": "images/nietzsche_eterno_retorno_portada.png",
+    "storyFile": "stories/nietzsche_eterno_retorno.json",
+    "type": "poem",
+    "tags": [
+      "filosofía",
+      "existencialismo",
+      "eterno retorno",
+      "introspección",
+      "experiencia inmersiva"
+    ]
+  },
+  {
     "id": "frankenstein",
     "title": "Frankenstein",
     "author": "Mary Shelley (adaptación)",

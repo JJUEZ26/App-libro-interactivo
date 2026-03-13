@@ -1,0 +1,430 @@
+/* ================================================
+   NIETZSCHE — "Eterno Retorno"
+   Philosophical immersive experience — v4
+   ================================================ */
+
+/* =========================================
+   COVER: FULL BLEED IMMERSIVE COMPOSITION
+   ========================================= */
+
+.eterno-cover-wrapper {
+    position: relative;
+    /* Bleed outside the reader padding to fill edge to edge */
+    width: calc(100% + 4rem);
+    margin-left: -2rem;
+    margin-right: -2rem;
+    margin-top: -2rem;
+    /* Use available height minus header/button so everything fits */
+    min-height: 68dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 1.8rem;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* The blurred clock image fills the entire cover */
+.eterno-cover-ghost {
+    position: absolute;
+    inset: -8%;
+    z-index: 0;
+    background-image: var(--eterno-cover-url);
+    background-size: cover;
+    background-position: center 30%;
+    filter: blur(4px) grayscale(45%) brightness(0.28) saturate(0.5);
+    transform: scale(1.1);
+    animation: eternoGhostBreath 16s ease-in-out infinite alternate;
+}
+
+/* Hide the <img> tag — we use CSS background instead */
+.eterno-ghost-img {
+    display: none;
+}
+
+/* Multi-layer dark vignette for depth and focus */
+.eterno-cover-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        radial-gradient(
+            ellipse 90% 80% at 50% 40%,
+            transparent 15%,
+            rgba(4, 3, 9, 0.5) 65%,
+            rgba(4, 3, 9, 0.94) 100%
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(4, 3, 9, 0.75) 0%,
+            transparent 20%,
+            transparent 60%,
+            rgba(4, 3, 9, 0.88) 100%
+        );
+}
+
+/* All text content floats above the ghost + vignette */
+.eterno-cover-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 460px;
+    padding: 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Vertical golden thread — like a clock hand */
+.eterno-hook-line {
+    width: 1px;
+    height: 52px;
+    background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.75));
+    margin-bottom: 1.8rem;
+    transform-origin: top center;
+    opacity: 0;
+    animation: eternoLineGrow 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+}
+
+/* Typography container */
+.eterno-hook-question {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Line 1 — ultra small, spaced, ghostly */
+.eterno-hook-question .w1 {
+    display: block;
+    font-family: var(--font-reader-body, serif);
+    font-size: clamp(0.68rem, 2.5vw, 0.82rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.38em;
+    color: rgba(195, 185, 170, 0.55);
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+    animation: eternoWordIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.1s;
+}
+
+/* Line 2 — ENORMOUS, the existential weight */
+.eterno-hook-question .w2 {
+    display: block;
+    font-family: var(--font-reader-title, 'Playfair Display', serif);
+    font-size: clamp(2.6rem, 10vw, 4.6rem);
+    font-weight: 100;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: rgba(250, 243, 232, 1);
+    text-shadow:
+        0 0 80px rgba(0, 0, 0, 1),
+        0 4px 8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(8px);
+    animation: eternoWordIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.7s;
+}
+
+/* Line 3 — gold, italic, a question left hanging */
+.eterno-hook-question .w3 {
+    display: block;
+    font-family: var(--font-reader-body, serif);
+    font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    color: rgba(212, 175, 55, 0.85);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+    animation: eternoWordIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.7s;
+}
+
+/* Thin gold separator — a full stop in gold */
+.eterno-hook-separator {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(212, 175, 55, 0.4);
+    margin: 1.8rem auto 0;
+    opacity: 0;
+    animation: eternoFadeIn 1.5s ease forwards 3.2s;
+}
+
+/* Shared animations */
+@keyframes eternoWordIn {
+    from { opacity: 0; transform: translateY(22px); filter: blur(6px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+@keyframes eternoLineGrow {
+    from { opacity: 0; transform: scaleY(0); }
+    to   { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes eternoFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes eternoGhostBreath {
+    0%   { filter: blur(4px) grayscale(45%) brightness(0.28) saturate(0.5); transform: scale(1.10); }
+    100% { filter: blur(7px) grayscale(58%) brightness(0.20) saturate(0.35); transform: scale(1.16); }
+}
+
+/* 'Comenzar' button: appears last, minimal, barely there */
+body.eterno-mode.eterno-portada-active .choices {
+    margin-top: 0;
+    padding: 0.8rem 0 1rem;
+    opacity: 0;
+    animation: eternoFadeIn 2s ease forwards 3.6s;
+}
+
+body.eterno-mode.eterno-portada-active .choices button {
+    background: transparent !important;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
+    color: rgba(210, 200, 185, 0.75) !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.3em !important;
+    text-transform: uppercase !important;
+    padding: 1rem 3rem !important;
+    border-radius: 0 !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.5s ease !important;
+}
+
+body.eterno-mode.eterno-portada-active .choices button:hover {
+    border-color: rgba(212, 175, 55, 0.45) !important;
+    color: rgba(245, 238, 225, 0.95) !important;
+    background: rgba(212, 175, 55, 0.06) !important;
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.08) !important;
+    transform: none !important;
+}
+
+/* =========================================
+   INTERNAL PAGES: Revelation / Aparición
+   ========================================= */
+
+/* Words in narrative: cream/white, no yellow */
+.eterno-emphasis {
+    font-style: italic;
+    color: rgba(240, 232, 218, 0.95);
+    font-weight: 400;
+}
+
+.eterno-emphasis-final {
+    display: block;
+    font-style: italic;
+    color: rgba(248, 242, 232, 1);
+    font-size: 1.15em;
+    margin-top: 0.5rem;
+}
+
+/* Central Question page */
+.eterno-central-question .content-centerer {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 60vh;
+}
+
+.eterno-central-question .poem-layout {
+    font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+    line-height: 1.6;
+}
+
+.eterno-central-question .poem-layout .verse-line {
+    font-size: clamp(1.4rem, 4.5vw, 2rem);
+    line-height: 1.6;
+    color: rgba(235, 225, 210, 0.95);
+}
+
+.eterno-question-mark {
+    color: rgba(212, 175, 55, 0.7);
+    font-size: 1.2em;
+}
+
+/* --- CIERRE (Final Decision) --- */
+
+.eterno-cierre-page .content-centerer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+/* Apply dimming to the entire text block, including its children.
+   Wait 5 seconds instead of 4 so the user reads everything fully. */
+.eterno-cierre-page .scenes-container {
+    text-align: center;
+    transition: all 2s ease;
+    animation: eternoTextDim 2s ease forwards 5s; /* kicks in right as choices fade in */
+}
+
+@keyframes eternoTextDim {
+    0%   { opacity: 1; filter: contrast(1) blur(0); }
+    100% { opacity: 0.4; filter: contrast(0.8) blur(0.5px); }
+}
+
+/* Beautiful stacked boxes for the final choice */
+.eterno-cierre-page .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    /* Prevent default poem-experience hiding from overriding us */
+    z-index: 10;
+}
+
+/* Ensure delayed choices animate in correctly in this custom layout - now matched to 5s */
+.eterno-cierre-page .choices.choices-delayed {
+    opacity: 0;
+    visibility: hidden;
+    animation: smoothReveal 2.5s ease 5s forwards !important;
+}
+
+.eterno-cierre-page .choices button {
+    width: 100% !important;
+    background: rgba(10, 8, 14, 0.7) !important;
+    border: 1px solid rgba(212, 175, 55, 0.25) !important;
+    color: rgba(235, 225, 210, 0.9) !important;
+    padding: 1.6rem 2rem !important;
+    font-family: var(--font-reader-body), serif !important;
+    font-size: clamp(1rem, 3.5vw, 1.2rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: none !important;
+    border-radius: 8px !important;
+    box-shadow: 
+        inset 0 0 20px rgba(0,0,0,0.8),
+        0 10px 30px rgba(0,0,0,0.5) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.4s ease !important;
+}
+
+.eterno-cierre-page .choices button:hover {
+    background: rgba(212, 175, 55, 0.08) !important;
+    border-color: rgba(212, 175, 55, 0.6) !important;
+    color: rgba(255, 248, 235, 1) !important;
+    box-shadow: 
+        inset 0 0 30px rgba(0,0,0,0.9),
+        0 15px 40px rgba(0,0,0,0.6),
+        0 0 20px rgba(212, 175, 55, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* =========================================
+   BIOGRAPHY
+   ========================================= */
+
+.bio--nietzsche {
+    overflow: visible !important;
+}
+
+.bio--nietzsche .bio-portrait-shell {
+    width: clamp(150px, 38vw, 220px);
+    aspect-ratio: 3/4;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.7),
+        0 15px 40px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(212, 175, 55, 0.06);
+}
+
+.bio--nietzsche .bio-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    border-radius: 10px;
+    border: 2px solid rgba(212, 175, 55, 0.18);
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(212, 175, 55, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    filter: grayscale(25%) contrast(1.1) brightness(0.9) sepia(12%);
+    transition: all 0.6s ease;
+}
+
+.bio--nietzsche .bio-portrait:hover {
+    filter: grayscale(10%) contrast(1.06) brightness(0.94) sepia(6%);
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.3),
+        0 0 35px rgba(212, 175, 55, 0.15),
+        0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+.bio--nietzsche .bio-badge {
+    position: absolute;
+    bottom: -12px;  /* Bajamos el badge al pie de la foto */
+    right: 0;
+    z-index: 10;
+    background: rgba(30, 24, 14, 0.95);
+    color: rgba(235, 225, 210, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+}
+
+.page-content p:has(.bio--nietzsche) + p .bio-name {
+    color: rgba(235, 225, 210, 0.95);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+    font-size: 1.25em;
+    letter-spacing: 0.05em;
+}
+
+.page-content p:has(.bio--nietzsche) ~ p .bio-quote {
+    max-width: 42rem;
+    color: rgba(212, 175, 55, 0.65);
+    border-left-color: rgba(212, 175, 55, 0.25);
+    font-size: 1.05em;
+    line-height: 1.7;
+    padding-left: 1.2em;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+    .eterno-cover-wrapper {
+        min-height: 88dvh;
+        width: calc(100% + 2rem);
+        margin-left: -1rem;
+        margin-right: -1rem;
+        margin-top: -1rem;
+    }
+
+    .eterno-hook-question .w2 {
+        font-size: clamp(2.8rem, 16vw, 4.5rem);
+    }
+
+    .eterno-central-question .poem-layout .verse-line {
+        font-size: clamp(1.2rem, 5vw, 1.7rem);
+    }
+
+    .bio--nietzsche .bio-portrait-shell {
+        width: clamp(130px, 42vw, 180px);
+    }
+
+    .bio--nietzsche .bio-badge {
+        right: 0 !important;
+        bottom: -10px !important;
+        font-size: 0.65rem !important;
+        padding: 2px 8px !important;
+    }
+}

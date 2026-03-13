@@ -6,6 +6,7 @@ import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
 import { startDewdropsEffect } from './dewdrops/index.js';
 import { startCracksEffect } from './cracks/index.js';
 import { startPobresEffect } from './pobres/index.js';
+import { startEternoRetornoEffect } from './eterno-retorno/index.js';
 import { state } from '../app/state.js';
 
 /**
@@ -33,6 +34,7 @@ let activeDewdropsCleanup = null;
 let activeFirefliesCleanup = null;
 let activeCracksCleanup = null;
 let activePobresCleanup = null;
+let activeEternoCleanup = null;
 const activeEffectAudio = new Set();
 const activeEffectFadeIntervals = new Map();
 
@@ -163,6 +165,7 @@ function clearExistingEffects(nextEffects = []) {
     if (activeDewdropsCleanup) { activeDewdropsCleanup(); activeDewdropsCleanup = null; }
     if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
     if (activePobresCleanup) { activePobresCleanup(); activePobresCleanup = null; }
+    if (activeEternoCleanup) { activeEternoCleanup(); activeEternoCleanup = null; }
 
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
@@ -175,6 +178,7 @@ function clearExistingEffects(nextEffects = []) {
         '.fireflies-overlay, .smoke-particle, .rain-drop, .falling-leaf, ' +
         '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop, ' +
         '.pobres-overlay, .pobres-bg-overlay, ' +
+        '.eterno-bg-overlay, .eterno-spiral-canvas, .eterno-particles, ' +
         '.door-light-overlay, .door-choices-cinematic' + cracksQuery
     );
     allEffectElements.forEach(el => el.remove());
@@ -384,6 +388,12 @@ export function handlePageEffects(effectString, { getAppMode }) {
     const pobresEffect = effects.find(e => e.startsWith('pobres_'));
     if (pobresEffect) {
         activePobresCleanup = startPobresEffect(pobresEffect);
+    }
+
+    // --- Eterno Retorno (Nietzsche) ---
+    const eternoEffect = effects.find(e => e.startsWith('eterno_'));
+    if (eternoEffect) {
+        activeEternoCleanup = startEternoRetornoEffect(eternoEffect);
     }
 
     // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---
