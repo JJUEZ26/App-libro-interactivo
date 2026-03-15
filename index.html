@@ -225,10 +225,24 @@
                     <button id="nav-close">✕</button>
                 </div>
                 <div class="modal-body">
-                    <button id="restart-btn" class="danger-btn">⟲ Reiniciar historia</button>
+                    <button id="restart-btn" class="btn btn-danger" style="width: 100%;">⟲ Reiniciar historia</button>
                     <div class="history-list-container">
                         <h3>Pasos recientes</h3>
                         <ul id="history-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE CONFIRMACIÓN: ETERNO RETORNO -->
+        <div id="restart-confirm-modal" class="modal-overlay" style="z-index: 10005;">
+            <div class="modal-content" style="max-width: 320px; text-align: center;">
+                <div class="modal-body" style="padding: var(--space-6) var(--space-4);">
+                    <h3 style="margin-top: 0; font-family: var(--font-display);">¿Reiniciar historia?</h3>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--space-6);">Perderás el progreso actual de esta lectura.</p>
+                    <div style="display: flex; gap: var(--space-3); justify-content: center;">
+                        <button id="restart-cancel-btn" class="btn btn-ghost">Cancelar</button>
+                        <button id="restart-confirm-btn" class="btn btn-danger">Reiniciar</button>
                     </div>
                 </div>
             </div>

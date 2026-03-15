@@ -1,4 +1,4 @@
-﻿#reader-view {
+#reader-view {
     flex: 1;
     display: none;
     flex-direction: column;
@@ -157,7 +157,8 @@ body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
 
 .content-centerer {
     padding: 3rem 4rem;
-    line-height: 1.8;
+    line-height: var(--leading-loose, 1.85);
+    letter-spacing: 0.015em;
     font-size: clamp(1.15rem, var(--font-size-dynamic, 1.2rem), 1.65rem);
     width: 100%;
     margin: auto 0;
@@ -172,9 +173,10 @@ body.theme-sepia .page-content::-webkit-scrollbar-thumb:hover {
 }
 
 .page-content p {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-6, 1.5rem);
     text-indent: 2rem;
     text-align: justify;
+    text-wrap: pretty;
 }
 
 /* =========================

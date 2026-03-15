@@ -190,10 +190,37 @@ function jumpToHistoryPoint(targetId) {
     }
 }
 
+let restartModalListenerInit = false;
+
 export function restartStory() {
     if (!state.story || !state.currentBook) return;
-    const confirmed = confirm('¿Reiniciar historia?');
-    if (!confirmed) return;
+
+    const confirmModal = document.getElementById('restart-confirm-modal');
+    const btnCancel = document.getElementById('restart-cancel-btn');
+    const btnConfirm = document.getElementById('restart-confirm-btn');
+
+    if (!confirmModal || !btnCancel || !btnConfirm) {
+        // Fallback de seguridad
+        if (!confirm('¿Reiniciar historia?')) return;
+        executeRestart();
+        return;
+    }
+
+    if (!restartModalListenerInit) {
+        btnCancel.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+        });
+        btnConfirm.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+            executeRestart();
+        });
+        restartModalListenerInit = true;
+    }
+
+    confirmModal.classList.add('active');
+}
+
+function executeRestart() {
     const startId = state.story[0].id;
     state.pageHistory = [startId];
     savePageHistory({ currentBook: state.currentBook, pageHistory: state.pageHistory });

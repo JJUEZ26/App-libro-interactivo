@@ -146,7 +146,8 @@ export function initApp() {
                 const deltaY = touch.clientY - touchStartY;
                 const absDeltaX = Math.abs(deltaX);
                 const absDeltaY = Math.abs(deltaY);
-                if (absDeltaX < 50 || absDeltaX < absDeltaY) return;
+                if (absDeltaX < 60 || absDeltaX < absDeltaY * 1.5) return;
+                if (navigator.vibrate) navigator.vibrate(15);
                 if (deltaX < 0) goForward();
                 else goBack();
             },

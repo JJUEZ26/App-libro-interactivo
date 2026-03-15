@@ -54,32 +54,13 @@
 
     /* ========================================
        TEMAS DE LECTURA (Reader View)
-       Mantenemos compatibilidad con sistema anterior
+       Mantenemos compatibilidad con sistema anterior,
+       pero apuntando al nuevo color system
        ======================================== */
-
-    /* Light Theme (Blanco limpio) */
-    --primary-color-light: #ffffff;
-    --secondary-color-light: #1a1a1a;
-    --accent-color-light: #6366f1;
-    --main-bg-light: #f5f5f5;
-
-    /* Sepia Theme (Clásico rosado) */
-    --primary-color-sepia: #f4ecd8;
-    --secondary-color-sepia: #5d4037;
-    --accent-color-sepia: #d84315;
-    --main-bg-sepia: #d7ccc8;
-
-    /* Dark Theme (Reader) */
-    --primary-color-dark: #1e1e1e;
-    --secondary-color-dark: #e0e0e0;
-    --accent-color-dark: #ffab91;
-    --main-bg-dark: #121212;
-
-    /* Colores dinámicos para Reader */
-    --bg-color: var(--primary-color-light);
-    --text-color: var(--secondary-color-light);
-    --accent-color: var(--accent-color-light);
-    --main-bg: var(--main-bg-light);
+    --bg-color: var(--color-bg-primary);
+    --text-color: var(--color-text-primary);
+    --accent-color: var(--color-accent-primary);
+    --main-bg: var(--color-bg-secondary);
 
     /* ========================================
        TIPOGRAFÍA
@@ -302,28 +283,90 @@
 }
 
 /* ========================================
-   TEMAS DE LECTURA (Body Classes)
+   TEMAS DE LA APLICACIÓN (Body Classes)
    ======================================== */
 
 body.theme-light {
-    --bg-color: var(--primary-color-light);
-    --text-color: var(--secondary-color-light);
-    --accent-color: var(--accent-color-light);
-    --main-bg: var(--main-bg-light);
+    /* UI / Library Variables (Tema Aurora) */
+    --color-bg-primary: oklch(98% 0.01 240);
+    --color-bg-secondary: oklch(95% 0.02 240);
+    --color-bg-tertiary: oklch(90% 0.02 240);
+    --color-bg-elevated: oklch(100% 0 0);
+    
+    --color-accent-primary: oklch(55% 0.24 280);
+    --color-accent-secondary: oklch(60% 0.22 180);
+    
+    --color-text-primary: oklch(20% 0.02 240);
+    --color-text-secondary: oklch(40% 0.03 240);
+    --color-text-tertiary: oklch(60% 0.02 240);
+    --color-text-disabled: oklch(75% 0.02 240);
+    
+    /* Overlays */
+    --color-overlay-dark: rgba(0, 0, 0, 0.2);
+    --color-overlay-light: rgba(255, 255, 255, 0.4);
+    --color-glass-bg: rgba(255, 255, 255, 0.4);
+    --color-glass-border: rgba(0, 0, 0, 0.05);
+
+    /* Reader Compatibility */
+    --bg-color: var(--color-bg-primary);
+    --text-color: var(--color-text-primary);
+    --accent-color: var(--color-accent-primary);
+    --main-bg: var(--color-bg-secondary);
 }
 
 body.theme-sepia {
-    --bg-color: var(--primary-color-sepia);
-    --text-color: var(--secondary-color-sepia);
-    --accent-color: var(--accent-color-sepia);
-    --main-bg: var(--main-bg-sepia);
+    --color-bg-primary: #f4ecd8;
+    --color-bg-secondary: #e6dfcc;
+    --color-bg-tertiary: #d8d1c0;
+    --color-bg-elevated: #faf5eb;
+
+    --color-accent-primary: #d84315;
+    --color-accent-secondary: #bf360c;
+
+    --color-text-primary: #5d4037;
+    --color-text-secondary: #6d4c41;
+    --color-text-tertiary: #8d6e63;
+    --color-text-disabled: #bcaaa4;
+
+    /* Overlays */
+    --color-overlay-dark: rgba(93, 64, 55, 0.4);
+    --color-overlay-light: rgba(244, 236, 216, 0.4);
+    --color-glass-bg: rgba(244, 236, 216, 0.4);
+    --color-glass-border: rgba(93, 64, 55, 0.05);
+
+    /* Reader Compatibility */
+    --bg-color: var(--color-bg-primary);
+    --text-color: var(--color-text-primary);
+    --accent-color: var(--color-accent-primary);
+    --main-bg: var(--color-bg-secondary);
 }
 
 body.theme-dark {
-    --bg-color: var(--primary-color-dark);
-    --text-color: var(--secondary-color-dark);
-    --accent-color: var(--accent-color-dark);
-    --main-bg: var(--main-bg-dark);
+    /* UI / Library Variables (Tema Midnight Library) */
+    --color-bg-primary: oklch(15% 0.02 240);
+    --color-bg-secondary: oklch(20% 0.03 240);
+    --color-bg-tertiary: oklch(25% 0.04 240);
+    --color-bg-elevated: oklch(22% 0.03 240);
+
+    --color-accent-primary: oklch(70% 0.25 330);
+    --color-accent-secondary: oklch(75% 0.20 200);
+
+    --color-text-primary: oklch(95% 0.01 240);
+    --color-text-secondary: oklch(70% 0.02 240);
+    --color-text-tertiary: oklch(50% 0.02 240);
+    --color-text-disabled: oklch(40% 0.02 240);
+
+    /* Overlays */
+    --color-overlay-dark: rgba(0, 0, 0, 0.6);
+    --color-overlay-light: rgba(255, 255, 255, 0.05);
+    --color-glass-bg: rgba(255, 255, 255, 0.05);
+    --color-glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Reader Compatibility */
+    --bg-color: var(--color-bg-primary);
+    --text-color: var(--color-text-primary);
+    --accent-color: var(--color-accent-primary);
+    --main-bg: var(--color-bg-secondary);
 }
 
 /* ========================================

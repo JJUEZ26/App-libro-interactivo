@@ -267,7 +267,7 @@ body.eterno-mode.eterno-portada-active .choices button:hover {
 .eterno-cierre-page .scenes-container {
     text-align: center;
     transition: all 2s ease;
-    animation: eternoTextDim 2s ease forwards 5s; /* kicks in right as choices fade in */
+    animation: eternoTextDim 2s ease forwards 4s; /* kicks in right as choices fade in */
 }
 
 @keyframes eternoTextDim {
@@ -291,7 +291,7 @@ body.eterno-mode.eterno-portada-active .choices button:hover {
 .eterno-cierre-page .choices.choices-delayed {
     opacity: 0;
     visibility: hidden;
-    animation: smoothReveal 2.5s ease 5s forwards !important;
+    animation: smoothReveal 2.5s ease 4s forwards !important;
 }
 
 .eterno-cierre-page .choices button {

@@ -1,25 +1,37 @@
 # 📚 Blueprint Maestro: Lecturas Interactivas - Transformación Total
 
-## 🎯 Filosofía del Proyecto
+## 🎯 Filosofía del Proyecto (El Rascacielos Experimental)
 
-**"Lecturas Interactivas"** es una plataforma inmersiva de narrativa adaptativa que transforma la lectura clásica en una experiencia cinematográfica e interactiva. No es solo un lector de libros, es un **portal dimensional literario** donde cada decisión del usuario ramifica realidades alternativas, acompañadas de:
+**"Lecturas Interactivas"** es una obra arquitectónica maestra, una plataforma inmersiva, escalable y **heterogénea** que transforma la lectura clásica en una experiencia interactiva. No es solo un lector de libros o poesía; es un **portal dimensional literario** donde caben textos solemnes, mecánicas narrativas complejas y **pequeños juegos interactivos experimentales (viñetas)** que complementan o exploran los conceptos de los textos.
 
 - 🎭 **Narrativa Ramificada**: Decisiones que alteran el curso de historias clásicas
+- 🎮 **Viñetas Dinámicas**: Juegos y módulos web interactivos aislados herméticamente
 - 🎨 **Atmósfera Visual**: Imágenes contextuales que intensifican momentos clave
 - 🎵 **Paisajes Sonoros**: Audio ambiental y efectos que sumergen al lector
 - 🤖 **IA Contextual**: Asistente conversacional para profundizar en la lectura
 - ✨ **Efectos Visuales**: Partículas, overlays y animaciones temáticas
 - 🎯 **Resaltados Inteligentes**: Sistema de citas y marcadores personalizables
 
-### Visión Original
-Este es tu primer proyecto, diseñado con una estética **Netflix-like** para web móvil. Su valor sentimental es inmenso porque representa tus primeros pasos en desarrollo. Ahora lo elevaremos a **nivel Google** con:
+### Visión Original vs. Nueva Visión
+Este es tu primer proyecto, diseñado con una estética **Netflix-like**. Ahora lo estamos elevando a **Nivel Rascacielos** para que *cualquier cosa nueva que quieras experimentar* funcione sin romper el edificio. El core es el minimalismo y el "Silencio Visual", mientras que el poder subyacente es la escalabilidad.
 
-1. **Arquitectura de Clase Mundial**: Modular, escalable, documentada
-2. **UX Premium**: Micro-interacciones, animaciones fluidas, feedback táctil
-3. **Performance Óptima**: Carga progresiva, caching inteligente, optimización de assets
+1. **Arquitectura de Rascacielos**: Modular, escalable, aislamiento perfecto de módulos experimentales
+2. **UX Premium Contemplativa**: Micro-interacciones sutiles, animaciones fluidas, sin gamificación barata
+3. **Performance Óptima**: Carga progresiva, caching inteligente, optimización obsesiva de assets
 4. **Accesibilidad Total**: WCAG 2.1 AAA, navegación por teclado, lectores de pantalla
 5. **Mobile-First Perfecto**: Responsive real, gestos naturales, notch-aware
 6. **PWA Avanzada**: Instalable, offline-first, sincronización en background
+
+---
+
+## 🛠️ PLAN DE AUDITORÍA DE CIMIENTOS (Nuevo)
+
+Antes de seguir construyendo más pisos y agregando módulos experimentales complejos, se debe realizar una auditoría arquitectónica para asegurar la solidez:
+
+1. **Aislamiento de Módulos (Encapsulamiento):** Comprobar si las viñetas/juegos actuales (ej. Sísifo) o futuros están 100% aislados (Web Components, sandboxing o iframes) para que su física, su CSS o sus loops de animación (`requestAnimationFrame`) no rompan la app central ni generen sangrado visual (bleeding).
+2. **Gestión de Memoria y Rendimiento:** Evaluar cómo `init.js`, `render.js` y el sistema de módulos manejan la inicialización y, sobre todo, la **destrucción** (cleanup) de librerías pesadas (ej. `matter.js`, canvas complejos, audios grandes) al desmontar la vista para evitar *memory leaks*.
+3. **Escalabilidad del Estado Global (`state.js`):** Determinar si el patrón de estado actual puede soportar puntuaciones temporales de minijuegos u otros datos efímeros sin persistirlos innecesariamente en `localStorage`, ni contaminar la lectura principal.
+4. **Mantenimiento Autónomo CSS:** Consolidar variables huérfanas o reglas dispersas en el nuevo sistema de tokens unificados.
 
 ---
 
@@ -740,6 +752,13 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 **Mejoras CSS**:
 - `.book-card--upcoming`: Sombras reactivas sutiles, overlays tipo *glassmorphism*, badge integrado pero transparente y un estilo visual que comunica "premium en desarrollo".
 
+### Poema "Como aman los pobres" — Gata Cattana (Marzo 2026)
+**Objetivo**: Dotar a la obra de Gata Cattana de una identidad visual premium y representativa para la biblioteca.
+
+**Implementación**:
+1. **Edición Artística de Portada**: Se ha generado una portada personalizada utilizando la imagen original de las manos y la amapola, incorporando el título "Como aman los pobres" y el nombre de la autora en tipografía serif elegante con sombras suaves para asegurar legibilidad y coherencia estética con el resto de la colección.
+2. **Coherencia Visual**: La portada ahora incluye la etiqueta "POEMAS" bajo el título, unificando el lenguaje gráfico con otras obras contemporáneas y clásicas de la plataforma.
+
 ### Poema "el cordón del zapato" — Charles Bukowski (Marzo 2026)
 **Objetivo**: Añadir el poema de Charles Bukowski asegurando una lectura rápida, fluida y con la imagen gráfica adecuada.
 
@@ -757,3 +776,4 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 2. **Estructura y Tono**: Título en español ("El eterno retorno"), rediseño tipográfico sumamente elegante de la pregunta inicial en portada (`.eterno-hook`), y eliminación de pantallas de diálogo irrelevantes o excesivas ("haz una pausa", etc).
 3. **Flujo de Decisión Elegante**: La pregunta final culmina directamente con las opciones de afirmación y rechazo usando botones limpios, continuados inmediatamente por la biografía del autor.
 4. **Biografía y Ambientación**: Cambio de la cita final a "Aquel que tiene un porqué para vivir, puede soportar casi cualquier cómo", y ralentización de las velocidades del canvas de fondo (halo rotatorio) para infundir un movimiento contemplativo sutil en la experiencia.
+5. **Ajuste de Tempo (Cierre)**: Sincronización refinada de la página final. La transición de sombreado (dimming) del texto y la aparición de las preguntas se ha adelantado de 5s a 4s para mejorar el ritmo de lectura y asegurar que las opciones sean visibles antes de que el usuario intente avanzar manualmente.
