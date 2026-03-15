@@ -38,6 +38,9 @@ Te prohíbo (como IA) escribir código sin preguntar al humano si este impacta m
 Ignora sugerencias de instalar *React* u otros frameworks pesados. Todo aquí se maneja con **JavaScript ES Modules puro (Vanilla)**, Web Composents nativos y un enrutamiento por estados (`state.js`).
 Utiliza siempre las funciones propias del proyecto (ej. `getEl()`, sistema de `effects/`).
 
+### 5. Sincronización Obligatoria de Blueprint ✅
+Es una regla estricta: **Cada vez que la IA declare o detecte que ha terminado de programar un Bloque o una Fase entera**, está obligada a abrir el archivo `blueprint.md`, buscar la sección correspondiente, y actualizarla marcándola como Completada (✅) para que el archivo maestro siempre refleje el estado real de la base de código. 
+
 ## 🧠 Cheat-Sheet Ocasional
 *   Si el usuario pide **un cambio rápido y sucio**, duda: *"¿Esto escalará cuando tengamos 100 historias y 50 juegos?"*.
 *   Si el usuario añade **imágenes nuevas**, recuerda y aplica inmediatamente tu rutina de compresión a *WebP*.

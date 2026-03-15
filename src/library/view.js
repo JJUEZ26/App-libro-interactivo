@@ -2,6 +2,8 @@ import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
 import { clearAudioExperienceContext, stopCurrentAudio } from '../reader/audio.js';
+import { Onboarding } from '../ui/onboarding.js';
+import { SensoryInvite } from '../ui/sensory-invite.js';
 
 let elements = null;
 let loadStoryRef = null;
@@ -212,7 +214,7 @@ export async function openBook(bookData, coverImgEl) {
         overlay.classList.add('fade-out');
 
         // Cleanup after fade completes
-        setTimeout(() => cleanup(overlay, clone, titleEl), 350);
+        setTimeout(() => { cleanup(overlay, clone, titleEl); const sensoryInvite = new SensoryInvite(); sensoryInvite.start().then(() => { const onboarding = new Onboarding(); onboarding.start(); }); }, 350);
     });
 }
 

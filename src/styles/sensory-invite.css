@@ -1,0 +1,163 @@
+/* =========================================================================
+   SENSORY INVITE (Onboarding Prioritario de Experiencia)
+   ========================================================================= */
+
+   .sensory-invite-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease-out-expo), backdrop-filter 0.5s var(--ease-out-expo);
+}
+
+.sensory-invite-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sensory-invite-overlay.fade-out {
+    opacity: 0 !important;
+    backdrop-filter: blur(0px) !important;
+    -webkit-backdrop-filter: blur(0px) !important;
+    pointer-events: none !important;
+}
+
+.sensory-invite-content {
+    width: 90%;
+    max-width: 480px;
+    background: oklch(15% 0.01 240 / 0.85);
+    border: 1px solid oklch(35% 0.05 240 / 0.5);
+    border-radius: 20px;
+    padding: var(--space-8) var(--space-6);
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.5),
+        inset 0 1px 1px rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sensory-invite-overlay.active .sensory-invite-content {
+    transform: translateY(0) scale(1);
+}
+
+/* Identidad Gráfica y Glows */
+.sensory-icon-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.icon-audio {
+    width: 32px;
+    height: 32px;
+    fill: var(--color-warning); /* Ámbar cálido */
+    filter: drop-shadow(0 0 12px oklch(75% 0.20 60 / 0.6));
+    animation: audioPulse 3s infinite ease-in-out;
+}
+
+.icon-divider {
+    height: 20px;
+    width: 1px;
+    background: oklch(40% 0.02 240);
+}
+
+.icon-orb-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+    position: relative;
+}
+.icon-orb-preview::after {
+    content: "G";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: var(--font-display);
+}
+
+/* Tipografía */
+.sensory-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+}
+
+.sensory-text {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+}
+.sensory-text strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+/* Controles */
+.sensory-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.sensory-actions .btn {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.sensory-actions .btn-primary {
+    /* Especial colorización ámbar/cálida para el botón de aceptar */
+    background: linear-gradient(to right, oklch(50% 0.15 60), oklch(60% 0.15 70));
+    border: none;
+    box-shadow: 0 4px 15px oklch(50% 0.15 60 / 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sensory-actions .btn-primary:active {
+    transform: scale(0.97);
+}
+
+@keyframes audioPulse {
+    0%, 100% { opacity: 0.8; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+@media (min-width: 640px) {
+    .sensory-actions {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+    .sensory-actions .btn {
+        width: auto;
+        padding-left: var(--space-6);
+        padding-right: var(--space-6);
+    }
+}

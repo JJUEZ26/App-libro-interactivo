@@ -43,4 +43,26 @@ Después de cada tarea importante o ciclo completado, se escribirá aquí:
 - **Estado actual del sistema:** CICLO COMPLETADO. Operaciones de Refactoring CSS central, responsividad y transiciones UX cerradas exitoamente. El core está preparado y validado estáticamente para interacciones ricas o incrustación de juegos externos a futuro.
 - **Bloqueos/Errores:** Sistémica impecable. Tareas agotadas con éxito.
 
+---
+
+## 📅 SESIÓN ACTUAL - FASE 3 (UX Avanzada)
+
+**[Bloque 1 Completado] Sistema de Onboarding (Tutorial Interactivo)**
+- **Archivos modificados:** `src/ui/onboarding.js`, `src/styles/onboarding.css`, `src/styles/index.css`, `src/library/view.js`.
+- **Resumen técnico del cambio:** Creada lógica de Onboarding con clase encapsulada usando DOM Injection y estado guardado de manera persistente en `localStorage` (`lecturas_onboarding_completed`). Se usaron estilos *glassmorphism* premium consistentes y animaciones suaves para ilustrar las 3 funciones avanzadas (navegación por bordes, panel de citas y el Chat de IA). La instanciación está correctamente integrada en `view.js` para dispararse sin bloqueos tras la transición de apertura del primer libro.
+- **Estado actual del sistema:** Onboarding activo, elegante y funcional para nuevos usuarios.
+- **Bloqueos/Errores:** Ninguno.
+
+**[Bloque 2 Completado] Compartir Citas (Social Share Core)**
+- **Archivos modificados:** `src/reader/highlights.js`.
+- **Resumen técnico del cambio:** Refactorizado el componente generador de items del panel de resaltados. Se reemplazó el contenedor raíz de `<button>` a un `<div class="highlight-panel-item-container">` con flexbox, dividiendo la interacción entre "Ir a la página" (ahora delegado correctamente en el sub-elemento) y "Compartir cita" (mediante un nuevo `.highlight-share-btn` con `navigator.share()` / exportación en fallback a portapapeles con `navigator.clipboard.writeText()`).
+- **Estado actual del sistema:** El panel de citas funciona ahora además como Social Hub para exportar texto interactivo.
+- **Bloqueos/Errores:** Ninguno documentado. Operación estable.
+
+**[Bloque 3 Completado] Invitación Sensorial (Audio & Orbe)**
+- **Archivos modificados:** `src/ui/sensory-invite.js`, `src/styles/sensory-invite.css`, `src/styles/index.css`, `src/library/view.js`, `src/ui/onboarding.js`
+- **Resumen técnico del cambio:** Implementada la refactorización arquitectónica para separar la experiencia mecánica (onboarding de gestos) de la inmersiva (Audio/IA). Creada nueva clase `SensoryInvite` inyectada dinámicamente con estilos ultra-premium (sombras profundas, brillos ámbar/violeta y backdrop blureado). Enlaza de forma asíncrona (`.then()`) al Onboarding clásico si el usuario está en su primera sesión completa.
+- **Estado actual del sistema:** Al abrir el primer libro, el lector recibe una experiencia poética de introducción enfocada en el aspecto sonoro e IA, antes del tutorial táctil.
+- **Bloqueos/Errores:** Controlada *race condition* en el callback del fade en `library/view.js` asegurando montaje asíncrono limpio. Operativo al 100%.
+
 

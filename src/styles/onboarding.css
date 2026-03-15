@@ -1,0 +1,143 @@
+/* ========================================
+   ONBOARDING SYSTEM (UX Avanzada - Fase 3)
+   ======================================== */
+
+.onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000; /* Above modals and orb */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.onboarding-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.onboarding-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Dialog Box */
+.onboarding-dialog {
+    background: var(--color-bg-elevated, #1e1e1e);
+    border: 1px solid var(--color-glass-border, rgba(255, 255, 255, 0.1));
+    border-radius: var(--radius-2xl, 16px);
+    padding: var(--space-6, 24px);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    z-index: 20001;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5, 20px);
+    position: relative;
+    /* Para interactuar libremente dentro */
+    pointer-events: auto;
+}
+
+.onboarding-dialog.animate-in {
+    animation: dialogSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dialogSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.onboarding-step-counter {
+    font-size: var(--text-xs, 12px);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider, 0.05em);
+    color: var(--color-accent-primary, #a855f7);
+    font-weight: var(--font-bold, 700);
+    display: block;
+    margin-bottom: var(--space-2, 8px);
+}
+
+.onboarding-title {
+    font-family: var(--font-display, "Playfair Display", serif);
+    font-size: var(--text-2xl, 24px);
+    margin: 0 0 var(--space-2, 8px) 0;
+    color: var(--color-text-primary, #fff);
+}
+
+.onboarding-text {
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-size: var(--text-base, 16px);
+    line-height: var(--leading-relaxed, 1.6);
+    color: var(--color-text-secondary, #aaa);
+    margin: 0;
+}
+
+.onboarding-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3, 12px);
+    margin-top: var(--space-2, 8px);
+}
+
+/* ========================================
+   HIGHLIGHT REGIONS (Visual Cues)
+   ======================================== */
+
+.onboarding-overlay::before,
+.onboarding-overlay::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+/* Highlight Edges: glow on left and right */
+.onboarding-overlay.highlight-edges::before {
+    inset: 0;
+    box-shadow: inset 40px 0 60px -20px var(--color-accent-primary, rgba(168, 85, 247, 0.5)),
+                inset -40px 0 60px -20px var(--color-accent-primary, rgba(168, 85, 247, 0.5));
+    opacity: 0.6;
+    animation: edgePulse 2s infinite alternate;
+}
+
+@keyframes edgePulse {
+    from { opacity: 0.3; }
+    to { opacity: 0.8; }
+}
+
+/* Highlight Orb: glow at bottom right */
+.onboarding-overlay.highlight-orb::after {
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.5), 0 0 30px 10px var(--color-accent-primary, #a855f7);
+    opacity: 1;
+}
+
+/* Highlight Center: subtle glow in middle */
+.onboarding-overlay.highlight-center::before {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 40%;
+    border-radius: var(--radius-2xl, 16px);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.5), 0 0 40px var(--color-accent-secondary, #22d3ee);
+    opacity: 1;
+}
