@@ -256,10 +256,32 @@ export function renderPage(pageId) {
     pageContent.appendChild(contentCenterer);
     elements.pageWrapper.appendChild(pageContent);
 
-    // — Scrollbar auto-hide: aparece al hacer scroll, desaparece al detenerse —
+    // — Scrollbar auto-hide y Scroll-to-Reveal (Hide Action Bar on down-scroll) —
     let scrollTimeout = null;
+    let lastScrollY = 0;
+    
     pageContent.addEventListener('scroll', () => {
+        const currentScrollY = pageContent.scrollTop;
+
+        // Ignorar comportamientos elásticos (bounce) en top y bottom (especial iOS)
+        if (currentScrollY <= 0 || currentScrollY >= pageContent.scrollHeight - pageContent.clientHeight) {
+            return;
+        }
+
         pageContent.classList.add('is-scrolling');
+        
+        // Debounce mejorado con umbral más alto para pantallas táctiles
+        if (Math.abs(currentScrollY - lastScrollY) > 15) {
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                // Scroll down: Hide elements
+                document.body.classList.add('is-scrolling-down');
+            } else if (currentScrollY < lastScrollY) {
+                // Scroll up: Reveal elements
+                document.body.classList.remove('is-scrolling-down');
+            }
+            lastScrollY = currentScrollY;
+        }
+
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
             pageContent.classList.remove('is-scrolling');
@@ -405,4 +427,7 @@ export function resetScrollPosition() {
     if (elements?.pageWrapper) elements.pageWrapper.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    
+    // Reset Mobile Bottom Bar Visibility
+    document.body.classList.remove('is-scrolling-down');
 }

@@ -1,18 +1,29 @@
 import { state } from '../app/state.js';
 import { loadHighlights, saveHighlights } from '../utils/storage.js';
+import { ShareManager } from '../utils/shareUtils.js';
 
+// The colors mapping to CSS custom highlight rules (::highlight(color-sun))
 const highlightColors = [
-    { id: 'sun', label: 'Amarillo suave', className: 'highlight-yellow' },
-    { id: 'mint', label: 'Menta', className: 'highlight-green' },
-    { id: 'sky', label: 'Celeste', className: 'highlight-blue' }
+    { id: 'sun', label: 'Amarillo suave', className: 'color-sun' },
+    { id: 'mint', label: 'Menta', className: 'color-mint' },
+    { id: 'sky', label: 'Celeste', className: 'color-sky' }
 ];
 
 let elements = null;
 let goToPageRef = null;
 let activeRange = null;
-let activeHighlightId = null;
-let currentColor = highlightColors[0];
-let pendingFocusId = null;
+
+// This will substitute the native popups
+let tooltipFlotante = null;
+let tooltipIsVisible = false;
+let selectionTimeoutId = null;
+
+// Global memory for CSS Custom Highlights API
+const activeHighlightRanges = {
+    sun: new Set(),
+    mint: new Set(),
+    sky: new Set()
+};
 
 export function initHighlights({ elements: elementsRef, goToPage }) {
     elements = elementsRef;
@@ -20,133 +31,506 @@ export function initHighlights({ elements: elementsRef, goToPage }) {
 
     if (!elements?.pageWrapper) return;
 
-    bindMenuActions();
+    // Feature Check
+    if (!CSS.highlights) {
+        console.warn('CSS Custom Highlight API no está soportada. Las citas avanzadas requieren Chrome 105+ o Safari 17+.');
+    } else {
+        // Initialize highlight registers Map
+        CSS.highlights.set('color-sun', new Highlight());
+        CSS.highlights.set('color-mint', new Highlight());
+        CSS.highlights.set('color-sky', new Highlight());
+    }
+
+    createTooltipDOM();
     bindSelectionHandlers();
     bindHighlightInteractions();
     bindPanelActions();
 }
 
+/**
+ * Creates the global premium tooltip injected in body
+ */
+function createTooltipDOM() {
+    tooltipFlotante = document.createElement('div');
+    tooltipFlotante.id = 'highlight-tooltip-wrapper';
+    tooltipFlotante.style.position = 'absolute';
+    tooltipFlotante.style.zIndex = '999999';
+    tooltipFlotante.style.pointerEvents = 'none';
+    tooltipFlotante.style.opacity = '0';
+    tooltipFlotante.style.transition = 'opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+    tooltipFlotante.style.transform = 'translateY(10px) translateX(-50%)';
+    
+    // Internal HTML for Color selection and Tooltip Actions
+    tooltipFlotante.innerHTML = `
+        <div class="highlight-tooltip-glass">
+            <div class="highlight-tooltip-actions create-mode">
+                ${highlightColors.map(c => `
+                    <button class="ht-color-btn ${c.className}" data-color="${c.id}" aria-label="${c.label}"></button>
+                `).join('')}
+            </div>
+            <div class="highlight-tooltip-actions edit-mode" style="display:none;">
+                <button class="ht-action-btn share-btn" aria-label="Compartir">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </button>
+                <div class="ht-separator"></div>
+                <button class="ht-action-btn delete-btn" aria-label="Eliminar ODA">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(tooltipFlotante);
+
+    // Event bind: Create new highlight 
+    tooltipFlotante.querySelectorAll('.ht-color-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const colorId = btn.dataset.color;
+            if (activeRange && state.currentBook) {
+                createHighlightFromSelection(activeRange, colorId);
+                clearSelection();
+                hideTooltip();
+            }
+        });
+    });
+
+    // Event bind: Edit/Delete highlight
+    tooltipFlotante.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (tooltipFlotante.dataset.highlightId) {
+            removeHighlight(tooltipFlotante.dataset.highlightId);
+            hideTooltip();
+        }
+    });
+
+    tooltipFlotante.querySelector('.share-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (tooltipFlotante.dataset.highlightId && tooltipFlotante.dataset.highlightText) {
+            ShareManager.shareQuote(tooltipFlotante.dataset.highlightText, state.currentBook.title, state.currentBook.id);
+            hideTooltip();
+        }
+    });
+}
+
+/**
+ * Mapea highlights guardados y los recrea visualmente al entrar a una pagina.
+ */
 export function applyHighlightsForPage(pageId) {
-    if (!elements?.pageWrapper || !state.currentBook) return;
-    hideAllMenus();
+    if (!CSS.highlights || !elements?.pageWrapper || !state.currentBook) return;
+    hideTooltip();
+    
+    // Cleanup previous ranges 
+    activeHighlightRanges.sun.clear();
+    activeHighlightRanges.mint.clear();
+    activeHighlightRanges.sky.clear();
+    updateCSSHighlights();
 
     const container = elements.pageWrapper.querySelector('.content-centerer');
     if (!container) return;
 
     const highlights = loadHighlights(state.currentBook.id).filter((item) => item.pageId === pageId);
-    highlights
-        .slice()
-        .sort((a, b) => a.startOffset - b.startOffset)
-        .forEach((highlight) => {
-            applyHighlightFromOffsets(container, highlight);
-        });
+    
+    // Sort logically
+    highlights.sort((a, b) => a.startOffset - b.startOffset);
 
-    if (pendingFocusId) {
-        const target = container.querySelector(`[data-highlight-id="${pendingFocusId}"]`);
-        if (target) {
-            target.classList.add('highlight-focus');
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => target.classList.remove('highlight-focus'), 1200);
+    highlights.forEach((highlight) => {
+        const range = createRangeFromOffsets(container, highlight.startOffset, highlight.endOffset);
+        if (range) {
+            // Se le adosa el ID como propiedad custom para identificarlo en clicks
+            range.highlightId = highlight.id;
+            range.highlightColor = highlight.color;
+            range.highlightText = highlight.text;
+
+            if (activeHighlightRanges[highlight.color]) {
+                activeHighlightRanges[highlight.color].add(range);
+            }
         }
-        pendingFocusId = null;
-    }
+    });
+
+    updateCSSHighlights();
 }
 
-function bindMenuActions() {
-    if (!elements?.highlightMenu || !elements?.highlightEditMenu) return;
-
-    const resaltarBtn = elements.highlightMenu.querySelector('[data-action="highlight"]');
-    if (resaltarBtn) {
-        resaltarBtn.addEventListener('click', () => {
-            if (!activeRange || !state.currentBook) return;
-            const highlight = createHighlightFromSelection(activeRange, currentColor);
-            if (!highlight) return;
-            persistHighlight(highlight);
-            clearSelection();
-            hideAllMenus();
-            renderHighlightPanel();
-        });
-    }
-
-    elements.highlightMenu
-        .querySelectorAll('[data-color-id]')
-        .forEach((button) => {
-            button.addEventListener('click', () => {
-                const colorId = button.dataset.colorId;
-                const found = highlightColors.find((color) => color.id === colorId);
-                if (found) {
-                    currentColor = found;
-                    updateSelectedColor(elements.highlightMenu, currentColor.id);
-                }
-            });
-        });
-
-    elements.highlightEditMenu
-        .querySelectorAll('[data-color-id]')
-        .forEach((button) => {
-            button.addEventListener('click', () => {
-                if (!activeHighlightId || !state.currentBook) return;
-                const colorId = button.dataset.colorId;
-                const found = highlightColors.find((color) => color.id === colorId);
-                if (!found) return;
-                updateHighlightColor(activeHighlightId, found);
-                updateSelectedColor(elements.highlightEditMenu, colorId);
-                hideAllMenus();
-            });
-        });
-
-    const deleteBtn = elements.highlightEditMenu.querySelector('[data-action="delete"]');
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', () => {
-            if (!activeHighlightId || !state.currentBook) return;
-            removeHighlight(activeHighlightId);
-            hideAllMenus();
-            renderHighlightPanel();
-        });
-    }
+/**
+ * Renderiza los rangos directamente a la CSS API
+ */
+function updateCSSHighlights() {
+    CSS.highlights.set('color-sun', new Highlight(...activeHighlightRanges.sun));
+    CSS.highlights.set('color-mint', new Highlight(...activeHighlightRanges.mint));
+    CSS.highlights.set('color-sky', new Highlight(...activeHighlightRanges.sky));
 }
+
+
+let ignoreSelectionUntil = 0;
 
 function bindSelectionHandlers() {
     const container = elements.pageWrapper;
-    container.addEventListener('mouseup', () => setTimeout(handleSelection, 10));
-    container.addEventListener('touchend', () => setTimeout(handleSelection, 10));
-    container.addEventListener('scroll', hideAllMenus, { passive: true });
+    
+    // Delay selection grab to allow OS native selection routines to complete on touch
+    container.addEventListener('mouseup', () => {
+        clearTimeout(selectionTimeoutId);
+        selectionTimeoutId = setTimeout(handleSelection, 50);
+    });
+    container.addEventListener('touchend', () => {
+        clearTimeout(selectionTimeoutId);
+        selectionTimeoutId = setTimeout(handleSelection, 100);
+    });
+    container.addEventListener('scroll', hideTooltip, { passive: true });
 
     document.addEventListener('click', (event) => {
-        if (event.target.closest('.highlight-menu')) return;
+        // Clicks outside the tooltip or highlight text should close menus
+        if (event.target.closest('#highlight-tooltip-wrapper')) return;
         if (event.target.closest('.highlight-panel')) return;
         if (event.target.closest('.highlight-panel-toggle')) return;
-        hideAllMenus();
+        hideTooltip();
     });
 
     document.addEventListener('selectionchange', () => {
-        const selection = window.getSelection();
-        if (!selection || selection.isCollapsed) {
-            activeRange = null;
-            hideSelectionMenu();
-            return;
-        }
-        setTimeout(handleSelection, 10);
+        // En móviles y desktop, la selección a veces colapsa o cambia antes/durante el click.
+        // Siempre retrasamos handleSelection para permitir que el click sobre Cita lo cancele.
+        clearTimeout(selectionTimeoutId);
+        selectionTimeoutId = setTimeout(handleSelection, 50);
     });
 }
 
+/**
+ * Handle clicks specifically over HIGHLIGHTED CSS RANGES.
+ * Since CSS.highlights don't emit events directly, we have to check mouse coordinates 
+ * against the Rects of our stored ranges on click.
+ */
 function bindHighlightInteractions() {
     elements.pageWrapper.addEventListener('click', (event) => {
-        const highlight = event.target.closest('.text-highlight');
-        if (!highlight) return;
-        event.stopPropagation();
-        activeHighlightId = highlight.dataset.highlightId;
-        const colorId = highlight.dataset.highlightColor;
-        updateSelectedColor(elements.highlightEditMenu, colorId);
-        showMenu(elements.highlightEditMenu, highlight.getBoundingClientRect());
+        // If there's an active text selection we don't interfere
+        const sel = window.getSelection();
+        if (!sel.isCollapsed && sel.toString().trim().length > 0) return;
+
+        // Check if user clicked inside ANY active highlight range rectangle
+        const x = event.clientX;
+        const y = event.clientY;
+
+        let clickedRange = null;
+
+        // Iterate all active sets directly
+        for (const color of ['sun', 'mint', 'sky']) {
+            for (const range of activeHighlightRanges[color]) {
+                const rects = range.getClientRects();
+                for (let i = 0; i < rects.length; i++) {
+                    const rect = rects[i];
+                    // Add a tiny tolerance for touch interactions
+                    const tolerance = 5;
+                    if (x >= rect.left - tolerance && x <= rect.right + tolerance && 
+                        y >= rect.top - tolerance && y <= rect.bottom + tolerance) {
+                        clickedRange = range;
+                        break;
+                    }
+                }
+                if (clickedRange) break;
+            }
+            if (clickedRange) break;
+        }
+
+        if (clickedRange) {
+            event.stopPropagation();
+            // Evitamos que cualquier revisión de selección purgue nuestro tooltip de edición
+            clearTimeout(selectionTimeoutId);
+            ignoreSelectionUntil = Date.now() + 400; // Bloqueamos selección fantasma generada por el tap
+            showTooltipForEditMode(clickedRange);
+        }
     });
 }
+
+function handleSelection() {
+    if (Date.now() < ignoreSelectionUntil) return;
+    
+    if (!state.currentBook) return;
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) {
+        hideTooltip();
+        return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const container = elements.pageWrapper.querySelector('.content-centerer');
+    if (!container || !container.contains(range.commonAncestorContainer)) {
+        hideTooltip();
+        return;
+    }
+
+    if (range.toString().trim().length === 0) {
+        hideTooltip();
+        return;
+    }
+
+    // Abort if selection intersects UI elements
+    if (range.commonAncestorContainer.parentElement?.closest('.choices, button, .audio-controls-container')) {
+        hideTooltip();
+        return;
+    }
+
+    activeRange = range;
+    showTooltipForCreateMode(range);
+}
+
+
+/* ================= TOOLTIP GUI ================= */
+
+function showTooltipForCreateMode(range) {
+    if (!tooltipFlotante) return;
+    
+    // Switch modes
+    tooltipFlotante.querySelector('.create-mode').style.display = 'flex';
+    tooltipFlotante.querySelector('.edit-mode').style.display = 'none';
+    
+    // Clean dataset
+    tooltipFlotante.removeAttribute('data-highlight-id');
+    tooltipFlotante.removeAttribute('data-highlight-text');
+
+    positionAndShowTooltip(range);
+}
+
+function showTooltipForEditMode(highlightRange) {
+    if (!tooltipFlotante) return;
+    
+    // Switch modes
+    tooltipFlotante.querySelector('.create-mode').style.display = 'none';
+    tooltipFlotante.querySelector('.edit-mode').style.display = 'flex';
+    
+    // Adose data for actions
+    tooltipFlotante.dataset.highlightId = highlightRange.highlightId;
+    tooltipFlotante.dataset.highlightText = highlightRange.highlightText;
+
+    positionAndShowTooltip(highlightRange);
+}
+
+function positionAndShowTooltip(range) {
+    const rect = range.getBoundingClientRect();
+    
+    // Wait a frame for UI rendering if it changed mode
+    requestAnimationFrame(() => {
+        const offset = 15;
+        const tooltipWidth = tooltipFlotante.offsetWidth || 150; // estimate if unrendered
+        const tooltipHeight = tooltipFlotante.offsetHeight || 50;
+        
+        // Calculate Top (preferably above the text, otherwise below to stay onscreen)
+        const topPreferred = (rect.top + window.scrollY) - tooltipHeight - offset;
+        const topFallback = (rect.bottom + window.scrollY) + offset;
+        const safeAreaTop = window.scrollY + 20; // 20px padding from absolute top
+        
+        let finalTop = topPreferred;
+        if (topPreferred < safeAreaTop) {
+            finalTop = topFallback; // Drop it below if colliding with notch or top edge
+        }
+
+        // Calculate Left (centered with text segment)
+        let finalLeft = rect.left + (rect.width / 2);
+        
+        // Apply rendering
+        tooltipFlotante.style.top = `${finalTop}px`;
+        tooltipFlotante.style.left = `${finalLeft}px`;
+        tooltipFlotante.style.pointerEvents = 'auto';
+        tooltipFlotante.style.opacity = '1';
+        tooltipFlotante.style.transform = 'translateY(0) translateX(-50%)';
+        tooltipIsVisible = true;
+    });
+}
+
+function hideTooltip() {
+    if (tooltipFlotante && tooltipIsVisible) {
+        tooltipFlotante.style.opacity = '0';
+        tooltipFlotante.style.pointerEvents = 'none';
+        tooltipFlotante.style.transform = 'translateY(10px) translateX(-50%)';
+        tooltipIsVisible = false;
+    }
+}
+
+function clearSelection() {
+    const selection = window.getSelection();
+    if (selection) selection.removeAllRanges();
+    activeRange = null;
+}
+
+
+/* ================= HIGHLIGHT ENGINES ================= */
+
+function createHighlightFromSelection(range, colorId) {
+    const container = elements.pageWrapper.querySelector('.content-centerer');
+    if (!container) return null;
+
+    const selectedText = range.toString().trim();
+    if (!selectedText) return null;
+
+    // Calculamos el offset abosoluto basado en todo el texto crudo del textContent de #content-centerer
+    const offsets = getAbsoluteOffsetsFromRange(container, range);
+    if (!offsets) return null;
+
+    const highlightId = generateHighlightId();
+    const highlight = {
+        id: highlightId,
+        bookId: state.currentBook.id,
+        pageId: state.currentStoryId,
+        pageNumber: getPageNumber(state.currentStoryId),
+        text: selectedText,
+        color: colorId,
+        className: `color-${colorId}`, // For backward compat rendering in sidepanel
+        createdAt: new Date().toISOString(),
+        startOffset: offsets.startOffset,
+        endOffset: offsets.endOffset
+    };
+
+    // Push into Active Ranges directly for instant feedback
+    range.highlightId = highlight.id;
+    range.highlightColor = highlight.color;
+    range.highlightText = highlight.text;
+    activeHighlightRanges[colorId].add(range);
+    updateCSSHighlights();
+
+    // Persist
+    persistHighlight(highlight);
+    renderHighlightPanel(); // Re-render sidepanel
+    return highlight;
+}
+
+function removeHighlight(highlightId) {
+    // 1. Remove from local storage
+    const highlights = loadHighlights(state.currentBook.id).filter((item) => item.id !== highlightId);
+    saveHighlights(state.currentBook.id, highlights);
+
+    // 2. Erase from Memory Set
+    for (const color of ['sun', 'mint', 'sky']) {
+         for (const range of activeHighlightRanges[color]) {
+             if (range.highlightId === highlightId) {
+                 activeHighlightRanges[color].delete(range);
+                 break;
+             }
+         }
+    }
+    
+    // 3. Inform browser to garbage collect
+    updateCSSHighlights();
+    
+    // 4. Update UI panel
+    renderHighlightPanel();
+}
+
+
+/* ================= SERIALIZATION ENGINE (Range <-> Offsets) ================= */
+
+/**
+ * Recorremos iterativamente con NodeFilter.SHOW_TEXT y contamos caracteres 
+ * para establecer una huella absoluta independiente de elementos contenedores <p> o <br>
+ */
+function getAbsoluteOffsetsFromRange(container, range) {
+    let startOffset = 0;
+    let endOffset = 0;
+    let currentOffset = 0;
+    
+    // Walk through all text nodes to find absolute positions
+    const treeWalker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let startFound = false;
+    let endFound = false;
+
+    while (treeWalker.nextNode()) {
+        const node = treeWalker.currentNode;
+        
+        if (!startFound) {
+            if (node === range.startContainer) {
+                startOffset = currentOffset + range.startOffset;
+                startFound = true;
+            }
+        }
+        
+        if (!endFound) {
+            if (node === range.endContainer) {
+                endOffset = currentOffset + range.endOffset;
+                endFound = true;
+            }
+        }
+        
+        currentOffset += node.nodeValue.length;
+        if (startFound && endFound) break;
+    }
+    
+    return { startOffset, endOffset };
+}
+
+/**
+ * Rehidratamos un obj Range desde desplazamientos absolutos.
+ */
+function createRangeFromOffsets(container, startAbs, endAbs) {
+    const range = document.createRange();
+    let currentOffset = 0;
+    let startNode = null;
+    let startNodeOffset = 0;
+    let endNode = null;
+    let endNodeOffset = 0;
+
+    const treeWalker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+
+    while (treeWalker.nextNode()) {
+        const node = treeWalker.currentNode;
+        const nodeLength = node.nodeValue.length;
+
+        if (!startNode && (currentOffset + nodeLength >= startAbs)) {
+            startNode = node;
+            startNodeOffset = startAbs - currentOffset;
+        }
+
+        if (!endNode && (currentOffset + nodeLength >= endAbs)) {
+            endNode = node;
+            endNodeOffset = endAbs - currentOffset;
+            break;
+        }
+
+        currentOffset += nodeLength;
+    }
+
+    if (startNode && endNode) {
+        try {
+            range.setStart(startNode, startNodeOffset);
+            range.setEnd(endNode, endNodeOffset);
+            return range;
+        } catch (e) {
+            console.error("No se pudo reconstruir el Range: La estructura del DOM muto demasiado", e);
+            return null;
+        }
+    }
+    return null;
+}
+
+function persistHighlight(highlight) {
+    const highlights = loadHighlights(state.currentBook.id);
+    highlights.push(highlight);
+    saveHighlights(state.currentBook.id, highlights);
+}
+
+function generateHighlightId() {
+    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
+    return `highlight-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function getPageNumber(pageId) {
+    const index = state.story ? state.story.findIndex((page) => page.id === pageId) : -1;
+    return index >= 0 ? index + 1 : 1;
+}
+
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+
+/* ================= PANEL ACTIONS & RENDER ================= */
 
 function bindPanelActions() {
     if (!elements?.highlightPanelToggle || !elements?.highlightPanel) return;
 
     elements.highlightPanelToggle.addEventListener('click', (event) => {
         event.stopPropagation();
+        hideTooltip(); // Hide floating tooltip if user touches panel
         const isOpen = elements.highlightPanel.classList.toggle('open');
         elements.highlightPanelToggle.classList.toggle('active', isOpen);
         elements.highlightPanel.setAttribute('aria-hidden', String(!isOpen));
@@ -170,197 +554,10 @@ function bindPanelActions() {
     });
 }
 
-function handleSelection() {
-    if (!state.currentBook) return;
-    const selection = window.getSelection();
-    if (!selection || selection.isCollapsed) {
-        hideSelectionMenu();
-        return;
-    }
-    const range = selection.getRangeAt(0);
-    const container = elements.pageWrapper.querySelector('.content-centerer');
-    if (!container || !container.contains(range.commonAncestorContainer)) {
-        hideSelectionMenu();
-        return;
-    }
-    if (range.toString().trim().length === 0) {
-        hideSelectionMenu();
-        return;
-    }
-    if (selectionIntersectsHighlight(container, range)) {
-        hideSelectionMenu();
-        return;
-    }
-    if (range.commonAncestorContainer.parentElement?.closest('.choices, button, .audio-controls-container')) {
-        hideSelectionMenu();
-        return;
-    }
-    activeRange = range;
-    updateSelectedColor(elements.highlightMenu, currentColor.id);
-    showMenu(elements.highlightMenu, range.getBoundingClientRect());
-}
-
-function createHighlightFromSelection(range, color) {
-    const container = elements.pageWrapper.querySelector('.content-centerer');
-    if (!container) return null;
-
-    const selectedText = range.toString().trim();
-    if (!selectedText) return null;
-
-    const offsets = getOffsetsFromRange(container, range, selectedText.length);
-    if (!offsets) return null;
-
-    const highlightId = generateHighlightId();
-    const highlight = {
-        id: highlightId,
-        bookId: state.currentBook.id,
-        pageId: state.currentStoryId,
-        pageNumber: getPageNumber(state.currentStoryId),
-        text: selectedText,
-        color: color.id,
-        className: color.className,
-        createdAt: new Date().toISOString(),
-        startOffset: offsets.startOffset,
-        endOffset: offsets.endOffset
-    };
-
-    applyHighlightFromRange(range, highlight);
-    return highlight;
-}
-
-function applyHighlightFromRange(range, highlight) {
-    const colorClass = highlight.className;
-    const textNodes = getTextNodesInRange(range);
-    if (!textNodes.length) return;
-
-    textNodes.forEach((node) => {
-        const startOffset = node === range.startContainer ? range.startOffset : 0;
-        const endOffset = node === range.endContainer ? range.endOffset : node.nodeValue.length;
-        wrapTextNode(node, startOffset, endOffset, highlight, colorClass);
-    });
-}
-
-function applyHighlightFromOffsets(container, highlight) {
-    if (!highlight || highlight.startOffset === undefined || highlight.endOffset === undefined) return;
-    const textNodes = getTextNodes(container);
-    let cursor = 0;
-
-    textNodes.forEach((node) => {
-        const nodeLength = node.nodeValue.length;
-        const nodeStart = cursor;
-        const nodeEnd = cursor + nodeLength;
-
-        if (highlight.endOffset <= nodeStart || highlight.startOffset >= nodeEnd) {
-            cursor += nodeLength;
-            return;
-        }
-
-        const startOffset = Math.max(0, highlight.startOffset - nodeStart);
-        const endOffset = Math.min(nodeLength, highlight.endOffset - nodeStart);
-
-        wrapTextNode(node, startOffset, endOffset, highlight, highlight.className);
-        cursor += nodeLength;
-    });
-}
-
-function wrapTextNode(node, startOffset, endOffset, highlight, colorClass) {
-    if (!node || startOffset === endOffset) return;
-    const text = node.nodeValue;
-    const before = text.slice(0, startOffset);
-    const middle = text.slice(startOffset, endOffset);
-    const after = text.slice(endOffset);
-
-    const fragment = document.createDocumentFragment();
-    if (before) fragment.appendChild(document.createTextNode(before));
-
-    const span = document.createElement('span');
-    span.className = `text-highlight ${colorClass}`;
-    span.dataset.highlightId = highlight.id;
-    span.dataset.highlightColor = highlight.color;
-    span.textContent = middle;
-    fragment.appendChild(span);
-
-    if (after) fragment.appendChild(document.createTextNode(after));
-    node.parentNode.replaceChild(fragment, node);
-}
-
-function getTextNodes(container) {
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-            return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-        }
-    });
-
-    const nodes = [];
-    while (walker.nextNode()) {
-        nodes.push(walker.currentNode);
-    }
-    return nodes;
-}
-
-function getTextNodesInRange(range) {
-    const container = range.commonAncestorContainer.nodeType === Node.TEXT_NODE
-        ? range.commonAncestorContainer.parentNode
-        : range.commonAncestorContainer;
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
-        acceptNode(node) {
-            if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-            return range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-        }
-    });
-
-    const nodes = [];
-    while (walker.nextNode()) {
-        nodes.push(walker.currentNode);
-    }
-    return nodes;
-}
-
-function getOffsetsFromRange(container, range, textLength) {
-    const preRange = range.cloneRange();
-    preRange.selectNodeContents(container);
-    preRange.setEnd(range.startContainer, range.startOffset);
-    const startOffset = preRange.toString().length;
-    return {
-        startOffset,
-        endOffset: startOffset + textLength
-    };
-}
-
-function persistHighlight(highlight) {
-    const highlights = loadHighlights(state.currentBook.id);
-    highlights.push(highlight);
-    saveHighlights(state.currentBook.id, highlights);
-}
-
-function updateHighlightColor(highlightId, newColor) {
-    const highlights = loadHighlights(state.currentBook.id);
-    const target = highlights.find((item) => item.id === highlightId);
-    if (!target) return;
-    target.color = newColor.id;
-    target.className = newColor.className;
-    saveHighlights(state.currentBook.id, highlights);
-
-    const spans = elements.pageWrapper.querySelectorAll(`[data-highlight-id="${highlightId}"]`);
-    spans.forEach((span) => {
-        highlightColors.forEach((color) => span.classList.remove(color.className));
-        span.classList.add(newColor.className);
-        span.dataset.highlightColor = newColor.id;
-    });
-    renderHighlightPanel();
-}
-
-function removeHighlight(highlightId) {
-    const highlights = loadHighlights(state.currentBook.id).filter((item) => item.id !== highlightId);
-    saveHighlights(state.currentBook.id, highlights);
-
-    const spans = elements.pageWrapper.querySelectorAll(`[data-highlight-id="${highlightId}"]`);
-    spans.forEach((span) => {
-        const text = document.createTextNode(span.textContent);
-        span.parentNode.replaceChild(text, span);
-    });
-}
-
+/**
+ * Nueva versión de RenderPanel: Quote Cards Premium UI.
+ * Nota: El diseño se completará en reader.css en la fase UI & UX.
+ */
 function renderHighlightPanel() {
     if (!elements?.highlightList || !state.currentBook) return;
     const highlights = loadHighlights(state.currentBook.id)
@@ -370,148 +567,65 @@ function renderHighlightPanel() {
     elements.highlightList.innerHTML = '';
 
     if (!highlights.length) {
-        elements.highlightList.innerHTML = '<p class="highlight-panel-empty">Aún no hay citas guardadas.</p>';
+        elements.highlightList.innerHTML = `
+        <div class="empty-quote-state">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <p>Aún no has coleccionado fragmentos memorables.</p>
+        </div>`;
         return;
     }
 
     highlights.forEach((highlight) => {
-        const item = document.createElement('div');
-        item.className = 'highlight-panel-item-container';
-        item.style.display = 'flex';
-        item.style.alignItems = 'flex-start';
-        item.style.gap = '8px';
-        item.style.marginBottom = '12px';
+        const article = document.createElement('article');
+        article.className = 'quote-card';
         
-        const content = document.createElement('button');
-        content.type = 'button';
-        content.className = 'highlight-panel-item';
-        content.style.flex = '1';
-        content.style.margin = '0';
-        content.innerHTML = `
-            <span class="highlight-panel-swatch ${highlight.className}"></span>
-            <span class="highlight-panel-text">${escapeHtml(highlight.text)}</span>
-            <span class="highlight-panel-meta">Página ${highlight.pageNumber}</span>
+        // Strip prefix "color-" from className to match border-color logic (e.g., 'sun', 'mint')
+        const colorName = highlight.color || highlight.className.replace('color-', '');
+
+        article.innerHTML = `
+            <div class="quote-card-content" style="border-left-color: var(--color-highlight-${colorName})">
+                <p class="quote-text">"${escapeHtml(highlight.text)}"</p>
+                <div class="quote-meta">Página ${highlight.pageNumber}</div>
+            </div>
+            <div class="quote-action-bar">
+                <button class="quote-action-btn quote-goto-btn" aria-label="Ir a la página" title="Ir a la página">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+                <button class="quote-action-btn quote-share-btn" aria-label="Compartir" title="Compartir">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </button>
+                <button class="quote-action-btn quote-delete-btn" aria-label="Eliminar" title="Eliminar cita">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+            </div>
         `;
-        content.addEventListener('click', () => {
-            pendingFocusId = highlight.id;
+
+        // Acciones Event listeners
+        article.querySelector('.quote-goto-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             elements.highlightPanel.classList.remove('open');
             elements.highlightPanelToggle.classList.remove('active');
             if (goToPageRef) goToPageRef(highlight.pageId);
         });
 
-        const shareBtn = document.createElement('button');
-        shareBtn.className = 'icon-btn highlight-share-btn';
-        shareBtn.style.flexShrink = '0';
-        shareBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>';
-        shareBtn.setAttribute('aria-label', 'Compartir cita');
-        shareBtn.title = 'Compartir cita';
-        
+        const shareBtn = article.querySelector('.quote-share-btn');
         shareBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
-            const shareText = `"${highlight.text}"\n— Lecturas Interactivas`;
-            try {
-                if (navigator.share) {
-                    await navigator.share({
-                        title: 'Cita guardada',
-                        text: shareText
-                    });
-                } else {
-                    await navigator.clipboard.writeText(shareText);
-                    const originalIcon = shareBtn.innerHTML;
-                    shareBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-                    setTimeout(() => shareBtn.innerHTML = originalIcon, 2000);
-                }
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error('Error sharing:', err);
-                }
-            }
+            ShareManager.shareQuote(highlight.text, state.currentBook.title, state.currentBook.id);
         });
 
-        item.appendChild(content);
-        item.appendChild(shareBtn);
-        elements.highlightList.appendChild(item);
+        const deleteBtn = article.querySelector('.quote-delete-btn');
+        deleteBtn.addEventListener('click', (e) => {
+             e.stopPropagation();
+             removeHighlight(highlight.id);
+             // CSS transition trick to vanish smoothly
+             article.style.opacity = '0';
+             article.style.transform = 'scale(0.95)';
+             setTimeout(() => renderHighlightPanel(), 300); // re-render layout post animation
+        });
+
+        elements.highlightList.appendChild(article);
     });
-}
-
-function showMenu(menu, rect) {
-    if (!menu || !rect) return;
-    const offset = 10;
-    const menuHeight = menu.offsetHeight;
-    const menuWidth = menu.offsetWidth;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    const preferredTop = rect.top - menuHeight - offset;
-    const fallbackTop = rect.bottom + offset;
-    const top = preferredTop >= 12 ? preferredTop : fallbackTop;
-    const left = rect.left + rect.width / 2 - menuWidth / 2;
-
-    const clampedTop = Math.max(12, Math.min(top, viewportHeight - menuHeight - 12));
-    const clampedLeft = Math.max(12, Math.min(left, viewportWidth - menuWidth - 12));
-
-    menu.style.top = `${clampedTop}px`;
-    menu.style.left = `${clampedLeft}px`;
-    menu.classList.add('active');
-    menu.setAttribute('aria-hidden', 'false');
-}
-
-function hideAllMenus() {
-    hideSelectionMenu();
-    if (elements?.highlightEditMenu) {
-        elements.highlightEditMenu.classList.remove('active');
-        elements.highlightEditMenu.setAttribute('aria-hidden', 'true');
-    }
-}
-
-function hideSelectionMenu() {
-    if (elements?.highlightMenu) {
-        elements.highlightMenu.classList.remove('active');
-        elements.highlightMenu.setAttribute('aria-hidden', 'true');
-    }
-}
-
-function clearSelection() {
-    const selection = window.getSelection();
-    if (selection) selection.removeAllRanges();
-    activeRange = null;
-}
-
-function updateSelectedColor(menu, colorId) {
-    if (!menu) return;
-    menu.querySelectorAll('[data-color-id]').forEach((button) => {
-        button.classList.toggle('active', button.dataset.colorId === colorId);
-    });
-}
-
-function generateHighlightId() {
-    if (window.crypto?.randomUUID) return window.crypto.randomUUID();
-    return `highlight-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-function getPageNumber(pageId) {
-    const index = state.story ? state.story.findIndex((page) => page.id === pageId) : -1;
-    return index >= 0 ? index + 1 : 1;
-}
-
-function escapeHtml(value) {
-    return value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-export function queueHighlightFocus(highlightId) {
-    pendingFocusId = highlightId;
-}
-
-export function getHighlightColors() {
-    return highlightColors;
-}
-
-function selectionIntersectsHighlight(container, range) {
-    const highlights = container.querySelectorAll('.text-highlight');
-    return Array.from(highlights).some((highlight) => range.intersectsNode(highlight));
 }

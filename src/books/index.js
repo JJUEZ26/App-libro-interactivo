@@ -1,4 +1,5 @@
 import { loadPageHistory } from '../utils/storage.js';
+import { ShareManager } from '../utils/shareUtils.js';
 
 export function createLibrary({ libraryHero, librarySections, openBook }) {
     let books = [];
@@ -192,6 +193,71 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         heroActions.appendChild(heroButton);
 
+        // --- Hero Kebab Menu ---
+        if (featuredBook?.storyFile) {
+            const kebabContainer = document.createElement('div');
+            kebabContainer.className = 'book-kebab-container hero-kebab-container';
+            
+            const kebabBtn = document.createElement('button');
+            // Reutilizamos la clase base hero-share-btn para mantener el tamaño y layout, pero cambiamos el interior
+            kebabBtn.className = 'library-hero-share-btn book-kebab-btn';
+            kebabBtn.setAttribute('title', 'Opciones de Obra Destacada');
+            kebabBtn.setAttribute('aria-expanded', 'false');
+            kebabBtn.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <circle cx="12" cy="5" r="1.5"></circle>
+                    <circle cx="12" cy="19" r="1.5"></circle>
+                </svg>
+            `;
+
+            // Menu Popover
+            const kebabMenu = document.createElement('div');
+            kebabMenu.className = 'book-kebab-menu hero-kebab-menu'; // hero-kebab-menu is for specific positioning if needed
+            
+            // Item 1: Compartir
+            const shareItem = document.createElement('button');
+            shareItem.className = 'kebab-menu-item';
+            shareItem.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span>Compartir Obra</span>
+            `;
+            shareItem.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                kebabMenu.classList.remove('active'); 
+                kebabBtn.setAttribute('aria-expanded', 'false');
+                ShareManager.shareBook(featuredBook.id, featuredBook.title);
+            });
+            
+            kebabMenu.appendChild(shareItem);
+            
+            // Lógica de apertura/cierre
+            kebabBtn.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                document.querySelectorAll('.book-kebab-menu.active').forEach(m => {
+                    if (m !== kebabMenu) {
+                        m.classList.remove('active');
+                        m.previousElementSibling.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                const isOpening = !kebabMenu.classList.contains('active');
+                kebabMenu.classList.toggle('active');
+                kebabBtn.setAttribute('aria-expanded', String(isOpening));
+            });
+
+            kebabContainer.appendChild(kebabBtn);
+            kebabContainer.appendChild(kebabMenu);
+            heroActions.appendChild(kebabContainer);
+            
+            document.addEventListener('click', (ev) => {
+                if (!kebabContainer.contains(ev.target)) {
+                    kebabMenu.classList.remove('active');
+                    kebabBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
         heroContent.appendChild(heroLabel);
         heroContent.appendChild(heroTitle);
         heroContent.appendChild(heroDescription);
@@ -374,7 +440,80 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             body.appendChild(titleEl);
             if (bookData?.author) body.appendChild(authorEl);
         }
-        body.appendChild(btn);
+        
+        // --- Card Action Area ---
+        const actionsArea = document.createElement('div');
+        actionsArea.className = 'book-card-actions';
+        actionsArea.appendChild(btn);
+
+        if (hasStory) {
+            // Contenedor relativo para el Kebab y su Popover
+            const kebabContainer = document.createElement('div');
+            kebabContainer.className = 'book-kebab-container';
+            
+            const kebabBtn = document.createElement('button');
+            kebabBtn.className = 'book-kebab-btn';
+            kebabBtn.setAttribute('title', `Opciones de ${displayTitle}`);
+            kebabBtn.setAttribute('aria-expanded', 'false');
+            // SVG: Tres puntos verticales (more-vertical)
+            kebabBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                </svg>
+            `;
+
+            // Menu Popover
+            const kebabMenu = document.createElement('div');
+            kebabMenu.className = 'book-kebab-menu';
+            
+            // Item 1: Compartir
+            const shareItem = document.createElement('button');
+            shareItem.className = 'kebab-menu-item';
+            shareItem.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span>Compartir Obra</span>
+            `;
+            shareItem.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                kebabMenu.classList.remove('active'); // Cerrar menu al pulsar
+                kebabBtn.setAttribute('aria-expanded', 'false');
+                ShareManager.shareBook(bookData.id, bookData.title);
+            });
+            
+            kebabMenu.appendChild(shareItem);
+            
+            // Lógica de apertura/cierre
+            kebabBtn.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                // Cerrar todos los demás menús primero
+                document.querySelectorAll('.book-kebab-menu.active').forEach(m => {
+                    if (m !== kebabMenu) {
+                        m.classList.remove('active');
+                        m.previousElementSibling.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                const isOpening = !kebabMenu.classList.contains('active');
+                kebabMenu.classList.toggle('active');
+                kebabBtn.setAttribute('aria-expanded', String(isOpening));
+            });
+
+            kebabContainer.appendChild(kebabBtn);
+            kebabContainer.appendChild(kebabMenu);
+            actionsArea.appendChild(kebabContainer);
+            
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', (ev) => {
+                if (!kebabContainer.contains(ev.target)) {
+                    kebabMenu.classList.remove('active');
+                    kebabBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        body.appendChild(actionsArea);
         card.appendChild(coverWrapper);
         card.appendChild(body);
 

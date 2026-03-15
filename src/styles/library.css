@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    BIBLIOTECA - VISTA NETFLIX PREMIUM
    ======================================== */
 
@@ -773,8 +773,6 @@ body.theme-sepia .book-aura {
 }
 
 .book-open-btn {
-    margin-top: auto;
-    align-self: flex-start;
     padding: var(--space-3) var(--space-6);
     border-radius: var(--radius-full);
     border: 1px solid var(--color-glass-border);
@@ -796,6 +794,138 @@ body.theme-sepia .book-aura {
 
 .book-open-btn:active:not(:disabled) {
     transform: translateY(0);
+}
+
+.book-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    width: 100%;
+}
+
+/* ========================================
+   KEBAB MENU & POPOVER (Replaces Share Btn)
+   ======================================== */
+
+.book-kebab-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-kebab-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    padding: var(--space-2);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    aspect-ratio: 1 / 1;
+}
+
+.book-kebab-btn:hover,
+.book-kebab-btn[aria-expanded="true"] {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.book-kebab-menu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    width: max-content;
+    min-width: 160px;
+    background: var(--color-glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    padding: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    /* Animation initial state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.95);
+    transform-origin: bottom right;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+}
+
+.book-kebab-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.kebab-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.kebab-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.kebab-menu-item svg {
+    flex-shrink: 0;
+    color: var(--color-text-secondary);
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+.kebab-menu-item:hover svg {
+    color: var(--color-accent-primary);
+}
+
+.library-hero-share-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-glass-border);
+    color: var(--color-text-primary);
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-out-expo);
+    backdrop-filter: blur(8px);
+}
+
+.library-hero-share-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px) scale(1.05);
+    color: var(--color-accent-secondary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.library-hero-share-btn:active {
+    transform: translateY(0) scale(0.95);
 }
 
 .book-open-btn:disabled {

@@ -347,16 +347,22 @@ App-libro-interactivo/
   - Barra de progreso global por historia
   - Árbol de decisiones desbloqueado
 
-#### 3.3. Social Features & Citas 2.0
-**Acciones**:
-✅ **Compartir Citas** (Social Share Core):
-  - Botón nativo de `navigator.share()` en panel
-  - Fallback a `navigator.clipboard.writeText()`
+#### 3.3. Social Features & Citas 2.0 (Ampliación Épica)
+**Implementadas (Marzo 2026)**:
+- 🔖 **Citas 2.0 (Core Engine & UX)**:
+  - **Core**: Refactorización absoluta de `highlights.js` utilizando **CSS Custom Highlight API** para eliminar la mutación destructiva del DOM (`TreeWalker`). Sistema de alto rendimiento nativo.
+  - **UI (Tooltip Flotante)**: Nuevo menú tipo "Glassmorphism" inyectado en la raíz (`#highlight-tooltip-wrapper`). Aparece sin modificar la estructura semántica de la página central al seleccionar texto. *Bulletproof* contra colapsos nativos de selección en dispositivos móviles.
+  - **UX (Quote Cards)**: Rediseño del panel lateral. Las citas se muestran en tarjetas premium (glassmorphism) con Action Bar (Ir a página, Compartir, Eliminar).
+  - **Persistencia Robusta**: Serialización de objetos `Range` guardados en `localStorage` basada en la cuenta absoluta de textos para prevenir desajustes al recargar.
 
-- 🔖 **Citas 2.0** (Próximo Objetivo):
-  - Refactorizar `highlights.js` usando CSS Custom Highlight API.
-  - Diseñar "Quote Cards" premium para el panel lateral.
-  - Eliminar inyección de spans frágiles en el DOM.
+- 🌐 **Ecosistema de Compartición Social Moderno (Libros y Citas)**:
+  - **Compartir Obras**: Posibilidad de compartir un libro, poema o cita específica con un solo botón en portadas y tooltips.
+  - **Kebab Menus (Escalabilidad)**: La acción de compartir ahora se encuentra alojada bajo menús desplegables universales de tres puntos verticales (Kebab), implementados uniformemente tanto en las `book-cards` como en el banner destacado (**Hero**).
+  - **Frontend Módulo**: Integración de `navigator.share()` nativo, con Fallback automático de portapapeles (`textarea.select()`) para sortear el bloqueo de HTTP en IPs locales desde smartphones.
+  - **Backend (Open Graph Dinámico)**: Implementación de un endpoint Serverless (`/api/share.js`) capaz de interceptar URIs generadas y devolver metaetiquetas (OG) SEO-friendly a WhatsApp, Facebook y Twitter antes de redireccionar a la Single Page App.
+
+- 🎛️ **Lectura Inmersiva Mobile-First**:
+  - **Scroll-to-Reveal**: Todos los paneles fijos inferiores (Orbe, Toggle Citas, Audios) aplican una transformación CSS fluida de salida cuando el usuario desliza hacia abajo para leer ininterrumpidamente, y reaparecen automáticamente al subir.
 
 - 👥 **Lectura Compartida**:
   - Sincronizar progreso entre dispositivos (Firebase Realtime Database)
