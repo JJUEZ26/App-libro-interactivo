@@ -350,7 +350,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
     }
 
     function createBookCard(bookData, { label }) {
-        const hasStory = Boolean(bookData?.storyFile);
+        const hasStory = Boolean(bookData?.storyFile || bookData?.htmlFile);
         const isUpcoming = !hasStory;
         const isNovel = bookData?.type === 'novel';
         const card = document.createElement('article');

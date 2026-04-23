@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="El Mito de Sísifo: Una viñeta interactiva explorando el absurdismo de Albert Camus.">
+    <title>El Mito de Sísifo | Viñeta Interactiva</title>
+    
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Hoja de estilos del widget compilado -->
+    <link rel="stylesheet" href="./dist/sisyphus-widget.css">
+    
+    <style>
+        :root {
+            --bg-color: #0c0d11;
+            --surface-color: #171921;
+            --text-primary: #f0f2f5;
+            --text-secondary: #9aa4b3;
+            --accent-color: #e5e7eb;
+            --shadow-glow: rgba(255, 255, 255, 0.03);
+            --content-width: 900px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color) !important;
+            background-image: radial-gradient(circle at 50% 0%, #171921 0%, #0c0d11 60%) !important;
+            background-attachment: fixed !important;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh !important;
+            height: auto !important;
+            width: 100% !important;
+            display: block !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            touch-action: auto !important;
+            overscroll-behavior: auto !important;
+        }
+
+        /* Ruido sutil para textura *premium* y de lienzo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            opacity: 0.02;
+            z-index: 100;
+        }
+
+        header {
+            text-align: center;
+            padding: 10vh 20px 5vh;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 700;
+            margin: 0 0 1.5rem 0;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: linear-gradient(180deg, #ffffff 0%, #a2aab8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .synopsis {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 20px 10vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Contenedor estricto para el widget según las especificaciones */
+        #widget-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px; /* Tamaño estricto */
+            background: #050608;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 4rem 0;
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.7),
+                0 0 0 1px rgba(255,255,255,0.06),
+                0 0 80px rgba(0,0,0,0.5) inset;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+            animation: fadeIn 1.2s ease-out 0.3s backwards;
+        }
+
+        #widget-wrapper:hover {
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.8),
+                0 0 0 1px rgba(255,255,255,0.12),
+                0 0 80px rgba(0,0,0,0.5) inset;
+            transform: translateY(-4px);
+        }
+
+        .philosophy-content {
+            padding: 2rem 0;
+            animation: fadeIn 1.5s ease-out 0.6s backwards;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .philosophy-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .philosophy-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.8rem;
+            letter-spacing: 0.01em;
+            text-align: justify;
+        }
+
+        .philosophy-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            text-align: center;
+            color: #ffffff;
+            margin: 5rem 0 2rem;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            border-radius: 12px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-back:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+            transform: translateX(-5px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            #widget-wrapper {
+                height: 50vw; /* Aspect ratio para mobile */
+                min-height: 400px;
+                border-radius: 12px;
+            }
+            .nav-back {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 1.5rem 0 0 1.5rem;
+            }
+            header {
+                padding-top: 5vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="nav-back">
+        <span>←</span> Volver a la Biblioteca
+    </a>
+
+    <header>
+        <h1>El Mito de Sísifo</h1>
+        <p class="synopsis">"Los dioses habían condenado a Sísifo a rodar sin cesar una roca hasta la cima de una montaña... Habían pensado con cierta razón que no hay castigo más terrible que el trabajo inútil y sin esperanza."</p>
+    </header>
+
+    <main>
+        <!-- Contenedor del Juego Interactuable -->
+        <!-- Sigue exactamente las reglas: position: relative; overflow: hidden; height definido -->
+        <div id="widget-wrapper"></div>
+
+        <section class="philosophy-content">
+            <h2>El Absurdo y la Rebelión</h2>
+            <p>
+                Para Albert Camus, Sísifo es el héroe absurdo definitivo. Su castigo encarna la condición humana: el esfuerzo perpetuo, la lucha diaria contra la gravedad de nuestras propias responsabilidades, solo para ver cómo aquello que construimos desciende nuevamente para exigir ser empujado una vez más. 
+            </p>
+            <p>
+                Sin embargo, la tragedia no erradica el sentido. El instante exacto en que la roca llega a la cima y comienza a descender hacia el valle es un momento de profunda pausa. Es en esa caminata de regreso cuando Sísifo se vuelve superior a su destino. Porque en el reconocimiento de la futilidad de su esfuerzo frente un universo indiferente, el ser humano se vuelve verdaderamente libre.
+            </p>
+            <p>
+                Este espacio interactivo nos invita a experimentar el ascenso. Cada impulso de la roca, cada contorsión de la figura oscura contra la montaña, es una decisión deliberada frente a la vacuidad. Construimos nuestro propio significado no porque la roca alguna vez vaya a descansar permanentemente en la cima, sino porque el mero acto de empujarla hacia arriba basta para colmar nuestro ser.
+            </p>
+            <div class="quote">
+                "Hay que imaginarse a Sísifo feliz."
+            </div>
+        </section>
+    </main>
+
+    <!-- Script del Widget (Librería UMD) -->
+    <script src="./dist/sisyphus-widget.umd.cjs"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('widget-wrapper');
+            // Inicializar usando la API global expuesta por el motor.
+            if (window.SisyphusWidget && window.SisyphusWidget.createSisyphusGame) {
+                console.log("Inicializando Sísifo...");
+                const game = window.SisyphusWidget.createSisyphusGame(container);
+            } else {
+                console.error("No se pudo cargar la librería global. Verifica 'dist/sisyphus-widget.umd.cjs'.");
+                container.innerHTML = '<p style="color: white; text-align: center; margin-top: 20%; font-family: Inter, sans-serif;">Motor de juego no disponible en /dist/.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>

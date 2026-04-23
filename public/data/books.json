@@ -33,6 +33,20 @@
     ]
   },
   {
+    "id": "mito-de-sisifo",
+    "title": "El mito de Sísifo",
+    "author": "Viñeta Interactiva",
+    "description": "Una viñeta interactiva explorando el absurdismo de Albert Camus. Tú decides cuándo y cómo empujar la roca.",
+    "htmlFile": "el-mito-de-sisifo.html",
+    "type": "poem",
+    "tags": [
+      "filosofía",
+      "absurdismo",
+      "interactivo",
+      "experiencia"
+    ]
+  },
+  {
     "id": "frankenstein",
     "title": "Frankenstein",
     "author": "Mary Shelley (adaptación)",

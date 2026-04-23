@@ -101,7 +101,14 @@ function delay(ms) {
  *   4. Fade overlay out — NO blocking nextPaint()
  */
 export async function openBook(bookData, coverImgEl) {
-    if (!bookData || !bookData.storyFile) return;
+    if (!bookData) return;
+
+    if (bookData.htmlFile) {
+        window.location.href = bookData.htmlFile;
+        return;
+    }
+
+    if (!bookData.storyFile) return;
 
     // --- STEP 1: Instant overlay ---
     const overlay = document.createElement('div');
