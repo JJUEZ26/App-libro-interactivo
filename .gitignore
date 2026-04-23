@@ -8,6 +8,7 @@ package-lock.json   # Opcional: algunos prefieren versionarlo
 # BUILD OUTPUT
 # ========================================
 dist/
+!public/dist/
 build/
 out/
 .output/
