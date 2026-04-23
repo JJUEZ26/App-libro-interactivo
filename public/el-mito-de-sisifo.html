@@ -251,17 +251,18 @@
         </section>
     </main>
 
-    <!-- Script del Widget (Librería UMD) -->
-    <script src="./dist/sisyphus-widget.umd.cjs"></script>
-    <script>
+    <!-- Script del Widget (ES Module) -->
+    <script type="module">
+        import { createSisyphusGame } from './dist/sisyphus-widget.js';
+        
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('widget-wrapper');
-            // Inicializar usando la API global expuesta por el motor.
-            if (window.SisyphusWidget && window.SisyphusWidget.createSisyphusGame) {
+            
+            if (createSisyphusGame) {
                 console.log("Inicializando Sísifo...");
-                const game = window.SisyphusWidget.createSisyphusGame(container);
+                const game = createSisyphusGame(container);
             } else {
-                console.error("No se pudo cargar la librería global. Verifica 'dist/sisyphus-widget.umd.cjs'.");
+                console.error("No se pudo cargar el módulo. Verifica 'dist/sisyphus-widget.js'.");
                 container.innerHTML = '<p style="color: white; text-align: center; margin-top: 20%; font-family: Inter, sans-serif;">Motor de juego no disponible en /dist/.</p>';
             }
         });
