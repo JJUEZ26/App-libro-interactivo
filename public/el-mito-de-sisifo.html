@@ -201,9 +201,8 @@
     </div>
 
     <script type="module">
-        // En dev: importar desde source para que Vite sirva cambios en vivo.
-        // En prod: cambiar a './dist/sisyphus-widget.js'
-        import { createSisyphusGame } from './src/games/sisyphus/game.js';
+        // Producción: importar desde el widget compilado en /dist/
+        import { createSisyphusGame } from './dist/sisyphus-widget.js';
 
         const container    = document.getElementById('game-container');
         const touchHint    = document.getElementById('touch-hint');
