@@ -38,7 +38,7 @@
     "author": "Albert Camus",
     "description": "Una experiencia interactiva explorando el absurdismo de Albert Camus. Empuja la roca. Contempla la caída. Encuentra tu propia respuesta al absurdo.",
     "cover": "images/sisifo_portada.webp",
-    "htmlFile": "el-mito-de-sisifo.html",
+    "htmlFile": "el-mito-de-sisifo.html?v=2",
     "storyFile": "stories/mito_de_sisifo.json",
     "type": "poem",
     "tags": [

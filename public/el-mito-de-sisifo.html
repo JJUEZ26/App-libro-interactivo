@@ -202,7 +202,8 @@
 
     <script type="module">
         // Producción: importar desde el widget compilado en /dist/
-        import { createSisyphusGame } from './dist/sisyphus-widget.js';
+        const cacheBuster = new Date().getTime();
+        import(`./dist/sisyphus-widget.js?v=${cacheBuster}`).then(({ createSisyphusGame }) => {
 
         const container    = document.getElementById('game-container');
         const touchHint    = document.getElementById('touch-hint');
@@ -322,6 +323,7 @@
         };
 
         window.__SISIFO = game;
+        });
     </script>
 </body>
 </html>
