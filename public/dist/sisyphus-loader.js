@@ -4,7 +4,8 @@
  * Vite doesn't try to statically analyze the import statement
  * (which would fail because the widget is in /public/).
  */
-import { createSisyphusGame } from './sisyphus-widget.js';
-
-window.SisyphusWidget = { createSisyphusGame };
-window.dispatchEvent(new Event('sisyphus-widget-ready'));
+const cacheBuster = new Date().getTime();
+import(`./sisyphus-widget.js?v=${cacheBuster}`).then(({ createSisyphusGame }) => {
+    window.SisyphusWidget = { createSisyphusGame };
+    window.dispatchEvent(new Event('sisyphus-widget-ready'));
+});
