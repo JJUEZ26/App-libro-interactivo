@@ -2558,12 +2558,12 @@ var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 							if (!(!h.isActive || h.isSensor)) {
 								var g = h.collision, _ = g.parentA, v = g.parentB, y = g.normal.x, b = g.normal.y, x = g.tangent.x, S = g.tangent.y, C = h.inverseMass, w = h.friction * h.frictionStatic * c, T = h.contacts, E = h.contactCount, D = 1 / E, O = _.position.x - _.positionPrev.x, k = _.position.y - _.positionPrev.y, ee = _.angle - _.anglePrev, A = v.position.x - v.positionPrev.x, te = v.position.y - v.positionPrev.y, j = v.angle - v.anglePrev;
 								for (m = 0; m < E; m++) {
-									var M = T[m], N = M.vertex, P = N.x - _.position.x, F = N.y - _.position.y, I = N.x - v.position.x, L = N.y - v.position.y, ne = O - F * ee, re = k + P * ee, ie = A - L * j, R = te + I * j, ae = ne - ie, oe = re - R, se = y * ae + b * oe, ce = x * ae + S * oe, le = h.separation + se, z = Math.min(le, 1);
-									z = le < 0 ? 0 : z;
-									var ue = z * w;
-									ce < -ue || ce > ue ? (f = ce > 0 ? ce : -ce, d = h.friction * (ce > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = ce, f = l);
-									var de = P * b - F * y, B = I * b - L * y, fe = D / (C + _.inverseInertia * de * de + v.inverseInertia * B * B), V = (1 + h.restitution) * se * fe;
-									if (d *= fe, se < o) M.normalImpulse = 0;
+									var M = T[m], N = M.vertex, P = N.x - _.position.x, F = N.y - _.position.y, I = N.x - v.position.x, L = N.y - v.position.y, ne = O - F * ee, re = k + P * ee, ie = A - L * j, R = te + I * j, ae = ne - ie, oe = re - R, se = y * ae + b * oe, ce = x * ae + S * oe, le = h.separation + se, ue = Math.min(le, 1);
+									ue = le < 0 ? 0 : ue;
+									var z = ue * w;
+									ce < -z || ce > z ? (f = ce > 0 ? ce : -ce, d = h.friction * (ce > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = ce, f = l);
+									var de = P * b - F * y, fe = I * b - L * y, B = D / (C + _.inverseInertia * de * de + v.inverseInertia * fe * fe), V = (1 + h.restitution) * se * B;
+									if (d *= B, se < o) M.normalImpulse = 0;
 									else {
 										var H = M.normalImpulse;
 										M.normalImpulse += V, M.normalImpulse > 0 && (M.normalImpulse = 0), V = M.normalImpulse - H;
@@ -3465,12 +3465,12 @@ var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 		]);
 	});
 })))(), 1);
-function z(e) {
-	let { Engine: t, Render: n, Runner: r, Bodies: i, Body: a, Composite: o, Events: s, Query: c, Sleeping: l, Vertices: u } = le.default, d = e.clientWidth || window.innerWidth, f = e.clientHeight || window.innerHeight, h = 1e3, g = 1020, _ = Math.hypot(700, 312);
-	700 / _, -(312 / _);
-	let b = Math.hypot(20, 80);
-	20 / b, 80 / b;
-	let S = .65, C = {
+function ue(e, t = {}) {
+	let { Engine: n, Render: r, Runner: i, Bodies: a, Body: o, Composite: s, Events: c, Query: l, Sleeping: u, Vertices: d } = le.default, f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight, g = 1e3, _ = 1020, b = Math.hypot(700, 312);
+	700 / b, -(312 / b);
+	let S = Math.hypot(20, 80);
+	20 / S, 80 / S;
+	let C = .65, D = {
 		bg: "transparent",
 		rock: "#c79a68",
 		rockEdge: "#8b6543",
@@ -3478,58 +3478,58 @@ function z(e) {
 		sisyphusEdge: "#9c4635"
 	};
 	Math.PI * 2;
-	function D(e, t, n) {
+	function O(e, t, n) {
 		return Math.max(t, Math.min(e, n));
 	}
-	function O(e, t, n) {
+	function ee(e, t, n) {
 		if (e === t) return n < e ? 0 : 1;
-		let r = D((n - e) / (t - e), 0, 1);
+		let r = O((n - e) / (t - e), 0, 1);
 		return r * r * (3 - 2 * r);
 	}
-	function ee(e) {
+	function A(e) {
 		let t = e >>> 0;
 		return function() {
 			return t = t * 1664525 + 1013904223 >>> 0, t / 4294967296;
 		};
 	}
-	let A = ee(20260315), j = [], N = 0, L = 0, R = 0, ae = 0, oe = 0, se = 0, z = Object.freeze({
+	let j = A(20260315), N = [], L = 0, R = 0, ae = 0, oe = 0, se = 0, ue = 0, z = Object.freeze({
 		PLAYING: "playing",
 		SUMMIT: "summit",
 		SIS_DESCENDING: "sis_descending",
 		WAITING: "waiting"
-	}), ue = null, de = 0, B = Object.freeze({
+	}), de = null, fe = 0, B = Object.freeze({
 		OVERVIEW: "overview",
 		FREE_PAN: "free_pan",
 		FOCUS_SISYPHUS: "focus_sisyphus"
-	}), fe = Object.freeze({
+	}), V = Object.freeze({
 		OVERVIEW: B.OVERVIEW,
 		FOCUS_SISYPHUS: B.FOCUS_SISYPHUS
-	}), V = {
+	}), H = {
 		behavior: B.OVERVIEW,
-		presetId: fe.OVERVIEW,
+		presetId: V.OVERVIEW,
 		freePanX: 900 / 2,
 		freePanY: 560 / 2
-	}, H = {
-		x: 900 / 2,
-		y: 560 / 2,
-		zoom: 1
 	}, U = {
 		x: 900 / 2,
 		y: 560 / 2,
 		zoom: 1
 	}, W = {
+		x: 900 / 2,
+		y: 560 / 2,
+		zoom: 1
+	}, G = {
 		active: !1,
 		moved: !1,
 		startClientX: 0,
 		startClientY: 0,
 		startCameraX: 900 / 2,
 		startCameraY: 560 / 2
-	}, G = Object.freeze({
+	}, pe = Object.freeze({
 		minX: -20,
-		maxX: g + 24,
+		maxX: _ + 24,
 		minY: 24,
 		maxY: 548
-	}), pe = Object.freeze({
+	}), me = Object.freeze({
 		moonGlowScale: 1,
 		moonGlowAlpha: 1,
 		moonAlpha: .9,
@@ -3538,7 +3538,7 @@ function z(e) {
 		hazeAlphaBoost: 0,
 		distantParallaxMultiplier: 1,
 		distantMountainAlpha: 1
-	}), me = Object.freeze({
+	}), he = Object.freeze({
 		moonGlowScale: 1.08,
 		moonGlowAlpha: 1.2,
 		moonAlpha: .92,
@@ -3547,7 +3547,7 @@ function z(e) {
 		hazeAlphaBoost: .06,
 		distantParallaxMultiplier: 1.08,
 		distantMountainAlpha: .95
-	}), he = Object.freeze({
+	}), ge = Object.freeze({
 		moonGlowScale: .9,
 		moonGlowAlpha: .84,
 		moonAlpha: .78,
@@ -3556,7 +3556,7 @@ function z(e) {
 		hazeAlphaBoost: .03,
 		distantParallaxMultiplier: .92,
 		distantMountainAlpha: .82
-	}), ge = m(p({
+	}), _e = m(p({
 		masterGain: .26,
 		windGain: .15,
 		frictionGain: .2,
@@ -3568,29 +3568,29 @@ function z(e) {
 			wind: "",
 			friction: ""
 		}
-	})), _e = v(), ve = 0, ye = P.SOBRIO, be = 0, xe = 0, Se = 0, Ce = 60, we = ce({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
+	})), ve = v(), ye = 0, be = P.SOBRIO, xe = 0, Se = 0, Ce = 0, we = 60, Te = ce({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
 		FAR: "far",
 		MID: "mid",
 		CLOSE: "close"
-	}), Te = { level: K.FAR }, Ee = Object.freeze({ DEFAULT: "default" }), De = Object.freeze({ [Ee.DEFAULT]: Object.freeze({
+	}), Ee = { level: K.FAR }, De = Object.freeze({ DEFAULT: "default" }), Oe = Object.freeze({ [De.DEFAULT]: Object.freeze({
 		transform: "translate3d(0, 0, 0) scaleX(1) scaleY(1)",
 		transformOrigin: "50% 50%"
-	}) }), Oe = Ee.DEFAULT;
-	function ke(e) {
+	}) }), ke = De.DEFAULT;
+	function Ae(e) {
 		if (e === B.OVERVIEW) {
-			Xe(fe.OVERVIEW);
+			Ze(V.OVERVIEW);
 			return;
 		}
 		if (e === B.FOCUS_SISYPHUS) {
-			Xe(fe.FOCUS_SISYPHUS);
+			Ze(V.FOCUS_SISYPHUS);
 			return;
 		}
-		V.behavior = e;
-	}
-	function Ae(e) {
-		return Me(e);
+		H.behavior = e;
 	}
 	function je(e) {
+		return Ne(e);
+	}
+	function Me(e) {
 		return e ? {
 			[K.FAR]: .72,
 			[K.MID]: .96,
@@ -3601,38 +3601,38 @@ function z(e) {
 			[K.CLOSE]: 1.16
 		};
 	}
-	function Me(e) {
-		let t = je(e);
-		return t[Te.level] || t[K.FAR];
-	}
 	function Ne(e) {
-		let t = je(e), n = Object.values(t);
+		let t = Me(e);
+		return t[Ee.level] || t[K.FAR];
+	}
+	function Pe(e) {
+		let t = Me(e), n = Object.values(t);
 		return {
 			min: Math.min(...n) - .06,
 			max: Math.max(...n) + .18
 		};
 	}
-	function Pe(e) {
+	function Fe(e) {
 		return e === K.FAR ? "LEJANO" : e === K.MID ? "MEDIO" : "CERCANO";
 	}
-	function Fe() {
-		if (Te.level === K.FAR) {
-			Te.level = K.MID;
-			return;
-		}
-		if (Te.level === K.MID) {
-			Te.level = K.CLOSE;
-			return;
-		}
-		Te.level = K.FAR;
-	}
 	function Ie() {
-		Fe(), ke(B.FREE_PAN);
-		let e = Me(window.innerHeight > window.innerWidth);
-		ze(H.x, H.y, e), se = performance.now() + 1200, console.log(`%cZoom activo: ${Pe(Te.level)}`, "color:#a2d2ff;font-weight:bold");
+		if (Ee.level === K.FAR) {
+			Ee.level = K.MID;
+			return;
+		}
+		if (Ee.level === K.MID) {
+			Ee.level = K.CLOSE;
+			return;
+		}
+		Ee.level = K.FAR;
 	}
-	function Le(e, t = G) {
-		let n = Math.max(e, .001), r = d / n, i = f / n, a = t.minX + r / 2, o = t.maxX - r / 2, s = t.minY + i / 2, c = t.maxY - i / 2;
+	function Le() {
+		Ie(), Ae(B.FREE_PAN);
+		let e = Ne(window.innerHeight > window.innerWidth);
+		Be(U.x, U.y, e), ue = performance.now() + 1200, console.log(`%cZoom activo: ${Fe(Ee.level)}`, "color:#a2d2ff;font-weight:bold");
+	}
+	function Re(e, t = pe) {
+		let n = Math.max(e, .001), r = f / n, i = h / n, a = t.minX + r / 2, o = t.maxX - r / 2, s = t.minY + i / 2, c = t.maxY - i / 2;
 		if (a > o) {
 			let e = (t.minX + t.maxX) / 2;
 			a = e, o = e;
@@ -3648,27 +3648,27 @@ function z(e) {
 			maxY: c
 		};
 	}
-	function Re(e, t, n, r = G) {
-		let i = Le(n, r);
+	function ze(e, t, n, r = pe) {
+		let i = Re(n, r);
 		return {
-			x: D(e, i.minX, i.maxX),
-			y: D(t, i.minY, i.maxY)
+			x: O(e, i.minX, i.maxX),
+			y: O(t, i.minY, i.maxY)
 		};
 	}
-	function ze(e, t, n) {
-		let r = Re(e, t, n, G);
-		return V.freePanX = r.x, V.freePanY = r.y, r;
+	function Be(e, t, n) {
+		let r = ze(e, t, n, pe);
+		return H.freePanX = r.x, H.freePanY = r.y, r;
 	}
-	function Be(e, t) {
-		W.active = !0, W.moved = !1, W.startClientX = e, W.startClientY = t, W.startCameraX = H.x, W.startCameraY = H.y;
-	}
-	function Ve() {
-		W.active = !1, W.moved = !1;
+	function Ve(e, t) {
+		G.active = !0, G.moved = !1, G.startClientX = e, G.startClientY = t, G.startCameraX = U.x, G.startCameraY = U.y;
 	}
 	function He() {
-		return D((Z.position.x - sn) / Math.max(1, on - sn), 0, 1);
+		G.active = !1, G.moved = !1;
 	}
 	function Ue() {
+		return O((Z.position.x - ln) / Math.max(1, cn - ln), 0, 1);
+	}
+	function We() {
 		let e = Q.position, t = Z.position;
 		return {
 			sisCenter: e,
@@ -3678,16 +3678,16 @@ function z(e) {
 			duoCenterY: (e.y + t.y) / 2,
 			distanceX: Math.abs(t.x - e.x),
 			distanceY: Math.abs(t.y - e.y),
-			ascentProgress: He(),
-			duoSpeed: Math.max(Ut(Q), Ut(Z)),
-			leadX: D(Q.velocity.x * 68 + Z.velocity.x * 34, -90, 110),
-			leadY: D(Q.velocity.y * 24 + Z.velocity.y * 16, -54, 62)
+			ascentProgress: Ue(),
+			duoSpeed: Math.max(Wt(Q), Wt(Z)),
+			leadX: O(Q.velocity.x * 68 + Z.velocity.x * 34, -90, 110),
+			leadY: O(Q.velocity.y * 24 + Z.velocity.y * 16, -54, 62)
 		};
 	}
-	function We(e) {
-		let t = Me(e.portraitView);
+	function Ge(e) {
+		let t = Ne(e.portraitView);
 		return $ === z.WAITING ? {
-			x: sn + 100,
+			x: ln + 100,
 			y: 370,
 			zoom: t
 		} : {
@@ -3696,45 +3696,45 @@ function z(e) {
 			zoom: t
 		};
 	}
-	function Ge(e) {
+	function Ke(e) {
 		return {
 			x: e.duoCenterX + e.leadX * .22,
 			y: e.duoCenterY - 24 + e.leadY * .18,
-			zoom: Me(e.portraitView)
+			zoom: Ne(e.portraitView)
 		};
 	}
-	let Ke = T({
-		[fe.OVERVIEW]: w({
-			id: fe.OVERVIEW,
+	let qe = T({
+		[V.OVERVIEW]: w({
+			id: V.OVERVIEW,
 			behavior: B.OVERVIEW,
 			followMode: "duo_overview",
-			boundsResolver: () => G,
+			boundsResolver: () => pe,
 			lerpSpeed: .08,
-			targetResolver: We,
-			visualProfile: pe,
+			targetResolver: Ge,
+			visualProfile: me,
 			zoomMinResolver: (e) => e.portraitView ? .62 : .56,
 			zoomMaxResolver: (e) => e.portraitView ? 1.08 : 1.2
 		}),
-		[fe.FOCUS_SISYPHUS]: w({
-			id: fe.FOCUS_SISYPHUS,
+		[V.FOCUS_SISYPHUS]: w({
+			id: V.FOCUS_SISYPHUS,
 			behavior: B.FOCUS_SISYPHUS,
 			followMode: "duo_focus",
-			boundsResolver: () => G,
+			boundsResolver: () => pe,
 			lerpSpeed: .12,
-			targetResolver: Ge,
-			visualProfile: pe,
+			targetResolver: Ke,
+			visualProfile: me,
 			zoomMinResolver: (e) => e.portraitView ? .72 : .64,
 			zoomMaxResolver: (e) => e.portraitView ? 1.58 : 1.5
 		})
-	}, fe.OVERVIEW), qe = Object.freeze({
+	}, V.OVERVIEW), Je = Object.freeze({
 		[z.SUMMIT]: w({
 			id: "state::summit",
 			behavior: B.OVERVIEW,
 			followMode: "state_summit",
-			boundsResolver: () => G,
+			boundsResolver: () => pe,
 			lerpSpeed: .09,
-			targetResolver: lt,
-			visualProfile: me,
+			targetResolver: ut,
+			visualProfile: he,
 			zoomMinResolver: () => .56,
 			zoomMaxResolver: () => 1.2
 		}),
@@ -3742,14 +3742,14 @@ function z(e) {
 			id: "state::descending",
 			behavior: B.OVERVIEW,
 			followMode: "state_descending",
-			boundsResolver: () => G,
+			boundsResolver: () => pe,
 			lerpSpeed: .1,
-			targetResolver: ut,
-			visualProfile: he,
+			targetResolver: dt,
+			visualProfile: ge,
 			zoomMinResolver: () => .56,
 			zoomMaxResolver: () => 1.1
 		})
-	}), Je = re([
+	}), Ye = re([
 		ne({
 			id: ie(P.SOBRIO, F.WAITING),
 			style: P.SOBRIO,
@@ -3983,39 +3983,39 @@ function z(e) {
 			}
 		})
 	], ie(P.SOBRIO, F.ASCENT));
-	function Ye(e) {
-		return Ke.get(e);
-	}
 	function Xe(e) {
-		let t = Ye(e);
-		V.presetId = t.id, V.behavior = t.behavior;
+		return qe.get(e);
 	}
-	function Ze() {
-		return Ye(V.presetId);
+	function Ze(e) {
+		let t = Xe(e);
+		H.presetId = t.id, H.behavior = t.behavior;
 	}
 	function Qe() {
-		return qe[$] || null;
+		return Xe(H.presetId);
 	}
 	function $e() {
-		return Qe() || Ze();
+		return Je[$] || null;
 	}
-	function et(e) {
-		if (V.behavior === B.FREE_PAN) return G;
-		let t = $e();
-		return t.boundsResolver ? t.boundsResolver(e) : G;
+	function et() {
+		return $e() || Qe();
 	}
-	function tt() {
-		return V.behavior === B.FREE_PAN ? pe : $e().visualProfile || pe;
+	function tt(e) {
+		if (H.behavior === B.FREE_PAN) return pe;
+		let t = et();
+		return t.boundsResolver ? t.boundsResolver(e) : pe;
 	}
 	function nt() {
-		return $ === z.SUMMIT ? F.IMPACT : $ === z.SIS_DESCENDING ? F.DESCENT : $ === z.WAITING ? F.WAITING : Se > .2 ? F.IMPACT : F.ASCENT;
+		return H.behavior === B.FREE_PAN ? me : et().visualProfile || me;
 	}
 	function rt() {
-		let e = nt();
-		return Je.getByStyleAndMood(ye, e);
+		return $ === z.SUMMIT ? F.IMPACT : $ === z.SIS_DESCENDING ? F.DESCENT : $ === z.WAITING ? F.WAITING : Ce > .2 ? F.IMPACT : F.ASCENT;
 	}
-	function it(e) {
-		let t = Ne(e.portraitView), n = Qe();
+	function it() {
+		let e = rt();
+		return Ye.getByStyleAndMood(be, e);
+	}
+	function at(e) {
+		let t = Pe(e.portraitView), n = $e();
 		if (n) {
 			let t = n.zoomMinResolver(e), r = n.zoomMaxResolver(e);
 			return {
@@ -4023,77 +4023,77 @@ function z(e) {
 				max: Math.max(t + .02, r)
 			};
 		}
-		if (V.behavior === B.FREE_PAN) return t;
-		let r = $e(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
+		if (H.behavior === B.FREE_PAN) return t;
+		let r = et(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
 		return {
 			min: i,
 			max: Math.max(i + .02, a)
 		};
 	}
-	function at() {
-		return Ee.DEFAULT;
+	function ot() {
+		return De.DEFAULT;
 	}
-	function ot(e) {
-		if (Oe === e) return;
-		let t = De[e] || De[Ee.DEFAULT];
-		Oe = e;
-		for (let e of [J, vt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
-	}
-	function st() {
-		Ie();
+	function st(e) {
+		if (ke === e) return;
+		let t = Oe[e] || Oe[De.DEFAULT];
+		ke = e;
+		for (let e of [J, yt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
 	}
 	function ct() {
-		ye = ye === P.SOBRIO ? P.EXPRESIONISTA : P.SOBRIO, be = performance.now() + 1400, console.log(`%cEstilo visual: ${ye}`, "color:#f9d29d;font-weight:bold");
+		Le();
 	}
-	function lt(e) {
-		let t = Ut(Z);
+	function lt() {
+		be = be === P.SOBRIO ? P.EXPRESIONISTA : P.SOBRIO, xe = performance.now() + 1400, console.log(`%cEstilo visual: ${be}`, "color:#f9d29d;font-weight:bold");
+	}
+	function ut(e) {
+		let t = Wt(Z);
 		return e.rockCenter.x >= 932 ? {
 			x: 912,
 			y: 116,
 			zoom: .76
 		} : {
-			x: e.rockCenter.x + D(Z.velocity.x * 62, -120, 60),
-			y: e.rockCenter.y - 118 + D(Z.velocity.y * 18, -48, 42),
-			zoom: D((e.portraitView ? .88 : .78) - t * .03, .58, .94)
+			x: e.rockCenter.x + O(Z.velocity.x * 62, -120, 60),
+			y: e.rockCenter.y - 118 + O(Z.velocity.y * 18, -48, 42),
+			zoom: O((e.portraitView ? .88 : .78) - t * .03, .58, .94)
 		};
 	}
-	function ut(e) {
-		let t = O(sn + 70, 820, e.sisCenter.x);
+	function dt(e) {
+		let t = ee(ln + 70, 820, e.sisCenter.x);
 		return {
-			x: Mt(sn + 96, e.sisCenter.x + 42, t),
-			y: Mt(368, e.sisCenter.y - 110, t),
-			zoom: Mt(e.portraitView ? .92 : .84, e.portraitView ? 1 : .9, t)
+			x: Nt(ln + 96, e.sisCenter.x + 42, t),
+			y: Nt(368, e.sisCenter.y - 110, t),
+			zoom: Nt(e.portraitView ? .92 : .84, e.portraitView ? 1 : .9, t)
 		};
-	}
-	function dt() {
-		let e = Ue();
-		if (V.behavior === B.FREE_PAN) {
-			let t = Ae(e.portraitView), n = ze(V.freePanX, V.freePanY, t);
-			U.x = n.x, U.y = n.y, U.zoom = t;
-		} else {
-			let t = $e();
-			Object.assign(U, t.targetResolver(e));
-		}
-		let t = it(e);
-		U.zoom = D(U.zoom, t.min, t.max);
-		let n = Re(U.x, U.y, U.zoom, et(e));
-		U.x = n.x, U.y = n.y, ot(at());
 	}
 	function ft() {
-		return W.active ? .34 : V.behavior === B.FREE_PAN ? .22 : $e().lerpSpeed;
+		let e = We();
+		if (H.behavior === B.FREE_PAN) {
+			let t = je(e.portraitView), n = Be(H.freePanX, H.freePanY, t);
+			W.x = n.x, W.y = n.y, W.zoom = t;
+		} else {
+			let t = et();
+			Object.assign(W, t.targetResolver(e));
+		}
+		let t = at(e);
+		W.zoom = O(W.zoom, t.min, t.max);
+		let n = ze(W.x, W.y, W.zoom, tt(e));
+		W.x = n.x, W.y = n.y, st(ot());
 	}
-	function pt(e) {
-		let t = e / 16.6667, r = 1 - (1 - ft()) ** t;
-		H.x += (U.x - H.x) * r, H.y += (U.y - H.y) * r, H.zoom += (U.zoom - H.zoom) * r;
-		let i = 16 * L * L, a = N * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = d / H.zoom, l = f / H.zoom;
-		n.lookAt(X, {
+	function pt() {
+		return G.active ? .34 : H.behavior === B.FREE_PAN ? .22 : et().lerpSpeed;
+	}
+	function mt(e) {
+		let t = e / 16.6667, n = 1 - (1 - pt()) ** t;
+		U.x += (W.x - U.x) * n, U.y += (W.y - U.y) * n, U.zoom += (W.zoom - U.zoom) * n;
+		let i = 16 * R * R, a = L * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = f / U.zoom, l = h / U.zoom;
+		r.lookAt(X, {
 			min: {
-				x: H.x + o - c / 2,
-				y: H.y + s - l / 2
+				x: U.x + o - c / 2,
+				y: U.y + s - l / 2
 			},
 			max: {
-				x: H.x + o + c / 2,
-				y: H.y + s + l / 2
+				x: U.x + o + c / 2,
+				y: U.y + s + l / 2
 			}
 		});
 	}
@@ -4101,67 +4101,69 @@ function z(e) {
 		TERRAIN: 1,
 		SISYPHUS: 2,
 		ROCK: 4
-	}), mt = q.SISYPHUS | q.ROCK, ht = q.TERRAIN | q.ROCK, gt = q.TERRAIN | q.SISYPHUS, _t = q.TERRAIN, J = document.createElement("canvas");
+	}), ht = q.SISYPHUS | q.ROCK, gt = q.TERRAIN | q.ROCK, _t = q.TERRAIN | q.SISYPHUS, vt = q.TERRAIN, J = document.createElement("canvas");
 	J.id = "scene-canvas", J.setAttribute("aria-hidden", "true"), J.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0;pointer-events:none;", e.appendChild(J);
-	let vt = document.createElement("canvas");
-	vt.id = "game-canvas", vt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(vt);
-	let yt = J.getContext("2d");
-	async function bt() {
+	let yt = document.createElement("canvas");
+	yt.id = "game-canvas", yt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(yt);
+	let bt = J.getContext("2d");
+	async function xt() {
 		try {
-			await y(_e, new URL("data:application/json;base64,ewogICJvdmVybGF5cyI6IFsKICAgIHsKICAgICAgImlkIjogImFzY2VudF9oYXplX3NlcXVlbmNlIiwKICAgICAgImtpbmQiOiAic2VxdWVuY2UiLAogICAgICAiZnJhbWVzIjogWwogICAgICAgICIuLi9hbmltL2FzY2VudC1oYXplLTAwLnN2ZyIsCiAgICAgICAgIi4uL2FuaW0vYXNjZW50LWhhemUtMDEuc3ZnIiwKICAgICAgICAiLi4vYW5pbS9hc2NlbnQtaGF6ZS0wMi5zdmciLAogICAgICAgICIuLi9hbmltL2FzY2VudC1oYXplLTAzLnN2ZyIsCiAgICAgICAgIi4uL2FuaW0vYXNjZW50LWhhemUtMDQuc3ZnIiwKICAgICAgICAiLi4vYW5pbS9hc2NlbnQtaGF6ZS0wNS5zdmciLAogICAgICAgICIuLi9hbmltL2FzY2VudC1oYXplLTA2LnN2ZyIsCiAgICAgICAgIi4uL2FuaW0vYXNjZW50LWhhemUtMDcuc3ZnIgogICAgICBdLAogICAgICAibGF5ZXIiOiAiZ3JhZGUiLAogICAgICAiYmxlbmRNb2RlIjogInNjcmVlbiIsCiAgICAgICJvcGFjaXR5IjogMC4xNCwKICAgICAgIm1vYmlsZU9wYWNpdHlNdWx0aXBsaWVyIjogMC43MiwKICAgICAgInBhcmFsbGF4WCI6IDAuMDAwNiwKICAgICAgInBhcmFsbGF4WSI6IDAuMDAwNSwKICAgICAgInB1bHNlU3RyZW5ndGgiOiAwLAogICAgICAid2lkdGhSYXRpbyI6IDEuMTIsCiAgICAgICJoZWlnaHRSYXRpbyI6IDEuMTIsCiAgICAgICJmcHMiOiA3LAogICAgICAibG9vcCI6IHRydWUsCiAgICAgICJzdGFydE9mZnNldE1zIjogMjQwCiAgICB9LAogICAgewogICAgICAiaWQiOiAibW9vbl9oYWxvX3RleHR1cmUiLAogICAgICAic3JjIjogIi4vbW9vbi1oYWxvLW92ZXJsYXkuc3ZnIiwKICAgICAgImxheWVyIjogImdyYWRlIiwKICAgICAgImJsZW5kTW9kZSI6ICJzY3JlZW4iLAogICAgICAib3BhY2l0eSI6IDAuMjYsCiAgICAgICJtb2JpbGVPcGFjaXR5TXVsdGlwbGllciI6IDAuODIsCiAgICAgICJwYXJhbGxheFgiOiAwLjAwMDgsCiAgICAgICJwYXJhbGxheFkiOiAwLjAwMDUsCiAgICAgICJwdWxzZVN0cmVuZ3RoIjogMC4wMiwKICAgICAgIndpZHRoUmF0aW8iOiAxLjA4LAogICAgICAiaGVpZ2h0UmF0aW8iOiAxLjA4CiAgICB9CiAgXQp9DQo=", "" + import.meta.url)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
+			let e = import.meta.url;
+			if (!e) return;
+			await y(ve, new URL("./assets/overlays/manifest.json", e)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
 		} catch (e) {
 			console.warn("No se pudo cargar el manifiesto de overlays externos.", e);
 		}
 	}
-	for (let e of [J, vt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
-	let Y = t.create({ gravity: {
+	for (let e of [J, yt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
+	let Y = n.create({ gravity: {
 		x: 0,
 		y: 1
-	} }), X = n.create({
-		canvas: vt,
+	} }), X = r.create({
+		canvas: yt,
 		engine: Y,
 		options: {
-			width: d,
-			height: f,
+			width: f,
+			height: h,
 			wireframes: !1,
-			background: C.bg,
+			background: D.bg,
 			pixelRatio: window.devicePixelRatio || 1
 		}
-	}), xt = i.rectangle(900 / 2, 540, 1020, 40, {
+	}), St = a.rectangle(900 / 2, 540, 1020, 40, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: mt
+			mask: ht
 		},
 		render: { visible: !1 },
 		label: "ground"
-	}), St = i.rectangle(-60 / 2, 560 / 2, 60, 560, {
+	}), Ct = a.rectangle(-60 / 2, 560 / 2, 60, 560, {
 		isStatic: !0,
 		restitution: .1,
 		friction: .1,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: mt
+			mask: ht
 		},
 		render: { visible: !1 },
 		label: "wall-left"
-	}), Ct = i.rectangle(930, 560 / 2, 60, 560, {
+	}), wt = a.rectangle(930, 560 / 2, 60, 560, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: mt
+			mask: ht
 		},
 		render: { visible: !1 },
 		label: "wall-right"
-	}), wt = i.rectangle(900 / 2, -60 / 2, 1020, 60, {
+	}), Tt = a.rectangle(900 / 2, -60 / 2, 1020, 60, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: mt
+			mask: ht
 		},
 		render: { visible: !1 },
 		label: "wall-top"
-	}), Tt = i.rectangle(40, 660, 150, 20, {
+	}), Et = a.rectangle(40, 660, 150, 20, {
 		isStatic: !0,
 		angle: 0,
 		restitution: 0,
@@ -4172,22 +4174,22 @@ function z(e) {
 		},
 		render: { visible: !1 },
 		label: "bumper"
-	}), Et = [
+	}), Dt = [
 		{
 			x: 140,
 			y: 520
 		},
 		{
 			x: 170,
-			y: jt(170)
+			y: Mt(170)
 		},
 		{
 			x: 310,
-			y: jt(310)
+			y: Mt(310)
 		},
 		{
 			x: 470,
-			y: jt(470)
+			y: Mt(470)
 		},
 		{
 			x: 840,
@@ -4206,61 +4208,61 @@ function z(e) {
 			y: 300
 		},
 		{
-			x: h,
+			x: g,
 			y: 520
 		},
 		{
-			x: g,
+			x: _,
 			y: 520
 		}
-	], Dt = [
+	], Ot = [
 		{
 			x: 132,
 			y: 780
 		},
-		...Et,
+		...Dt,
 		{
-			x: g + 28,
+			x: _ + 28,
 			y: 780
 		}
-	], Ot = u.centre(Dt), kt = Dt.map((e) => ({
-		x: e.x - Ot.x,
-		y: e.y - Ot.y
-	})), At = i.fromVertices(Ot.x, Ot.y, [kt], {
+	], kt = d.centre(Ot), At = Ot.map((e) => ({
+		x: e.x - kt.x,
+		y: e.y - kt.y
+	})), jt = a.fromVertices(kt.x, kt.y, [At], {
 		isStatic: !0,
 		friction: .1,
 		restitution: 0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: mt
+			mask: ht
 		},
 		render: { visible: !1 },
 		label: "mountain"
 	}, !0);
-	function jt(e) {
+	function Mt(e) {
 		return 520 - (e - 140) / 700 * 312;
 	}
-	function Mt(e, t, n) {
+	function Nt(e, t, n) {
 		return e + (t - e) * n;
 	}
-	function Nt(e, t, n, r, i) {
-		return r === t ? n : Mt(n, i, (e - t) / (r - t));
+	function Pt(e, t, n, r, i) {
+		return r === t ? n : Nt(n, i, (e - t) / (r - t));
 	}
-	function Pt(e) {
-		let t = Et[0];
+	function Ft(e) {
+		let t = Dt[0];
 		if (e <= t.x) return t.y;
-		for (let t = 1; t < Et.length; t += 1) {
-			let n = Et[t - 1], r = Et[t];
-			if (e <= r.x) return Nt(e, n.x, n.y, r.x, r.y);
+		for (let t = 1; t < Dt.length; t += 1) {
+			let n = Dt[t - 1], r = Dt[t];
+			if (e <= r.x) return Pt(e, n.x, n.y, r.x, r.y);
 		}
-		return Et[Et.length - 1].y;
+		return Dt[Dt.length - 1].y;
 	}
-	function Ft() {
-		d = e.clientWidth || window.innerWidth, f = e.clientHeight || window.innerHeight;
+	function It() {
+		f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight;
 		let t = window.devicePixelRatio || 1;
-		J.width = d * t, J.height = f * t, J.style.width = `${d}px`, J.style.height = `${f}px`, X.options.width = d, X.options.height = f, X.options.pixelRatio = t, X.canvas.width = d * t, X.canvas.height = f * t, X.canvas.style.width = `${d}px`, X.canvas.style.height = `${f}px`, ze(V.freePanX, V.freePanY, Ae(f > d));
+		J.width = f * t, J.height = h * t, J.style.width = `${f}px`, J.style.height = `${h}px`, X.options.width = f, X.options.height = h, X.options.pixelRatio = t, X.canvas.width = f * t, X.canvas.height = h * t, X.canvas.style.width = `${f}px`, X.canvas.style.height = `${h}px`, Be(H.freePanX, H.freePanY, je(h > f));
 	}
-	let It = k({
+	let Lt = k({
 		LOGICAL_W: 900,
 		LOGICAL_H: 560,
 		SURF_Y: 520,
@@ -4270,130 +4272,130 @@ function z(e) {
 		PEAK_B_Y: 206,
 		RIGHT_DESCENT_MID_X: 980,
 		RIGHT_DESCENT_MID_Y: 300,
-		RIGHT_DESCENT_LOW_X: h,
+		RIGHT_DESCENT_LOW_X: g,
 		RIGHT_DESCENT_LOW_Y: 520,
-		RIGHT_FACE_BASE_X: g,
-		slopeYAt: jt,
-		terrainYAt: Pt,
-		TERRAIN_SURFACE_POINTS: Et
-	}), Lt = te({ createSeededRandom: ee });
-	function Rt(e) {
-		Lt.drawRock(e, Z, $t);
+		RIGHT_FACE_BASE_X: _,
+		slopeYAt: Mt,
+		terrainYAt: Ft,
+		TERRAIN_SURFACE_POINTS: Dt
+	}), Rt = te({ createSeededRandom: A });
+	function zt(e) {
+		Rt.drawRock(e, Z, en);
 	}
-	let zt = M({
+	let Bt = M({
 		GAME_STATE: z,
 		PEAK_A_X: 840
 	});
-	function Bt(e) {
-		zt.drawSisyphus(e, {
+	function Vt(e) {
+		Bt.drawSisyphus(e, {
 			sisyphusBody: Q,
 			gameState: $,
-			lastGameState: ue,
-			stateTransitionTimer: de,
+			lastGameState: de,
+			stateTransitionTimer: fe,
 			STATE_TRANSITION_MAX: 450,
-			isPushing: nn,
-			sceneTime: N
+			isPushing: rn,
+			sceneTime: L
 		});
 	}
-	function Vt() {
-		let e = X.bounds.min.x, t = X.bounds.min.y, n = tt(), r = rt();
-		yt.save(), yt.setTransform(1, 0, 0, 1, 0, 0), yt.clearRect(0, 0, J.width, J.height);
+	function Ht() {
+		let e = X.bounds.min.x, t = X.bounds.min.y, n = nt(), r = it();
+		bt.save(), bt.setTransform(1, 0, 0, 1, 0, 0), bt.clearRect(0, 0, J.width, J.height);
 		let i = window.devicePixelRatio || 1;
-		yt.setTransform(i, 0, 0, i, 0, 0), yt.scale(H.zoom, H.zoom), yt.translate(-e, -t), It.drawSceneLayers(yt, {
+		bt.setTransform(i, 0, 0, i, 0, 0), bt.scale(U.zoom, U.zoom), bt.translate(-e, -t), Lt.drawSceneLayers(bt, {
 			viewMinX: e,
 			viewMinY: t,
 			visualProfile: n,
 			layerProfile: r,
-			sceneTime: N,
-			qualityProfile: we.getProfile(),
+			sceneTime: L,
+			qualityProfile: Te.getProfile(),
 			rock: Z,
 			sisyphus: Q,
-			dustParticles: j,
-			drawRock: Rt,
-			drawSisyphus: Bt
-		}), yt.restore();
+			dustParticles: N,
+			drawRock: zt,
+			drawSisyphus: Vt
+		}), bt.restore();
 	}
-	function Ht() {
-		l.set(Q, !1), l.set(Z, !1);
-	}
-	function Ut(e) {
-		return Math.hypot(e.velocity.x, e.velocity.y);
+	function Ut() {
+		u.set(Q, !1), u.set(Z, !1);
 	}
 	function Wt(e) {
-		a.setVelocity(e, {
-			x: 0,
-			y: 0
-		}), a.setAngularVelocity(e, 0);
+		return Math.hypot(e.velocity.x, e.velocity.y);
 	}
 	function Gt(e) {
-		L = D(L + e, 0, 1);
+		o.setVelocity(e, {
+			x: 0,
+			y: 0
+		}), o.setAngularVelocity(e, 0);
 	}
-	function Kt(e, t, n, r = 1) {
-		let i = D(n, .08, .6), a = Math.max(3, Math.round(5 + i * 14));
-		for (let n = 0; n < a; n += 1) j.push({
+	function Kt(e) {
+		R = O(R + e, 0, 1);
+	}
+	function qt(e, t, n, r = 1) {
+		let i = O(n, .08, .6), a = Math.max(3, Math.round(5 + i * 14));
+		for (let n = 0; n < a; n += 1) N.push({
 			x: e,
-			y: t - A() * 10,
-			vx: r * (.18 + A() * 1.1) + (A() - .5) * .75,
-			vy: -(.3 + A() * 1.5) * i * 2.2,
-			radius: 3 + A() * 7 * i,
-			alpha: .08 + A() * .14,
-			decay: .012 + A() * .02,
+			y: t - j() * 10,
+			vx: r * (.18 + j() * 1.1) + (j() - .5) * .75,
+			vy: -(.3 + j() * 1.5) * i * 2.2,
+			radius: 3 + j() * 7 * i,
+			alpha: .08 + j() * .14,
+			decay: .012 + j() * .02,
 			life: 1
 		});
 	}
-	function qt(e) {
+	function Jt(e) {
 		let t = e / 16.6667;
-		for (let e = j.length - 1; e >= 0; --e) {
-			let n = j[e];
+		for (let e = N.length - 1; e >= 0; --e) {
+			let n = N[e];
 			if (n.life -= n.decay * t, n.life <= 0) {
-				j.splice(e, 1);
+				N.splice(e, 1);
 				continue;
 			}
 			n.x += n.vx * t, n.y += n.vy * t, n.vx *= .985, n.vy = n.vy * .97 + .02 * t, n.radius *= .994;
 		}
 	}
-	function Jt() {
-		if (!nn) return;
-		let e = Y.timing.timestamp;
-		if (e - R < 90) return;
-		let t = Math.max(Ut(Q), Ut(Z));
-		t < .42 || (R = e, Kt(Q.position.x - 6, Pt(Q.position.x) - 2, D(t * .18, .1, .28), -1));
-	}
 	function Yt() {
-		if (!nn || $ !== z.PLAYING) return;
+		if (!rn) return;
 		let e = Y.timing.timestamp;
-		if (e - ae < 110) return;
-		ae = e;
-		let t = Q.position.x - 4, n = Pt(Q.position.x) - 1;
-		for (let e = 0; e < 2; e += 1) j.push({
-			x: t + (A() - .5) * 5,
-			y: n,
-			vx: -(.08 + A() * .3),
-			vy: -(.04 + A() * .18),
-			radius: 1 + A() * 1,
-			alpha: .04 + A() * .04,
-			decay: .028 + A() * .022,
-			life: 1
-		});
+		if (e - ae < 90) return;
+		let t = Math.max(Wt(Q), Wt(Z));
+		t < .42 || (ae = e, qt(Q.position.x - 6, Ft(Q.position.x) - 2, O(t * .18, .1, .28), -1));
 	}
 	function Xt() {
-		if (!nn || Ut(Q) < .85) return;
+		if (!rn || $ !== z.PLAYING) return;
 		let e = Y.timing.timestamp;
-		if (e - oe < 2e3) return;
+		if (e - oe < 110) return;
 		oe = e;
-		let t = Q.position.x + 7, n = Pt(Q.position.x) - 38;
-		j.push({
-			x: t + (A() - .5) * 3,
+		let t = Q.position.x - 4, n = Ft(Q.position.x) - 1;
+		for (let e = 0; e < 2; e += 1) N.push({
+			x: t + (j() - .5) * 5,
 			y: n,
-			vx: (A() - .5) * .15,
-			vy: -(.08 + A() * .12),
-			radius: 3 + A() * 2,
-			alpha: .03 + A() * .02,
-			decay: .008 + A() * .006,
+			vx: -(.08 + j() * .3),
+			vy: -(.04 + j() * .18),
+			radius: 1 + j() * 1,
+			alpha: .04 + j() * .04,
+			decay: .028 + j() * .022,
 			life: 1
 		});
 	}
-	function Zt(e, t) {
+	function Zt() {
+		if (!rn || Wt(Q) < .85) return;
+		let e = Y.timing.timestamp;
+		if (e - se < 2e3) return;
+		se = e;
+		let t = Q.position.x + 7, n = Ft(Q.position.x) - 38;
+		N.push({
+			x: t + (j() - .5) * 3,
+			y: n,
+			vx: (j() - .5) * .15,
+			vy: -(.08 + j() * .12),
+			radius: 3 + j() * 2,
+			alpha: .03 + j() * .02,
+			decay: .008 + j() * .006,
+			life: 1
+		});
+	}
+	function Qt(e, t) {
 		let n = e.collision && e.collision.supports && e.collision.supports[0];
 		return n ? {
 			x: n.x,
@@ -4403,13 +4405,13 @@ function z(e) {
 			y: t.position.y
 		};
 	}
-	function Qt(e) {
-		Q.collisionFilter.mask = e ? ht : _t, Z.collisionFilter.mask = e ? gt : _t;
+	function $t(e) {
+		Q.collisionFilter.mask = e ? gt : vt, Z.collisionFilter.mask = e ? _t : vt;
 	}
-	let $t = 28, en = {
+	let en = 28, tn = {
 		x: 110,
 		y: 491
-	}, Z = i.circle(en.x, en.y, 28, {
+	}, Z = a.circle(tn.x, tn.y, 28, {
 		restitution: 0,
 		friction: .6,
 		frictionStatic: 1,
@@ -4417,7 +4419,7 @@ function z(e) {
 		density: .1,
 		collisionFilter: {
 			category: q.ROCK,
-			mask: gt
+			mask: _t
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -4425,10 +4427,10 @@ function z(e) {
 			lineWidth: 0
 		},
 		label: "rock"
-	}), tn = {
+	}), nn = {
 		x: 69,
 		y: 520 - 44 / 2 - 1
-	}, Q = i.rectangle(tn.x, tn.y, 22, 44, {
+	}, Q = a.rectangle(nn.x, nn.y, 22, 44, {
 		restitution: 0,
 		friction: .8,
 		frictionStatic: .8,
@@ -4437,7 +4439,7 @@ function z(e) {
 		chamfer: { radius: 2 },
 		collisionFilter: {
 			category: q.SISYPHUS,
-			mask: ht
+			mask: gt
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -4447,88 +4449,93 @@ function z(e) {
 		},
 		label: "sisyphus"
 	});
-	o.add(Y.world, [
-		xt,
+	s.add(Y.world, [
 		St,
 		Ct,
 		wt,
 		Tt,
-		At,
+		Et,
+		jt,
 		Z,
 		Q
 	]);
-	let nn = !1, rn = 0, $ = z.PLAYING, an = 0, on = 830, sn = 188;
-	function cn() {
-		let e = Z.position.x < 200 && Z.position.y > 480, t = Ut(Z) < .4 && Math.abs(Z.angularVelocity) < .08;
+	let rn = !1, an = 0, $ = z.PLAYING, on = 0, sn = 0, cn = 830, ln = 188;
+	function un() {
+		let e = Z.position.x < 200 && Z.position.y > 480, t = Wt(Z) < .4 && Math.abs(Z.angularVelocity) < .08;
 		return e && t;
 	}
-	function ln(e) {
+	function dn(e) {
 		if ($ !== e) {
-			if (ue = $, de = 450, $ = e, e === z.PLAYING) {
-				Ve(), a.setStatic(Q, !1), a.setStatic(Z, !1), Qt(!0), an = 0, Ht();
+			if (de = $, fe = 450, $ = e, e === z.PLAYING) {
+				He(), o.setStatic(Q, !1), o.setStatic(Z, !1), $t(!0), on = 0, Ut();
 				return;
 			}
 			if (e === z.SUMMIT) {
-				nn = !1, Ve(), vt.style.cursor = "default", Qt(!1), a.setStatic(Q, !1), Wt(Q), a.setStatic(Q, !0), a.setStatic(Z, !1), a.setVelocity(Z, {
+				rn = !1, He(), yt.style.cursor = "default", $t(!1), o.setStatic(Q, !1), Gt(Q), o.setStatic(Q, !0), o.setStatic(Z, !1), o.setVelocity(Z, {
 					x: -3.5,
 					y: -.5
-				}), Ht(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
+				}), Ut(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
 				return;
 			}
 			if (e === z.SIS_DESCENDING) {
-				Ve(), Qt(!1), a.setStatic(Q, !1), Ht(), an = Y.timing.timestamp + 4e3, console.log("%cSisifo desciende lentamente por 4s...", "color:#8d99ae");
+				He(), $t(!1), o.setStatic(Q, !1), Ut(), on = Y.timing.timestamp + 4e3, console.log("%cSisifo desciende lentamente por 4s...", "color:#8d99ae");
 				return;
 			}
 			if (e === z.WAITING) {
-				nn = !1, Ve(), ke(B.OVERVIEW), vt.style.cursor = "default", Qt(!1), a.setStatic(Q, !1), Wt(Q);
+				if (rn = !1, He(), Ae(B.OVERVIEW), yt.style.cursor = "default", sn += 1, typeof t.onCycleComplete == "function") try {
+					t.onCycleComplete(sn);
+				} catch (e) {
+					console.warn("onCycleComplete error:", e);
+				}
+				$t(!1), o.setStatic(Q, !1), Gt(Q);
 				let e = Z.position.x - 28 - 22 / 2 - 2;
 				if (e < 16) {
 					e = 16;
 					let t = e + 22 / 2 + 2 + 28;
-					a.setPosition(Z, {
+					o.setPosition(Z, {
 						x: t,
 						y: Z.position.y
 					});
 				}
-				a.setPosition(Q, {
+				o.setPosition(Q, {
 					x: e,
 					y: 497
-				}), a.setAngle(Q, 0), a.setStatic(Q, !0), Wt(Z), Ht(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
+				}), o.setAngle(Q, 0), o.setStatic(Q, !0), Gt(Z), Ut(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
 			}
 		}
 	}
-	let un = E({
-		canvas: vt,
+	let fn = E({
+		canvas: yt,
 		render: X,
-		queryPoint: c.point,
+		queryPoint: l.point,
 		sisyphus: Q,
-		camera: H,
-		cameraDrag: W,
-		audioCueController: ge,
-		runtimeQualityController: we,
+		camera: U,
+		cameraDrag: G,
+		audioCueController: _e,
+		runtimeQualityController: Te,
 		GAME_STATE: z,
 		CAMERA_BEHAVIOR: B,
 		CAMERA_DRAG_THRESHOLD: 5,
 		CAMERA_PAN_SENSITIVITY: 1.08,
-		getIsPushing: () => nn,
+		getIsPushing: () => rn,
 		setIsPushing: (e) => {
-			nn = e, e || (rn = 0);
+			rn = e, e || (an = 0);
 		},
 		getGameState: () => $,
-		setGameState: ln,
-		getFreePanZoom: Ae,
-		setCameraBehavior: ke,
-		wakeBodies: Ht,
-		beginCameraDrag: Be,
-		stopCameraDrag: Ve,
-		storeFreePanTarget: ze,
-		cycleUserZoomInput: st,
-		cycleVisualStyle: ct,
+		setGameState: dn,
+		getFreePanZoom: je,
+		setCameraBehavior: Ae,
+		wakeBodies: Ut,
+		beginCameraDrag: Ve,
+		stopCameraDrag: He,
+		storeFreePanTarget: Be,
+		cycleUserZoomInput: ct,
+		cycleVisualStyle: lt,
 		setQualityHintUntil: (e) => {
-			xe = e;
+			Se = e;
 		}
 	});
-	un.register(), s.on(Y, "collisionStart", (e) => {
+	fn.register(), c.on(Y, "collisionStart", (e) => {
 		for (let t of e.pairs) {
 			if (![t.bodyA.label, t.bodyB.label].includes("rock")) continue;
 			let e = t.bodyA.label === "rock" ? t.bodyB : t.bodyA;
@@ -4537,14 +4544,14 @@ function z(e) {
 				"mountain",
 				"wall-left"
 			].includes(e.label)) continue;
-			let n = t.bodyA.label === "rock" ? t.bodyA : t.bodyB, r = D((Math.hypot(n.velocity.x - e.velocity.x, n.velocity.y - e.velocity.y) - 1.45) / 6, 0, 1);
+			let n = t.bodyA.label === "rock" ? t.bodyA : t.bodyB, r = O((Math.hypot(n.velocity.x - e.velocity.x, n.velocity.y - e.velocity.y) - 1.45) / 6, 0, 1);
 			if (r < .08) continue;
-			let i = Zt(t, n), a = n.velocity.x < 0 ? -1 : 1;
-			Kt(i.x, i.y, .16 + r * .32, a), Gt(r * (e.label === "wall-left" ? .18 : .11)), Se = Math.max(Se, r), ge.triggerImpact(r);
+			let i = Qt(t, n), a = n.velocity.x < 0 ? -1 : 1;
+			qt(i.x, i.y, .16 + r * .32, a), Kt(r * (e.label === "wall-left" ? .18 : .11)), Ce = Math.max(Ce, r), _e.triggerImpact(r);
 		}
 	});
-	function dn(e) {
-		let t = X.canvas.width, n = X.canvas.height, r = rt(), i = we.getSnapshot(), a = i.profile, o = D((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = D(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = D((r.grain.baseAlpha + ve * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
+	function pn(e) {
+		let t = X.canvas.width, n = X.canvas.height, r = it(), i = Te.getSnapshot(), a = i.profile, o = O((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = O(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = O((r.grain.baseAlpha + ye * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
 		e.save(), e.setTransform(1, 0, 0, 1, 0, 0);
 		let u = e.createLinearGradient(0, 0, 0, n);
 		u.addColorStop(0, `rgba(252, 241, 212, ${(o * .5).toFixed(3)})`), u.addColorStop(.15, `rgba(252, 241, 212, ${(o * .2).toFixed(3)})`), u.addColorStop(.45, `rgba(252, 241, 212, ${(o * .08).toFixed(3)})`), u.addColorStop(1, `rgba(8, 10, 16, ${(o * .84).toFixed(3)})`), e.fillStyle = u, e.fillRect(0, 0, t, n);
@@ -4552,49 +4559,54 @@ function z(e) {
 		if (d.addColorStop(0, "rgba(0, 0, 0, 0)"), d.addColorStop(.72, `rgba(7, 10, 16, ${(s * .34).toFixed(3)})`), d.addColorStop(1, `rgba(4, 6, 10, ${s.toFixed(3)})`), e.fillStyle = d, e.fillRect(0, 0, t, n), c > 0 && l > 0) {
 			e.globalAlpha = l;
 			for (let r = 0; r < c; r += 1) {
-				let i = (r * 137 + Math.floor(N * .6)) % t, a = (r * 211 + Math.floor(N * .35)) % n, o = 1 + r % 3;
+				let i = (r * 137 + Math.floor(L * .6)) % t, a = (r * 211 + Math.floor(L * .35)) % n, o = 1 + r % 3;
 				e.fillStyle = r % 5 == 0 ? "rgba(255, 255, 255, 0.7)" : "rgba(12, 16, 24, 0.7)", e.fillRect(i, a, o, o);
 			}
 		}
-		if (x(e, _e, "grade", {
+		if (x(e, ve, "grade", {
 			width: t,
 			height: n,
-			timeMs: N,
+			timeMs: L,
 			viewMinX: X.bounds.min.x,
 			viewMinY: X.bounds.min.y,
 			overlayOpacityMultiplier: a.overlayOpacityMul
-		}), performance.now() < se) {
-			let t = Pe(Te.level);
+		}), performance.now() < ue) {
+			let t = Fe(Ee.level);
 			e.globalAlpha = .9, e.fillStyle = "rgba(14, 18, 26, 0.64)", e.fillRect(24, 24, 168, 34), e.fillStyle = "rgba(226, 232, 242, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ZOOM: ${t}`, 36, 41);
 		}
-		performance.now() < be && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${ye.toUpperCase()}`, 36, 83)), performance.now() < xe && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125)), e.restore();
+		performance.now() < xe && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${be.toUpperCase()}`, 36, 83)), performance.now() < Se && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125)), e.restore();
 	}
-	s.on(Y, "beforeUpdate", () => {
+	c.on(Y, "beforeUpdate", () => {
 		let e = Y.timing.lastDelta || 16.6667;
-		N += e, L = Math.max(0, L - e * .0011), Se = Math.max(0, Se - e * .0014), de > 0 && (de = Math.max(0, de - e)), qt(e), Ce = we.update(e).fpsSmoothed;
-		let t = D(Ut(Z) / 2.2, 0, 1), n = D(Ut(Q) / 2, 0, 1);
-		if (ve = Mt(ve, D(Math.max(t, n) + Se * .3, 0, 1), .1), ge.update({
-			rockSpeed: Ut(Z),
-			ascentProgress: He(),
-			isPushing: nn,
-			moodImpact: Se
-		}), dt(), pt(e), Z.position.x < 500 && Z.position.y > 452 && Z.velocity.y < -.1 && a.setVelocity(Z, {
+		L += e, R = Math.max(0, R - e * .0011), Ce = Math.max(0, Ce - e * .0014), fe > 0 && (fe = Math.max(0, fe - e)), Jt(e), we = Te.update(e).fpsSmoothed;
+		let t = O(Wt(Z) / 2.2, 0, 1), n = O(Wt(Q) / 2, 0, 1);
+		if (ye = Nt(ye, O(Math.max(t, n) + Ce * .3, 0, 1), .1), _e.update({
+			rockSpeed: Wt(Z),
+			ascentProgress: Ue(),
+			isPushing: rn,
+			moodImpact: Ce
+		}), typeof gn.onProgressUpdate == "function" && gn.onProgressUpdate({
+			progress: Ue(),
+			gameState: $,
+			cycleCount: sn,
+			isPushing: rn
+		}), ft(), mt(e), Z.position.x < 500 && Z.position.y > 452 && Z.velocity.y < -.1 && o.setVelocity(Z, {
 			x: Z.velocity.x,
 			y: Z.velocity.y * .05
-		}), Z.position.x < 34 && Z.velocity.x < -.2 && (a.setVelocity(Z, {
+		}), Z.position.x < 34 && Z.velocity.x < -.2 && (o.setVelocity(Z, {
 			x: .6,
 			y: Z.velocity.y
-		}), a.setAngularVelocity(Z, .02)), $ !== z.PLAYING && Math.abs(Z.velocity.x) < .3 && Math.abs(Z.angularVelocity) > .05 && a.setAngularVelocity(Z, Z.angularVelocity * .85), $ !== z.PLAYING && Z.position.y > 487 && Z.position.x > 50 && Math.abs(Z.velocity.x) < .15 && (a.setVelocity(Z, {
+		}), o.setAngularVelocity(Z, .02)), $ !== z.PLAYING && Math.abs(Z.velocity.x) < .3 && Math.abs(Z.angularVelocity) > .05 && o.setAngularVelocity(Z, Z.angularVelocity * .85), $ !== z.PLAYING && Z.position.y > 487 && Z.position.x > 50 && Math.abs(Z.velocity.x) < .15 && (o.setVelocity(Z, {
 			x: 0,
 			y: Z.velocity.y
-		}), a.setAngularVelocity(Z, 0)), $ === z.PLAYING) {
+		}), o.setAngularVelocity(Z, 0)), $ === z.PLAYING) {
 			if (Q.position.x >= 830) {
-				ln(z.SUMMIT);
+				dn(z.SUMMIT);
 				return;
 			}
-			if (!nn) return;
+			if (!rn) return;
 			function e(e, t) {
-				let n = e.position.x, r = t / 2, i = Pt(n - r), a = Pt(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
+				let n = e.position.x, r = t / 2, i = Ft(n - r), a = Ft(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
 				return c === 0 ? {
 					x: 1,
 					y: 0
@@ -4605,49 +4617,51 @@ function z(e) {
 			}
 			let t = e(Q, 22), n = e(Z, 56);
 			{
-				Ht(), rn = Math.min(rn + 1, 60);
-				let e = .3 + rn / 60 * .7;
-				a.applyForce(Q, Q.position, {
-					x: t.x * S * e,
-					y: t.y * S * e
-				}), Jt(), Yt(), Xt();
-				let r = Q.velocity.x * t.x + Q.velocity.y * t.y, i = Z.velocity.x * n.x + Z.velocity.y * n.y, o = Math.abs(t.y) < .05 ? .9 : 1.5;
-				if (r > o) {
-					let e = r - o;
-					a.setVelocity(Q, {
-						x: Q.velocity.x - t.x * e,
-						y: Q.velocity.y - t.y * e
-					}), r = o;
-				}
-				if (r > 0 && i > r * .95) {
-					let e = i - r * .95;
-					a.setVelocity(Z, {
-						x: Z.velocity.x - n.x * e,
-						y: Z.velocity.y - n.y * e
-					});
-				}
+				Ut(), an = Math.min(an + 1, 90);
+				let e = .2 + an / 90 * .8, r = .073 * e, i = .066 * e, a = Y.gravity.y * (Y.gravity.scale ?? .001), s = .95;
+				o.applyForce(Q, Q.position, {
+					x: 0,
+					y: -Q.mass * a * s
+				}), o.applyForce(Z, Z.position, {
+					x: 0,
+					y: -Z.mass * a * s
+				}), o.applyForce(Q, Q.position, {
+					x: t.x * C * .08 * e,
+					y: t.y * C * .08 * e
+				}), Yt(), Xt(), Zt(), o.setVelocity(Q, {
+					x: t.x * r,
+					y: t.y * r
+				}), o.setVelocity(Z, {
+					x: n.x * i,
+					y: n.y * i
+				});
 			}
-		} else $ === z.SUMMIT ? cn() ? an === 0 ? (an = Y.timing.timestamp + 3e3, console.log("%c⏳ Roca en base. Sísifo contempla 3s...", "color:#8d99ae")) : Y.timing.timestamp >= an && (Q.render.opacity = Math.max(0, Q.render.opacity - .033), Q.render.opacity <= 0 && (Wt(Z), ln(z.WAITING))) : an = 0 : $ === z.WAITING && (Q.render.opacity < 1 && (Q.render.opacity = Math.min(1, Q.render.opacity + .006)), l.set(Q, !1));
-	}), s.on(X, "afterRender", () => {
+		} else $ === z.SUMMIT ? un() ? on === 0 ? (on = Y.timing.timestamp + 3e3, console.log("%c⏳ Roca en base. Sísifo contempla 3s...", "color:#8d99ae")) : Y.timing.timestamp >= on && (Q.render.opacity = Math.max(0, Q.render.opacity - .033), Q.render.opacity <= 0 && (Gt(Z), dn(z.WAITING))) : on = 0 : $ === z.WAITING && (Q.render.opacity < 1 && (Q.render.opacity = Math.min(1, Q.render.opacity + .006)), u.set(Q, !1));
+	}), c.on(X, "afterRender", () => {
 		let e = X.context;
-		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, X.canvas.width, X.canvas.height), e.restore(), Vt(), dn(e);
+		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, X.canvas.width, X.canvas.height), e.restore(), Ht(), pn(e);
 	});
-	let fn = getComputedStyle(e).position;
-	(fn === "static" || fn === "") && (e.style.position = "relative"), e.style.overflow = "hidden", Ft(), window.addEventListener("resize", Ft), bt();
-	let pn = r.create();
-	return n.run(X), r.run(pn, Y), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca."), {
+	let mn = getComputedStyle(e).position;
+	(mn === "static" || mn === "") && (e.style.position = "relative"), e.style.overflow = "hidden", It(), window.addEventListener("resize", It), xt();
+	let hn = i.create();
+	r.run(X), i.run(hn, Y), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca.");
+	let gn = {
 		destroy() {
-			n.stop(X), r.stop(pn), s.off(X), s.off(Y), typeof un?.destroy == "function" && un.destroy(), window.removeEventListener("resize", Ft), J.remove(), vt.remove(), o.clear(Y.world), t.clear(Y), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
+			r.stop(X), i.stop(hn), c.off(X), c.off(Y), typeof fn?.destroy == "function" && fn.destroy(), window.removeEventListener("resize", It), J.remove(), yt.remove(), s.clear(Y.world), n.clear(Y), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
 		},
 		getState: () => $,
+		getCycleCount: () => sn,
+		getAscentProgress: Ue,
 		getPerformance: () => ({
-			fpsApprox: Ce,
-			motionIntensity: ve,
-			currentVisualMood: nt(),
-			currentVisualStyle: ye,
-			qualityTier: we.getSnapshot().tier
-		})
+			fpsApprox: we,
+			motionIntensity: ye,
+			currentVisualMood: rt(),
+			currentVisualStyle: be,
+			qualityTier: Te.getSnapshot().tier
+		}),
+		onProgressUpdate: null
 	};
+	return gn;
 }
 //#endregion
-export { z as createSisyphusGame };
+export { ue as createSisyphusGame };

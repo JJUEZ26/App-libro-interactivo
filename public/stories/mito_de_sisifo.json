@@ -1,0 +1,184 @@
+[
+  {
+    "id": "portada",
+    "page": 0,
+    "effect": "sisifo_portada",
+    "scenes": [
+      "<div class='sisifo-cover-wrapper'><div class='sisifo-cover-content'><span class='sisifo-cover-label'>Albert Camus</span><h1 class='sisifo-cover-title'>El Mito<br>de Sísifo</h1><div class='sisifo-cover-line'></div><span class='sisifo-cover-subtitle'>Una experiencia interactiva</span></div></div>"
+    ],
+    "forceShowChoices": true,
+    "choices": [
+      {
+        "text": "Comenzar",
+        "page": "condena_1"
+      }
+    ]
+  },
+  {
+    "id": "condena_1",
+    "page": 1,
+    "effect": "sisifo_condena",
+    "scenes": [
+      "Los dioses habían condenado a Sísifo",
+      "a rodar sin cesar una roca",
+      "hasta la cima de una montaña."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "condena_2"
+      }
+    ]
+  },
+  {
+    "id": "condena_2",
+    "page": 2,
+    "effect": "sisifo_condena",
+    "scenes": [
+      "Habían pensado con cierta razón",
+      "que no hay castigo más terrible",
+      "que el trabajo inútil\ny sin esperanza."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "condena_3"
+      }
+    ]
+  },
+  {
+    "id": "condena_3",
+    "page": 3,
+    "effect": "sisifo_condena",
+    "pageClass": "sisifo-transition-page",
+    "scenes": [
+      "<em class='sisifo-emphasis'>Ahora te toca a ti.</em>"
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "Empujar la roca",
+        "page": "el_ascenso"
+      }
+    ]
+  },
+  {
+    "id": "el_ascenso",
+    "page": 4,
+    "effect": "sisifo_juego",
+    "specialContent": "sisyphus-game",
+    "scenes": [
+      "<div id='sisyphus-game-container' class='sisifo-game-mount'></div>"
+    ],
+    "choices": []
+  },
+  {
+    "id": "contemplacion",
+    "page": 5,
+    "effect": "sisifo_contemplacion",
+    "scenes": [
+      "En ese instante sutil",
+      "en que el hombre vuelve sobre su vida,",
+      "Sísifo, al regresar hacia su roca,",
+      "contempla esa serie de actos sin vínculo",
+      "que se convierten en su destino."
+    ],
+    "choices": [
+      {
+        "text": "",
+        "page": "rebelion"
+      }
+    ]
+  },
+  {
+    "id": "rebelion",
+    "page": 6,
+    "effect": "sisifo_contemplacion",
+    "scenes": [
+      "Su destino le pertenece.",
+      "Su roca es su cosa.",
+      "El hombre absurdo, cuando contempla\nsu tormento,",
+      "hace callar a todos los ídolos."
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "",
+        "page": "conclusion"
+      }
+    ]
+  },
+  {
+    "id": "conclusion",
+    "page": 7,
+    "effect": "sisifo_final",
+    "pageClass": "sisifo-final-page",
+    "scenes": [
+      "La lucha misma hacia las cumbres",
+      "basta para llenar un corazón de hombre."
+    ],
+    "delayedChoices": true,
+    "choices": [
+      {
+        "text": "Hay que imaginarse a Sísifo feliz.",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 8,
+    "effect": "sisifo_bio",
+    "forceShowChoices": true,
+    "discoverAuthor": "Albert Camus",
+    "discoveries": [
+      {
+        "title": "El extranjero",
+        "type": "book",
+        "year": "1942",
+        "line": "La historia de Meursault, un hombre que no siente lo que la sociedad espera. La novela que consagró a Camus como voz del absurdo.",
+        "available": true
+      },
+      {
+        "title": "La peste",
+        "type": "book",
+        "year": "1947",
+        "line": "Una epidemia azota Orán. Una parábola sobre la solidaridad humana frente a lo inexplicable. Premio Nobel de Literatura 1957.",
+        "available": false
+      },
+      {
+        "title": "El hombre rebelde",
+        "type": "book",
+        "year": "1951",
+        "line": "Un ensayo sobre la rebelión como respuesta al absurdo. La obra que rompió su amistad con Sartre.",
+        "available": false
+      },
+      {
+        "title": "Calígula",
+        "type": "book",
+        "year": "1944",
+        "line": "Un emperador romano descubre el absurdo y decide llevar la lógica hasta sus últimas consecuencias devastadoras.",
+        "available": false
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--camus'><div class='bio-portrait-shell'><div class='bio-portrait placeholder'></div></div><div class='bio-badge'>1913 — 1960</div></div>",
+      "<strong class='bio-name'>Albert Camus</strong>",
+      "Nació en Mondovi, Argelia francesa, el 7 de noviembre de 1913. Hijo de un obrero agrícola que murió en la Primera Guerra Mundial y de una madre analfabeta y casi sorda. Creció en la pobreza del barrio de Belcourt en Argel.",
+      "Filósofo, novelista, dramaturgo y periodista, Camus fue el segundo autor más joven en recibir el Premio Nobel de Literatura en 1957, a los 44 años. Su obra gira en torno al absurdo: la confrontación entre el deseo humano de encontrar sentido y la indiferencia silenciosa del universo.",
+      "El Mito de Sísifo (1942) es su ensayo filosófico fundamental. En él, Camus plantea que el suicidio es el único problema filosófico verdaderamente serio, y concluye que la respuesta al absurdo no es la muerte sino la rebelión: vivir plenamente sin esperanza de trascendencia.",
+      "Murió en un accidente automovilístico el 4 de enero de 1960, cerca de Sens, Francia. Tenía 46 años. En su maletín llevaba el manuscrito inconcluso de <em>El primer hombre</em>, su novela más autobiográfica.",
+      "<em class='bio-quote'>\"En medio del invierno, aprendí por fin que había en mí un verano invencible.\"</em>"
+    ],
+    "choices": [
+      {
+        "text": "Volver al juego",
+        "page": "el_ascenso"
+      },
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

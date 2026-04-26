@@ -7,6 +7,7 @@ import { startDewdropsEffect } from './dewdrops/index.js';
 import { startCracksEffect } from './cracks/index.js';
 import { startPobresEffect } from './pobres/index.js';
 import { startEternoRetornoEffect } from './eterno-retorno/index.js';
+import { startSisyphusEffect } from './sisyphus/index.js';
 import { state } from '../app/state.js';
 
 /**
@@ -35,6 +36,7 @@ let activeFirefliesCleanup = null;
 let activeCracksCleanup = null;
 let activePobresCleanup = null;
 let activeEternoCleanup = null;
+let activeSisyphusCleanup = null;
 const activeEffectAudio = new Set();
 const activeEffectFadeIntervals = new Map();
 
@@ -166,6 +168,7 @@ function clearExistingEffects(nextEffects = []) {
     if (activeFirefliesCleanup) { activeFirefliesCleanup(); activeFirefliesCleanup = null; }
     if (activePobresCleanup) { activePobresCleanup(); activePobresCleanup = null; }
     if (activeEternoCleanup) { activeEternoCleanup(); activeEternoCleanup = null; }
+    if (activeSisyphusCleanup) { activeSisyphusCleanup(); activeSisyphusCleanup = null; }
 
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
@@ -179,6 +182,7 @@ function clearExistingEffects(nextEffects = []) {
         '.time-pulse-ring, .swallow-bird, .firefly, .dewdrop, ' +
         '.pobres-overlay, .pobres-bg-overlay, ' +
         '.eterno-bg-overlay, .eterno-spiral-canvas, .eterno-particles, ' +
+        '.sisifo-bg-overlay, .sisifo-stars, .sisifo-particles, ' +
         '.door-light-overlay, .door-choices-cinematic' + cracksQuery
     );
     allEffectElements.forEach(el => el.remove());
@@ -394,6 +398,12 @@ export function handlePageEffects(effectString, { getAppMode }) {
     const eternoEffect = effects.find(e => e.startsWith('eterno_'));
     if (eternoEffect) {
         activeEternoCleanup = startEternoRetornoEffect(eternoEffect);
+    }
+
+    // --- Sísifo (Camus) ---
+    const sisifoEffect = effects.find(e => e.startsWith('sisifo_'));
+    if (sisifoEffect) {
+        activeSisyphusCleanup = startSisyphusEffect(sisifoEffect);
     }
 
     // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---

@@ -20,6 +20,7 @@ import {
 
 let elements = null;
 let goToPage = null;
+let activeSisyphusWidget = null;
 
 export function setRenderDependencies({ elements: elementsRef, goToPage: goToPageRef }) {
     elements = elementsRef;
@@ -46,6 +47,12 @@ export function preloadNextImages(currentPageId) {
 
 export function renderPage(pageId) {
     if (!elements?.pageWrapper) return;
+
+    // Destroy any active Sisyphus widget from previous page
+    if (activeSisyphusWidget) {
+        try { activeSisyphusWidget.destroy(); } catch (e) { /* ignore */ }
+        activeSisyphusWidget = null;
+    }
 
     elements.pageWrapper.querySelectorAll('.page-content').forEach((node) => node.remove());
     if (!state.story) return;
@@ -256,6 +263,16 @@ export function renderPage(pageId) {
     pageContent.appendChild(contentCenterer);
     elements.pageWrapper.appendChild(pageContent);
 
+    // =====================================================
+    // SISYPHUS GAME WIDGET — Dynamic mount
+    // =====================================================
+    if (pageData.specialContent === 'sisyphus-game') {
+        const gameContainer = pageContent.querySelector('#sisyphus-game-container');
+        if (gameContainer) {
+            mountSisyphusGame(gameContainer, pageContent);
+        }
+    }
+
     // — Scrollbar auto-hide y Scroll-to-Reveal (Hide Action Bar on down-scroll) —
     let scrollTimeout = null;
     let lastScrollY = 0;
@@ -417,6 +434,131 @@ function initAmbientVideo() {
             }
             vid.pause();
         }, { once: true });
+    }
+}
+
+// =====================================================
+// SISYPHUS GAME — Mount & Cycle Overlay Logic
+// =====================================================
+
+const CYCLE_TEXTS = [
+    // Cycle 1
+    "Su castigo encarna la condición humana:\nel esfuerzo perpetuo, la lucha diaria\ncontra la gravedad de nuestras propias\nresponsabilidades.",
+    // Cycle 2
+    "En ese instante sutil en que el hombre\nvuelve sobre su vida, Sísifo contempla\nesa serie de actos sin vínculo\nque se convierten en su destino.",
+    // Cycle 3 (easter egg)
+    "La lucha misma hacia las cumbres\nbasta para llenar un corazón de hombre.\n\nHay que imaginarse a Sísifo feliz.",
+];
+/**
+ * Dynamically loads the Sisyphus widget ES module.
+ * Uses a script[src] tag pointing to a small loader shim
+ * to avoid Vite's static analysis of template literal imports.
+ * Returns a Promise resolving to { createSisyphusGame }.
+ */
+function loadSisyphusWidget() {
+    // If already loaded from a previous visit
+    if (window.SisyphusWidget?.createSisyphusGame) {
+        return Promise.resolve(window.SisyphusWidget);
+    }
+
+    return new Promise((resolve, reject) => {
+        // Listen for the readiness event
+        const onReady = () => {
+            window.removeEventListener('sisyphus-widget-ready', onReady);
+            resolve(window.SisyphusWidget);
+        };
+        window.addEventListener('sisyphus-widget-ready', onReady);
+
+        // Don't re-inject if script tag already exists (e.g. via back-navigation)
+        if (!document.querySelector('script[data-sisyphus-widget]')) {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.dataset.sisyphusWidget = 'true';
+            // Point to a loader shim that lives in /public/dist/
+            script.src = '/dist/sisyphus-loader.js';
+            document.head.appendChild(script);
+        }
+
+        // Fallback timeout
+        setTimeout(() => {
+            window.removeEventListener('sisyphus-widget-ready', onReady);
+            if (window.SisyphusWidget?.createSisyphusGame) {
+                resolve(window.SisyphusWidget);
+            } else {
+                reject(new Error('Timeout loading sisyphus-widget'));
+            }
+        }, 8000);
+    });
+}
+
+async function mountSisyphusGame(gameContainer, pageContentEl) {
+    try {
+        // Load the widget via script tag since Vite blocks dynamic imports from /public/
+        const widgetModule = await loadSisyphusWidget();
+        const createSisyphusGame = widgetModule.createSisyphusGame;
+
+        // Add game hint
+        const hint = document.createElement('div');
+        hint.className = 'sisifo-game-hint';
+        hint.textContent = 'Mantén presionado sobre la figura para empujar la roca';
+        gameContainer.appendChild(hint);
+
+        // Create the overlay element (hidden by default)
+        const overlay = document.createElement('div');
+        overlay.className = 'sisifo-cycle-overlay';
+        overlay.innerHTML = `<div class="sisifo-cycle-text"></div>`;
+        gameContainer.appendChild(overlay);
+
+        let hasAdvancedToNextPage = false;
+
+        const game = createSisyphusGame(gameContainer, {
+            onCycleComplete: (cycleNumber) => {
+                // Hide the hint after first interaction
+                hint.classList.add('hidden');
+
+                const textIndex = Math.min(cycleNumber - 1, CYCLE_TEXTS.length - 1);
+                const text = CYCLE_TEXTS[textIndex];
+
+                if (!text) return;
+
+                // Update overlay text
+                overlay.querySelector('.sisifo-cycle-text').textContent = text;
+
+                // Remove existing continue button if any
+                const existingBtn = overlay.querySelector('.sisifo-continue-btn');
+                if (existingBtn) existingBtn.remove();
+
+                // After cycle 2+, show the "Continue" button leading to the next page
+                if (cycleNumber >= 2) {
+                    const btn = document.createElement('button');
+                    btn.className = 'sisifo-continue-btn';
+                    btn.textContent = 'Continuar';
+                    btn.addEventListener('click', () => {
+                        if (!hasAdvancedToNextPage && goToPage) {
+                            hasAdvancedToNextPage = true;
+                            goToPage('contemplacion');
+                        }
+                    });
+                    overlay.appendChild(btn);
+                }
+
+                // Show overlay
+                overlay.classList.add('visible');
+
+                // Auto-hide after a few seconds (unless it has the continue button)
+                if (cycleNumber < 2) {
+                    setTimeout(() => {
+                        overlay.classList.remove('visible');
+                    }, 5000);
+                }
+            }
+        });
+
+        activeSisyphusWidget = game;
+        console.log('%c🪨 Sísifo montado en el reader', 'color:#e07a5f;font-weight:bold');
+    } catch (error) {
+        console.error('Error al cargar el widget de Sísifo:', error);
+        gameContainer.innerHTML = `<p style="color: rgba(220,225,235,0.6); text-align: center; padding-top: 30%; font-family: Inter, sans-serif; font-size: 0.95rem;">No se pudo cargar el motor de juego.</p>`;
     }
 }
 

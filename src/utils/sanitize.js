@@ -14,7 +14,7 @@ const ALLOWED_TAGS = new Set([
 ]);
 
 const ALLOWED_ATTRS = new Set([
-    'class', 'style', 'href', 'src', 'alt', 'title',
+    'id', 'class', 'style', 'href', 'src', 'alt', 'title',
     'data-start', 'data-end', 'data-response', 'loading', 'aria-label'
 ]);
 
