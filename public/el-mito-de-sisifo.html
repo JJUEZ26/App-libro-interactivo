@@ -153,9 +153,169 @@
             .title-letter { animation: none; opacity: 1; filter: none; transform: none; }
             #touch-hint, #touch-hint .hint-arrow { animation: none; }
         }
+        
+        /* ═══ INTRO / ANTESALA ═══ */
+        #intro-overlay {
+            position: fixed; inset: 0; z-index: 50;
+            background: #050608;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1.5s ease;
+            /* Fondo con imagen portada */
+            background-image: url('./images/sisifo_portada.webp');
+            background-size: cover;
+            background-position: center 20%;
+        }
+        /* Capa de oscurecimiento sobre la imagen para legibilidad */
+        #intro-overlay::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(5,6,8,0.55) 0%,
+                rgba(5,6,8,0.35) 35%,
+                rgba(5,6,8,0.72) 75%,
+                rgba(5,6,8,0.95) 100%
+            );
+            z-index: 0;
+        }
+        #intro-overlay.hidden {
+            opacity: 0; pointer-events: none;
+        }
+        #intro-overlay.gone {
+            display: none;
+        }
+        /* Todos los hijos del overlay deben estar sobre la capa de oscurecimiento */
+        .intro-view { position: relative; z-index: 1; }
+        
+        .intro-view {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+            padding: 5vh 5vw;
+            z-index: 1;
+        }
+        .intro-view.active {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .intro-title {
+            font-family: 'Playfair Display', serif; font-weight: 700;
+            font-size: clamp(3rem, 8vw, 6rem);
+            background: linear-gradient(180deg, #ffffff 0%, #c8cfdc 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.15em; text-align: center;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 30px rgba(0,0,0,0.8));
+        }
+        .intro-divider {
+            width: 50px; height: 1px;
+            background: rgba(255,255,255,0.35);
+            margin: 0.6em auto 1.2em;
+        }
+        .intro-author {
+            font-family: 'Inter', sans-serif; font-weight: 300;
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            color: rgba(200,207,220,0.75); letter-spacing: 0.25em; text-transform: uppercase;
+            margin-bottom: 3.5rem; text-align: center;
+        }
+
+        .intro-buttons {
+            display: flex; flex-direction: column; gap: 1rem; align-items: center;
+        }
+        .intro-btn {
+            background: rgba(10,12,16,0.6);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.92); font-family: 'Inter', sans-serif;
+            font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 0.9rem 2.2rem; border-radius: 3px; cursor: pointer;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .intro-btn:hover {
+            background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.55);
+            color: #fff;
+        }
+        .intro-btn.primary {
+            background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4);
+            font-weight: 600; font-size: 0.88rem; letter-spacing: 0.15em;
+            padding: 1rem 3rem;
+        }
+        .intro-btn.primary:hover {
+            background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.7);
+        }
+
+        .modal-content-box {
+            max-width: 600px; width: 100%; text-align: left;
+            background: rgba(20,22,28,0.6); padding: 3rem; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            overflow-y: auto; max-height: 80vh;
+        }
+        .modal-content-box h2 {
+            font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #fff; margin-bottom: 0.5rem;
+        }
+        .modal-content-box .subtitle {
+            font-family: 'Inter', sans-serif; color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+        .modal-content-box p {
+            font-family: 'Inter', sans-serif; color: rgba(220,225,236,0.85); line-height: 1.7; margin-bottom: 1.5rem;
+        }
+        .modal-back-btn {
+            background: none; border: none; color: rgba(255,255,255,0.6);
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;
+            cursor: pointer; margin-top: 1rem; transition: color 0.3s; padding: 0;
+        }
+        .modal-back-btn:hover { color: #fff; }
+        
+        @media (max-width: 600px) {
+            .modal-content-box { padding: 2rem; }
+            .modal-content-box h2 { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ═══ INTRO / ANTESALA ═══ -->
+    <div id="intro-overlay">
+        <!-- Vista Principal -->
+        <div id="intro-main" class="intro-view active" style="justify-content: flex-end; padding-bottom: 10vh;">
+            <h1 class="intro-title">El Mito de Sísifo</h1>
+            <div class="intro-divider"></div>
+            <div class="intro-author">Albert Camus</div>
+            <div class="intro-buttons">
+                <button class="intro-btn primary" id="btn-comenzar">Comenzar Experiencia</button>
+                <div style="display:flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center;">
+                    <button class="intro-btn" id="btn-bio">Biografía</button>
+                    <button class="intro-btn" id="btn-creditos">Créditos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista Biografía -->
+        <div id="intro-bio" class="intro-view">
+            <div class="modal-content-box">
+                <h2>Albert Camus</h2>
+                <div class="subtitle">1913 — 1960 • Premio Nobel de Literatura 1957</div>
+                <p>Nacido en la Argelia francesa en el seno de una familia humilde, Camus se convirtió en una de las voces más lúcidas e independientes del siglo XX. Creció en la pobreza, hijo de una madre analfabeta y casi sorda, y de un padre que murió en la Primera Guerra Mundial antes de que él cumpliera un año.</p>
+                <p><strong>La Filosofía del Absurdo</strong><br>Camus no se consideraba existencialista. Su filosofía central era el "Absurdo": el conflicto fundamental entre el deseo humano de encontrar un significado a la vida y el silencio indiferente del universo. Para Camus, buscar un sentido cósmico era inútil, pero rendirse al nihilismo o al suicidio era una derrota.</p>
+                <p>En "El Mito de Sísifo", propone la única respuesta válida: la <strong>rebelión</strong>. Aceptar que la vida no tiene un sentido predeterminado y, aun así, elegir vivirla con pasión y libertad. Al igual que Sísifo empujando su roca sabiendo que caerá inevitablemente, el ser humano encuentra su victoria y su nobleza en el simple acto de seguir adelante, de desafiar al destino con su mera existencia.</p>
+                <button class="modal-back-btn" id="btn-bio-back">← Volver</button>
+            </div>
+        </div>
+
+        <!-- Vista Créditos -->
+        <div id="intro-credits" class="intro-view">
+            <div class="modal-content-box">
+                <h2>Créditos</h2>
+                <div class="subtitle">Atribuciones de la Experiencia</div>
+                <p><strong>Música Ambiental:</strong><br><em>Pas de Deux</em> (El Cascanueces)<br>Compuesto por Piotr Ilich Tchaikovsky.<br>Una pieza elegida por su asombrosa mezcla de dolor, esfuerzo, belleza trágica y redención, cualidades que reflejan perfectamente el asombroso viaje de Sísifo.</p>
+                <p><strong>Motor de Físicas:</strong><br>Matter.js — Motor de físicas 2D en JavaScript utilizado para la simulación precisa de la roca, la gravedad y la cinemática de las extremidades del personaje.</p>
+                <p><strong>Desarrollo y Diseño:</strong><br>Parte de la colección de "Lecturas Interactivas", donde la literatura clásica se encuentra con la interactividad y la inmersión digital.</p>
+                <button class="modal-back-btn" id="btn-creditos-back">← Volver</button>
+            </div>
+        </div>
+    </div>
 
     <div id="game-container" role="application" aria-label="Juego interactivo de Sísifo"></div>
     <div id="cinematic-vignette" aria-hidden="true"></div>
@@ -200,6 +360,9 @@
         toca a Sísifo para comenzar
     </div>
 
+    <!-- ═══ AUDIO ═══ -->
+    <audio id="ambient-music" loop src="./sounds/pas_de_deux_tchaikovsky.m4a" preload="auto"></audio>
+
     <script type="module">
         // Producción: importar desde el widget compilado en /dist/
         const cacheBuster = new Date().getTime();
@@ -209,6 +372,109 @@
         const touchHint    = document.getElementById('touch-hint');
         const textBackdrop = document.getElementById('text-backdrop');
         const activeSlot   = document.getElementById('narr-active');
+        const ambientMusic = document.getElementById('ambient-music');
+
+        // Referencias a la Antesala
+        const introOverlay = document.getElementById('intro-overlay');
+        const introMain    = document.getElementById('intro-main');
+        const introBio     = document.getElementById('intro-bio');
+        const introCredits = document.getElementById('intro-credits');
+
+        // Lógica de navegación de modales
+        document.getElementById('btn-bio').addEventListener('click', () => {
+            introMain.classList.remove('active');
+            introBio.classList.add('active');
+        });
+        document.getElementById('btn-bio-back').addEventListener('click', () => {
+            introBio.classList.remove('active');
+            introMain.classList.add('active');
+        });
+        document.getElementById('btn-creditos').addEventListener('click', () => {
+            introMain.classList.remove('active');
+            introCredits.classList.add('active');
+        });
+        document.getElementById('btn-creditos-back').addEventListener('click', () => {
+            introCredits.classList.remove('active');
+            introMain.classList.add('active');
+        });
+
+        // ─── El juego se inicializa SOLO al pulsar "Comenzar" ───────────────────
+        let game = null;
+
+        function initGame() {
+            if (game) return; // evitar doble inicialización
+            game = createSisyphusGame(container);
+
+            game.onProgressUpdate = ({ progress, gameState, cycleCount, isPushing }) => {
+                if (!firstTouchDetected && isPushing) {
+                    firstTouchDetected = true;
+                    touchHint.classList.add('hidden');
+                    textBackdrop.classList.add('active');
+                    if (ambientMusic.paused) {
+                        ambientMusic.play().catch(e => {});
+                    }
+                }
+                if (!firstTouchDetected) return;
+
+                // Volumen dinámico según estado del juego
+                if (gameState === 'waiting') {
+                    targetVolume = 0.1;
+                } else if (gameState === 'summit' || gameState === 'descending') {
+                    targetVolume = 0.3;
+                } else {
+                    targetVolume = isPushing ? 0.8 : 0.35;
+                }
+
+                // Al iniciar un nuevo ciclo (la roca ha regresado), reiniciar textos
+                if (cycleCount > lastCycleCount) {
+                    lastCycleCount = cycleCount;
+                    highWaterMark = -1;
+                    lastBlockShownAt = 0;
+                    hideAllSlots();
+                }
+
+                const targetIndex = getTargetBlockIndex(progress);
+
+                if (targetIndex > highWaterMark) {
+                    const shown = showBlock(targetIndex);
+                    if (shown) highWaterMark = targetIndex;
+                }
+
+                // Ocultar textos cuando la roca cae y está en el valle
+                if (gameState === 'waiting' && progress < 0.02 && activeBlockIndex >= 0) {
+                    hideAllSlots();
+                }
+            };
+
+            window.__SISIFO = game;
+        }
+
+        // Conectar el botón Comenzar a la inicialización del juego
+        document.getElementById('btn-comenzar').addEventListener('click', () => {
+            introOverlay.classList.add('hidden');
+            // Tras la transición de 1.5s, eliminar completamente del flujo de eventos
+            setTimeout(() => { introOverlay.classList.add('gone'); }, 1600);
+            ambientMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
+            targetVolume = 0.35;
+            // Pequeño delay para que el overlay termine de desvanecerse y el canvas tenga dimensiones correctas
+            setTimeout(initGame, 100);
+        });
+
+        let targetVolume = 0;
+        let currentVolume = 0;
+        ambientMusic.volume = 0;
+
+        // Bucle de transición suave para el volumen
+        function updateAudio() {
+            if (currentVolume < targetVolume) {
+                currentVolume = Math.min(currentVolume + 0.005, targetVolume);
+            } else if (currentVolume > targetVolume) {
+                currentVolume = Math.max(currentVolume - 0.005, targetVolume);
+            }
+            ambientMusic.volume = currentVolume;
+            requestAnimationFrame(updateAudio);
+        }
+        requestAnimationFrame(updateAudio);
 
         const dataBlocks = Array.from(document.querySelectorAll('#narrative-data > div'));
         const thresholds = dataBlocks.map(b => parseFloat(b.dataset.threshold));
@@ -287,42 +553,6 @@
             }
             return target;
         }
-
-        const game = createSisyphusGame(container);
-
-        game.onProgressUpdate = ({ progress, gameState, cycleCount, isPushing }) => {
-            if (!firstTouchDetected && isPushing) {
-                firstTouchDetected = true;
-                touchHint.classList.add('hidden');
-                textBackdrop.classList.add('active');
-            }
-            if (!firstTouchDetected) return;
-
-            // Al iniciar un nuevo ciclo (la roca ha regresado), reiniciar textos
-            if (cycleCount > lastCycleCount) {
-                lastCycleCount = cycleCount;
-                highWaterMark = -1;
-                lastBlockShownAt = 0;
-                hideAllSlots();
-            }
-
-            const targetIndex = getTargetBlockIndex(progress);
-
-            // El texto avanza solo hacia adelante (nunca retrocede) 
-            if (targetIndex > highWaterMark) {
-                const shown = showBlock(targetIndex);
-                if (shown) {
-                    highWaterMark = targetIndex;
-                }
-            }
-
-            // Ocultar textos cuando la roca cae y está en el valle
-            if (gameState === 'waiting' && progress < 0.02 && activeBlockIndex >= 0) {
-                hideAllSlots();
-            }
-        };
-
-        window.__SISIFO = game;
         });
     </script>
 </body>

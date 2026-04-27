@@ -191,6 +191,11 @@
     "page": 11,
     "effect": "eterno_bio",
     "forceShowChoices": true,
+    "musicCredits": {
+      "title": "Spiegel im Spiegel (Espejo en el Espejo)",
+      "composer": "Arvo Pärt, 1978",
+      "note": "Minimalismo sacro estonio. La repetición infinita del motivo espejado acompaña con precisión la idea del eterno retorno."
+    },
     "discoverAuthor": "Friedrich Nietzsche",
     "discoveries": [
       {

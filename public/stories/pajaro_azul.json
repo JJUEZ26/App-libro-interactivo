@@ -73,6 +73,11 @@
     "page": 4,
     "forceShowChoices": true,
     "images": [],
+    "musicCredits": {
+      "title": "Jazz ambient — Gin House Blues",
+      "composer": "Bessie Smith (trad.) / arreglos de dominio público",
+      "note": "Fragmento de jazz clásico de los años 20-40, el sonido de la América que Bukowski bebió y escribió."
+    },
     "discoverAuthor": "Charles Bukowski",
     "discoveries": [
       {

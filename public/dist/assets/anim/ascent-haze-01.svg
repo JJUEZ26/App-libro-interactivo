@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 736" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="g1" cx="34%" cy="42%" r="56%">
+      <stop offset="0%" stop-color="#f0e4c7" stop-opacity="0.16" />
+      <stop offset="58%" stop-color="#b8c9df" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#0f1728" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="g2" cx="72%" cy="58%" r="52%">
+      <stop offset="0%" stop-color="#d4def0" stop-opacity="0.12" />
+      <stop offset="70%" stop-color="#2a3650" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#0f1728" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9dfc9" stop-opacity="0" />
+      <stop offset="65%" stop-color="#d9d2c3" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#7c8ead" stop-opacity="0.16" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="736" fill="transparent" />
+  <ellipse cx="1045" cy="294" rx="760" ry="250" fill="url(#g1)" />
+  <ellipse cx="1087" cy="442" rx="840" ry="280" fill="url(#g2)" />
+  <rect width="1920" height="736" fill="url(#fog)" />
+</svg>

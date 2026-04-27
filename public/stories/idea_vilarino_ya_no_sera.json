@@ -241,6 +241,11 @@
     "forceShowChoices": true,
     "isPortrait": true,
     "images": [],
+    "musicCredits": {
+      "title": "Ya no (lectura de la autora)",
+      "composer": "Voz: Idea Vilariño",
+      "note": "Grabación histórica de la propia autora leyendo su poema. El audio forma parte del archivo público del Centro de Difusión Literaria de Uruguay."
+    },
     "discoverAuthor": "Idea Vilariño",
     "discoveries": [
       {

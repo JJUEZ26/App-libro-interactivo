@@ -2,7 +2,7 @@ import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
 import { sanitizeHTML } from '../utils/sanitize.js';
-import { renderDiscoveries } from './discoveries.js';
+import { renderDiscoveries, renderMusicCredits } from './discoveries.js';
 import {
     bindAudioExperience,
     clearAudioExperienceContext,
@@ -253,7 +253,10 @@ export function renderPage(pageId) {
     // Inject discoveries orb AFTER choices are in the DOM
     if (pageData.discoveries && pageData.discoveries.length > 0) {
         const authorName = pageData.discoverAuthor || '';
-        renderDiscoveries(contentCenterer, pageData.discoveries, authorName);
+        renderDiscoveries(contentCenterer, pageData.discoveries, authorName, pageData.musicCredits || null);
+    } else if (pageData.musicCredits) {
+        // Página sin discoveries pero CON créditos musicales (ej. La Puerta)
+        renderMusicCredits(contentCenterer, pageData.musicCredits);
     }
 
     // =====================================================

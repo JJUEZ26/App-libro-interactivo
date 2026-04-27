@@ -321,10 +321,10 @@ function E(e) {
 		let t = i.bounds;
 		return e.x >= t.min.x - 24 && e.x <= t.max.x + 24 && e.y >= t.min.y - 24 && e.y <= t.max.y + 24;
 	}
-	function te(e) {
+	function j(e) {
 		p() || o.active || (t.style.cursor = ee([i], e) || A(e) ? "grab" : "default");
 	}
-	function j(e) {
+	function M(e) {
 		if (!o.active || p()) return;
 		e.preventDefault();
 		let n = O(e), r = n.clientX - o.startClientX, i = n.clientY - o.startClientY;
@@ -333,7 +333,7 @@ function E(e) {
 		let a = Math.max(_(window.innerHeight > window.innerWidth), .001);
 		S(o.startCameraX - r * f / a, o.startCameraY - i * f / a, _(window.innerHeight > window.innerWidth)), t.style.cursor = "grabbing";
 	}
-	function M(e) {
+	function N(e) {
 		e.preventDefault(), s.unlock();
 		let n = k(e), r = ee([i], n) || A(n), o = h(), c = o === l.PLAYING || o === l.WAITING;
 		if (r && c) {
@@ -351,17 +351,17 @@ function E(e) {
 			y: d.clientY
 		}, b(d.clientX, d.clientY), S(a.x, a.y, _(window.innerHeight > window.innerWidth));
 	}
-	function N(e) {
-		e.preventDefault(), m(!1), x(), te(k(e));
-	}
 	function P(e) {
-		if (o.active) {
-			j(e);
-			return;
-		}
-		te(k(e));
+		e.preventDefault(), m(!1), x(), j(k(e));
 	}
 	function F(e) {
+		if (o.active) {
+			M(e);
+			return;
+		}
+		j(k(e));
+	}
+	function I(e) {
 		let t = (e.key || "").toLowerCase();
 		if (t === "c") {
 			C();
@@ -376,15 +376,15 @@ function E(e) {
 			e.shiftKey ? (c.clearForcedTier(), t = `${c.getSnapshot().tier.toUpperCase()} (AUTO)`) : t = `${c.cycleTier().toUpperCase()} (BLOQUEADA)`, T(performance.now() + 1400), console.log(`%cCalidad visual: ${t}`, "color:#9bd1ff;font-weight:bold");
 		}
 	}
-	function I() {
-		t.addEventListener("mousedown", M), t.addEventListener("touchstart", M, { passive: !1 }), t.addEventListener("mousemove", P), t.addEventListener("touchmove", P, { passive: !1 }), t.addEventListener("mouseup", N), t.addEventListener("touchend", N, { passive: !1 }), t.addEventListener("touchcancel", N), t.addEventListener("mouseleave", N), window.addEventListener("keydown", F);
-	}
 	function L() {
-		t.removeEventListener("mousedown", M), t.removeEventListener("touchstart", M), t.removeEventListener("mousemove", P), t.removeEventListener("touchmove", P), t.removeEventListener("mouseup", N), t.removeEventListener("touchend", N), t.removeEventListener("touchcancel", N), t.removeEventListener("mouseleave", N), window.removeEventListener("keydown", F);
+		t.addEventListener("mousedown", N), t.addEventListener("touchstart", N, { passive: !1 }), t.addEventListener("mousemove", F), t.addEventListener("touchmove", F, { passive: !1 }), t.addEventListener("mouseup", P), t.addEventListener("touchend", P, { passive: !1 }), t.addEventListener("touchcancel", P), t.addEventListener("mouseleave", P), window.addEventListener("keydown", I);
+	}
+	function R() {
+		t.removeEventListener("mousedown", N), t.removeEventListener("touchstart", N), t.removeEventListener("mousemove", F), t.removeEventListener("touchmove", F), t.removeEventListener("mouseup", P), t.removeEventListener("touchend", P), t.removeEventListener("touchcancel", P), t.removeEventListener("mouseleave", P), window.removeEventListener("keydown", I);
 	}
 	return Object.freeze({
-		register: I,
-		destroy: L
+		register: L,
+		destroy: R
 	});
 }
 //#endregion
@@ -524,16 +524,76 @@ function k(e) {
 			phase: x() * O,
 			parallax: .22
 		}
-	];
-	function w(e, t, n = !0) {
+	], w = Array.from({ length: 28 }, () => ({
+		x: 650 + x() * 260,
+		y: 64 + x() * 150,
+		radius: .7 + x() * 2.4,
+		alpha: .018 + x() * .045,
+		phase: x() * O,
+		drift: 8 + x() * 24
+	}));
+	function T(e, t, n = !0) {
 		e.beginPath(), e.moveTo(t[0].x, t[0].y);
 		for (let n = 1; n < t.length; n += 1) e.lineTo(t[n].x, t[n].y);
 		n && e.closePath();
 	}
-	function T(e, t, n, r = 1) {
-		e.save(), e.globalAlpha = r, w(e, t), e.fillStyle = n, e.fill(), e.restore();
+	function E(e, t, n, r = 1) {
+		e.save(), e.globalAlpha = r, T(e, t), e.fillStyle = n, e.fill(), e.restore();
 	}
-	function E(e, t) {
+	function k(e) {
+		return e.map((e, t) => `${t === 0 ? "M" : "L"} ${e.x.toFixed(1)} ${e.y.toFixed(1)}`).join(" ") + " Z";
+	}
+	function A() {
+		if (typeof Image > "u") return null;
+		let e = k(y), t = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 160 1180 580">
+  <defs>
+    <linearGradient id="base" x1="170" y1="220" x2="900" y2="700" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#aeb9c7"/>
+      <stop offset="0.42" stop-color="#778393"/>
+      <stop offset="1" stop-color="#3f4855"/>
+    </linearGradient>
+    <linearGradient id="moonFace" x1="360" y1="260" x2="1010" y2="610" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dce4ed" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#a8b6c8" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#232b38" stop-opacity="0.20"/>
+    </linearGradient>
+    <linearGradient id="shadowFace" x1="80" y1="420" x2="690" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#111722" stop-opacity="0.34"/>
+      <stop offset="0.68" stop-color="#202838" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#202838" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="stoneGrain" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.055" numOctaves="3" seed="23"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.11"/>
+      </feComponentTransfer>
+    </filter>
+    <clipPath id="mountainClip">
+      <path d="${e}"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#mountainClip)">
+    <path d="${e}" fill="url(#base)"/>
+    <path d="M 346 402 L 548 322 L 842 222 L 1040 690 L 672 680 Z" fill="url(#moonFace)"/>
+    <path d="M -80 684 L -20 566 L 238 478 L 388 508 L 276 690 Z" fill="url(#shadowFace)"/>
+    <path d="M 800 226 L 952 224 L 1018 356 L 1038 692 L 828 680 Z" fill="#252e3b" opacity="0.20"/>
+    <path d="M 400 386 L 614 298 L 782 236 L 650 515 Z" fill="#edf2f8" opacity="0.045"/>
+    <path d="${e}" filter="url(#stoneGrain)" opacity="0.7"/>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 210 502 C 286 484 330 506 410 488" stroke="#eef3f8" stroke-opacity="0.035" stroke-width="2"/>
+      <path d="M 370 428 C 452 398 520 410 610 372" stroke="#eef3f8" stroke-opacity="0.045" stroke-width="2"/>
+      <path d="M 560 346 C 650 314 710 292 820 240" stroke="#f6f0df" stroke-opacity="0.052" stroke-width="2.4"/>
+      <path d="M 686 486 C 780 456 874 452 1014 414" stroke="#101722" stroke-opacity="0.10" stroke-width="3"/>
+    </g>
+  </g>
+  <path d="${_.map((e, t) => `${t === 0 ? "M" : "L"} ${e.x.toFixed(1)} ${e.y.toFixed(1)}`).join(" ")}" fill="none" stroke="#f0f4fa" stroke-opacity="0.20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`, n = new Image();
+		return n.decoding = "async", n.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(t)}`, n;
+	}
+	let j = A();
+	function M(e, t) {
 		e.save();
 		for (let n of S) {
 			let r = .52 + .48 * Math.sin(t * .0013 * n.pulse + n.phase), i = n.alpha * r, a = n.hue === 220 ? 200 : n.hue === 30 ? 255 : 244, o = n.hue === 220 ? 220 : n.hue === 30 ? 230 : 236, s = n.hue === 220 ? 255 : n.hue === 30 ? 200 : 212;
@@ -548,7 +608,7 @@ function k(e) {
 		}
 		e.restore();
 	}
-	function k(e, n, r, i, a) {
+	function N(e, n, r, i, a) {
 		e.save();
 		for (let o of C) {
 			let s = Math.sin(a * o.speed + o.phase) * o.drift, c = n * o.parallax, l = e.createLinearGradient(0, o.y, 0, o.y + o.height);
@@ -556,13 +616,22 @@ function k(e) {
 		}
 		e.restore();
 	}
-	function A(e, r, i, a, o) {
+	function P(e, t, n) {
+		e.save(), e.globalCompositeOperation = "screen";
+		for (let r of w) {
+			let i = Math.sin(n * 18e-5 + r.phase) * r.drift, a = .65 + .35 * Math.sin(n * 42e-5 + r.phase * 1.7), o = r.alpha * a * (1 + t.sceneFx.glowBoost), s = e.createRadialGradient(r.x + i, r.y, 0, r.x + i, r.y, r.radius * 7);
+			s.addColorStop(0, `rgba(224, 232, 242, ${o.toFixed(3)})`), s.addColorStop(1, "rgba(224, 232, 242, 0)"), e.fillStyle = s, e.beginPath(), e.arc(r.x + i, r.y, r.radius * 7, 0, O), e.fill();
+		}
+		let r = e.createLinearGradient(610, 72, 900, 252);
+		r.addColorStop(0, "rgba(210, 224, 240, 0)"), r.addColorStop(.44, `rgba(210, 224, 240, ${(.035 + t.sceneFx.glowBoost * .045).toFixed(3)})`), r.addColorStop(1, "rgba(210, 224, 240, 0)"), e.fillStyle = r, e.fillRect(520, 42, 460, 250), e.restore();
+	}
+	function F(e, r, i, a, o) {
 		let s = e.createLinearGradient(0, 0, 0, n);
-		s.addColorStop(0, "#111728"), s.addColorStop(.18, "#151c2e"), s.addColorStop(.42, D.skyTop), s.addColorStop(.62, D.skyMid), s.addColorStop(1, D.skyHaze), e.fillStyle = s, e.fillRect(-1e3, 0, t + 2e3, n + 1e3), E(e, o);
+		s.addColorStop(0, "#111728"), s.addColorStop(.18, "#151c2e"), s.addColorStop(.42, D.skyTop), s.addColorStop(.62, D.skyMid), s.addColorStop(1, D.skyHaze), e.fillStyle = s, e.fillRect(-1e3, 0, t + 2e3, n + 1e3), M(e, o);
 		let c = i.moonRadius, l = 1 + a.sceneFx.glowBoost, u = e.createRadialGradient(840, 112, c * .5, 840, 112, 320 * i.moonGlowScale * l);
 		u.addColorStop(0, `rgba(240, 216, 162, ${(.06 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(.3, `rgba(230, 210, 170, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(.7, `rgba(180, 200, 230, ${(.015 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(1, "rgba(180, 200, 230, 0)"), e.fillStyle = u, e.fillRect(-1e3, -1e3, t + 2e3, n + 2e3);
 		let d = e.createRadialGradient(840, 112, c * .8, 840, 112, 160 * i.moonGlowScale * l);
-		d.addColorStop(0, `rgba(248, 228, 180, ${(.22 * i.moonGlowAlpha * l).toFixed(3)})`), d.addColorStop(.35, `rgba(240, 216, 162, ${(.1 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(.7, `rgba(240, 216, 162, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(1, "rgba(240, 216, 162, 0)"), e.fillStyle = d, e.fillRect(540, -188, 600, 600), e.save(), e.globalAlpha = i.moonAlpha, e.beginPath(), e.arc(840, 112, c, 0, O), e.clip();
+		d.addColorStop(0, `rgba(248, 228, 180, ${(.22 * i.moonGlowAlpha * l).toFixed(3)})`), d.addColorStop(.35, `rgba(240, 216, 162, ${(.1 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(.7, `rgba(240, 216, 162, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(1, "rgba(240, 216, 162, 0)"), e.fillStyle = d, e.fillRect(540, -188, 600, 600), P(e, a, o), e.save(), e.globalAlpha = i.moonAlpha, e.beginPath(), e.arc(840, 112, c, 0, O), e.clip();
 		let f = e.createRadialGradient(840 - c * .3, 112 - c * .25, 0, 840, 112, c);
 		f.addColorStop(0, "#fae8c4"), f.addColorStop(.5, "#f0d8a2"), f.addColorStop(.85, "#dfc78a"), f.addColorStop(1, "#c8b070"), e.fillStyle = f, e.fillRect(840 - c, 112 - c, c * 2, c * 2), e.globalAlpha = i.moonAlpha * .12, e.fillStyle = "#8a7a52", e.beginPath(), e.ellipse(840 - c * .15, 112 + c * .1, c * .3, c * .2, -.3, 0, O), e.fill(), e.beginPath(), e.ellipse(840 + c * .2, 112 - c * .2, c * .15, c * .18, .4, 0, O), e.fill(), e.globalAlpha = i.moonAlpha * .45;
 		let p = c * .65, m = e.createRadialGradient(840 + p, 112 + c * .1, c * .1, 840 + p, 112 + c * .1, c * 1.3);
@@ -572,10 +641,12 @@ function k(e) {
 			let r = e.createLinearGradient(0, 210, 0, n);
 			r.addColorStop(0, "rgba(246, 240, 224, 0)"), r.addColorStop(1, `rgba(246, 240, 224, ${(i.hazeAlphaBoost + a.sceneFx.hazeBoost).toFixed(3)})`), e.fillStyle = r, e.fillRect(-1e3, 210, t + 2e3, n);
 		}
-		k(e, r, i, a, o);
+		N(e, r, i, a, o);
 	}
-	function te(e, t, r, i) {
-		e.save(), e.translate(t * .18 * i.distantParallaxMultiplier, r * .04), T(e, [
+	function I(e, r, i, a, o, s) {
+		e.save(), e.translate(r * .18 * a.distantParallaxMultiplier, i * .04);
+		let c = e.createLinearGradient(0, 230, 0, 460);
+		c.addColorStop(0, "rgba(216, 226, 239, 0)"), c.addColorStop(.52, `rgba(216, 226, 239, ${(.055 + o.sceneFx.hazeBoost * .08).toFixed(3)})`), c.addColorStop(1, "rgba(216, 226, 239, 0)"), e.fillStyle = c, e.fillRect(-220, 230, t + 440, 240), E(e, [
 			{
 				x: -40,
 				y: n + 20
@@ -612,7 +683,7 @@ function k(e) {
 				x: 940,
 				y: n + 20
 			}
-		], D.farMountain, i.distantMountainAlpha), T(e, [
+		], D.farMountain, a.distantMountainAlpha), E(e, [
 			{
 				x: -40,
 				y: n + 20
@@ -649,31 +720,116 @@ function k(e) {
 				x: 940,
 				y: n + 20
 			}
-		], D.farMountainShadow, .9 * i.distantMountainAlpha), e.restore();
+		], D.farMountainShadow, .9 * a.distantMountainAlpha);
+		let l = e.createLinearGradient(0, 288, 0, 418);
+		l.addColorStop(0, "rgba(230, 236, 244, 0)"), l.addColorStop(.5, `rgba(230, 236, 244, ${(.04 + o.sceneFx.hazeBoost * .07).toFixed(3)})`), l.addColorStop(1, "rgba(230, 236, 244, 0)"), e.fillStyle = l;
+		let u = Math.sin(s * 8e-5) * 36;
+		e.fillRect(-260 + u, 286, t + 520, 150), e.restore();
 	}
-	function j(e) {
-		let r = e.createLinearGradient(640, 40, t, n);
-		r.addColorStop(0, "#5a6473"), r.addColorStop(.52, "#465061"), r.addColorStop(1, "#2b3442"), T(e, v, r, .98);
-		let o = e.createLinearGradient(140, 170, 640, n);
-		o.addColorStop(0, D.mountainLight), o.addColorStop(.45, D.mountainBase), o.addColorStop(1, D.mountainShadow), T(e, y, o), e.save(), w(e, y), e.clip();
-		let s = e.createLinearGradient(0, n, t * .78, 120);
-		s.addColorStop(0, "rgba(26, 31, 41, 0.42)"), s.addColorStop(.55, "rgba(26, 31, 41, 0.12)"), s.addColorStop(1, "rgba(255, 255, 255, 0.08)"), e.fillStyle = s, e.fillRect(-60, 0, t + 120, n + 180);
-		let c = e.createRadialGradient(i - 36, a + 18, 12, i - 36, a + 18, 168);
-		c.addColorStop(0, "rgba(248, 233, 204, 0.16)"), c.addColorStop(.45, "rgba(248, 233, 204, 0.06)"), c.addColorStop(1, "rgba(248, 233, 204, 0)"), e.fillStyle = c, e.fillRect(i - 220, a - 140, 360, 280), e.restore(), e.strokeStyle = "rgba(222, 228, 236, 0.10)", e.lineWidth = 1.5, w(e, _, !1), e.stroke();
+	function L(e, l, d) {
+		let f = e.createLinearGradient(640, 40, t, n);
+		f.addColorStop(0, "#5a6473"), f.addColorStop(.52, "#465061"), f.addColorStop(1, "#2b3442"), E(e, v, f, .98);
+		let m = e.createLinearGradient(140, 170, 640, n);
+		m.addColorStop(0, D.mountainLight), m.addColorStop(.45, D.mountainBase), m.addColorStop(1, D.mountainShadow), E(e, y, m, j?.complete ? .34 : 1), e.save(), T(e, y), e.clip(), j?.complete && j.naturalWidth > 0 && e.drawImage(j, -100, 160, 1180, 580);
+		let g = e.createLinearGradient(0, n, t * .78, 120);
+		g.addColorStop(0, "rgba(26, 31, 41, 0.42)"), g.addColorStop(.55, "rgba(26, 31, 41, 0.12)"), g.addColorStop(1, "rgba(255, 255, 255, 0.08)"), e.fillStyle = g, e.fillRect(-60, 0, t + 120, n + 180);
+		let b = e.createRadialGradient(i - 36, a + 18, 12, i - 36, a + 18, 168);
+		b.addColorStop(0, "rgba(248, 233, 204, 0.16)"), b.addColorStop(.45, "rgba(248, 233, 204, 0.06)"), b.addColorStop(1, "rgba(248, 233, 204, 0)"), e.fillStyle = b, e.fillRect(i - 220, a - 140, 360, 280);
+		let x = e.createLinearGradient(360, 260, 860, 520);
+		x.addColorStop(0, "rgba(226, 234, 242, 0.13)"), x.addColorStop(.5, "rgba(202, 214, 228, 0.08)"), x.addColorStop(1, "rgba(92, 103, 118, 0.02)"), E(e, [
+			{
+				x: 364,
+				y: h(364) + 8
+			},
+			{
+				x: 548,
+				y: h(548) - 8
+			},
+			{
+				x: i - 18,
+				y: a + 14
+			},
+			{
+				x: p + 18,
+				y: n + 118
+			},
+			{
+				x: 694,
+				y: n + 96
+			}
+		], x, 1);
+		let S = e.createLinearGradient(180, 360, 760, 530);
+		S.addColorStop(0, "rgba(18, 23, 34, 0.18)"), S.addColorStop(.62, "rgba(18, 23, 34, 0.08)"), S.addColorStop(1, "rgba(18, 23, 34, 0)"), E(e, [
+			{
+				x: -20,
+				y: r + 46
+			},
+			{
+				x: 236,
+				y: h(236) + 12
+			},
+			{
+				x: 382,
+				y: h(382) + 34
+			},
+			{
+				x: 276,
+				y: n + 116
+			},
+			{
+				x: -70,
+				y: n + 150
+			}
+		], S, 1);
+		let C = e.createLinearGradient(620, 210, 930, 460);
+		C.addColorStop(0, "rgba(242, 235, 218, 0.10)"), C.addColorStop(.44, "rgba(174, 188, 204, 0.07)"), C.addColorStop(1, "rgba(35, 43, 56, 0.14)"), E(e, [
+			{
+				x: i - 34,
+				y: a + 18
+			},
+			{
+				x: o + 8,
+				y: s + 20
+			},
+			{
+				x: c + 18,
+				y: u + 54
+			},
+			{
+				x: p + 18,
+				y: n + 126
+			},
+			{
+				x: i - 4,
+				y: n + 76
+			}
+		], C, 1), e.save(), e.globalAlpha = .22, e.lineCap = "round", e.lineJoin = "round", e.strokeStyle = `rgba(236, 241, 246, ${(.028 + l.sceneFx.hazeBoost * .018).toFixed(3)})`, e.lineWidth = 1.1;
+		for (let t = 0; t < 9; t += 1) {
+			let n = 210 + t * 72, r = h(n) + 28 + Math.sin(t * 1.7) * 10;
+			e.beginPath(), e.moveTo(n, r), e.bezierCurveTo(n + 42, r - 10, n + 82, r + 18, n + 132, r + 4), e.stroke();
+		}
+		e.restore(), e.restore(), e.strokeStyle = "rgba(236, 240, 246, 0.16)", e.lineWidth = 1.8, T(e, _, !1), e.stroke(), e.save(), e.globalCompositeOperation = "screen", e.lineCap = "round", e.lineJoin = "round", e.strokeStyle = `rgba(216, 228, 238, ${(.035 + l.sceneFx.hazeBoost * .07).toFixed(3)})`, e.lineWidth = 18, e.setLineDash([90, 58]), e.lineDashOffset = -d * .006, e.beginPath();
+		let w = _[0];
+		e.moveTo(w.x, w.y + 18);
+		for (let t = 1; t < _.length; t += 1) {
+			let n = _[t];
+			e.lineTo(n.x, n.y + 18);
+		}
+		e.stroke(), e.restore();
 	}
-	function M(e) {
+	function R(e) {
 		let i = e.createLinearGradient(0, r, 0, n + 1e3);
-		i.addColorStop(0, D.groundTop), i.addColorStop(1, D.groundBottom), T(e, b, i), e.strokeStyle = "rgba(228, 233, 240, 0.08)", e.lineWidth = 1, e.beginPath(), e.moveTo(-1e3, r), e.lineTo(t + 1e3, r), e.stroke();
+		i.addColorStop(0, D.groundTop), i.addColorStop(1, D.groundBottom), E(e, b, i), e.strokeStyle = "rgba(228, 233, 240, 0.08)", e.lineWidth = 1, e.beginPath(), e.moveTo(-1e3, r), e.lineTo(t + 1e3, r), e.stroke();
 	}
-	function N(e, t, n, r, i, a) {
+	function te(e, t, n, r, i, a) {
 		let o = h(t.position.x), s = l(o - t.bounds.max.y, -12, 90), c = (1 + l(s * .012, -.08, .75)) * a.contactShadow.spreadMul, u = i * a.contactShadow.alphaMul * (1 - l(s / 120, 0, .72));
 		e.save(), e.translate(t.position.x + 16, o + 10), e.rotate(-.16), e.scale(c, 1 / c), e.fillStyle = `rgba(10, 14, 22, ${u.toFixed(3)})`, e.beginPath(), e.ellipse(0, 0, n + s * .1, r + s * .04, 0, 0, O), e.fill(), e.restore();
 	}
-	function P(e, r, i) {
+	function ne(e, r, i) {
 		let a = i ? i.fogAlphaMul : 1, o = e.createLinearGradient(0, 172, 0, n + 80);
 		o.addColorStop(0, `rgba(236, 228, 208, ${(r.fog.nearAlpha * .4 * a).toFixed(3)})`), o.addColorStop(r.fog.depthBias, `rgba(228, 217, 196, ${(r.fog.farAlpha * .55 * a).toFixed(3)})`), o.addColorStop(1, `rgba(30, 37, 52, ${(r.fog.farAlpha * a).toFixed(3)})`), e.fillStyle = o, e.fillRect(-1200, 170, t + 2400, n);
 	}
-	function F(e, t) {
+	function re(e, t) {
 		e.save();
 		for (let n of t) {
 			let t = n.alpha * n.life;
@@ -683,19 +839,19 @@ function k(e) {
 		}
 		e.restore();
 	}
-	function I(e, t) {
+	function ie(e, t) {
 		let { viewMinX: n, viewMinY: r, visualProfile: i, layerProfile: a, sceneTime: o, qualityProfile: s, rock: c, sisyphus: l, dustParticles: u, drawRock: d, drawSisyphus: f } = t, p = {
-			sky: () => A(e, n, i, a, o),
-			distant: () => te(e, n, r, i),
+			sky: () => F(e, n, i, a, o),
+			distant: () => I(e, n, r, i, a, o),
 			mountain: () => {
-				j(e), M(e);
+				L(e, a, o), R(e);
 			},
 			gameplay: () => {},
 			fx: () => {
-				N(e, c, 32, 9, .28, a), N(e, l, 16, 6, .18, a), d(e), f(e), F(e, u);
+				te(e, c, 32, 9, .28, a), te(e, l, 16, 6, .18, a), d(e), f(e), re(e, u);
 			},
 			grade: () => {
-				P(e, a, s);
+				ne(e, a, s);
 			}
 		};
 		for (let e of a.stack) {
@@ -704,10 +860,10 @@ function k(e) {
 		}
 	}
 	return {
-		drawSceneLayers: I,
-		drawDepthFog: P,
-		drawProjectedShadow: N,
-		drawDustParticles: F
+		drawSceneLayers: ie,
+		drawDepthFog: ne,
+		drawProjectedShadow: te,
+		drawDustParticles: re
 	};
 }
 function ee() {
@@ -719,14 +875,94 @@ function ee() {
 //#endregion
 //#region src/games/sisyphus/rock-renderer.js
 var A = Math.PI * 2;
-function te({ createSeededRandom: e }) {
-	let t = null;
-	function n(t) {
+function j({ createSeededRandom: e }) {
+	let t = null, n = null, r = null;
+	function i(e) {
+		if (n && r === e) return n;
+		let t = new Path2D(), i = [
+			{
+				x: -.88,
+				y: -.42
+			},
+			{
+				x: -.62,
+				y: -.76
+			},
+			{
+				x: -.16,
+				y: -.94
+			},
+			{
+				x: .34,
+				y: -.86
+			},
+			{
+				x: .72,
+				y: -.56
+			},
+			{
+				x: .94,
+				y: -.1
+			},
+			{
+				x: .82,
+				y: .42
+			},
+			{
+				x: .46,
+				y: .78
+			},
+			{
+				x: -.05,
+				y: .94
+			},
+			{
+				x: -.58,
+				y: .78
+			},
+			{
+				x: -.9,
+				y: .34
+			},
+			{
+				x: -.98,
+				y: -.08
+			}
+		].map((t) => ({
+			x: t.x * e,
+			y: t.y * e
+		}));
+		t.moveTo(i[0].x, i[0].y);
+		for (let e = 1; e < i.length; e += 1) {
+			let n = i[e], r = i[(e + 1) % i.length];
+			t.quadraticCurveTo(n.x, n.y, (n.x + r.x) * .5, (n.y + r.y) * .5);
+		}
+		return t.closePath(), n = t, r = e, n;
+	}
+	function a(t) {
 		let n = t * 2, r = typeof OffscreenCanvas < "u" ? new OffscreenCanvas(n, n) : (() => {
 			let e = document.createElement("canvas");
 			return e.width = n, e.height = n, e;
 		})(), i = r.getContext("2d"), a = e(42995), o = i.createRadialGradient(t * .62, t * .32, 0, t, t, t * 1.05);
-		o.addColorStop(0, "#7a8d9e"), o.addColorStop(.2, "#657a8c"), o.addColorStop(.45, "#4d5e6c"), o.addColorStop(.7, "#3a4854"), o.addColorStop(1, "#1e2830"), i.fillStyle = o, i.beginPath(), i.arc(t, t, t, 0, A), i.fill();
+		o.addColorStop(0, "#7a8d9e"), o.addColorStop(.2, "#657a8c"), o.addColorStop(.45, "#4d5e6c"), o.addColorStop(.7, "#3a4854"), o.addColorStop(1, "#1e2830"), i.fillStyle = o, i.beginPath(), i.arc(t, t, t, 0, A), i.fill(), i.save(), i.beginPath(), i.arc(t, t, t, 0, A), i.clip();
+		let s = {
+			x: t - 2.5,
+			y: t + 1.5
+		};
+		for (let e = 0; e < 11; e++) {
+			let n = -Math.PI * .95 + e / 11 * A + (a() - .5) * .16, r = -Math.PI * .95 + (e + 1) / 11 * A + (a() - .5) * .16, o = (n + r) * .5, c = t * (.17 + a() * .16), l = t * (.76 + a() * .2), u = t * (.76 + a() * .2), d = {
+				x: t + Math.cos(n) * l,
+				y: t + Math.sin(n) * l
+			}, f = {
+				x: t + Math.cos(r) * u,
+				y: t + Math.sin(r) * u
+			}, p = {
+				x: s.x + Math.cos(o + (a() - .5) * .7) * c,
+				y: s.y + Math.sin(o + (a() - .5) * .7) * c
+			}, m = Math.cos(o + Math.PI * .72) * .5 + Math.sin(o + Math.PI * .68) * .5, h = Math.max(0, m) * .14, g = Math.max(0, -m) * .18, _ = i.createLinearGradient(d.x, d.y, p.x, p.y);
+			_.addColorStop(0, `rgba(208, 226, 238, ${h.toFixed(3)})`), _.addColorStop(.55, `rgba(74, 91, 104, ${(.035 + a() * .04).toFixed(3)})`), _.addColorStop(1, `rgba(7, 11, 18, ${(.045 + g).toFixed(3)})`), i.fillStyle = _, i.beginPath(), i.moveTo(d.x, d.y), i.lineTo(f.x, f.y), i.lineTo(p.x, p.y), i.closePath(), i.fill(), i.strokeStyle = `rgba(210, 226, 238, ${(.025 + h * .35).toFixed(3)})`, i.lineWidth = .45, i.stroke();
+		}
+		i.restore();
 		for (let e = 0; e < 18; e++) {
 			let e = a() * A, n = a() * t * .8, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = 6 + a() * 14, c = a() > .4, l = i.createRadialGradient(r, o, 0, r, o, s);
 			c ? (l.addColorStop(0, `rgba(18, 24, 32, ${(.08 + a() * .12).toFixed(2)})`), l.addColorStop(1, "rgba(18, 24, 32, 0)")) : (l.addColorStop(0, `rgba(140, 160, 180, ${(.04 + a() * .06).toFixed(2)})`), l.addColorStop(1, "rgba(140, 160, 180, 0)")), i.fillStyle = l, i.beginPath(), i.arc(r, o, s, 0, A), i.fill();
@@ -738,34 +974,67 @@ function te({ createSeededRandom: e }) {
 			let p = o + (a() - .5) * 18, m = s + (a() - .5) * 18;
 			i.quadraticCurveTo(p, m, u, d), f ? (i.strokeStyle = `rgba(10, 14, 22, ${(.35 + a() * .25).toFixed(2)})`, i.lineWidth = 1 + a() * 1.2) : e % 3 == 1 ? (i.strokeStyle = `rgba(160, 180, 200, ${(.06 + a() * .07).toFixed(2)})`, i.lineWidth = .4 + a() * .5) : (i.strokeStyle = `rgba(30, 38, 48, ${(.15 + a() * .15).toFixed(2)})`, i.lineWidth = .6 + a() * .7), i.stroke();
 		}
-		let s = Math.round(t * t * 2.2);
-		for (let e = 0; e < s; e++) {
+		for (let e = 0; e < 5; e++) {
+			let e = -Math.PI * .8 + a() * Math.PI * 1.55, n = t * (.15 + a() * .45), r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = e + Math.PI * (.22 + a() * .42), c = 3 + Math.floor(a() * 3);
+			i.beginPath(), i.moveTo(r, o);
+			let l = [{
+				x: r,
+				y: o
+			}];
+			for (let e = 0; e < c; e++) {
+				s += (a() - .5) * .75;
+				let e = t * (.14 + a() * .19);
+				r += Math.cos(s) * e, o += Math.sin(s) * e, l.push({
+					x: r,
+					y: o
+				}), i.lineTo(r, o);
+			}
+			i.strokeStyle = `rgba(5, 9, 16, ${(.42 + a() * .22).toFixed(3)})`, i.lineWidth = 1.35 + a() * .7, i.lineCap = "round", i.lineJoin = "round", i.stroke(), i.beginPath(), i.moveTo(l[0].x - .7, l[0].y - .45);
+			for (let e = 1; e < l.length; e++) i.lineTo(l[e].x - .7, l[e].y - .45);
+			i.strokeStyle = `rgba(194, 214, 228, ${(.04 + a() * .035).toFixed(3)})`, i.lineWidth = .65, i.stroke();
+			for (let e = 1; e < l.length - 1; e++) if (a() < .52) {
+				let n = s + (a() > .5 ? 1 : -1) * (.8 + a() * .55), r = t * (.08 + a() * .11);
+				i.beginPath(), i.moveTo(l[e].x, l[e].y), i.lineTo(l[e].x + Math.cos(n) * r, l[e].y + Math.sin(n) * r), i.strokeStyle = `rgba(6, 10, 18, ${(.24 + a() * .18).toFixed(3)})`, i.lineWidth = .65 + a() * .45, i.stroke();
+			}
+		}
+		for (let e = 0; e < 13; e++) {
+			let e = a() * A, n = t * (.82 + a() * .13), r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = e + Math.PI * .5, c = 2.2 + a() * 3.2;
+			i.save(), i.translate(r, o), i.rotate(s), i.fillStyle = `rgba(3, 6, 12, ${(.13 + a() * .18).toFixed(3)})`, i.beginPath(), i.moveTo(-c * .9, 0), i.lineTo(c * .7, -c * .42), i.lineTo(c * .5, c * .48), i.closePath(), i.fill(), a() > .42 && (i.strokeStyle = `rgba(205, 222, 235, ${(.035 + a() * .04).toFixed(3)})`, i.lineWidth = .55, i.beginPath(), i.moveTo(-c * .65, -c * .08), i.lineTo(c * .55, -c * .32), i.stroke()), i.restore();
+		}
+		let c = Math.round(t * t * 2.2);
+		for (let e = 0; e < c; e++) {
 			let e = a() * A, n = Math.sqrt(a()) * t * .97, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n;
 			i.fillStyle = a() > .55 ? `rgba(190, 210, 230, ${(.02 + a() * .04).toFixed(2)})` : `rgba(8, 12, 20, ${(.04 + a() * .07).toFixed(2)})`, i.fillRect(r, o, 1, 1);
 		}
-		let c = i.createRadialGradient(t, t, t * .55, t, t, t);
-		return c.addColorStop(0, "rgba(0, 0, 0, 0)"), c.addColorStop(.7, "rgba(0, 0, 0, 0)"), c.addColorStop(1, "rgba(0, 0, 0, 0.3)"), i.fillStyle = c, i.beginPath(), i.arc(t, t, t, 0, A), i.fill(), i.restore(), r;
+		let l = i.createRadialGradient(t, t, t * .55, t, t, t);
+		return l.addColorStop(0, "rgba(0, 0, 0, 0)"), l.addColorStop(.7, "rgba(0, 0, 0, 0)"), l.addColorStop(1, "rgba(0, 0, 0, 0.3)"), i.fillStyle = l, i.beginPath(), i.arc(t, t, t, 0, A), i.fill(), i.restore(), r;
 	}
-	function r(e, r, i) {
-		let a = i;
-		t ||= n(a);
-		let o = r.position.x, s = r.position.y, c = r.angle;
-		e.save(), e.translate(o, s), e.save(), e.shadowColor = "rgba(4, 8, 16, 0.65)", e.shadowBlur = 14, e.shadowOffsetX = 4, e.shadowOffsetY = 5, e.beginPath(), e.arc(0, 0, a, 0, A), e.fillStyle = "#1e2830", e.fill(), e.restore(), e.save(), e.beginPath(), e.arc(0, 0, a, 0, A), e.clip(), e.rotate(c), e.drawImage(t, -a, -a, a * 2, a * 2), e.rotate(-c);
-		let l = e.createRadialGradient(0, 0, a * .15, 0, 0, a);
-		l.addColorStop(0, "rgba(0, 0, 0, 0)"), l.addColorStop(.5, "rgba(0, 0, 0, 0)"), l.addColorStop(.8, "rgba(0, 0, 0, 0.25)"), l.addColorStop(1, "rgba(0, 0, 0, 0.6)"), e.fillStyle = l, e.fillRect(-a, -a, a * 2, a * 2);
-		let u = e.createLinearGradient(0, -a, 0, a);
-		u.addColorStop(0, "rgba(0, 0, 0, 0)"), u.addColorStop(.6, "rgba(0, 0, 0, 0)"), u.addColorStop(1, "rgba(0, 0, 0, 0.35)"), e.fillStyle = u, e.fillRect(-a, -a, a * 2, a * 2);
-		let d = -a * .42, f = -a * .48, p = e.createRadialGradient(d, f, 0, d, f, a * 1.15);
-		p.addColorStop(0, "rgba(210, 230, 248, 0.28)"), p.addColorStop(.25, "rgba(200, 225, 248, 0.14)"), p.addColorStop(.55, "rgba(200, 225, 248, 0.04)"), p.addColorStop(1, "rgba(200, 225, 248, 0)"), e.fillStyle = p, e.fillRect(-a, -a, a * 2, a * 2);
-		let m = -a * .32, h = -a * .36, g = e.createRadialGradient(m, h, 0, m, h, a * .3);
-		g.addColorStop(0, "rgba(240, 248, 255, 0.12)"), g.addColorStop(.5, "rgba(220, 235, 248, 0.04)"), g.addColorStop(1, "rgba(220, 235, 248, 0)"), e.fillStyle = g, e.fillRect(-a, -a, a * 2, a * 2), e.restore(), e.beginPath(), e.arc(0, 0, a - .5, 0, A), e.strokeStyle = "rgba(10, 16, 24, 0.2)", e.lineWidth = 1, e.stroke(), e.restore();
+	function o(e, n, r) {
+		let o = r;
+		t ||= a(o);
+		let s = n.position.x, c = n.position.y, l = n.angle;
+		e.save(), e.translate(s, c), e.save(), e.shadowColor = "rgba(4, 8, 16, 0.65)", e.shadowBlur = 14, e.shadowOffsetX = 4, e.shadowOffsetY = 5, e.beginPath(), e.arc(0, 0, o, 0, A), e.fillStyle = "#1e2830", e.fill(), e.restore(), e.save(), e.beginPath(), e.arc(0, 0, o, 0, A), e.clip(), e.rotate(l), e.drawImage(t, -o, -o, o * 2, o * 2), e.rotate(-l);
+		let u = e.createRadialGradient(0, 0, o * .15, 0, 0, o);
+		u.addColorStop(0, "rgba(0, 0, 0, 0)"), u.addColorStop(.5, "rgba(0, 0, 0, 0)"), u.addColorStop(.8, "rgba(0, 0, 0, 0.25)"), u.addColorStop(1, "rgba(0, 0, 0, 0.6)"), e.fillStyle = u, e.fillRect(-o, -o, o * 2, o * 2);
+		let d = e.createLinearGradient(0, -o, 0, o);
+		d.addColorStop(0, "rgba(0, 0, 0, 0)"), d.addColorStop(.6, "rgba(0, 0, 0, 0)"), d.addColorStop(1, "rgba(0, 0, 0, 0.35)"), e.fillStyle = d, e.fillRect(-o, -o, o * 2, o * 2);
+		let f = -o * .42, p = -o * .48, m = e.createRadialGradient(f, p, 0, f, p, o * 1.15);
+		m.addColorStop(0, "rgba(210, 230, 248, 0.28)"), m.addColorStop(.25, "rgba(200, 225, 248, 0.14)"), m.addColorStop(.55, "rgba(200, 225, 248, 0.04)"), m.addColorStop(1, "rgba(200, 225, 248, 0)"), e.fillStyle = m, e.fillRect(-o, -o, o * 2, o * 2);
+		let h = -o * .32, g = -o * .36, _ = e.createRadialGradient(h, g, 0, h, g, o * .3);
+		_.addColorStop(0, "rgba(240, 248, 255, 0.12)"), _.addColorStop(.5, "rgba(220, 235, 248, 0.04)"), _.addColorStop(1, "rgba(220, 235, 248, 0)"), e.fillStyle = _, e.fillRect(-o, -o, o * 2, o * 2), e.restore(), e.beginPath(), e.arc(0, 0, o - .5, 0, A), e.strokeStyle = "rgba(10, 16, 24, 0.2)", e.lineWidth = 1, e.stroke(), e.save(), e.rotate(l * .65);
+		let v = i(o - 1.15);
+		e.strokeStyle = "rgba(215, 230, 240, 0.085)", e.lineWidth = .85, e.stroke(v), e.globalCompositeOperation = "multiply", e.strokeStyle = "rgba(4, 8, 14, 0.26)", e.lineWidth = 1.25, e.stroke(v), e.restore(), e.restore();
 	}
-	return { drawRock: r };
+	return { drawRock: o };
 }
 //#endregion
 //#region src/games/sisyphus/sisyphus-renderer.js
-var j = Math.PI * 2;
-function M({ GAME_STATE: e, PEAK_A_X: t }) {
+var M = Math.PI * 2, N = Object.freeze({
+	fill: "#0f1520",
+	shadow: "#080c14",
+	skin: "#1a2536"
+});
+function P({ GAME_STATE: e, PEAK_A_X: t }) {
 	function n(e, t) {
 		let { sisyphusBody: n, gameState: i, lastGameState: a, stateTransitionTimer: o, STATE_TRANSITION_MAX: s, isPushing: c, sceneTime: u } = t, d = l(n.render.opacity, 0, 1);
 		if (!(d <= .005)) if (o > 0 && a) {
@@ -773,61 +1042,415 @@ function M({ GAME_STATE: e, PEAK_A_X: t }) {
 			t > .01 && r(e, a, d * t, n, c, u), f > .01 && r(e, i, d * f, n, c, u);
 		} else r(e, i, d, n, c, u);
 	}
-	function r(t, n, r, l, u, d) {
+	function r(t, n, r, i, a, o) {
 		if (r <= .005) return;
-		t.save(), t.globalAlpha = r, t.translate(l.position.x, l.position.y), t.fillStyle = "#0a0e18", t.strokeStyle = "#0a0e18", t.lineCap = "round", t.lineJoin = "round", t.shadowColor = "rgba(0,0,0,0.5)", t.shadowBlur = 8, t.shadowOffsetY = 3;
-		let f = l.position.x;
-		n === e.PLAYING ? i(t, f, u, d) : n === e.SUMMIT ? a(t, d) : n === e.SIS_DESCENDING ? o(t, f, d) : s(t, d), t.shadowColor = "transparent", t.shadowBlur = 0, c(t, n, f, r), t.restore();
+		t.save(), t.globalAlpha = r, t.translate(i.position.x, i.position.y), t.lineCap = "round", t.lineJoin = "round";
+		let s = i.position.x;
+		n === e.PLAYING ? d(t, s, a, o) : n === e.SUMMIT ? f(t, o) : n === e.SIS_DESCENDING ? p(t, s, o) : m(t, o), t.restore();
 	}
 	function i(e, t, n, r) {
-		let i = n ? 1 + .01 * Math.sin(r * .008) : 1;
-		e.scale(i, i);
-		let a = Math.sin(t * .16), o = n ? Math.sin(r * .02) * 1 : 0;
-		e.beginPath(), e.moveTo(-2, 8), e.lineTo(-8 + a * 3, 22), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(0, 8), e.lineTo(2 - a * 2.5, 22), e.lineWidth = 8, e.stroke(), e.beginPath(), e.moveTo(8, -10), e.bezierCurveTo(4, -2, -1, 4, -3, 9), e.lineWidth = 13, e.stroke(), e.beginPath(), e.arc(9 + o * .2, -14, 6.5, 0, j), e.fill(), e.beginPath(), e.moveTo(6, -6), e.lineTo(12 + o * .3, -12 + o * .15), e.lineWidth = 6, e.stroke(), e.beginPath(), e.moveTo(3, 2), e.lineTo(12 + o * .2, -3 + o * .2), e.lineWidth = 5.5, e.stroke();
+		if (!(t.length < 2)) {
+			e.strokeStyle = N.shadow, e.lineWidth = n + 1.2, e.beginPath(), e.moveTo(t[0].x, t[0].y);
+			for (let n = 1; n < t.length; n++) e.lineTo(t[n].x, t[n].y);
+			e.stroke(), e.strokeStyle = N.fill, e.lineWidth = n, e.beginPath(), e.moveTo(t[0].x, t[0].y);
+			for (let n = 1; n < t.length; n++) e.lineTo(t[n].x, t[n].y);
+			e.stroke();
+		}
 	}
 	function a(e, t) {
+		e.fillStyle = N.fill, e.beginPath(), e.moveTo(t[0].x, t[0].y);
+		for (let n = 1; n < t.length; n++) e.lineTo(t[n].x, t[n].y);
+		e.closePath(), e.fill(), e.strokeStyle = N.shadow, e.lineWidth = 1, e.stroke();
+	}
+	function o(e, t, n, r, i) {
+		e.save(), e.translate(t, n), e.rotate(i || 0), e.fillStyle = N.shadow, e.beginPath(), e.ellipse(.5, .8, r * .88, r * 1.05, 0, 0, M), e.fill(), e.fillStyle = N.fill, e.beginPath(), e.ellipse(0, 0, r * .8, r * .95, 0, 0, M), e.fill(), e.restore();
+	}
+	function s(e, t, n, r) {
+		e.fillStyle = N.skin, e.beginPath(), e.arc(t, n, r, 0, M), e.fill();
+	}
+	function c(e, t, n, r) {
+		e.save(), e.globalAlpha *= r, e.fillStyle = N.shadow, e.beginPath(), e.ellipse(t + 1.5, n, 4.5, 1.8, .08, 0, M), e.fill(), e.restore();
+	}
+	function u(e, t, n) {
+		e.save(), e.fillStyle = "rgba(0,0,0,0.25)", e.beginPath(), e.ellipse(t, 22.5, n, 2, 0, 0, M), e.fill(), e.restore();
+	}
+	function d(e, n, r, d) {
+		let f = r ? 1 + .005 * Math.sin(d * .006) : 1;
+		e.scale(f, f), u(e, 0, 8);
+		let p = l(Math.sin(n * .13) + Math.sin(n * .21) * .3, -1, 1), m = Math.abs(p);
+		r && .5 + .5 * Math.sin(d * .011);
+		let h = -m * .5;
+		p * .2, p * .008;
+		let g = -1 + p * .4, _ = 1.5, v = 8 + h, y = Math.max(0, p), b = Math.max(0, -p), x = g + p * 3, S = 21 - y * _, C = (g + x) * .5 + 2.5 + b * 1.5, w = (v + S) * .5 - y * 1.5, T = Math.max(0, -p), E = Math.max(0, p), D = g - p * 3, O = 21 - T * _, k = (g + D) * .5 + 2.5 + E * 1.5, ee = (v + O) * .5 - T * 1.5;
+		x < D ? (c(e, x, S + 1, .88), i(e, [
+			{
+				x: g,
+				y: v
+			},
+			{
+				x: C,
+				y: w
+			},
+			{
+				x,
+				y: S
+			}
+		], 4, !1), c(e, D, O + 1, .92), i(e, [
+			{
+				x: g,
+				y: v
+			},
+			{
+				x: k,
+				y: ee
+			},
+			{
+				x: D,
+				y: O
+			}
+		], 4, !1)) : (c(e, D, O + 1, .88), i(e, [
+			{
+				x: g,
+				y: v
+			},
+			{
+				x: k,
+				y: ee
+			},
+			{
+				x: D,
+				y: O
+			}
+		], 4, !1), c(e, x, S + 1, .92), i(e, [
+			{
+				x: g,
+				y: v
+			},
+			{
+				x: C,
+				y: w
+			},
+			{
+				x,
+				y: S
+			}
+		], 4, !1));
+		let A = l(n / t, 0, 1), j = A * .08, M = A * 1.2, N = r ? 1 + A * 2 : 0;
+		e.save(), e.rotate(j), a(e, [
+			{
+				x: 9,
+				y: -12 + N + M * .4
+			},
+			{
+				x: 3,
+				y: -6 + M * .2
+			},
+			{
+				x: -4 - A * 1.5,
+				y: 6
+			},
+			{
+				x: -2,
+				y: 12
+			},
+			{
+				x: 5,
+				y: 5
+			},
+			{
+				x: 11,
+				y: -6.5 + N * .3 + M * .3
+			}
+		]), i(e, [
+			{
+				x: 2,
+				y: 1
+			},
+			{
+				x: 9,
+				y: -2
+			},
+			{
+				x: 14,
+				y: -3.5
+			}
+		], 3.2, !1), s(e, 14.4, -3.7, 2), i(e, [
+			{
+				x: 6,
+				y: -7
+			},
+			{
+				x: 11,
+				y: -11
+			},
+			{
+				x: 14.5,
+				y: -13
+			}
+		], 3.2, !1), s(e, 14.8, -13.2, 1.8), o(e, 9, -15 + M * .3 + (r ? .5 : 0), 6, -.28 - A * .06), e.restore();
+	}
+	function f(e, t) {
 		let n = 1 + .008 * Math.sin(t * .0025);
-		e.scale(n, n), e.beginPath(), e.moveTo(-2, 6), e.lineTo(-5, 22), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(2, 6), e.lineTo(4, 22), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(0, -12), e.bezierCurveTo(-1, -4, -1, 2, 0, 7), e.lineWidth = 12, e.stroke(), e.beginPath(), e.arc(-1, -17, 6.5, 0, j), e.fill(), e.beginPath(), e.moveTo(-1, -6), e.lineTo(-10, 9), e.lineWidth = 5.5, e.stroke(), e.beginPath(), e.moveTo(1, -6), e.lineTo(8, 8), e.lineWidth = 5, e.stroke();
+		e.scale(n, n), u(e, 0, 7), c(e, -2.5, 22, .9), c(e, 3, 22, .9), i(e, [
+			{
+				x: -1,
+				y: 6
+			},
+			{
+				x: -2.5,
+				y: 15
+			},
+			{
+				x: -3,
+				y: 21
+			}
+		], 4, !1), i(e, [
+			{
+				x: 1,
+				y: 6
+			},
+			{
+				x: 2.5,
+				y: 15
+			},
+			{
+				x: 3,
+				y: 21
+			}
+		], 4, !1), a(e, [
+			{
+				x: -4.6,
+				y: -12
+			},
+			{
+				x: 4.7,
+				y: -12.4
+			},
+			{
+				x: 5.3,
+				y: 6.8
+			},
+			{
+				x: 1.6,
+				y: 10.5
+			},
+			{
+				x: -4.2,
+				y: 7.4
+			}
+		]), i(e, [
+			{
+				x: -3,
+				y: -6
+			},
+			{
+				x: -5,
+				y: 2
+			},
+			{
+				x: -3.5,
+				y: 9
+			}
+		], 3.2, !1), i(e, [
+			{
+				x: 3,
+				y: -6
+			},
+			{
+				x: 5,
+				y: 2
+			},
+			{
+				x: 4,
+				y: 9.5
+			}
+		], 3.2, !1), o(e, -.6, -17.3, 6, .03);
 	}
-	function o(e, t, n) {
-		let r = Math.sin(t * .09), i = r * 5;
-		e.beginPath(), e.moveTo(-3, 9), e.lineTo(-7 + r * 3.5, 22), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(0, 9), e.lineTo(3 - r * 3.5, 22), e.lineWidth = 8, e.stroke(), e.beginPath(), e.moveTo(1, -8), e.bezierCurveTo(-1, -1, -3, 4, -4, 10), e.lineWidth = 12, e.stroke(), e.beginPath(), e.arc(0, -13, 6.5, 0, j), e.fill(), e.beginPath(), e.moveTo(-1, -2), e.lineTo(-8 + i, 10 + i * .5), e.lineWidth = 5.5, e.stroke(), e.beginPath(), e.moveTo(0, -2), e.lineTo(6 - i, 8 - i * .5), e.lineWidth = 5, e.stroke();
+	function p(e, t, n) {
+		let r = Math.sin(t * .09), l = r * 3;
+		u(e, -1, 7), c(e, -4 + r * 1.5, 22, .84), c(e, 1.5 - r * 1.5, 22, .84), i(e, [
+			{
+				x: -1.5,
+				y: 8
+			},
+			{
+				x: -3 + r * 1.5,
+				y: 15
+			},
+			{
+				x: -4 + r * 1.5,
+				y: 21.5
+			}
+		], 4, !1), i(e, [
+			{
+				x: 0,
+				y: 8
+			},
+			{
+				x: 1 - r * 1.5,
+				y: 15
+			},
+			{
+				x: 1.5 - r * 1.5,
+				y: 21.5
+			}
+		], 4, !1), a(e, [
+			{
+				x: 2.8,
+				y: -10.5
+			},
+			{
+				x: 7.2,
+				y: -5.5
+			},
+			{
+				x: 2.5,
+				y: 7.5
+			},
+			{
+				x: -4.8,
+				y: 11
+			},
+			{
+				x: -6.4,
+				y: 3.5
+			},
+			{
+				x: -2.8,
+				y: -7.8
+			}
+		]), i(e, [
+			{
+				x: -1.2,
+				y: -2
+			},
+			{
+				x: -6 + l,
+				y: 5
+			},
+			{
+				x: -8 + l,
+				y: 10
+			}
+		], 3.2, !1), s(e, -8.2 + l, 10.2, 1.8), i(e, [
+			{
+				x: 1.4,
+				y: -2.2
+			},
+			{
+				x: 5 - l,
+				y: 4
+			},
+			{
+				x: 6.5 - l,
+				y: 8.5
+			}
+		], 3.2, !1), s(e, 6.6 - l, 8.8, 1.8), o(e, -.3, -13.8, 6, .32);
 	}
-	function s(e, t) {
+	function m(e, t) {
 		let n = 1 + .006 * Math.sin(t * .0018);
-		e.scale(n, n), e.beginPath(), e.moveTo(-2, 7), e.lineTo(-6, 16), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(-6, 16), e.lineTo(-3, 22), e.lineWidth = 7, e.stroke(), e.beginPath(), e.moveTo(0, 7), e.lineTo(4, 16), e.lineWidth = 9, e.stroke(), e.beginPath(), e.moveTo(4, 16), e.lineTo(5, 22), e.lineWidth = 7, e.stroke(), e.beginPath(), e.moveTo(1, -10), e.bezierCurveTo(0, -3, -1, 2, -1, 8), e.lineWidth = 12, e.stroke(), e.beginPath(), e.arc(3, -15, 6.5, 0, j), e.fill(), e.beginPath(), e.moveTo(2, -4), e.lineTo(6, 8), e.lineWidth = 5, e.stroke(), e.beginPath(), e.moveTo(-1, -4), e.lineTo(-5, 7), e.lineWidth = 5, e.stroke();
-	}
-	function c(n, r, i, a) {
-		let o = (.05 + l(i / t, .08, 1) * .14) * a;
-		n.save(), n.globalCompositeOperation = "screen", n.strokeStyle = `rgba(148,202,248,${o.toFixed(3)})`, n.lineCap = "round", r === e.PLAYING ? (n.beginPath(), n.moveTo(8, -10), n.bezierCurveTo(4, -2, -1, 4, -3, 9), n.lineWidth = 3, n.stroke()) : r === e.SUMMIT ? (n.beginPath(), n.moveTo(0, -12), n.bezierCurveTo(-1, -4, -1, 2, 0, 7), n.lineWidth = 3, n.stroke()) : r === e.SIS_DESCENDING ? (n.beginPath(), n.moveTo(1, -8), n.bezierCurveTo(-1, -1, -3, 4, -4, 10), n.lineWidth = 3, n.stroke()) : (n.beginPath(), n.moveTo(1, -10), n.bezierCurveTo(0, -3, -1, 2, -1, 8), n.lineWidth = 2.5, n.stroke()), n.restore();
+		e.scale(n, n), u(e, 1, 7), c(e, -2, 22, .78), c(e, 3.5, 22, .82), i(e, [
+			{
+				x: -1,
+				y: 7
+			},
+			{
+				x: -2.5,
+				y: 15.5
+			},
+			{
+				x: -1.5,
+				y: 21.6
+			}
+		], 4, !1), i(e, [
+			{
+				x: .5,
+				y: 7
+			},
+			{
+				x: 2.5,
+				y: 16
+			},
+			{
+				x: 3.5,
+				y: 21.5
+			}
+		], 4, !1), a(e, [
+			{
+				x: -4.4,
+				y: -10.8
+			},
+			{
+				x: 4.6,
+				y: -10.2
+			},
+			{
+				x: 5,
+				y: 6.3
+			},
+			{
+				x: .2,
+				y: 10.6
+			},
+			{
+				x: -4.5,
+				y: 7.4
+			}
+		]), i(e, [
+			{
+				x: 2.2,
+				y: -4
+			},
+			{
+				x: 4,
+				y: 3
+			},
+			{
+				x: 2.5,
+				y: 10
+			}
+		], 3.2, !1), i(e, [
+			{
+				x: -1.8,
+				y: -4
+			},
+			{
+				x: -3,
+				y: 3
+			},
+			{
+				x: -2,
+				y: 9.5
+			}
+		], 3.2, !1), o(e, 3.1, -15.3, 6, .08);
 	}
 	return { drawSisyphus: n };
 }
 //#endregion
 //#region src/core/visual/visual-layer-profile.js
-var N = Object.freeze({
+var F = Object.freeze({
 	SKY: "sky",
 	DISTANT: "distant",
 	MOUNTAIN: "mountain",
 	GAMEPLAY: "gameplay",
 	FX: "fx",
 	GRADE: "grade"
-}), P = Object.freeze({
+}), I = Object.freeze({
 	SOBRIO: "sobrio_tragico",
 	EXPRESIONISTA: "expresionista_absurdo"
-}), F = Object.freeze({
+}), L = Object.freeze({
 	WAITING: "waiting",
 	ASCENT: "ascent",
 	IMPACT: "impact",
 	DESCENT: "descent"
-}), I = Object.freeze([
-	N.SKY,
-	N.DISTANT,
-	N.MOUNTAIN,
-	N.GAMEPLAY,
-	N.FX,
-	N.GRADE
-]), L = [
+}), R = Object.freeze([
+	F.SKY,
+	F.DISTANT,
+	F.MOUNTAIN,
+	F.GAMEPLAY,
+	F.FX,
+	F.GRADE
+]), te = [
 	"id",
 	"style",
 	"mood",
@@ -840,7 +1463,7 @@ var N = Object.freeze({
 ];
 function ne(e) {
 	if (!e || typeof e != "object") throw TypeError("VisualLayerProfile must be an object.");
-	for (let t of L) if (!(t in e)) throw TypeError(`VisualLayerProfile missing key "${t}".`);
+	for (let t of te) if (!(t in e)) throw TypeError(`VisualLayerProfile missing key "${t}".`);
 	if (!Array.isArray(e.stack) || e.stack.length === 0) throw TypeError(`VisualLayerProfile "${e.id}" needs a non-empty "stack".`);
 	return Object.freeze({
 		...e,
@@ -873,41 +1496,41 @@ function ie(e, t) {
 }
 //#endregion
 //#region src/core/visual/runtime-quality-controller.js
-var R = Object.freeze({
+var z = Object.freeze({
 	HIGH: "high",
 	MEDIUM: "medium",
 	LOW: "low"
 }), ae = Object.freeze([
-	R.HIGH,
-	R.MEDIUM,
-	R.LOW
+	z.HIGH,
+	z.MEDIUM,
+	z.LOW
 ]), oe = Object.freeze({
-	[R.HIGH]: Object.freeze({
+	[z.HIGH]: Object.freeze({
 		fogAlphaMul: 1,
 		grainDensityMul: 1,
 		grainAlphaMul: 1,
 		overlayOpacityMul: 1
 	}),
-	[R.MEDIUM]: Object.freeze({
+	[z.MEDIUM]: Object.freeze({
 		fogAlphaMul: .86,
 		grainDensityMul: .74,
 		grainAlphaMul: .82,
 		overlayOpacityMul: .9
 	}),
-	[R.LOW]: Object.freeze({
+	[z.LOW]: Object.freeze({
 		fogAlphaMul: .68,
 		grainDensityMul: .48,
 		grainAlphaMul: .64,
 		overlayOpacityMul: .8
 	})
 });
-function se(e) {
+function B(e) {
 	let t = ae.indexOf(e);
 	return t >= 0 ? t : 0;
 }
-function ce(e = {}) {
+function se(e = {}) {
 	let t = !!e.isMobile, n = {
-		tier: e.initialTier || (t ? R.MEDIUM : R.HIGH),
+		tier: e.initialTier || (t ? z.MEDIUM : z.HIGH),
 		fpsSmoothed: e.initialFps || 60,
 		badMs: 0,
 		goodMs: 0,
@@ -925,11 +1548,11 @@ function ce(e = {}) {
 		return e - n.lastTierChangeAt >= r.minHoldMs;
 	}
 	function a() {
-		let e = se(n.tier);
+		let e = B(n.tier);
 		e < ae.length - 1 && (n.tier = ae[e + 1], n.lastTierChangeAt = performance.now());
 	}
 	function o() {
-		let e = se(n.tier);
+		let e = B(n.tier);
 		e > 0 && (n.tier = ae[e - 1], n.lastTierChangeAt = performance.now());
 	}
 	function s(e, t = !1) {
@@ -939,7 +1562,7 @@ function ce(e = {}) {
 		n.forcedTier = null, n.lastTierChangeAt = performance.now();
 	}
 	function u() {
-		let e = ae[(se(n.tier) + 1) % ae.length];
+		let e = ae[(B(n.tier) + 1) % ae.length];
 		return s(e, !0), e;
 	}
 	function d(e) {
@@ -970,7 +1593,7 @@ function ce(e = {}) {
 }
 //#endregion
 //#region src/games/sisyphus/game.js
-var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
+var ce = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 	(function(n, r) {
 		typeof e == "object" && typeof t == "object" ? t.exports = r() : typeof define == "function" && define.amd ? define("Matter", [], r) : typeof e == "object" ? e.Matter = r() : n.Matter = r();
 	})(e, function() {
@@ -2203,10 +2826,10 @@ var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 								for (x = b + 1; x < g.length; x++) {
 									var ee = g[x];
 									if (s.overlaps(k.bounds, ee.bounds)) {
-										var A = k.vertices, te = ee.vertices;
+										var A = k.vertices, j = ee.vertices;
 										for (S = 0; S < k.vertices.length; S++) for (w = 0; w < ee.vertices.length; w++) {
-											var j = c.magnitudeSquared(c.sub(A[(S + 1) % A.length], te[w])), M = c.magnitudeSquared(c.sub(A[S], te[(w + 1) % te.length]));
-											j < O && M < O && (A[S].isInternal = !0, te[w].isInternal = !0);
+											var M = c.magnitudeSquared(c.sub(A[(S + 1) % A.length], j[w])), N = c.magnitudeSquared(c.sub(A[S], j[(w + 1) % j.length]));
+											M < O && N < O && (A[S].isInternal = !0, j[w].isInternal = !0);
 										}
 									}
 								}
@@ -2556,25 +3179,25 @@ var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 						for (p = 0; p < u; p++) {
 							var h = e[p];
 							if (!(!h.isActive || h.isSensor)) {
-								var g = h.collision, _ = g.parentA, v = g.parentB, y = g.normal.x, b = g.normal.y, x = g.tangent.x, S = g.tangent.y, C = h.inverseMass, w = h.friction * h.frictionStatic * c, T = h.contacts, E = h.contactCount, D = 1 / E, O = _.position.x - _.positionPrev.x, k = _.position.y - _.positionPrev.y, ee = _.angle - _.anglePrev, A = v.position.x - v.positionPrev.x, te = v.position.y - v.positionPrev.y, j = v.angle - v.anglePrev;
+								var g = h.collision, _ = g.parentA, v = g.parentB, y = g.normal.x, b = g.normal.y, x = g.tangent.x, S = g.tangent.y, C = h.inverseMass, w = h.friction * h.frictionStatic * c, T = h.contacts, E = h.contactCount, D = 1 / E, O = _.position.x - _.positionPrev.x, k = _.position.y - _.positionPrev.y, ee = _.angle - _.anglePrev, A = v.position.x - v.positionPrev.x, j = v.position.y - v.positionPrev.y, M = v.angle - v.anglePrev;
 								for (m = 0; m < E; m++) {
-									var M = T[m], N = M.vertex, P = N.x - _.position.x, F = N.y - _.position.y, I = N.x - v.position.x, L = N.y - v.position.y, ne = O - F * ee, re = k + P * ee, ie = A - L * j, R = te + I * j, ae = ne - ie, oe = re - R, se = y * ae + b * oe, ce = x * ae + S * oe, le = h.separation + se, ue = Math.min(le, 1);
-									ue = le < 0 ? 0 : ue;
-									var z = ue * w;
-									ce < -z || ce > z ? (f = ce > 0 ? ce : -ce, d = h.friction * (ce > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = ce, f = l);
-									var de = P * b - F * y, fe = I * b - L * y, B = D / (C + _.inverseInertia * de * de + v.inverseInertia * fe * fe), V = (1 + h.restitution) * se * B;
-									if (d *= B, se < o) M.normalImpulse = 0;
+									var N = T[m], P = N.vertex, F = P.x - _.position.x, I = P.y - _.position.y, L = P.x - v.position.x, R = P.y - v.position.y, te = O - I * ee, ne = k + F * ee, re = A - R * M, ie = j + L * M, z = te - re, ae = ne - ie, oe = y * z + b * ae, B = x * z + S * ae, se = h.separation + oe, ce = Math.min(se, 1);
+									ce = se < 0 ? 0 : ce;
+									var V = ce * w;
+									B < -V || B > V ? (f = B > 0 ? B : -B, d = h.friction * (B > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = B, f = l);
+									var le = F * b - I * y, ue = L * b - R * y, de = D / (C + _.inverseInertia * le * le + v.inverseInertia * ue * ue), H = (1 + h.restitution) * oe * de;
+									if (d *= de, oe < o) N.normalImpulse = 0;
 									else {
-										var H = M.normalImpulse;
-										M.normalImpulse += V, M.normalImpulse > 0 && (M.normalImpulse = 0), V = M.normalImpulse - H;
+										var fe = N.normalImpulse;
+										N.normalImpulse += H, N.normalImpulse > 0 && (N.normalImpulse = 0), H = N.normalImpulse - fe;
 									}
-									if (ce < -s || ce > s) M.tangentImpulse = 0;
+									if (B < -s || B > s) N.tangentImpulse = 0;
 									else {
-										var U = M.tangentImpulse;
-										M.tangentImpulse += d, M.tangentImpulse < -f && (M.tangentImpulse = -f), M.tangentImpulse > f && (M.tangentImpulse = f), d = M.tangentImpulse - U;
+										var U = N.tangentImpulse;
+										N.tangentImpulse += d, N.tangentImpulse < -f && (N.tangentImpulse = -f), N.tangentImpulse > f && (N.tangentImpulse = f), d = N.tangentImpulse - U;
 									}
-									var W = y * V + x * d, G = b * V + S * d;
-									_.isStatic || _.isSleeping || (_.positionPrev.x += W * _.inverseMass, _.positionPrev.y += G * _.inverseMass, _.anglePrev += (P * G - F * W) * _.inverseInertia), v.isStatic || v.isSleeping || (v.positionPrev.x -= W * v.inverseMass, v.positionPrev.y -= G * v.inverseMass, v.anglePrev -= (I * G - L * W) * v.inverseInertia);
+									var W = y * H + x * d, G = b * H + S * d;
+									_.isStatic || _.isSleeping || (_.positionPrev.x += W * _.inverseMass, _.positionPrev.y += G * _.inverseMass, _.anglePrev += (F * G - I * W) * _.inverseInertia), v.isStatic || v.isSleeping || (v.positionPrev.x -= W * v.inverseMass, v.positionPrev.y -= G * v.inverseMass, v.anglePrev -= (L * G - R * W) * v.inverseInertia);
 								}
 							}
 						}
@@ -3464,9 +4087,35 @@ var le = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 			})
 		]);
 	});
-})))(), 1);
-function ue(e, t = {}) {
-	let { Engine: n, Render: r, Runner: i, Bodies: a, Body: o, Composite: s, Events: c, Query: l, Sleeping: u, Vertices: d } = le.default, f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight, g = 1e3, _ = 1020, b = Math.hypot(700, 312);
+})))(), 1), V = "./assets/";
+function le(e) {
+	if (typeof e != "string" || e.trim().length === 0) return null;
+	try {
+		return new URL(e, document.baseURI).toString();
+	} catch {
+		return e;
+	}
+}
+function ue() {
+	if (typeof document > "u") return V;
+	let e = document.currentScript;
+	if (e?.src) return new URL(V, e.src).toString();
+	let t = Array.from(document.scripts || []).reverse().find((e) => {
+		if (!e.src) return !1;
+		try {
+			let t = new URL(e.src, document.baseURI).pathname;
+			return /sisyphus-widget(?:\.umd)?\.(?:cjs|js)$/.test(t);
+		} catch {
+			return e.src.includes("sisyphus-widget");
+		}
+	});
+	return t?.src ? new URL(V, t.src).toString() : new URL(V, document.baseURI).toString();
+}
+function de(e) {
+	return le(e.assetBaseUrl) || ue();
+}
+function H(e, t = {}) {
+	let { Engine: n, Render: r, Runner: i, Bodies: a, Body: o, Composite: s, Events: c, Query: l, Sleeping: u, Vertices: d } = ce.default, f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight, g = 1e3, _ = 1020, b = Math.hypot(700, 312);
 	700 / b, -(312 / b);
 	let S = Math.hypot(20, 80);
 	20 / S, 80 / S;
@@ -3492,44 +4141,44 @@ function ue(e, t = {}) {
 			return t = t * 1664525 + 1013904223 >>> 0, t / 4294967296;
 		};
 	}
-	let j = A(20260315), N = [], L = 0, R = 0, ae = 0, oe = 0, se = 0, ue = 0, z = Object.freeze({
+	let M = A(20260315), N = [], F = 0, te = 0, z = 0, ae = 0, oe = 0, B = 0, V = Object.freeze({
 		PLAYING: "playing",
 		SUMMIT: "summit",
 		SIS_DESCENDING: "sis_descending",
 		WAITING: "waiting"
-	}), de = null, fe = 0, B = Object.freeze({
+	}), le = null, ue = 0, H = Object.freeze({
 		OVERVIEW: "overview",
 		FREE_PAN: "free_pan",
 		FOCUS_SISYPHUS: "focus_sisyphus"
-	}), V = Object.freeze({
-		OVERVIEW: B.OVERVIEW,
-		FOCUS_SISYPHUS: B.FOCUS_SISYPHUS
-	}), H = {
-		behavior: B.OVERVIEW,
-		presetId: V.OVERVIEW,
+	}), fe = Object.freeze({
+		OVERVIEW: H.OVERVIEW,
+		FOCUS_SISYPHUS: H.FOCUS_SISYPHUS
+	}), U = {
+		behavior: H.OVERVIEW,
+		presetId: fe.OVERVIEW,
 		freePanX: 900 / 2,
 		freePanY: 560 / 2
-	}, U = {
-		x: 900 / 2,
-		y: 560 / 2,
-		zoom: 1
 	}, W = {
 		x: 900 / 2,
 		y: 560 / 2,
 		zoom: 1
 	}, G = {
+		x: 900 / 2,
+		y: 560 / 2,
+		zoom: 1
+	}, pe = {
 		active: !1,
 		moved: !1,
 		startClientX: 0,
 		startClientY: 0,
 		startCameraX: 900 / 2,
 		startCameraY: 560 / 2
-	}, pe = Object.freeze({
+	}, me = Object.freeze({
 		minX: -20,
 		maxX: _ + 24,
 		minY: 24,
 		maxY: 548
-	}), me = Object.freeze({
+	}), he = Object.freeze({
 		moonGlowScale: 1,
 		moonGlowAlpha: 1,
 		moonAlpha: .9,
@@ -3538,7 +4187,7 @@ function ue(e, t = {}) {
 		hazeAlphaBoost: 0,
 		distantParallaxMultiplier: 1,
 		distantMountainAlpha: 1
-	}), he = Object.freeze({
+	}), ge = Object.freeze({
 		moonGlowScale: 1.08,
 		moonGlowAlpha: 1.2,
 		moonAlpha: .92,
@@ -3547,7 +4196,7 @@ function ue(e, t = {}) {
 		hazeAlphaBoost: .06,
 		distantParallaxMultiplier: 1.08,
 		distantMountainAlpha: .95
-	}), ge = Object.freeze({
+	}), _e = Object.freeze({
 		moonGlowScale: .9,
 		moonGlowAlpha: .84,
 		moonAlpha: .78,
@@ -3556,7 +4205,7 @@ function ue(e, t = {}) {
 		hazeAlphaBoost: .03,
 		distantParallaxMultiplier: .92,
 		distantMountainAlpha: .82
-	}), _e = m(p({
+	}), ve = m(p({
 		masterGain: .26,
 		windGain: .15,
 		frictionGain: .2,
@@ -3568,29 +4217,29 @@ function ue(e, t = {}) {
 			wind: "",
 			friction: ""
 		}
-	})), ve = v(), ye = 0, be = P.SOBRIO, xe = 0, Se = 0, Ce = 0, we = 60, Te = ce({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
+	})), ye = v(), be = 0, xe = I.SOBRIO, Se = 0, Ce = 0, we = 0, Te = 60, Ee = se({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
 		FAR: "far",
 		MID: "mid",
 		CLOSE: "close"
-	}), Ee = { level: K.FAR }, De = Object.freeze({ DEFAULT: "default" }), Oe = Object.freeze({ [De.DEFAULT]: Object.freeze({
+	}), De = { level: K.FAR }, Oe = Object.freeze({ DEFAULT: "default" }), ke = Object.freeze({ [Oe.DEFAULT]: Object.freeze({
 		transform: "translate3d(0, 0, 0) scaleX(1) scaleY(1)",
 		transformOrigin: "50% 50%"
-	}) }), ke = De.DEFAULT;
-	function Ae(e) {
-		if (e === B.OVERVIEW) {
-			Ze(V.OVERVIEW);
-			return;
-		}
-		if (e === B.FOCUS_SISYPHUS) {
-			Ze(V.FOCUS_SISYPHUS);
-			return;
-		}
-		H.behavior = e;
-	}
+	}) }), Ae = Oe.DEFAULT;
 	function je(e) {
-		return Ne(e);
+		if (e === H.OVERVIEW) {
+			Qe(fe.OVERVIEW);
+			return;
+		}
+		if (e === H.FOCUS_SISYPHUS) {
+			Qe(fe.FOCUS_SISYPHUS);
+			return;
+		}
+		U.behavior = e;
 	}
 	function Me(e) {
+		return Pe(e);
+	}
+	function Ne(e) {
 		return e ? {
 			[K.FAR]: .72,
 			[K.MID]: .96,
@@ -3601,37 +4250,37 @@ function ue(e, t = {}) {
 			[K.CLOSE]: 1.16
 		};
 	}
-	function Ne(e) {
-		let t = Me(e);
-		return t[Ee.level] || t[K.FAR];
-	}
 	function Pe(e) {
-		let t = Me(e), n = Object.values(t);
+		let t = Ne(e);
+		return t[De.level] || t[K.FAR];
+	}
+	function Fe(e) {
+		let t = Ne(e), n = Object.values(t);
 		return {
 			min: Math.min(...n) - .06,
 			max: Math.max(...n) + .18
 		};
 	}
-	function Fe(e) {
+	function Ie(e) {
 		return e === K.FAR ? "LEJANO" : e === K.MID ? "MEDIO" : "CERCANO";
 	}
-	function Ie() {
-		if (Ee.level === K.FAR) {
-			Ee.level = K.MID;
-			return;
-		}
-		if (Ee.level === K.MID) {
-			Ee.level = K.CLOSE;
-			return;
-		}
-		Ee.level = K.FAR;
-	}
 	function Le() {
-		Ie(), Ae(B.FREE_PAN);
-		let e = Ne(window.innerHeight > window.innerWidth);
-		Be(U.x, U.y, e), ue = performance.now() + 1200, console.log(`%cZoom activo: ${Fe(Ee.level)}`, "color:#a2d2ff;font-weight:bold");
+		if (De.level === K.FAR) {
+			De.level = K.MID;
+			return;
+		}
+		if (De.level === K.MID) {
+			De.level = K.CLOSE;
+			return;
+		}
+		De.level = K.FAR;
 	}
-	function Re(e, t = pe) {
+	function Re() {
+		Le(), je(H.FREE_PAN);
+		let e = Pe(window.innerHeight > window.innerWidth);
+		Ve(W.x, W.y, e), B = performance.now() + 1200, console.log(`%cZoom activo: ${Ie(De.level)}`, "color:#a2d2ff;font-weight:bold");
+	}
+	function ze(e, t = me) {
 		let n = Math.max(e, .001), r = f / n, i = h / n, a = t.minX + r / 2, o = t.maxX - r / 2, s = t.minY + i / 2, c = t.maxY - i / 2;
 		if (a > o) {
 			let e = (t.minX + t.maxX) / 2;
@@ -3648,27 +4297,27 @@ function ue(e, t = {}) {
 			maxY: c
 		};
 	}
-	function ze(e, t, n, r = pe) {
-		let i = Re(n, r);
+	function Be(e, t, n, r = me) {
+		let i = ze(n, r);
 		return {
 			x: O(e, i.minX, i.maxX),
 			y: O(t, i.minY, i.maxY)
 		};
 	}
-	function Be(e, t, n) {
-		let r = ze(e, t, n, pe);
-		return H.freePanX = r.x, H.freePanY = r.y, r;
+	function Ve(e, t, n) {
+		let r = Be(e, t, n, me);
+		return U.freePanX = r.x, U.freePanY = r.y, r;
 	}
-	function Ve(e, t) {
-		G.active = !0, G.moved = !1, G.startClientX = e, G.startClientY = t, G.startCameraX = U.x, G.startCameraY = U.y;
-	}
-	function He() {
-		G.active = !1, G.moved = !1;
+	function He(e, t) {
+		pe.active = !0, pe.moved = !1, pe.startClientX = e, pe.startClientY = t, pe.startCameraX = W.x, pe.startCameraY = W.y;
 	}
 	function Ue() {
-		return O((Z.position.x - ln) / Math.max(1, cn - ln), 0, 1);
+		pe.active = !1, pe.moved = !1;
 	}
 	function We() {
+		return O((Z.position.x - un) / Math.max(1, ln - un), 0, 1);
+	}
+	function Ge() {
 		let e = Q.position, t = Z.position;
 		return {
 			sisCenter: e,
@@ -3678,16 +4327,16 @@ function ue(e, t = {}) {
 			duoCenterY: (e.y + t.y) / 2,
 			distanceX: Math.abs(t.x - e.x),
 			distanceY: Math.abs(t.y - e.y),
-			ascentProgress: Ue(),
-			duoSpeed: Math.max(Wt(Q), Wt(Z)),
+			ascentProgress: We(),
+			duoSpeed: Math.max(Gt(Q), Gt(Z)),
 			leadX: O(Q.velocity.x * 68 + Z.velocity.x * 34, -90, 110),
 			leadY: O(Q.velocity.y * 24 + Z.velocity.y * 16, -54, 62)
 		};
 	}
-	function Ge(e) {
-		let t = Ne(e.portraitView);
-		return $ === z.WAITING ? {
-			x: ln + 100,
+	function Ke(e) {
+		let t = Pe(e.portraitView);
+		return $ === V.WAITING ? {
+			x: un + 100,
 			y: 370,
 			zoom: t
 		} : {
@@ -3696,65 +4345,65 @@ function ue(e, t = {}) {
 			zoom: t
 		};
 	}
-	function Ke(e) {
+	function qe(e) {
 		return {
 			x: e.duoCenterX + e.leadX * .22,
 			y: e.duoCenterY - 24 + e.leadY * .18,
-			zoom: Ne(e.portraitView)
+			zoom: Pe(e.portraitView)
 		};
 	}
-	let qe = T({
-		[V.OVERVIEW]: w({
-			id: V.OVERVIEW,
-			behavior: B.OVERVIEW,
+	let Je = T({
+		[fe.OVERVIEW]: w({
+			id: fe.OVERVIEW,
+			behavior: H.OVERVIEW,
 			followMode: "duo_overview",
-			boundsResolver: () => pe,
+			boundsResolver: () => me,
 			lerpSpeed: .08,
-			targetResolver: Ge,
-			visualProfile: me,
+			targetResolver: Ke,
+			visualProfile: he,
 			zoomMinResolver: (e) => e.portraitView ? .62 : .56,
 			zoomMaxResolver: (e) => e.portraitView ? 1.08 : 1.2
 		}),
-		[V.FOCUS_SISYPHUS]: w({
-			id: V.FOCUS_SISYPHUS,
-			behavior: B.FOCUS_SISYPHUS,
+		[fe.FOCUS_SISYPHUS]: w({
+			id: fe.FOCUS_SISYPHUS,
+			behavior: H.FOCUS_SISYPHUS,
 			followMode: "duo_focus",
-			boundsResolver: () => pe,
+			boundsResolver: () => me,
 			lerpSpeed: .12,
-			targetResolver: Ke,
-			visualProfile: me,
+			targetResolver: qe,
+			visualProfile: he,
 			zoomMinResolver: (e) => e.portraitView ? .72 : .64,
 			zoomMaxResolver: (e) => e.portraitView ? 1.58 : 1.5
 		})
-	}, V.OVERVIEW), Je = Object.freeze({
-		[z.SUMMIT]: w({
+	}, fe.OVERVIEW), Ye = Object.freeze({
+		[V.SUMMIT]: w({
 			id: "state::summit",
-			behavior: B.OVERVIEW,
+			behavior: H.OVERVIEW,
 			followMode: "state_summit",
-			boundsResolver: () => pe,
+			boundsResolver: () => me,
 			lerpSpeed: .09,
-			targetResolver: ut,
-			visualProfile: he,
-			zoomMinResolver: () => .56,
-			zoomMaxResolver: () => 1.2
-		}),
-		[z.SIS_DESCENDING]: w({
-			id: "state::descending",
-			behavior: B.OVERVIEW,
-			followMode: "state_descending",
-			boundsResolver: () => pe,
-			lerpSpeed: .1,
 			targetResolver: dt,
 			visualProfile: ge,
 			zoomMinResolver: () => .56,
+			zoomMaxResolver: () => 1.2
+		}),
+		[V.SIS_DESCENDING]: w({
+			id: "state::descending",
+			behavior: H.OVERVIEW,
+			followMode: "state_descending",
+			boundsResolver: () => me,
+			lerpSpeed: .1,
+			targetResolver: ft,
+			visualProfile: _e,
+			zoomMinResolver: () => .56,
 			zoomMaxResolver: () => 1.1
 		})
-	}), Ye = re([
+	}), Xe = re([
 		ne({
-			id: ie(P.SOBRIO, F.WAITING),
-			style: P.SOBRIO,
-			mood: F.WAITING,
-			stack: I,
+			id: ie(I.SOBRIO, L.WAITING),
+			style: I.SOBRIO,
+			mood: L.WAITING,
+			stack: R,
 			grade: {
 				washAlpha: .08,
 				vignetteAlpha: .36,
@@ -3780,10 +4429,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.SOBRIO, F.ASCENT),
-			style: P.SOBRIO,
-			mood: F.ASCENT,
-			stack: I,
+			id: ie(I.SOBRIO, L.ASCENT),
+			style: I.SOBRIO,
+			mood: L.ASCENT,
+			stack: R,
 			grade: {
 				washAlpha: .09,
 				vignetteAlpha: .4,
@@ -3809,10 +4458,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.SOBRIO, F.IMPACT),
-			style: P.SOBRIO,
-			mood: F.IMPACT,
-			stack: I,
+			id: ie(I.SOBRIO, L.IMPACT),
+			style: I.SOBRIO,
+			mood: L.IMPACT,
+			stack: R,
 			grade: {
 				washAlpha: .12,
 				vignetteAlpha: .5,
@@ -3838,10 +4487,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.SOBRIO, F.DESCENT),
-			style: P.SOBRIO,
-			mood: F.DESCENT,
-			stack: I,
+			id: ie(I.SOBRIO, L.DESCENT),
+			style: I.SOBRIO,
+			mood: L.DESCENT,
+			stack: R,
 			grade: {
 				washAlpha: .07,
 				vignetteAlpha: .34,
@@ -3867,10 +4516,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.EXPRESIONISTA, F.WAITING),
-			style: P.EXPRESIONISTA,
-			mood: F.WAITING,
-			stack: I,
+			id: ie(I.EXPRESIONISTA, L.WAITING),
+			style: I.EXPRESIONISTA,
+			mood: L.WAITING,
+			stack: R,
 			grade: {
 				washAlpha: .11,
 				vignetteAlpha: .44,
@@ -3896,10 +4545,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.EXPRESIONISTA, F.ASCENT),
-			style: P.EXPRESIONISTA,
-			mood: F.ASCENT,
-			stack: I,
+			id: ie(I.EXPRESIONISTA, L.ASCENT),
+			style: I.EXPRESIONISTA,
+			mood: L.ASCENT,
+			stack: R,
 			grade: {
 				washAlpha: .13,
 				vignetteAlpha: .56,
@@ -3925,10 +4574,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.EXPRESIONISTA, F.IMPACT),
-			style: P.EXPRESIONISTA,
-			mood: F.IMPACT,
-			stack: I,
+			id: ie(I.EXPRESIONISTA, L.IMPACT),
+			style: I.EXPRESIONISTA,
+			mood: L.IMPACT,
+			stack: R,
 			grade: {
 				washAlpha: .16,
 				vignetteAlpha: .64,
@@ -3954,10 +4603,10 @@ function ue(e, t = {}) {
 			}
 		}),
 		ne({
-			id: ie(P.EXPRESIONISTA, F.DESCENT),
-			style: P.EXPRESIONISTA,
-			mood: F.DESCENT,
-			stack: I,
+			id: ie(I.EXPRESIONISTA, L.DESCENT),
+			style: I.EXPRESIONISTA,
+			mood: L.DESCENT,
+			stack: R,
 			grade: {
 				washAlpha: .1,
 				vignetteAlpha: .48,
@@ -3982,40 +4631,40 @@ function ue(e, t = {}) {
 				glowBoost: .14
 			}
 		})
-	], ie(P.SOBRIO, F.ASCENT));
-	function Xe(e) {
-		return qe.get(e);
-	}
+	], ie(I.SOBRIO, L.ASCENT));
 	function Ze(e) {
-		let t = Xe(e);
-		H.presetId = t.id, H.behavior = t.behavior;
+		return Je.get(e);
 	}
-	function Qe() {
-		return Xe(H.presetId);
+	function Qe(e) {
+		let t = Ze(e);
+		U.presetId = t.id, U.behavior = t.behavior;
 	}
 	function $e() {
-		return Je[$] || null;
+		return Ze(U.presetId);
 	}
 	function et() {
-		return $e() || Qe();
+		return Ye[$] || null;
 	}
-	function tt(e) {
-		if (H.behavior === B.FREE_PAN) return pe;
-		let t = et();
-		return t.boundsResolver ? t.boundsResolver(e) : pe;
+	function tt() {
+		return et() || $e();
 	}
-	function nt() {
-		return H.behavior === B.FREE_PAN ? me : et().visualProfile || me;
+	function nt(e) {
+		if (U.behavior === H.FREE_PAN) return me;
+		let t = tt();
+		return t.boundsResolver ? t.boundsResolver(e) : me;
 	}
 	function rt() {
-		return $ === z.SUMMIT ? F.IMPACT : $ === z.SIS_DESCENDING ? F.DESCENT : $ === z.WAITING ? F.WAITING : Ce > .2 ? F.IMPACT : F.ASCENT;
+		return U.behavior === H.FREE_PAN ? he : tt().visualProfile || he;
 	}
 	function it() {
-		let e = rt();
-		return Ye.getByStyleAndMood(be, e);
+		return $ === V.SUMMIT ? L.IMPACT : $ === V.SIS_DESCENDING ? L.DESCENT : $ === V.WAITING ? L.WAITING : we > .2 ? L.IMPACT : L.ASCENT;
 	}
-	function at(e) {
-		let t = Pe(e.portraitView), n = $e();
+	function at() {
+		let e = it();
+		return Xe.getByStyleAndMood(xe, e);
+	}
+	function ot(e) {
+		let t = Fe(e.portraitView), n = et();
 		if (n) {
 			let t = n.zoomMinResolver(e), r = n.zoomMaxResolver(e);
 			return {
@@ -4023,30 +4672,30 @@ function ue(e, t = {}) {
 				max: Math.max(t + .02, r)
 			};
 		}
-		if (H.behavior === B.FREE_PAN) return t;
-		let r = et(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
+		if (U.behavior === H.FREE_PAN) return t;
+		let r = tt(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
 		return {
 			min: i,
 			max: Math.max(i + .02, a)
 		};
 	}
-	function ot() {
-		return De.DEFAULT;
+	function st() {
+		return Oe.DEFAULT;
 	}
-	function st(e) {
-		if (ke === e) return;
-		let t = Oe[e] || Oe[De.DEFAULT];
-		ke = e;
-		for (let e of [J, yt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
-	}
-	function ct() {
-		Le();
+	function ct(e) {
+		if (Ae === e) return;
+		let t = ke[e] || ke[Oe.DEFAULT];
+		Ae = e;
+		for (let e of [J, bt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
 	}
 	function lt() {
-		be = be === P.SOBRIO ? P.EXPRESIONISTA : P.SOBRIO, xe = performance.now() + 1400, console.log(`%cEstilo visual: ${be}`, "color:#f9d29d;font-weight:bold");
+		Re();
 	}
-	function ut(e) {
-		let t = Wt(Z);
+	function ut() {
+		xe = xe === I.SOBRIO ? I.EXPRESIONISTA : I.SOBRIO, Se = performance.now() + 1400, console.log(`%cEstilo visual: ${xe}`, "color:#f9d29d;font-weight:bold");
+	}
+	function dt(e) {
+		let t = Gt(Z);
 		return e.rockCenter.x >= 932 ? {
 			x: 912,
 			y: 116,
@@ -4057,43 +4706,43 @@ function ue(e, t = {}) {
 			zoom: O((e.portraitView ? .88 : .78) - t * .03, .58, .94)
 		};
 	}
-	function dt(e) {
-		let t = ee(ln + 70, 820, e.sisCenter.x);
+	function ft(e) {
+		let t = ee(un + 70, 820, e.sisCenter.x);
 		return {
-			x: Nt(ln + 96, e.sisCenter.x + 42, t),
-			y: Nt(368, e.sisCenter.y - 110, t),
-			zoom: Nt(e.portraitView ? .92 : .84, e.portraitView ? 1 : .9, t)
+			x: Pt(un + 96, e.sisCenter.x + 42, t),
+			y: Pt(368, e.sisCenter.y - 110, t),
+			zoom: Pt(e.portraitView ? .92 : .84, e.portraitView ? 1 : .9, t)
 		};
 	}
-	function ft() {
-		let e = We();
-		if (H.behavior === B.FREE_PAN) {
-			let t = je(e.portraitView), n = Be(H.freePanX, H.freePanY, t);
-			W.x = n.x, W.y = n.y, W.zoom = t;
-		} else {
-			let t = et();
-			Object.assign(W, t.targetResolver(e));
-		}
-		let t = at(e);
-		W.zoom = O(W.zoom, t.min, t.max);
-		let n = ze(W.x, W.y, W.zoom, tt(e));
-		W.x = n.x, W.y = n.y, st(ot());
-	}
 	function pt() {
-		return G.active ? .34 : H.behavior === B.FREE_PAN ? .22 : et().lerpSpeed;
+		let e = Ge();
+		if (U.behavior === H.FREE_PAN) {
+			let t = Me(e.portraitView), n = Ve(U.freePanX, U.freePanY, t);
+			G.x = n.x, G.y = n.y, G.zoom = t;
+		} else {
+			let t = tt();
+			Object.assign(G, t.targetResolver(e));
+		}
+		let t = ot(e);
+		G.zoom = O(G.zoom, t.min, t.max);
+		let n = Be(G.x, G.y, G.zoom, nt(e));
+		G.x = n.x, G.y = n.y, ct(st());
 	}
-	function mt(e) {
-		let t = e / 16.6667, n = 1 - (1 - pt()) ** t;
-		U.x += (W.x - U.x) * n, U.y += (W.y - U.y) * n, U.zoom += (W.zoom - U.zoom) * n;
-		let i = 16 * R * R, a = L * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = f / U.zoom, l = h / U.zoom;
+	function mt() {
+		return pe.active ? .34 : U.behavior === H.FREE_PAN ? .22 : tt().lerpSpeed;
+	}
+	function ht(e) {
+		let t = e / 16.6667, n = 1 - (1 - mt()) ** t;
+		W.x += (G.x - W.x) * n, W.y += (G.y - W.y) * n, W.zoom += (G.zoom - W.zoom) * n;
+		let i = 16 * te * te, a = F * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = f / W.zoom, l = h / W.zoom;
 		r.lookAt(X, {
 			min: {
-				x: U.x + o - c / 2,
-				y: U.y + s - l / 2
+				x: W.x + o - c / 2,
+				y: W.y + s - l / 2
 			},
 			max: {
-				x: U.x + o + c / 2,
-				y: U.y + s + l / 2
+				x: W.x + o + c / 2,
+				y: W.y + s + l / 2
 			}
 		});
 	}
@@ -4101,26 +4750,26 @@ function ue(e, t = {}) {
 		TERRAIN: 1,
 		SISYPHUS: 2,
 		ROCK: 4
-	}), ht = q.SISYPHUS | q.ROCK, gt = q.TERRAIN | q.ROCK, _t = q.TERRAIN | q.SISYPHUS, vt = q.TERRAIN, J = document.createElement("canvas");
+	}), gt = q.SISYPHUS | q.ROCK, _t = q.TERRAIN | q.ROCK, vt = q.TERRAIN | q.SISYPHUS, yt = q.TERRAIN, J = document.createElement("canvas");
 	J.id = "scene-canvas", J.setAttribute("aria-hidden", "true"), J.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0;pointer-events:none;", e.appendChild(J);
-	let yt = document.createElement("canvas");
-	yt.id = "game-canvas", yt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(yt);
-	let bt = J.getContext("2d");
-	async function xt() {
+	let bt = document.createElement("canvas");
+	bt.id = "game-canvas", bt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(bt);
+	let xt = J.getContext("2d");
+	async function St() {
 		try {
-			let e = import.meta.url;
+			let e = de(t);
 			if (!e) return;
-			await y(ve, new URL("./assets/overlays/manifest.json", e)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
+			await y(ye, new URL("./overlays/manifest.json", e)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
 		} catch (e) {
 			console.warn("No se pudo cargar el manifiesto de overlays externos.", e);
 		}
 	}
-	for (let e of [J, yt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
+	for (let e of [J, bt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
 	let Y = n.create({ gravity: {
 		x: 0,
 		y: 1
 	} }), X = r.create({
-		canvas: yt,
+		canvas: bt,
 		engine: Y,
 		options: {
 			width: f,
@@ -4129,41 +4778,41 @@ function ue(e, t = {}) {
 			background: D.bg,
 			pixelRatio: window.devicePixelRatio || 1
 		}
-	}), St = a.rectangle(900 / 2, 540, 1020, 40, {
+	}), Ct = a.rectangle(900 / 2, 540, 1020, 40, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: ht
+			mask: gt
 		},
 		render: { visible: !1 },
 		label: "ground"
-	}), Ct = a.rectangle(-60 / 2, 560 / 2, 60, 560, {
+	}), wt = a.rectangle(-60 / 2, 560 / 2, 60, 560, {
 		isStatic: !0,
 		restitution: .1,
 		friction: .1,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: ht
+			mask: gt
 		},
 		render: { visible: !1 },
 		label: "wall-left"
-	}), wt = a.rectangle(930, 560 / 2, 60, 560, {
+	}), Tt = a.rectangle(930, 560 / 2, 60, 560, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: ht
+			mask: gt
 		},
 		render: { visible: !1 },
 		label: "wall-right"
-	}), Tt = a.rectangle(900 / 2, -60 / 2, 1020, 60, {
+	}), Et = a.rectangle(900 / 2, -60 / 2, 1020, 60, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: ht
+			mask: gt
 		},
 		render: { visible: !1 },
 		label: "wall-top"
-	}), Et = a.rectangle(40, 660, 150, 20, {
+	}), Dt = a.rectangle(40, 660, 150, 20, {
 		isStatic: !0,
 		angle: 0,
 		restitution: 0,
@@ -4174,22 +4823,22 @@ function ue(e, t = {}) {
 		},
 		render: { visible: !1 },
 		label: "bumper"
-	}), Dt = [
+	}), Ot = [
 		{
 			x: 140,
 			y: 520
 		},
 		{
 			x: 170,
-			y: Mt(170)
+			y: Nt(170)
 		},
 		{
 			x: 310,
-			y: Mt(310)
+			y: Nt(310)
 		},
 		{
 			x: 470,
-			y: Mt(470)
+			y: Nt(470)
 		},
 		{
 			x: 840,
@@ -4215,54 +4864,54 @@ function ue(e, t = {}) {
 			x: _,
 			y: 520
 		}
-	], Ot = [
+	], kt = [
 		{
 			x: 132,
 			y: 780
 		},
-		...Dt,
+		...Ot,
 		{
 			x: _ + 28,
 			y: 780
 		}
-	], kt = d.centre(Ot), At = Ot.map((e) => ({
-		x: e.x - kt.x,
-		y: e.y - kt.y
-	})), jt = a.fromVertices(kt.x, kt.y, [At], {
+	], At = d.centre(kt), jt = kt.map((e) => ({
+		x: e.x - At.x,
+		y: e.y - At.y
+	})), Mt = a.fromVertices(At.x, At.y, [jt], {
 		isStatic: !0,
 		friction: .1,
 		restitution: 0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: ht
+			mask: gt
 		},
 		render: { visible: !1 },
 		label: "mountain"
 	}, !0);
-	function Mt(e) {
+	function Nt(e) {
 		return 520 - (e - 140) / 700 * 312;
 	}
-	function Nt(e, t, n) {
+	function Pt(e, t, n) {
 		return e + (t - e) * n;
 	}
-	function Pt(e, t, n, r, i) {
-		return r === t ? n : Nt(n, i, (e - t) / (r - t));
+	function Ft(e, t, n, r, i) {
+		return r === t ? n : Pt(n, i, (e - t) / (r - t));
 	}
-	function Ft(e) {
-		let t = Dt[0];
+	function It(e) {
+		let t = Ot[0];
 		if (e <= t.x) return t.y;
-		for (let t = 1; t < Dt.length; t += 1) {
-			let n = Dt[t - 1], r = Dt[t];
-			if (e <= r.x) return Pt(e, n.x, n.y, r.x, r.y);
+		for (let t = 1; t < Ot.length; t += 1) {
+			let n = Ot[t - 1], r = Ot[t];
+			if (e <= r.x) return Ft(e, n.x, n.y, r.x, r.y);
 		}
-		return Dt[Dt.length - 1].y;
+		return Ot[Ot.length - 1].y;
 	}
-	function It() {
+	function Lt() {
 		f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight;
 		let t = window.devicePixelRatio || 1;
-		J.width = f * t, J.height = h * t, J.style.width = `${f}px`, J.style.height = `${h}px`, X.options.width = f, X.options.height = h, X.options.pixelRatio = t, X.canvas.width = f * t, X.canvas.height = h * t, X.canvas.style.width = `${f}px`, X.canvas.style.height = `${h}px`, Be(H.freePanX, H.freePanY, je(h > f));
+		J.width = f * t, J.height = h * t, J.style.width = `${f}px`, J.style.height = `${h}px`, X.options.width = f, X.options.height = h, X.options.pixelRatio = t, X.canvas.width = f * t, X.canvas.height = h * t, X.canvas.style.width = `${f}px`, X.canvas.style.height = `${h}px`, Ve(U.freePanX, U.freePanY, Me(h > f));
 	}
-	let Lt = k({
+	let Rt = k({
 		LOGICAL_W: 900,
 		LOGICAL_H: 560,
 		SURF_Y: 520,
@@ -4275,75 +4924,75 @@ function ue(e, t = {}) {
 		RIGHT_DESCENT_LOW_X: g,
 		RIGHT_DESCENT_LOW_Y: 520,
 		RIGHT_FACE_BASE_X: _,
-		slopeYAt: Mt,
-		terrainYAt: Ft,
-		TERRAIN_SURFACE_POINTS: Dt
-	}), Rt = te({ createSeededRandom: A });
-	function zt(e) {
-		Rt.drawRock(e, Z, en);
+		slopeYAt: Nt,
+		terrainYAt: It,
+		TERRAIN_SURFACE_POINTS: Ot
+	}), zt = j({ createSeededRandom: A });
+	function Bt(e) {
+		zt.drawRock(e, Z, tn);
 	}
-	let Bt = M({
-		GAME_STATE: z,
+	let Vt = P({
+		GAME_STATE: V,
 		PEAK_A_X: 840
 	});
-	function Vt(e) {
-		Bt.drawSisyphus(e, {
+	function Ht(e) {
+		Vt.drawSisyphus(e, {
 			sisyphusBody: Q,
 			gameState: $,
-			lastGameState: de,
-			stateTransitionTimer: fe,
+			lastGameState: le,
+			stateTransitionTimer: ue,
 			STATE_TRANSITION_MAX: 450,
-			isPushing: rn,
-			sceneTime: L
+			isPushing: an,
+			sceneTime: F
 		});
 	}
-	function Ht() {
-		let e = X.bounds.min.x, t = X.bounds.min.y, n = nt(), r = it();
-		bt.save(), bt.setTransform(1, 0, 0, 1, 0, 0), bt.clearRect(0, 0, J.width, J.height);
+	function Ut() {
+		let e = X.bounds.min.x, t = X.bounds.min.y, n = rt(), r = at();
+		xt.save(), xt.setTransform(1, 0, 0, 1, 0, 0), xt.clearRect(0, 0, J.width, J.height);
 		let i = window.devicePixelRatio || 1;
-		bt.setTransform(i, 0, 0, i, 0, 0), bt.scale(U.zoom, U.zoom), bt.translate(-e, -t), Lt.drawSceneLayers(bt, {
+		xt.setTransform(i, 0, 0, i, 0, 0), xt.scale(W.zoom, W.zoom), xt.translate(-e, -t), Rt.drawSceneLayers(xt, {
 			viewMinX: e,
 			viewMinY: t,
 			visualProfile: n,
 			layerProfile: r,
-			sceneTime: L,
-			qualityProfile: Te.getProfile(),
+			sceneTime: F,
+			qualityProfile: Ee.getProfile(),
 			rock: Z,
 			sisyphus: Q,
 			dustParticles: N,
-			drawRock: zt,
-			drawSisyphus: Vt
-		}), bt.restore();
+			drawRock: Bt,
+			drawSisyphus: Ht
+		}), xt.restore();
 	}
-	function Ut() {
+	function Wt() {
 		u.set(Q, !1), u.set(Z, !1);
 	}
-	function Wt(e) {
+	function Gt(e) {
 		return Math.hypot(e.velocity.x, e.velocity.y);
 	}
-	function Gt(e) {
+	function Kt(e) {
 		o.setVelocity(e, {
 			x: 0,
 			y: 0
 		}), o.setAngularVelocity(e, 0);
 	}
-	function Kt(e) {
-		R = O(R + e, 0, 1);
+	function qt(e) {
+		te = O(te + e, 0, 1);
 	}
-	function qt(e, t, n, r = 1) {
+	function Jt(e, t, n, r = 1) {
 		let i = O(n, .08, .6), a = Math.max(3, Math.round(5 + i * 14));
 		for (let n = 0; n < a; n += 1) N.push({
 			x: e,
-			y: t - j() * 10,
-			vx: r * (.18 + j() * 1.1) + (j() - .5) * .75,
-			vy: -(.3 + j() * 1.5) * i * 2.2,
-			radius: 3 + j() * 7 * i,
-			alpha: .08 + j() * .14,
-			decay: .012 + j() * .02,
+			y: t - M() * 10,
+			vx: r * (.18 + M() * 1.1) + (M() - .5) * .75,
+			vy: -(.3 + M() * 1.5) * i * 2.2,
+			radius: 3 + M() * 7 * i,
+			alpha: .08 + M() * .14,
+			decay: .012 + M() * .02,
 			life: 1
 		});
 	}
-	function Jt(e) {
+	function Yt(e) {
 		let t = e / 16.6667;
 		for (let e = N.length - 1; e >= 0; --e) {
 			let n = N[e];
@@ -4354,48 +5003,48 @@ function ue(e, t = {}) {
 			n.x += n.vx * t, n.y += n.vy * t, n.vx *= .985, n.vy = n.vy * .97 + .02 * t, n.radius *= .994;
 		}
 	}
-	function Yt() {
-		if (!rn) return;
-		let e = Y.timing.timestamp;
-		if (e - ae < 90) return;
-		let t = Math.max(Wt(Q), Wt(Z));
-		t < .42 || (ae = e, qt(Q.position.x - 6, Ft(Q.position.x) - 2, O(t * .18, .1, .28), -1));
-	}
 	function Xt() {
-		if (!rn || $ !== z.PLAYING) return;
+		if (!an) return;
 		let e = Y.timing.timestamp;
-		if (e - oe < 110) return;
-		oe = e;
-		let t = Q.position.x - 4, n = Ft(Q.position.x) - 1;
-		for (let e = 0; e < 2; e += 1) N.push({
-			x: t + (j() - .5) * 5,
-			y: n,
-			vx: -(.08 + j() * .3),
-			vy: -(.04 + j() * .18),
-			radius: 1 + j() * 1,
-			alpha: .04 + j() * .04,
-			decay: .028 + j() * .022,
-			life: 1
-		});
+		if (e - z < 90) return;
+		let t = Math.max(Gt(Q), Gt(Z));
+		t < .42 || (z = e, Jt(Q.position.x - 6, It(Q.position.x) - 2, O(t * .18, .1, .28), -1));
 	}
 	function Zt() {
-		if (!rn || Wt(Q) < .85) return;
+		if (!an || $ !== V.PLAYING) return;
 		let e = Y.timing.timestamp;
-		if (e - se < 2e3) return;
-		se = e;
-		let t = Q.position.x + 7, n = Ft(Q.position.x) - 38;
-		N.push({
-			x: t + (j() - .5) * 3,
+		if (e - ae < 110) return;
+		ae = e;
+		let t = Q.position.x - 4, n = It(Q.position.x) - 1;
+		for (let e = 0; e < 2; e += 1) N.push({
+			x: t + (M() - .5) * 5,
 			y: n,
-			vx: (j() - .5) * .15,
-			vy: -(.08 + j() * .12),
-			radius: 3 + j() * 2,
-			alpha: .03 + j() * .02,
-			decay: .008 + j() * .006,
+			vx: -(.08 + M() * .3),
+			vy: -(.04 + M() * .18),
+			radius: 1 + M() * 1,
+			alpha: .04 + M() * .04,
+			decay: .028 + M() * .022,
 			life: 1
 		});
 	}
-	function Qt(e, t) {
+	function Qt() {
+		if (!an || Gt(Q) < .85) return;
+		let e = Y.timing.timestamp;
+		if (e - oe < 2e3) return;
+		oe = e;
+		let t = Q.position.x + 7, n = It(Q.position.x) - 38;
+		N.push({
+			x: t + (M() - .5) * 3,
+			y: n,
+			vx: (M() - .5) * .15,
+			vy: -(.08 + M() * .12),
+			radius: 3 + M() * 2,
+			alpha: .03 + M() * .02,
+			decay: .008 + M() * .006,
+			life: 1
+		});
+	}
+	function $t(e, t) {
 		let n = e.collision && e.collision.supports && e.collision.supports[0];
 		return n ? {
 			x: n.x,
@@ -4405,13 +5054,13 @@ function ue(e, t = {}) {
 			y: t.position.y
 		};
 	}
-	function $t(e) {
-		Q.collisionFilter.mask = e ? gt : vt, Z.collisionFilter.mask = e ? _t : vt;
+	function en(e) {
+		Q.collisionFilter.mask = e ? _t : yt, Z.collisionFilter.mask = e ? vt : yt;
 	}
-	let en = 28, tn = {
+	let tn = 28, nn = {
 		x: 110,
 		y: 491
-	}, Z = a.circle(tn.x, tn.y, 28, {
+	}, Z = a.circle(nn.x, nn.y, 28, {
 		restitution: 0,
 		friction: .6,
 		frictionStatic: 1,
@@ -4419,7 +5068,7 @@ function ue(e, t = {}) {
 		density: .1,
 		collisionFilter: {
 			category: q.ROCK,
-			mask: _t
+			mask: vt
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -4427,10 +5076,10 @@ function ue(e, t = {}) {
 			lineWidth: 0
 		},
 		label: "rock"
-	}), nn = {
+	}), rn = {
 		x: 69,
 		y: 520 - 44 / 2 - 1
-	}, Q = a.rectangle(nn.x, nn.y, 22, 44, {
+	}, Q = a.rectangle(rn.x, rn.y, 22, 44, {
 		restitution: 0,
 		friction: .8,
 		frictionStatic: .8,
@@ -4439,7 +5088,7 @@ function ue(e, t = {}) {
 		chamfer: { radius: 2 },
 		collisionFilter: {
 			category: q.SISYPHUS,
-			mask: gt
+			mask: _t
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -4450,44 +5099,44 @@ function ue(e, t = {}) {
 		label: "sisyphus"
 	});
 	s.add(Y.world, [
-		St,
 		Ct,
 		wt,
 		Tt,
 		Et,
-		jt,
+		Dt,
+		Mt,
 		Z,
 		Q
 	]);
-	let rn = !1, an = 0, $ = z.PLAYING, on = 0, sn = 0, cn = 830, ln = 188;
-	function un() {
-		let e = Z.position.x < 200 && Z.position.y > 480, t = Wt(Z) < .4 && Math.abs(Z.angularVelocity) < .08;
+	let an = !1, on = 0, $ = V.PLAYING, sn = 0, cn = 0, ln = 830, un = 188;
+	function dn() {
+		let e = Z.position.x < 200 && Z.position.y > 480, t = Gt(Z) < .4 && Math.abs(Z.angularVelocity) < .08;
 		return e && t;
 	}
-	function dn(e) {
+	function fn(e) {
 		if ($ !== e) {
-			if (de = $, fe = 450, $ = e, e === z.PLAYING) {
-				He(), o.setStatic(Q, !1), o.setStatic(Z, !1), $t(!0), on = 0, Ut();
+			if (le = $, ue = 450, $ = e, e === V.PLAYING) {
+				Ue(), o.setStatic(Q, !1), o.setStatic(Z, !1), en(!0), sn = 0, Wt();
 				return;
 			}
-			if (e === z.SUMMIT) {
-				rn = !1, He(), yt.style.cursor = "default", $t(!1), o.setStatic(Q, !1), Gt(Q), o.setStatic(Q, !0), o.setStatic(Z, !1), o.setVelocity(Z, {
+			if (e === V.SUMMIT) {
+				an = !1, Ue(), bt.style.cursor = "default", en(!1), o.setStatic(Q, !1), Kt(Q), o.setStatic(Q, !0), o.setStatic(Z, !1), o.setVelocity(Z, {
 					x: -3.5,
 					y: -.5
-				}), Ut(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
+				}), Wt(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
 				return;
 			}
-			if (e === z.SIS_DESCENDING) {
-				He(), $t(!1), o.setStatic(Q, !1), Ut(), on = Y.timing.timestamp + 4e3, console.log("%cSisifo desciende lentamente por 4s...", "color:#8d99ae");
+			if (e === V.SIS_DESCENDING) {
+				Ue(), en(!1), o.setStatic(Q, !1), Wt(), sn = Y.timing.timestamp + 4e3, console.log("%cSisifo desciende lentamente por 4s...", "color:#8d99ae");
 				return;
 			}
-			if (e === z.WAITING) {
-				if (rn = !1, He(), Ae(B.OVERVIEW), yt.style.cursor = "default", sn += 1, typeof t.onCycleComplete == "function") try {
-					t.onCycleComplete(sn);
+			if (e === V.WAITING) {
+				if (an = !1, Ue(), je(H.OVERVIEW), bt.style.cursor = "default", cn += 1, typeof t.onCycleComplete == "function") try {
+					t.onCycleComplete(cn);
 				} catch (e) {
 					console.warn("onCycleComplete error:", e);
 				}
-				$t(!1), o.setStatic(Q, !1), Gt(Q);
+				en(!1), o.setStatic(Q, !1), Kt(Q);
 				let e = Z.position.x - 28 - 22 / 2 - 2;
 				if (e < 16) {
 					e = 16;
@@ -4500,42 +5149,42 @@ function ue(e, t = {}) {
 				o.setPosition(Q, {
 					x: e,
 					y: 497
-				}), o.setAngle(Q, 0), o.setStatic(Q, !0), Gt(Z), Ut(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
+				}), o.setAngle(Q, 0), o.setStatic(Q, !0), Kt(Z), Wt(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
 			}
 		}
 	}
-	let fn = E({
-		canvas: yt,
+	let pn = E({
+		canvas: bt,
 		render: X,
 		queryPoint: l.point,
 		sisyphus: Q,
-		camera: U,
-		cameraDrag: G,
-		audioCueController: _e,
-		runtimeQualityController: Te,
-		GAME_STATE: z,
-		CAMERA_BEHAVIOR: B,
+		camera: W,
+		cameraDrag: pe,
+		audioCueController: ve,
+		runtimeQualityController: Ee,
+		GAME_STATE: V,
+		CAMERA_BEHAVIOR: H,
 		CAMERA_DRAG_THRESHOLD: 5,
 		CAMERA_PAN_SENSITIVITY: 1.08,
-		getIsPushing: () => rn,
+		getIsPushing: () => an,
 		setIsPushing: (e) => {
-			rn = e, e || (an = 0);
+			an = e, e || (on = 0);
 		},
 		getGameState: () => $,
-		setGameState: dn,
-		getFreePanZoom: je,
-		setCameraBehavior: Ae,
-		wakeBodies: Ut,
-		beginCameraDrag: Ve,
-		stopCameraDrag: He,
-		storeFreePanTarget: Be,
-		cycleUserZoomInput: ct,
-		cycleVisualStyle: lt,
+		setGameState: fn,
+		getFreePanZoom: Me,
+		setCameraBehavior: je,
+		wakeBodies: Wt,
+		beginCameraDrag: He,
+		stopCameraDrag: Ue,
+		storeFreePanTarget: Ve,
+		cycleUserZoomInput: lt,
+		cycleVisualStyle: ut,
 		setQualityHintUntil: (e) => {
-			Se = e;
+			Ce = e;
 		}
 	});
-	fn.register(), c.on(Y, "collisionStart", (e) => {
+	pn.register(), c.on(Y, "collisionStart", (e) => {
 		for (let t of e.pairs) {
 			if (![t.bodyA.label, t.bodyB.label].includes("rock")) continue;
 			let e = t.bodyA.label === "rock" ? t.bodyB : t.bodyA;
@@ -4546,12 +5195,12 @@ function ue(e, t = {}) {
 			].includes(e.label)) continue;
 			let n = t.bodyA.label === "rock" ? t.bodyA : t.bodyB, r = O((Math.hypot(n.velocity.x - e.velocity.x, n.velocity.y - e.velocity.y) - 1.45) / 6, 0, 1);
 			if (r < .08) continue;
-			let i = Qt(t, n), a = n.velocity.x < 0 ? -1 : 1;
-			qt(i.x, i.y, .16 + r * .32, a), Kt(r * (e.label === "wall-left" ? .18 : .11)), Ce = Math.max(Ce, r), _e.triggerImpact(r);
+			let i = $t(t, n), a = n.velocity.x < 0 ? -1 : 1;
+			Jt(i.x, i.y, .16 + r * .32, a), qt(r * (e.label === "wall-left" ? .18 : .11)), we = Math.max(we, r), ve.triggerImpact(r);
 		}
 	});
-	function pn(e) {
-		let t = X.canvas.width, n = X.canvas.height, r = it(), i = Te.getSnapshot(), a = i.profile, o = O((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = O(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = O((r.grain.baseAlpha + ye * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
+	function mn(e) {
+		let t = X.canvas.width, n = X.canvas.height, r = at(), i = Ee.getSnapshot(), a = i.profile, o = O((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = O(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = O((r.grain.baseAlpha + be * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
 		e.save(), e.setTransform(1, 0, 0, 1, 0, 0);
 		let u = e.createLinearGradient(0, 0, 0, n);
 		u.addColorStop(0, `rgba(252, 241, 212, ${(o * .5).toFixed(3)})`), u.addColorStop(.15, `rgba(252, 241, 212, ${(o * .2).toFixed(3)})`), u.addColorStop(.45, `rgba(252, 241, 212, ${(o * .08).toFixed(3)})`), u.addColorStop(1, `rgba(8, 10, 16, ${(o * .84).toFixed(3)})`), e.fillStyle = u, e.fillRect(0, 0, t, n);
@@ -4559,54 +5208,54 @@ function ue(e, t = {}) {
 		if (d.addColorStop(0, "rgba(0, 0, 0, 0)"), d.addColorStop(.72, `rgba(7, 10, 16, ${(s * .34).toFixed(3)})`), d.addColorStop(1, `rgba(4, 6, 10, ${s.toFixed(3)})`), e.fillStyle = d, e.fillRect(0, 0, t, n), c > 0 && l > 0) {
 			e.globalAlpha = l;
 			for (let r = 0; r < c; r += 1) {
-				let i = (r * 137 + Math.floor(L * .6)) % t, a = (r * 211 + Math.floor(L * .35)) % n, o = 1 + r % 3;
+				let i = (r * 137 + Math.floor(F * .6)) % t, a = (r * 211 + Math.floor(F * .35)) % n, o = 1 + r % 3;
 				e.fillStyle = r % 5 == 0 ? "rgba(255, 255, 255, 0.7)" : "rgba(12, 16, 24, 0.7)", e.fillRect(i, a, o, o);
 			}
 		}
-		if (x(e, ve, "grade", {
+		if (x(e, ye, "grade", {
 			width: t,
 			height: n,
-			timeMs: L,
+			timeMs: F,
 			viewMinX: X.bounds.min.x,
 			viewMinY: X.bounds.min.y,
 			overlayOpacityMultiplier: a.overlayOpacityMul
-		}), performance.now() < ue) {
-			let t = Fe(Ee.level);
+		}), performance.now() < B) {
+			let t = Ie(De.level);
 			e.globalAlpha = .9, e.fillStyle = "rgba(14, 18, 26, 0.64)", e.fillRect(24, 24, 168, 34), e.fillStyle = "rgba(226, 232, 242, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ZOOM: ${t}`, 36, 41);
 		}
-		performance.now() < xe && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${be.toUpperCase()}`, 36, 83)), performance.now() < Se && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125)), e.restore();
+		performance.now() < Se && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${xe.toUpperCase()}`, 36, 83)), performance.now() < Ce && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125)), e.restore();
 	}
 	c.on(Y, "beforeUpdate", () => {
 		let e = Y.timing.lastDelta || 16.6667;
-		L += e, R = Math.max(0, R - e * .0011), Ce = Math.max(0, Ce - e * .0014), fe > 0 && (fe = Math.max(0, fe - e)), Jt(e), we = Te.update(e).fpsSmoothed;
-		let t = O(Wt(Z) / 2.2, 0, 1), n = O(Wt(Q) / 2, 0, 1);
-		if (ye = Nt(ye, O(Math.max(t, n) + Ce * .3, 0, 1), .1), _e.update({
-			rockSpeed: Wt(Z),
-			ascentProgress: Ue(),
-			isPushing: rn,
-			moodImpact: Ce
-		}), typeof gn.onProgressUpdate == "function" && gn.onProgressUpdate({
-			progress: Ue(),
+		F += e, te = Math.max(0, te - e * .0011), we = Math.max(0, we - e * .0014), ue > 0 && (ue = Math.max(0, ue - e)), Yt(e), Te = Ee.update(e).fpsSmoothed;
+		let t = O(Gt(Z) / 2.2, 0, 1), n = O(Gt(Q) / 2, 0, 1);
+		if (be = Pt(be, O(Math.max(t, n) + we * .3, 0, 1), .1), ve.update({
+			rockSpeed: Gt(Z),
+			ascentProgress: We(),
+			isPushing: an,
+			moodImpact: we
+		}), typeof _n.onProgressUpdate == "function" && _n.onProgressUpdate({
+			progress: We(),
 			gameState: $,
-			cycleCount: sn,
-			isPushing: rn
-		}), ft(), mt(e), Z.position.x < 500 && Z.position.y > 452 && Z.velocity.y < -.1 && o.setVelocity(Z, {
+			cycleCount: cn,
+			isPushing: an
+		}), pt(), ht(e), Z.position.x < 500 && Z.position.y > 452 && Z.velocity.y < -.1 && o.setVelocity(Z, {
 			x: Z.velocity.x,
 			y: Z.velocity.y * .05
 		}), Z.position.x < 34 && Z.velocity.x < -.2 && (o.setVelocity(Z, {
 			x: .6,
 			y: Z.velocity.y
-		}), o.setAngularVelocity(Z, .02)), $ !== z.PLAYING && Math.abs(Z.velocity.x) < .3 && Math.abs(Z.angularVelocity) > .05 && o.setAngularVelocity(Z, Z.angularVelocity * .85), $ !== z.PLAYING && Z.position.y > 487 && Z.position.x > 50 && Math.abs(Z.velocity.x) < .15 && (o.setVelocity(Z, {
+		}), o.setAngularVelocity(Z, .02)), $ !== V.PLAYING && Math.abs(Z.velocity.x) < .3 && Math.abs(Z.angularVelocity) > .05 && o.setAngularVelocity(Z, Z.angularVelocity * .85), $ !== V.PLAYING && Z.position.y > 487 && Z.position.x > 50 && Math.abs(Z.velocity.x) < .15 && (o.setVelocity(Z, {
 			x: 0,
 			y: Z.velocity.y
-		}), o.setAngularVelocity(Z, 0)), $ === z.PLAYING) {
+		}), o.setAngularVelocity(Z, 0)), $ === V.PLAYING) {
 			if (Q.position.x >= 830) {
-				dn(z.SUMMIT);
+				fn(V.SUMMIT);
 				return;
 			}
-			if (!rn) return;
+			if (!an) return;
 			function e(e, t) {
-				let n = e.position.x, r = t / 2, i = Ft(n - r), a = Ft(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
+				let n = e.position.x, r = t / 2, i = It(n - r), a = It(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
 				return c === 0 ? {
 					x: 1,
 					y: 0
@@ -4617,51 +5266,53 @@ function ue(e, t = {}) {
 			}
 			let t = e(Q, 22), n = e(Z, 56);
 			{
-				Ut(), an = Math.min(an + 1, 90);
-				let e = .2 + an / 90 * .8, r = .073 * e, i = .066 * e, a = Y.gravity.y * (Y.gravity.scale ?? .001), s = .95;
+				Wt(), on = Math.min(on + 1, 90);
+				let e = .2 + on / 90 * .8, r = We(), i = 1;
+				r >= .35 && r < .55 ? i = .85 : r >= .55 && r < .75 ? i = .7 : r >= .75 && r < .94 && (i = .45);
+				let a = .073 * e * i, s = .066 * e * i, c = Y.gravity.y * (Y.gravity.scale ?? .001), l = .95;
 				o.applyForce(Q, Q.position, {
 					x: 0,
-					y: -Q.mass * a * s
+					y: -Q.mass * c * l
 				}), o.applyForce(Z, Z.position, {
 					x: 0,
-					y: -Z.mass * a * s
+					y: -Z.mass * c * l
 				}), o.applyForce(Q, Q.position, {
-					x: t.x * C * .08 * e,
-					y: t.y * C * .08 * e
-				}), Yt(), Xt(), Zt(), o.setVelocity(Q, {
-					x: t.x * r,
-					y: t.y * r
+					x: t.x * C * .08 * e * i,
+					y: t.y * C * .08 * e * i
+				}), Xt(), Zt(), Qt(), o.setVelocity(Q, {
+					x: t.x * a,
+					y: t.y * a
 				}), o.setVelocity(Z, {
-					x: n.x * i,
-					y: n.y * i
+					x: n.x * s,
+					y: n.y * s
 				});
 			}
-		} else $ === z.SUMMIT ? un() ? on === 0 ? (on = Y.timing.timestamp + 3e3, console.log("%c⏳ Roca en base. Sísifo contempla 3s...", "color:#8d99ae")) : Y.timing.timestamp >= on && (Q.render.opacity = Math.max(0, Q.render.opacity - .033), Q.render.opacity <= 0 && (Gt(Z), dn(z.WAITING))) : on = 0 : $ === z.WAITING && (Q.render.opacity < 1 && (Q.render.opacity = Math.min(1, Q.render.opacity + .006)), u.set(Q, !1));
+		} else $ === V.SUMMIT ? dn() ? sn === 0 ? (sn = Y.timing.timestamp + 3e3, console.log("%c⏳ Roca en base. Sísifo contempla 3s...", "color:#8d99ae")) : Y.timing.timestamp >= sn && (Q.render.opacity = Math.max(0, Q.render.opacity - .033), Q.render.opacity <= 0 && (Kt(Z), fn(V.WAITING))) : sn = 0 : $ === V.WAITING && (Q.render.opacity < 1 && (Q.render.opacity = Math.min(1, Q.render.opacity + .006)), u.set(Q, !1));
 	}), c.on(X, "afterRender", () => {
 		let e = X.context;
-		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, X.canvas.width, X.canvas.height), e.restore(), Ht(), pn(e);
+		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, X.canvas.width, X.canvas.height), e.restore(), Ut(), mn(e);
 	});
-	let mn = getComputedStyle(e).position;
-	(mn === "static" || mn === "") && (e.style.position = "relative"), e.style.overflow = "hidden", It(), window.addEventListener("resize", It), xt();
-	let hn = i.create();
-	r.run(X), i.run(hn, Y), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca.");
-	let gn = {
+	let hn = getComputedStyle(e).position;
+	(hn === "static" || hn === "") && (e.style.position = "relative"), e.style.overflow = "hidden", Lt(), window.addEventListener("resize", Lt), St();
+	let gn = i.create();
+	r.run(X), i.run(gn, Y), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca.");
+	let _n = {
 		destroy() {
-			r.stop(X), i.stop(hn), c.off(X), c.off(Y), typeof fn?.destroy == "function" && fn.destroy(), window.removeEventListener("resize", It), J.remove(), yt.remove(), s.clear(Y.world), n.clear(Y), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
+			r.stop(X), i.stop(gn), c.off(X), c.off(Y), typeof pn?.destroy == "function" && pn.destroy(), window.removeEventListener("resize", Lt), J.remove(), bt.remove(), s.clear(Y.world), n.clear(Y), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
 		},
 		getState: () => $,
-		getCycleCount: () => sn,
-		getAscentProgress: Ue,
+		getCycleCount: () => cn,
+		getAscentProgress: We,
 		getPerformance: () => ({
-			fpsApprox: we,
-			motionIntensity: ye,
-			currentVisualMood: rt(),
-			currentVisualStyle: be,
-			qualityTier: Te.getSnapshot().tier
+			fpsApprox: Te,
+			motionIntensity: be,
+			currentVisualMood: it(),
+			currentVisualStyle: xe,
+			qualityTier: Ee.getSnapshot().tier
 		}),
 		onProgressUpdate: null
 	};
-	return gn;
+	return _n;
 }
 //#endregion
-export { ue as createSisyphusGame };
+export { H as createSisyphusGame };

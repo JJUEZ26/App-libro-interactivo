@@ -1,0 +1,43 @@
+{
+  "overlays": [
+    {
+      "id": "ascent_haze_sequence",
+      "kind": "sequence",
+      "frames": [
+        "../anim/ascent-haze-00.svg",
+        "../anim/ascent-haze-01.svg",
+        "../anim/ascent-haze-02.svg",
+        "../anim/ascent-haze-03.svg",
+        "../anim/ascent-haze-04.svg",
+        "../anim/ascent-haze-05.svg",
+        "../anim/ascent-haze-06.svg",
+        "../anim/ascent-haze-07.svg"
+      ],
+      "layer": "grade",
+      "blendMode": "screen",
+      "opacity": 0.14,
+      "mobileOpacityMultiplier": 0.72,
+      "parallaxX": 0.0006,
+      "parallaxY": 0.0005,
+      "pulseStrength": 0,
+      "widthRatio": 1.12,
+      "heightRatio": 1.12,
+      "fps": 7,
+      "loop": true,
+      "startOffsetMs": 240
+    },
+    {
+      "id": "moon_halo_texture",
+      "src": "./moon-halo-overlay.svg",
+      "layer": "grade",
+      "blendMode": "screen",
+      "opacity": 0.26,
+      "mobileOpacityMultiplier": 0.82,
+      "parallaxX": 0.0008,
+      "parallaxY": 0.0005,
+      "pulseStrength": 0.02,
+      "widthRatio": 1.08,
+      "heightRatio": 1.08
+    }
+  ]
+}

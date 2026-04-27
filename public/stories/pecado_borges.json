@@ -195,6 +195,11 @@
     "page": 10,
     "forceShowChoices": true,
     "images": [],
+    "musicCredits": {
+      "title": "El remordimiento (lectura del autor)",
+      "composer": "Voz: Jorge Luis Borges",
+      "note": "El autor lee su propio poema con la cadencia pausada y la entonación monocorde que le caracterizaban en sus últimos años."
+    },
     "discoverAuthor": "Jorge Luis Borges",
     "discoveries": [
       {

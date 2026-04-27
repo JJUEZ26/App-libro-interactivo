@@ -167,6 +167,147 @@
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
         "volume": 0.95,
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.90,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 2
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "scenes": [
+            "Nuestra amistad se formó como muchas otras, gracias a la inercia laboral. Momentos de ocio compartido permitieron conversaciones extensas y personales. En el camino descubrimos que no compartíamos tantas aficiones como suele ser habitual.",
+            "Sin embargo, donde germinó nuestra amistad fue en una coincidencia literaria poco común. Desde muy jóvenes, cada uno, desde su realidad, fue trazando un camino de búsqueda parecido al del otro. Habíamos llegado a las mismas preguntas, y esas dudas desembocaron en libros y autores poco convencionales.",
+            "Fue realmente emocionante encontrar a alguien que también hubiera leído a autores como Nietzsche o Camus, o que también divagara en discusiones antropológicas y filosóficas, hasta entonces nunca había tenido la oportunidad de discutir esos temas con nadie. Pasábamos largas horas hablando de tal autor, de aquel libro, de aquella idea.",
+            "En contadas ocasiones las discusiones terminaban en reflexiones esperanzadoras. Ambos buscábamos activamente ser mejores, acercarnos a la virtud, luchar, enfrentarnos a nuestras debilidades. Compartíamos una ambiciosa meta."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.60,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 3
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "scenes": [
+            "Por años compartimos y sobrellevamos juntos el absurdo, una admiración sincera nos mantenía leales.",
+            "Pero con el tiempo y bajo el peso de las circunstancias, la inercia resquebrajó nuestra amistad. La duda que alguna vez tuve sobre su incondicionalidad se volvió una triste certeza al comprobar que, en las dificultades, no estaba presente.",
+            "Él había elegido otro camino, aunque eso significó sacrificar nuestra amistad... En el fondo lo comprendí..."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.50,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 4
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "scenes": [
+            "A pesar de aquel resquebrajamiento, por voluntad del azar seguíamos trabajando juntos, y las discusiones no desaparecieron.",
+            "A veces sobre política: cada uno había forjado su criterio a medias, sobre qué sistema económico y social convenía más, y era ahí donde más solíamos divergir. Él estaba claramente inclinado hacia la derecha, y yo defendía que, aunque no me consideraba de izquierda, habían muchas ideas que hoy servían de contrapeso a la realidad desequilibrada en la que vivíamos.",
+            "Esas discusiones solían ser las más acaloradas, y también las más fáciles de sostener, los temas importantes y personales ya no los compartíamos."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.40,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 5
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "scenes": [
+            "Una tarde cotidiana, en la silenciosa hora de almuerzo, entre correos y bromas sobre Sísifo, discutimos si aquel funcionario burocrático y enfermo del subsuelo era un alter ego de Dostoievski o si, por medio de él, este nos advertía de no caer tan profundo.",
+            "Compartíamos un miedo atroz a ese subsuelo.",
+            "Otra mañana, antes del café del mediodía, con un tono burlón y resignado, nos cuestionamos si valía la pena abrir «la puerta»: esa puerta de la que en algún libro habían hablado Hermann Hesse, Séneca y muchos otros."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.35,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 6
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "scenes": [
+            "Hoy, sin que yo lo previera, sin creer realmente que sus palabras pudieran volverse hechos, él abrió la puerta.",
+            "Se rindió. Concluyó que la náusea y el sinsentido pesaban más que las cosas buenas de la vida.",
+            "Tomó la decisión que yo, aun bajo el peso de la desesperación, no pude tomar."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.60,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 7
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "scenes": [
+            "Quizá fue un momento de impulsividad. A lo mejor, si hubiéramos seguido siendo amigos, yo le habría dado otra respuesta cuando me buscó. Pero yo guardaba rencor y cargaba a cuestas mi propia roca, cegadora…",
+            "Si yo le hubiera dicho: <span class=\"anim-text-fade-out\" style=\"animation-delay: 2s;\">«Hablemos».</span> Si yo le hubiera dicho: «No importan las decisiones que has tomado; tú y yo sabemos que no hay persona en el mundo que nos entienda mejor que el otro. Todo esto va a pasar. No es tan terrible lo que está sucediendo, aunque así lo sientas. El dolor termina cediendo. La pérdida, aunque nunca deja de doler y aunque nunca vas a dejar de llorar, llega a un momento en el que se hace menos frecuente. Aguanta un poco más. Tú puedes. <span class=\"anim-text-fade-out\" style=\"animation-delay: 15s;\">Ven, conversemos».</span>"
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.65,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 8
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "scenes": [
+            "Pero no le dije nada de eso.",
+            "Por el contrario, envuelto en un enojo visceral —producido por mis propias lamentaciones— le dije que, si encontraba la mejor manera de suicidarse, una opción 100% efectiva, me la compartiera antes de consumarla.",
+            "Le dije que él no tenía ni puta idea de lo que es estar realmente solo y perdido. Le dije que él nunca había conocido una pérdida real, que su dolor era causado por nimiedades.",
+            "Yo lo empujé. El rencor y sufrimiento acumulado me desbordaron y dije cosas que no pensaba. Yo lo conduje hasta esa puerta. Y él la abrió."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.85,
+        "choices": [
+            {
+                "text": "Continuar",
+                "page": 9
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "scenes": [
+            "Al final, no soy tan estoico como pensaba. En los momentos importantes, cuando mi cabeza debió permanecer erguida ante «las azarosas garras del destino», no se mantuvo firme; no como la de aquel poeta.",
+            "Aunque hoy la culpa sea el detonante, la causa la encuentro al mirar hacia atrás. Al recordar, solo veo lo perdido: a quienes amé y ya no están; los pequeños pasos que nunca conocí; la felicidad con la que algún día soñé.",
+            "La lamentación escrita me deja una brisa de desahogo, pero sé que de esto no sacaré absolución, y mucho menos justificación. Quiero confesar que por momentos lo intenté; incluso pensé que lo iba a lograr. Si el aleteo de aquella mariposa hubiera sido distinto, quizá habría llegado a ser feliz..."
+        ],
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.95,
         "choices": [
             {
                 "text": "Continuar",
@@ -184,6 +325,11 @@
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
         "volume": 0.95,
+        "musicCredits": {
+            "title": "On the Nature of Daylight",
+            "composer": "Max Richter, 2004",
+            "note": "Una elegía moderna sobre la pérdida y la reconciliación. Su uso busca acompañar la carga emocional y la catarsis final de la historia."
+        },
         "choices": [
             {
                 "text": "Volver a la biblioteca",

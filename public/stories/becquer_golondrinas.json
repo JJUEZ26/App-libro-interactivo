@@ -146,6 +146,11 @@
         "ghostEcho": true,
         "effect": "twilight_night, fireflies_subtle",
         "forceShowChoices": true,
+        "musicCredits": {
+          "title": "Volverán las oscuras golondrinas",
+          "composer": "Fuála (Alejandro Fuentes) — música original",
+          "note": "Composición contemporánea inspirada en la Rima LIII. La voz de Fúla acompaña el poema con una delicadeza que respeta el dolor del texto."
+        },
         "discoverAuthor": "Gustavo Adolfo Bécquer",
         "discoveries": [
             {

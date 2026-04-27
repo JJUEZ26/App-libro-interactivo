@@ -11,6 +11,28 @@
     align-items: center;
     margin: 2.5rem 0 1.5rem;
     z-index: 5;
+    width: 100%;
+}
+
+.orbs-row {
+    display: flex;
+    justify-content: center;
+    gap: 4rem; /* Spacing between orbs */
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .orbs-row {
+        gap: 2.5rem;
+    }
+}
+
+.panels-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* --- The Orb: a softly pulsing invitation --- */
@@ -20,11 +42,16 @@
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.discoveries--open .discovery-orb-wrapper {
-    opacity: 0;
-    transform: scale(0.6);
-    pointer-events: none;
-    position: absolute;
+.discoveries--open .main-orb-wrapper .orb-core,
+.music-open .music-orb-wrapper .orb-core {
+    animation-play-state: paused;
+    filter: brightness(1.3);
+    transform: scale(1.1);
+}
+
+.discoveries--open .main-orb-wrapper .orb-ring,
+.music-open .music-orb-wrapper .orb-ring {
+    opacity: 0.8;
 }
 
 .discovery-orb {
@@ -42,20 +69,14 @@
     animation: orbAppear 2s cubic-bezier(0.16, 1, 0.3, 1) 3s both;
 }
 
+.discovery-orb--music {
+    animation-delay: 3.3s; /* slightly after main orb */
+}
+
 @keyframes orbAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-
-    60% {
-        opacity: 0.8;
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% { opacity: 0; transform: scale(0.3); }
+    60% { opacity: 0.8; }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 /* — Rings: concentric expanding halos — */
@@ -66,58 +87,27 @@
     border: 1px solid rgba(200, 180, 150, 0.15);
 }
 
-.orb-ring--1 {
-    animation: orbPulse1 4s ease-in-out infinite;
+.orb-ring--music {
+    border-color: rgba(160, 200, 220, 0.15);
 }
 
-.orb-ring--2 {
-    animation: orbPulse2 4s ease-in-out 0.8s infinite;
-}
-
-.orb-ring--3 {
-    animation: orbPulse3 4s ease-in-out 1.6s infinite;
-}
+.orb-ring--1 { animation: orbPulse1 4s ease-in-out infinite; }
+.orb-ring--2 { animation: orbPulse2 4s ease-in-out 0.8s infinite; }
+.orb-ring--3 { animation: orbPulse3 4s ease-in-out 1.6s infinite; }
 
 @keyframes orbPulse1 {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.3;
-    }
-
-    50% {
-        transform: scale(1.5);
-        opacity: 0;
-    }
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.5); opacity: 0; }
 }
 
 @keyframes orbPulse2 {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.25;
-    }
-
-    50% {
-        transform: scale(1.8);
-        opacity: 0;
-    }
+    0%, 100% { transform: scale(1); opacity: 0.25; }
+    50% { transform: scale(1.8); opacity: 0; }
 }
 
 @keyframes orbPulse3 {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.2;
-    }
-
-    50% {
-        transform: scale(2.1);
-        opacity: 0;
-    }
+    0%, 100% { transform: scale(1); opacity: 0.2; }
+    50% { transform: scale(2.1); opacity: 0; }
 }
 
 /* — Core: the solid center dot — */
@@ -126,27 +116,29 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%,
-            rgba(220, 200, 160, 0.9),
-            rgba(180, 150, 100, 0.6));
-    box-shadow:
-        0 0 12px rgba(200, 170, 120, 0.3),
-        0 0 30px rgba(200, 170, 120, 0.1);
+    background: radial-gradient(circle at 40% 35%, rgba(220, 200, 160, 0.9), rgba(180, 150, 100, 0.6));
+    box-shadow: 0 0 12px rgba(200, 170, 120, 0.3), 0 0 30px rgba(200, 170, 120, 0.1);
     animation: orbCoreBreathe 3s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.orb-core--music {
+    background: radial-gradient(circle at 40% 35%, rgba(180, 220, 240, 0.9), rgba(120, 150, 180, 0.6));
+    box-shadow: 0 0 12px rgba(160, 200, 220, 0.3), 0 0 30px rgba(160, 200, 220, 0.1);
+}
+
+.orb-music-icon {
+    width: 10px;
+    height: 10px;
+    color: rgba(20, 25, 30, 0.8);
+}
+.orb-music-icon svg { width: 100%; height: 100%; }
+
 @keyframes orbCoreBreathe {
-
-    0%,
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 12px rgba(200, 170, 120, 0.3), 0 0 30px rgba(200, 170, 120, 0.1);
-    }
-
-    50% {
-        transform: scale(1.12);
-        box-shadow: 0 0 18px rgba(200, 170, 120, 0.45), 0 0 40px rgba(200, 170, 120, 0.15);
-    }
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.12); filter: brightness(1.2); }
 }
 
 /* — Label below the orb — */
@@ -164,22 +156,36 @@
     transition: color 0.4s ease;
 }
 
+.discovery-orb--music .orb-label {
+    color: rgba(160, 200, 220, 0.5);
+}
+
 .discovery-orb:hover .orb-label {
     color: rgba(200, 180, 150, 0.8);
+}
+
+.discovery-orb--music:hover .orb-label {
+    color: rgba(160, 200, 220, 0.8);
 }
 
 .discovery-orb:hover .orb-core {
     animation-play-state: paused;
     transform: scale(1.2);
+}
+.discovery-orb:hover .orb-core:not(.orb-core--music) {
     box-shadow: 0 0 22px rgba(200, 170, 120, 0.5), 0 0 50px rgba(200, 170, 120, 0.2);
+}
+.discovery-orb--music:hover .orb-core--music {
+    box-shadow: 0 0 22px rgba(160, 200, 220, 0.5), 0 0 50px rgba(160, 200, 220, 0.2);
 }
 
 
 /* ================================================
-   EXPANDED PANEL — The 3 recommended works
+   EXPANDED PANELS
    ================================================ */
 
-.discovery-panel {
+.discovery-panel,
+.music-credits-panel {
     display: none;
     flex-direction: column;
     align-items: center;
@@ -188,21 +194,15 @@
     opacity: 0;
 }
 
-.discoveries--open .discovery-panel {
+.discoveries--open .discovery-panel,
+.music-open .music-credits-panel {
     display: flex;
     animation: panelReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes panelReveal {
-    0% {
-        opacity: 0;
-        transform: translateY(16px) scale(0.95);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateY(16px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* — Header — */
@@ -233,17 +233,9 @@
 }
 
 @keyframes panelTextIn {
-    0% {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
-
 
 /* — Cards Container — */
 .discovery-cards {
@@ -276,15 +268,8 @@
 }
 
 @keyframes cardSlideIn {
-    0% {
-        opacity: 0;
-        transform: translateX(-12px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    0% { opacity: 0; transform: translateX(-12px); }
+    100% { opacity: 1; transform: translateX(0); }
 }
 
 /* — Card Icon — */
@@ -297,10 +282,7 @@
     transition: color 0.3s ease;
 }
 
-.discovery-card-icon svg {
-    width: 100%;
-    height: 100%;
-}
+.discovery-card-icon svg { width: 100%; height: 100%; }
 
 .discovery-card:hover .discovery-card-icon {
     color: rgba(220, 200, 160, 0.75);
@@ -354,17 +336,38 @@
     width: fit-content;
 }
 
-/* — Upcoming Card: slightly muted — */
-.discovery-card--upcoming {
-    opacity: 0.65;
+.discovery-card--upcoming { opacity: 0.65; }
+.discovery-card--upcoming:hover { opacity: 0.8; }
+.discovery-card--upcoming .discovery-card-title { color: rgba(200, 190, 170, 0.7); }
+
+/* ================================================
+   MUSIC CREDITS PANEL
+   ================================================ */
+
+.music-credits-inner {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.9rem 1.1rem; border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(160,200,220,0.15);
+    backdrop-filter: blur(6px);
+    width: 100%;
 }
 
-.discovery-card--upcoming:hover {
-    opacity: 0.8;
+.music-credits-icon {
+    flex-shrink:0; width:26px; height:26px; color:rgba(160,200,220,0.5); margin-top:2px;
 }
+.music-credits-icon svg { width:100%; height:100%; }
 
-.discovery-card--upcoming .discovery-card-title {
-    color: rgba(200, 190, 170, 0.7);
+.music-credits-body { display:flex; flex-direction:column; gap:0.15rem; min-width: 0;}
+
+.music-credits-title {
+    font-family:var(--font-reader-title),serif; font-size:clamp(0.92rem, 2.8vw, 1.05rem); color:rgba(210,230,240,0.92); font-weight:500; line-height: 1.3;
+}
+.music-credits-composer {
+    font-family:var(--font-body); font-size:0.68rem; letter-spacing:0.12em; color:rgba(160,200,220,0.6);
+}
+.music-credits-note {
+    display:block; font-family:var(--font-body); font-size:clamp(0.78rem, 2.2vw, 0.85rem); font-style:italic; color:rgba(160,200,220,0.5); margin-top:0.25rem; line-height:1.5;
 }
 
 
@@ -376,50 +379,32 @@ body.theme-light .orb-core {
     background: radial-gradient(circle at 40% 35%, rgba(120, 90, 50, 0.8), rgba(160, 130, 80, 0.5));
     box-shadow: 0 0 12px rgba(120, 90, 50, 0.2), 0 0 30px rgba(120, 90, 50, 0.08);
 }
-
-body.theme-light .orb-ring {
-    border-color: rgba(120, 90, 50, 0.15);
+body.theme-light .orb-core--music {
+    background: radial-gradient(circle at 40% 35%, rgba(60, 120, 160, 0.8), rgba(90, 150, 190, 0.5));
+    box-shadow: 0 0 12px rgba(60, 120, 160, 0.2), 0 0 30px rgba(60, 120, 160, 0.08);
 }
+body.theme-light .orb-ring { border-color: rgba(120, 90, 50, 0.15); }
+body.theme-light .orb-ring--music { border-color: rgba(60, 120, 160, 0.15); }
+body.theme-light .orb-label { color: rgba(100, 80, 50, 0.45); }
+body.theme-light .discovery-orb--music .orb-label { color: rgba(60, 120, 160, 0.5); }
+body.theme-light .orb-music-icon { color: rgba(255,255,255, 0.9); }
 
-body.theme-light .orb-label {
-    color: rgba(100, 80, 50, 0.45);
-}
+body.theme-light .discovery-panel-title { color: rgba(80, 60, 30, 0.85); }
+body.theme-light .discovery-panel-subtitle { color: rgba(100, 80, 50, 0.4); }
 
-body.theme-light .discovery-panel-title {
-    color: rgba(80, 60, 30, 0.85);
-}
+body.theme-light .discovery-card { background: rgba(0, 0, 0, 0.03); border-color: rgba(120, 90, 50, 0.12); }
+body.theme-light .discovery-card:hover { background: rgba(0, 0, 0, 0.05); border-color: rgba(120, 90, 50, 0.2); }
+body.theme-light .discovery-card-title { color: rgba(60, 45, 20, 0.9); }
+body.theme-light .discovery-card-icon { color: rgba(120, 90, 50, 0.4); }
+body.theme-light .discovery-card-line { color: rgba(100, 80, 50, 0.5); }
 
-body.theme-light .discovery-panel-subtitle {
-    color: rgba(100, 80, 50, 0.4);
-}
+body.theme-light .music-credits-inner { background: rgba(0, 0, 0, 0.03); border-color: rgba(60, 120, 160, 0.15); }
+body.theme-light .music-credits-title { color: rgba(30, 70, 100, 0.9); }
+body.theme-light .music-credits-icon { color: rgba(60, 120, 160, 0.5); }
+body.theme-light .music-credits-composer { color: rgba(60, 120, 160, 0.6); }
+body.theme-light .music-credits-note { color: rgba(60, 120, 160, 0.5); }
 
-body.theme-light .discovery-card {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(120, 90, 50, 0.12);
-}
-
-body.theme-light .discovery-card:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(120, 90, 50, 0.2);
-}
-
-body.theme-light .discovery-card-title {
-    color: rgba(60, 45, 20, 0.9);
-}
-
-body.theme-light .discovery-card-icon {
-    color: rgba(120, 90, 50, 0.4);
-}
-
-body.theme-light .discovery-card-line {
-    color: rgba(100, 80, 50, 0.5);
-}
-
-body.theme-sepia .orb-core {
-    background: radial-gradient(circle at 40% 35%, rgba(160, 120, 60, 0.85), rgba(140, 100, 50, 0.55));
-}
-
-body.theme-sepia .discovery-card {
-    background: rgba(160, 120, 60, 0.05);
-    border-color: rgba(160, 120, 60, 0.12);
-}
+body.theme-sepia .orb-core { background: radial-gradient(circle at 40% 35%, rgba(160, 120, 60, 0.85), rgba(140, 100, 50, 0.55)); }
+body.theme-sepia .orb-core--music { background: radial-gradient(circle at 40% 35%, rgba(90, 140, 160, 0.8), rgba(110, 160, 180, 0.5)); }
+body.theme-sepia .discovery-card { background: rgba(160, 120, 60, 0.05); border-color: rgba(160, 120, 60, 0.12); }
+body.theme-sepia .music-credits-inner { background: rgba(90, 140, 160, 0.05); border-color: rgba(90, 140, 160, 0.15); }

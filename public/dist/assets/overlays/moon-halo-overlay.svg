@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="halo" cx="72%" cy="18%" r="42%">
+      <stop offset="0%" stop-color="#ffe9c2" stop-opacity="0.34" />
+      <stop offset="45%" stop-color="#f4dca9" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#111724" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6efe0" stop-opacity="0" />
+      <stop offset="74%" stop-color="#e4d7be" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#8d9eb3" stop-opacity="0.18" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#halo)" />
+  <rect width="1920" height="1080" fill="url(#haze)" />
+</svg>

@@ -15,21 +15,96 @@ const TYPE_ICONS = {
 };
 
 /**
- * Injects the discovery orb and expanded cards into a biography page.
- * @param {HTMLElement} contentCenterer - The container to append to
- * @param {Array} discoveries - Array of {title, type, year, line, available}
- * @param {string} authorName - The author's name
+ * Creates the DOM elements for the Music Credits Orb and Panel.
  */
-export function renderDiscoveries(contentCenterer, discoveries, authorName) {
-    if (!discoveries || discoveries.length === 0) return;
+function createMusicCreditsElements(musicCredits) {
+    if (!musicCredits) return null;
+
+    const orbWrapper = document.createElement('div');
+    orbWrapper.className = 'discovery-orb-wrapper music-orb-wrapper';
+    orbWrapper.innerHTML = `
+        <button class="discovery-orb discovery-orb--music" aria-label="Ver créditos musicales">
+            <span class="orb-ring orb-ring--music orb-ring--1"></span>
+            <span class="orb-ring orb-ring--music orb-ring--2"></span>
+            <span class="orb-ring orb-ring--music orb-ring--3"></span>
+            <span class="orb-core orb-core--music">
+                <span class="orb-music-icon">${ICON_MUSIC}</span>
+            </span>
+            <span class="orb-label">Créditos</span>
+        </button>
+    `;
+
+    const panel = document.createElement('div');
+    panel.className = 'music-credits-panel';
+    panel.setAttribute('aria-hidden', 'true');
+    panel.innerHTML = `
+        <div class="music-credits-inner">
+            <div class="music-credits-icon">${ICON_MUSIC}</div>
+            <div class="music-credits-body">
+                <span class="music-credits-title">${musicCredits.title}</span>
+                <span class="music-credits-composer">${musicCredits.composer}</span>
+                ${musicCredits.note ? `<span class="music-credits-note">${musicCredits.note}</span>` : ''}
+            </div>
+        </div>
+    `;
+
+    return { orbWrapper, panel };
+}
+
+/**
+ * Renders ONLY the music credits (for pages without discoveries like La Puerta).
+ */
+export function renderMusicCredits(container, musicCredits) {
+    if (!musicCredits) return;
+
+    const mainContainer = document.createElement('div');
+    mainContainer.className = 'discoveries-container';
+
+    const orbsRow = document.createElement('div');
+    orbsRow.className = 'orbs-row';
+    
+    const elements = createMusicCreditsElements(musicCredits);
+    orbsRow.appendChild(elements.orbWrapper);
+    
+    mainContainer.appendChild(orbsRow);
+    mainContainer.appendChild(elements.panel);
+
+    let open = false;
+    elements.orbWrapper.querySelector('.discovery-orb').addEventListener('click', (e) => {
+        e.stopPropagation();
+        open = !open;
+        mainContainer.classList.toggle('music-open', open);
+        elements.panel.setAttribute('aria-hidden', String(!open));
+    });
+
+    const choicesDiv = container.querySelector('.choices');
+    if (choicesDiv) {
+        container.insertBefore(mainContainer, choicesDiv);
+    } else {
+        container.appendChild(mainContainer);
+    }
+}
+
+/**
+ * Injects the discovery orb and expanded cards into a biography page.
+ * If musicCredits is provided, renders both orbs centered side-by-side.
+ */
+export function renderDiscoveries(contentCenterer, discoveries, authorName, musicCredits) {
+    if (!discoveries || discoveries.length === 0) {
+        if (musicCredits) renderMusicCredits(contentCenterer, musicCredits);
+        return;
+    }
 
     const container = document.createElement('div');
     container.className = 'discoveries-container';
 
-    // — The Orb —
-    const orbWrapper = document.createElement('div');
-    orbWrapper.className = 'discovery-orb-wrapper';
-    orbWrapper.innerHTML = `
+    const orbsRow = document.createElement('div');
+    orbsRow.className = 'orbs-row';
+
+    // — The Discovery Orb —
+    const discoveryOrbWrapper = document.createElement('div');
+    discoveryOrbWrapper.className = 'discovery-orb-wrapper main-orb-wrapper';
+    discoveryOrbWrapper.innerHTML = `
         <button class="discovery-orb" aria-label="Descubrir más obras de ${authorName}">
             <span class="orb-ring orb-ring--1"></span>
             <span class="orb-ring orb-ring--2"></span>
@@ -38,16 +113,26 @@ export function renderDiscoveries(contentCenterer, discoveries, authorName) {
             <span class="orb-label">Descubrir más</span>
         </button>
     `;
+    orbsRow.appendChild(discoveryOrbWrapper);
 
-    // — The Expanded Panel —
-    const panel = document.createElement('div');
-    panel.className = 'discovery-panel';
-    panel.setAttribute('aria-hidden', 'true');
+    // — The Music Orb (optional) —
+    let musicElements = null;
+    if (musicCredits) {
+        musicElements = createMusicCreditsElements(musicCredits);
+        orbsRow.appendChild(musicElements.orbWrapper);
+    }
+
+    container.appendChild(orbsRow);
+
+    // — The Expanded Panel (Discoveries) —
+    const discoveryPanel = document.createElement('div');
+    discoveryPanel.className = 'discovery-panel';
+    discoveryPanel.setAttribute('aria-hidden', 'true');
 
     const panelHeader = document.createElement('div');
     panelHeader.className = 'discovery-panel-header';
     panelHeader.innerHTML = `<span class="discovery-panel-title">Lecturas esenciales</span><span class="discovery-panel-subtitle">de ${authorName}</span>`;
-    panel.appendChild(panelHeader);
+    discoveryPanel.appendChild(panelHeader);
 
     const cardsContainer = document.createElement('div');
     cardsContainer.className = 'discovery-cards';
@@ -74,24 +159,52 @@ export function renderDiscoveries(contentCenterer, discoveries, authorName) {
         cardsContainer.appendChild(card);
     });
 
-    panel.appendChild(cardsContainer);
+    discoveryPanel.appendChild(cardsContainer);
+    
+    // Wrap panels so they don't overlap awkwardly
+    const panelsWrapper = document.createElement('div');
+    panelsWrapper.className = 'panels-wrapper';
+    panelsWrapper.appendChild(discoveryPanel);
+    
+    if (musicElements) {
+        panelsWrapper.appendChild(musicElements.panel);
+    }
+
+    container.appendChild(panelsWrapper);
 
     // — Toggle Logic —
-    let isOpen = false;
-    const toggle = () => {
-        isOpen = !isOpen;
-        container.classList.toggle('discoveries--open', isOpen);
-        panel.setAttribute('aria-hidden', String(!isOpen));
-        orbWrapper.querySelector('.discovery-orb').setAttribute('aria-expanded', String(isOpen));
+    let isDiscoveryOpen = false;
+    let isMusicOpen = false;
+
+    const toggleDiscovery = () => {
+        isDiscoveryOpen = !isDiscoveryOpen;
+        if (isDiscoveryOpen && isMusicOpen) toggleMusic(); // close the other
+        
+        container.classList.toggle('discoveries--open', isDiscoveryOpen);
+        discoveryPanel.setAttribute('aria-hidden', String(!isDiscoveryOpen));
+        discoveryOrbWrapper.querySelector('.discovery-orb').setAttribute('aria-expanded', String(isDiscoveryOpen));
     };
 
-    orbWrapper.querySelector('.discovery-orb').addEventListener('click', (e) => {
+    const toggleMusic = () => {
+        isMusicOpen = !isMusicOpen;
+        if (isMusicOpen && isDiscoveryOpen) toggleDiscovery(); // close the other
+        
+        container.classList.toggle('music-open', isMusicOpen);
+        musicElements.panel.setAttribute('aria-hidden', String(!isMusicOpen));
+        musicElements.orbWrapper.querySelector('.discovery-orb').setAttribute('aria-expanded', String(isMusicOpen));
+    };
+
+    discoveryOrbWrapper.querySelector('.discovery-orb').addEventListener('click', (e) => {
         e.stopPropagation();
-        toggle();
+        toggleDiscovery();
     });
 
-    container.appendChild(orbWrapper);
-    container.appendChild(panel);
+    if (musicElements) {
+        musicElements.orbWrapper.querySelector('.discovery-orb').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMusic();
+        });
+    }
 
     // Insert before the choices buttons
     const choicesDiv = contentCenterer.querySelector('.choices');
