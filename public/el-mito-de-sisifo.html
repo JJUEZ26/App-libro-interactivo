@@ -494,9 +494,9 @@
                     const blockProgress = (progress - currentThresh) / (nextThresh - currentThresh);
                     
                     // Solo empezar a desvanecer progresivamente en el último tramo del bloque
-                    let fadeStartPct = 0.55;
+                    let fadeStartPct = 0.50; // Empezar al 50% para dar más tiempo de lectura
                     // El bloque inicial (título + epígrafe) empieza a difuminarse antes porque es rápido de leer
-                    if (activeBlockIndex === 0) fadeStartPct = 0.18; 
+                    if (activeBlockIndex === 0) fadeStartPct = 0.15;
                     
                     if (blockProgress > fadeStartPct) {
                         const fadePhase = (blockProgress - fadeStartPct) / (1.0 - fadeStartPct);
@@ -529,13 +529,12 @@
                 const words = blockWordCounts[activeBlockIndex];
                 if (!words || words < 5) return 1.0;
                 
-                // Calculamos el tiempo base que tomaría leer este bloque (aprox 400ms por palabra)
-                // y lo usamos para ralentizar agresivamente la subida durante la lectura.
-                // Cuantas más palabras, más bajo el multiplicador (más lento sube).
-                let ratio = (avgWords / words) * 0.5; 
+                // Calculamos el tiempo base que tomaría leer este bloque.
+                // Ajustado a 0.55 para dar un pelín más de pausa en los textos largos
+                let ratio = (avgWords / words) * 0.55; 
                 
-                // Limitamos entre 0.3x (muy lento para textos muy largos) y 0.9x (moderado para textos cortos)
-                return Math.max(0.3, Math.min(0.9, ratio));
+                // Limitamos entre 0.35x (muy largo) y 1.0x (normal)
+                return Math.max(0.35, Math.min(1.0, ratio));
             };
 
             window.__SISIFO = game;

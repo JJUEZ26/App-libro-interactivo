@@ -5269,7 +5269,7 @@ function H(e, t = {}) {
 				Wt(), on = Math.min(on + 1, 90);
 				let e = .2 + on / 90 * .8, r = We(), i = 1;
 				typeof _n.onGetSpeedMultiplier == "function" && (i = _n.onGetSpeedMultiplier(r) ?? 1);
-				let a = .14 * e * i, s = .126 * e * i, c = Y.gravity.y * (Y.gravity.scale ?? .001), l = .95;
+				let a = .147 * e * i, s = .132 * e * i, c = Y.gravity.y * (Y.gravity.scale ?? .001), l = .95;
 				o.applyForce(Q, Q.position, {
 					x: 0,
 					y: -Q.mass * c * l
