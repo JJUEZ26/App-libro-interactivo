@@ -139,10 +139,11 @@
         #text-backdrop.active { opacity: 1; }
 
         @media (max-width: 600px) {
-            #narrative-layer { padding: 3.5vh 5vw 0; }
-            .narr-slot p { font-size: clamp(0.95rem, 3.8vw, 1.15rem); line-height: 1.7; }
-            .narr-slot .epigraph { font-size: clamp(0.82rem, 3.2vw, 1rem); }
+            #narrative-layer { padding: 15vh 6vw 0; }
+            .narr-slot p { font-size: clamp(1.15rem, 5vw, 1.35rem); line-height: 1.6; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+            .narr-slot .epigraph { font-size: clamp(1rem, 4vw, 1.15rem); line-height: 1.6; }
             #touch-hint { bottom: 7vh; }
+            #text-backdrop { height: 75vh; }
         }
         @media (max-height: 500px) {
             #narrative-layer { padding-top: 2vh; }
@@ -159,7 +160,7 @@
             position: fixed; inset: 0; z-index: 50;
             background: #050608;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 1.5s ease;
+            transition: opacity 0.8s ease;
             /* Fondo con imagen portada */
             background-image: url('./images/sisifo_portada.webp');
             background-size: cover;
@@ -327,37 +328,36 @@
     </div>
 
     <!-- ═══ DATA: Bloques narrativos (hidden) ═══ -->
-    <!-- Reducidos a 6 bloques más largos, dando más tiempo de lectura entre hitos -->
     <div id="narrative-data" hidden>
         <div data-threshold="0.00" data-type="title">
             <h1>El Mito de Sísifo</h1>
-            <p class="epigraph">«Los dioses habían condenado a Sísifo a rodar sin cesar una roca hasta la cima de una montaña... Habían pensado, con cierta razón, que no hay castigo más terrible que el trabajo inútil y sin esperanza, una tortura diseñada para quebrar tanto el cuerpo como el espíritu a lo largo de los milenios.»</p>
+            <p>Sísifo fue el rey de Éfira. Era un hombre que lo tenía todo: ingenio, poder y una ciudad que se rendía a sus pies. No era un héroe de leyenda; era un hombre brillante que cometió el error de creer que su astucia lo hacía intocable. Pensó que podía burlar las reglas que rigen a los mortales y, por un tiempo, lo logró.</p>
         </div>
         
         <div data-threshold="0.15">
-            <p>Sísifo era el más astuto y prudente de los mortales. Su desprecio por los dioses, su odio profundo a la muerte y su ardiente pasión por la vida le valieron ese suplicio indecible. Es el precio trágico que debe pagarse por atreverse a amar esta tierra y rechazar la sumisión celestial.</p>
+            <p>Sísifo no solo desafió a los dioses, logró burlarse de ellos: escapó del Inframundo y encadenó a la mismísima Muerte en su sótano. Todo este esfuerzo fue para disfrutar una vez más del sol en su cara, del sabor del vino y de los placeres de la vida. Pero los dioses, cansados de su insolencia, decidieron imponerle el castigo más refinado y cruel que existe: la falta total de propósito.</p>
         </div>
         
         <div data-threshold="0.35">
-            <p>Vemos todo el esfuerzo de un cuerpo tenso para levantar la enorme piedra, hacerla rodar y ayudarla a subir una pendiente cien veces recorrida; vemos el rostro crispado, la mejilla pegada a la roca áspera, el pie que la calza y los brazos que, fatigados pero firmes, la empujan contra el cielo.</p>
+            <p>Los dioses pensaron, con razón, que no hay tortura más terrible que el trabajo inútil y sin esperanza. Lo obligaron a cargar una roca colosal por toda la eternidad, sabiendo que, al llegar a la cima, la piedra caería y todo su trabajo se volvería fútil. El castigo no era el esfuerzo físico —el cuerpo se acostumbra al dolor—; lo que realmente pesaba era la condena a una acción sin sentido ni propósito.</p>
         </div>
         
         <div data-threshold="0.55">
-            <p>Al final de ese largo esfuerzo, medido por el espacio sin estrellas y un tiempo sin profundidad, el objetivo inalcanzable se logra por un efímero segundo. Pero entonces Sísifo ve cómo la piedra, pesada e indiferente, desciende rápidamente de nuevo hacia el valle inferior, recordándole lo inútil de su victoria.</p>
+            <p>No necesitas vivir en un mito para sentir el peso de la repetición. Muchos de nosotros hemos sentido el absurdo de volver a comenzar una rutina, de despertar un lunes sabiendo que la semana es una cuesta que ya hemos subido mil veces. El absurdo está en ese reporte que vuelves a llenar, en el cliente que ensucia la mesa que acabas de limpiar o en el scroll interminable de una pantalla que escupe lo mismo siempre.</p>
         </div>
         
         <div data-threshold="0.75">
-            <p>Sin embargo, es durante ese regreso, en esa pausa silenciosa, cuando Sísifo realmente me interesa. En cada uno de esos instantes en que abandona la cumbre y desciende hacia la base, es consciente de su condición. Esa lucidez que debía constituir su tormento, corona al mismo tiempo su victoria suprema. Es más fuerte que su roca.</p>
+            <p>Al llegar a la colina, la roca cae. Y es en ese momento, cuando la piedra rueda valle abajo y Sísifo camina libre de su peso, es cuando realmente nos debe interesar. En este descenso, él es plenamente consciente de su condición. Sabe que no puede elegir su tarea ni su destino, pero comprende que es dueño absoluto de cómo decide afrontar ese destino. Esa es su victoria suprema: el saber que su voluntad le pertenece. Al apropiarse de su carga, Sísifo se vuelve finalmente más fuerte que su propia roca.</p>
         </div>
         
         <div data-threshold="0.94" data-type="final">
-            <p>«La lucha misma hacia las alturas basta para llenar el corazón del hombre. Hay que imaginarse a Sísifo feliz.»</p>
+            <p>Existe una rebelión silenciosa en el simple acto de no detenerse. No hace falta una recompensa eterna para que el esfuerzo valga la pena; la lucha misma hacia las alturas es suficiente para llenar el corazón. El triunfo no se encuentra en la cumbre, sino en la voluntad inquebrantable de volver a empezar a pesar de todo. Por eso, al final del día... hay que imaginar a Sísifo feliz.</p>
         </div>
     </div>
 
     <div id="touch-hint" aria-hidden="true">
         <span class="hint-arrow">↑</span>
-        toca a Sísifo para comenzar
+        presiona y mantén presionado a Sísifo para comenzar
     </div>
 
     <!-- ═══ AUDIO ═══ -->
@@ -379,6 +379,7 @@
         const introMain    = document.getElementById('intro-main');
         const introBio     = document.getElementById('intro-bio');
         const introCredits = document.getElementById('intro-credits');
+        const btnComenzar  = document.getElementById('btn-comenzar');
 
         // Lógica de navegación de modales
         document.getElementById('btn-bio').addEventListener('click', () => {
@@ -398,12 +399,29 @@
             introMain.classList.add('active');
         });
 
-        // ─── El juego se inicializa SOLO al pulsar "Comenzar" ───────────────────
+        // ─── Lógica de Inicialización Inmediata ───
+        let gameModule = null;
+        let isStarted = false;
         let game = null;
+        let targetVolume = 0;
+        let currentVolume = 0;
+        ambientMusic.volume = 0;
+
+        // Bucle de transición suave para el volumen
+        function updateAudio() {
+            if (currentVolume < targetVolume) {
+                currentVolume = Math.min(currentVolume + 0.015, targetVolume);
+            } else if (currentVolume > targetVolume) {
+                currentVolume = Math.max(currentVolume - 0.025, targetVolume);
+            }
+            ambientMusic.volume = currentVolume;
+            requestAnimationFrame(updateAudio);
+        }
+        requestAnimationFrame(updateAudio);
 
         function initGame() {
-            if (game) return; // evitar doble inicialización
-            game = createSisyphusGame(container);
+            if (game || !gameModule) return; // evitar doble inicialización
+            game = gameModule.createSisyphusGame(container);
 
             game.onProgressUpdate = ({ progress, gameState, cycleCount, isPushing }) => {
                 if (!firstTouchDetected && isPushing) {
@@ -418,19 +436,21 @@
 
                 // Volumen dinámico según estado del juego
                 if (gameState === 'waiting') {
-                    targetVolume = 0.1;
+                    targetVolume = 0.05;
                 } else if (gameState === 'summit' || gameState === 'descending') {
-                    targetVolume = 0.3;
+                    targetVolume = 0.8;
                 } else {
-                    targetVolume = isPushing ? 0.8 : 0.35;
+                    targetVolume = isPushing ? 0.95 : 0.15;
                 }
 
-                // Al iniciar un nuevo ciclo (la roca ha regresado), reiniciar textos
+                // Al iniciar un nuevo ciclo (la roca ha regresado), reiniciar textos a menos que estemos en el bloque final perenne
                 if (cycleCount > lastCycleCount) {
                     lastCycleCount = cycleCount;
-                    highWaterMark = -1;
-                    lastBlockShownAt = 0;
-                    hideAllSlots();
+                    if (activeBlockIndex !== dataBlocks.length - 1) {
+                        highWaterMark = -1;
+                        lastBlockShownAt = 0;
+                        hideAllSlots();
+                    }
                 }
 
                 const targetIndex = getTargetBlockIndex(progress);
@@ -442,39 +462,44 @@
 
                 // Ocultar textos cuando la roca cae y está en el valle
                 if (gameState === 'waiting' && progress < 0.02 && activeBlockIndex >= 0) {
-                    hideAllSlots();
+                    if (activeBlockIndex !== dataBlocks.length - 1) {
+                        hideAllSlots();
+                    }
                 }
             };
 
             window.__SISIFO = game;
         }
 
-        // Conectar el botón Comenzar a la inicialización del juego
-        document.getElementById('btn-comenzar').addEventListener('click', () => {
+        // Conectar el botón Comenzar de inmediato para dar feedback sin lag
+        btnComenzar.addEventListener('click', () => {
+            if (isStarted) return;
+            isStarted = true;
+            
+            // Efecto visual inmediato
+            btnComenzar.textContent = "Iniciando...";
             introOverlay.classList.add('hidden');
-            // Tras la transición de 1.5s, eliminar completamente del flujo de eventos
-            setTimeout(() => { introOverlay.classList.add('gone'); }, 1600);
+            
+            // Eliminar del flujo de eventos tras la transición de 0.8s
+            setTimeout(() => { introOverlay.classList.add('gone'); }, 900);
+            
             ambientMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
             targetVolume = 0.35;
-            // Pequeño delay para que el overlay termine de desvanecerse y el canvas tenga dimensiones correctas
-            setTimeout(initGame, 100);
+            
+            if (gameModule) {
+                setTimeout(initGame, 100);
+            }
         });
 
-        let targetVolume = 0;
-        let currentVolume = 0;
-        ambientMusic.volume = 0;
-
-        // Bucle de transición suave para el volumen
-        function updateAudio() {
-            if (currentVolume < targetVolume) {
-                currentVolume = Math.min(currentVolume + 0.005, targetVolume);
-            } else if (currentVolume > targetVolume) {
-                currentVolume = Math.max(currentVolume - 0.005, targetVolume);
+        // Producción: importar desde el widget compilado en /dist/
+        const cacheBuster = new Date().getTime();
+        import(`./dist/sisyphus-widget.js?v=${cacheBuster}`).then(module => {
+            gameModule = module;
+            // Si el usuario ya pulsó "Comenzar" antes de que cargara, inicializamos ahora
+            if (isStarted && !game) {
+                initGame();
             }
-            ambientMusic.volume = currentVolume;
-            requestAnimationFrame(updateAudio);
-        }
-        requestAnimationFrame(updateAudio);
+        });
 
         const dataBlocks = Array.from(document.querySelectorAll('#narrative-data > div'));
         const thresholds = dataBlocks.map(b => parseFloat(b.dataset.threshold));
