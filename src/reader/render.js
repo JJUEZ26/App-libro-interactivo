@@ -1,4 +1,5 @@
 import { getAppMode, state } from '../app/state.js';
+import { getEternoCycle, incrementEternoCycle, resetEternoCycle } from '../effects/eterno-retorno/cycle-state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
 import { sanitizeHTML } from '../utils/sanitize.js';
@@ -60,11 +61,32 @@ export function renderPage(pageId) {
     const pageData = state.storyIndex?.get(pageId) || state.story.find((page) => page.id === pageId);
     if (!pageData) return;
 
+    // Detectar ciclo del Eterno Retorno
+    if (state.currentBook?.id === 'eterno_retorno' && pageData.id === 'portada') {
+        // Si venimos de la biografía, es un nuevo ciclo
+        const prevPage = state.pageHistory[state.pageHistory.length - 2];
+        if (prevPage === 'biografia') {
+            incrementEternoCycle();
+        }
+    }
+
     // PRIMERO: Iniciar precarga de audio en background (no bloquea)
     preloadPageAudio(pageId);
 
     const pageContent = document.createElement('div');
     pageContent.className = 'page-content';
+
+    // Variación textual para Eterno Retorno
+    if (state.currentBook?.id === 'eterno_retorno') {
+        const cycle = getEternoCycle();
+        if (cycle > 1) {
+            pageContent.style.setProperty('--eterno-cycle', cycle);
+            pageContent.classList.add('eterno-cycle-variation');
+            if (cycle >= 3) pageContent.classList.add('eterno-cycle-deep');
+            if (cycle >= 4) pageContent.classList.add('eterno-cycle-abyss');
+        }
+    }
+
     if (pageData.pageClass) {
         pageContent.classList.add(pageData.pageClass);
     }
@@ -383,6 +405,16 @@ export function renderPage(pageId) {
                 btn.classList.add('selected');
             });
         });
+
+        // Ritual de ruptura
+        if (state.currentBook?.id === 'eterno_retorno' && pageData.id === 'golpe_2') {
+            import('../effects/eterno-retorno/break-ritual.js').then(({ mountBreakRitual }) => {
+                mountBreakRitual(pageContent, () => {
+                    resetEternoCycle();
+                    goToPage('biografia');
+                });
+            });
+        }
 
         // — Defer even heavier work to NEXT frame —
         // Effects, highlights, and preloading happen after content is visible

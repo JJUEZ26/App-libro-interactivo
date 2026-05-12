@@ -20,8 +20,8 @@
     overflow-x: hidden;
 }
 
-/* Efecto de PartÃ­culas de Fondo */
-#library-view::before {
+/* Efecto de Partículas de Fondo */
+#library-view:not(.has-particle-canvas)::before {
     content: '';
     position: fixed;
     top: 0;
@@ -42,6 +42,10 @@
     animation: twinkle 20s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
+}
+
+#library-view.has-particle-canvas::before {
+    display: none;
 }
 
 @keyframes twinkle {
@@ -295,6 +299,14 @@
     animation-delay: 400ms;
 }
 
+.library-row-section:nth-child(5) {
+    animation-delay: 500ms;
+}
+
+.library-row-section:nth-child(6) {
+    animation-delay: 600ms;
+}
+
 @keyframes sectionEntrance {
     from {
         opacity: 0;
@@ -343,6 +355,33 @@
     /* Ocultar scrollbar en Firefox */
     scrollbar-width: thin;
     scrollbar-color: var(--color-bg-tertiary) transparent;
+}
+
+/* ========================================
+   SECCIÓN: CONCEPTOS FILOSÓFICOS
+   Cards más anchas — son experiencias inmersivas, no lecturas simples
+   ======================================== */
+.library-row-section[data-section-id="filosofia"] .library-row {
+    grid-auto-columns: minmax(200px, 300px);
+}
+
+.library-row-section[data-section-id="filosofia"] .book-card {
+    min-height: clamp(360px, 48vw, 420px);
+}
+
+.library-row-section[data-section-id="filosofia"] .book-title {
+    font-size: var(--text-xl);
+}
+
+/* ========================================
+   SECCIÓN: CREACIÓN PROPIA
+   Estilo propio sutil — borde ligeramente diferenciado
+   ======================================== */
+.library-row-section[data-section-id="creacion-propia"] .library-row-title {
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-secondary, #a78bfa) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Modificar tamaÃ±o especÃ­fico para Novelas */
@@ -454,6 +493,7 @@
         0 0 40px rgba(233, 30, 99, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .book-card:active {
@@ -631,13 +671,16 @@
         0 12px 24px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.05);
     object-fit: cover;
-    transition: transform var(--duration-slow) var(--ease-out-expo);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 
 /* Ken Burns Effect en hover */
 .book-card:hover .book-cover {
-    transform: scale(1.1);
+    transform: scale(1.08) translate(
+        calc(var(--mx, 0) * 4px),
+        calc(var(--my, 0) * 4px)
+    );
 }
 
 .book-cover.placeholder {

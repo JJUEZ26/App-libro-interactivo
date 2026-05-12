@@ -13,6 +13,7 @@
  *   eterno_cierre     — Calma, halo se ralentiza, luz tenue
  *   eterno_bio        — Biografía, atmósfera sutil
  */
+import { getEternoCycle } from './cycle-state.js';
 
 const PHASES = {
     eterno_portada:    { rings: 4, particles: 6,  speed: 0.06, glow: 'gold',    bg: 'abyss',   haloSize: 0.7 },
@@ -338,10 +339,26 @@ function injectStyles() {
  * @returns {function} cleanup function
  */
 export function startEternoRetornoEffect(effectName) {
+    const cycle = getEternoCycle();
     const container = document.getElementById('app-container') || document.body;
-    const config = PHASES[effectName] || PHASES.eterno_portada;
-    const colorSet = GLOW_COLORS[config.glow] || GLOW_COLORS.gold;
-    const bgKey = config.bg || 'abyss';
+    const baseConfig = PHASES[effectName] || PHASES.eterno_portada;
+    
+    const cycleFactor = Math.min(cycle, 4);
+    const config = {
+        ...baseConfig,
+        speed: baseConfig.speed * (1 + (cycleFactor - 1) * 0.15),
+        particles: Math.max(3, Math.round(baseConfig.particles * (1 - (cycleFactor - 1) * 0.2))),
+        haloSize: baseConfig.haloSize * (1 - (cycleFactor - 1) * 0.08),
+        rings: Math.max(1, baseConfig.rings - (cycleFactor - 1))
+    };
+    
+    const glowKey = cycleFactor >= 4 ? 'cold' :
+                    cycleFactor >= 3 ? 'cold' :
+                    cycleFactor >= 2 ? 'ember' :
+                    baseConfig.glow;
+    const colorSet = GLOW_COLORS[glowKey] || GLOW_COLORS.gold;
+    
+    const bgKey = cycleFactor >= 4 ? 'void' : (baseConfig.bg || 'abyss');
 
     injectStyles();
 

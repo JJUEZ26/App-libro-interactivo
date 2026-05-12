@@ -23,7 +23,7 @@
     "description": "¿Y si tuvieras que vivir esta misma vida una y otra vez? Una experiencia filosófica inmersiva sobre la idea más poderosa de Nietzsche.",
     "cover": "images/nietzsche_eterno_retorno_portada.png",
     "storyFile": "stories/nietzsche_eterno_retorno.json",
-    "type": "poem",
+    "type": "philosophy",
     "tags": [
       "filosofía",
       "existencialismo",
@@ -40,7 +40,7 @@
     "cover": "images/sisifo_portada.webp",
     "htmlFile": "el-mito-de-sisifo.html?v=2",
     "storyFile": "stories/mito_de_sisifo.json",
-    "type": "poem",
+    "type": "philosophy",
     "tags": [
       "filosofía",
       "absurdismo",

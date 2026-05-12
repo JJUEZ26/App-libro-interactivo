@@ -2,12 +2,17 @@
   "featuredBookId": "la-puerta",
   "sections": [
     {
-      "id": "poemas",
-      "title": "Poemas",
-      "subtitle": "Experiencias inmersivas donde la palabra y la atmósfera se funden.",
+      "id": "filosofia",
+      "title": "Conceptos Filosóficos",
       "bookIds": [
         "nietzsche-eterno-retorno",
-        "mito-de-sisifo",
+        "mito-de-sisifo"
+      ]
+    },
+    {
+      "id": "poemas",
+      "title": "Poesía",
+      "bookIds": [
         "gata-cattana-aman-pobres",
         "pajaro-azul",
         "el-cordon-del-zapato",
@@ -18,11 +23,29 @@
       ]
     },
     {
+      "id": "creacion-propia",
+      "title": "Creación Propia",
+      "bookIds": [
+        "la-puerta",
+        "la-levedad-del-deseo"
+      ]
+    },
+    {
       "id": "novelas-bifurcaciones",
       "title": "Novelas con bifurcaciones",
       "subtitle": "Obras reinterpretadas. Tú decides el destino de la historia.",
       "bookIds": [
         "frankenstein"
+      ]
+    },
+    {
+      "id": "libros",
+      "title": "Libros",
+      "subtitle": "Narrativa clásica reimaginada.",
+      "bookIds": [
+        "ivan-ilich",
+        "el-extranjero",
+        "meditaciones"
       ]
     },
     {
@@ -37,17 +60,6 @@
         "proximo-vilarino",
         "proximo-gildebiedma",
         "proximo-becquer"
-      ]
-    },
-    {
-      "id": "libros",
-      "title": "Libros",
-      "subtitle": "Explora nuestra cuidada selección de narrativa interactiva.",
-      "bookIds": [
-        "la-levedad-del-deseo",
-        "ivan-ilich",
-        "el-extranjero",
-        "meditaciones"
       ]
     }
   ]

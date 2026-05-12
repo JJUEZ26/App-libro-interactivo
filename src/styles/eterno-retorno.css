@@ -428,3 +428,62 @@ body.eterno-mode.eterno-portada-active .choices button:hover {
         padding: 2px 8px !important;
     }
 }
+
+/* === VARIACIONES POR CICLO === */
+/* Ciclo 2+: Letter-spacing sutil */
+.eterno-cycle-variation .poem-layout .verse-line {
+    letter-spacing: calc(0.02em * var(--eterno-cycle, 1));
+}
+/* Ciclo 2+: Último verso pierde opacidad */
+.eterno-cycle-variation .stanza:last-child .verse-line:last-child {
+    opacity: 0.75;
+}
+/* Ciclo 3+: Delays desincronizados */
+.eterno-cycle-deep .poem-layout .verse-line:nth-child(odd) {
+    animation-delay: calc(var(--base-delay, 0s) + 0.3s) !important;
+}
+.eterno-cycle-deep .poem-layout .verse-line:nth-child(even) {
+    animation-delay: calc(var(--base-delay, 0s) + 0.7s) !important;
+}
+.eterno-cycle-deep .stanza:last-child .verse-line:last-child {
+    opacity: 0.55;
+    filter: blur(0.5px);
+}
+/* Ciclo 4+: Texto fantasmal */
+.eterno-cycle-abyss .content-centerer {
+    color: rgba(235, 225, 210, 0.65);
+}
+.eterno-cycle-abyss .poem-layout .verse-line {
+    letter-spacing: 0.08em;
+    transition: opacity 2s ease;
+}
+.eterno-cycle-abyss .stanza:last-child .verse-line:last-child {
+    opacity: 0.35;
+    filter: blur(1px);
+}
+
+/* === RITUAL DE RUPTURA === */
+.eterno-break-ritual {
+    position: fixed; bottom: 15vh; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    z-index: 100; opacity: 0; animation: eternoFadeIn 2s ease 2s forwards;
+    cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.eterno-break-ring {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.08);
+    transition: transform 0.3s ease, border-color 0.3s ease; position: relative;
+}
+.eterno-break-progress {
+    position: absolute; bottom: -8px; left: 10%; width: 0%; height: 2px;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0.9));
+    transition: width 0.1s linear;
+}
+.eterno-break-label {
+    font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(212, 175, 55, 0.4);
+}
+.eterno-break-ritual:active .eterno-break-ring {
+    border-color: rgba(212, 175, 55, 0.7); box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+}

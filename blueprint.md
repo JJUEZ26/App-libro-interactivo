@@ -750,17 +750,22 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 
 ---
 
-### Rediseño Premium de la Homepage (Marzo 2026)
+### Rediseño Premium de la Homepage (Marzo 2026, actualizado Mayo 2026)
 **Objetivo**: Transformar la página principal en un portal inmersivo, editorial y altamente enfocado, con una estética "Netflix + app literaria premium".
 
-**Estructura implementada**:
-1. **Destacado (`la-puerta`)**: Puerta de entrada al ecosistema (Obras originales).
-2. **Poemas**: Posicionada como la primera fila de exploración para destacar la poesía como corazón de la app.
-3. **Novelas con bifurcaciones**: Categoría propia y diferenciada (`frankenstein`).
-4. **Próximamente**: Módulos premium para autores anunciados (Alejandra Pizarnik, Charles Baudelaire, Sylvia Plath, Federico García Lorca). Se diseñaron placeholders elegantes ("book-card--upcoming") con gradients oscuros, blurs translúcidos y títulos desenfocados, generando misterio y anticipación en lugar de "falta de contenido".
-5. **Libros**: Agrupación unificada de todas las otras obras narrativas e interactivas no ramificadas. Eliminación de todas las subsecciones vacías o dispersas.
+**Estructura implementada (Mayo 2026 — Reestructuración de secciones)**:
+1. **Hero Destacado (`la-puerta`)**: Puerta de entrada al ecosistema (Obra original).
+2. **Poesía** — *"Versos que respiran"*: Solo poemas puros (Gata Cattana, Bukowski ×2, Borges, Vilariño, Gil de Biedma, Bécquer). Separados de conceptos filosóficos.
+3. **Conceptos Filosóficos** — *"Ideas que se sienten"*: Experiencias filosóficas inmersivas (El Eterno Retorno de Nietzsche, El Mito de Sísifo de Camus). Cards más anchas para reflejar su naturaleza inmersiva. `type: "philosophy"` en `books.json`.
+4. **Creación Propia** — *"Escritura desde adentro"*: Obras originales/exclusivas de la plataforma (La Puerta, La Levedad del Deseo). Título con gradiente sutil (text-primary → accent-secondary) para distinguir la sección.
+5. **Novelas con bifurcaciones**: Categoría propia y diferenciada (`frankenstein`).
+6. **Libros** — *"Narrativa clásica reimaginada"*: Obras narrativas clásicas (Iván Ilich, El Extranjero, Meditaciones).
+7. **Próximamente**: Módulos premium para autores anunciados. Placeholders elegantes ("book-card--upcoming") con gradients oscuros, blurs translúcidos y títulos desenfocados.
 
-**Mejoras CSS**:
+**Mejoras CSS (Mayo 2026)**:
+- `.library-row-section[data-section-id="filosofia"]`: Cards más anchas (300px max), altura mayor para enfatizar la naturaleza inmersiva.
+- `.library-row-section[data-section-id="creacion-propia"]`: Título con gradient text (background-clip) para distinguir la sección.
+- Staggered animations extendidas a 6 secciones (100ms–600ms delays).
 - `.book-card--upcoming`: Sombras reactivas sutiles, overlays tipo *glassmorphism*, badge integrado pero transparente y un estilo visual que comunica "premium en desarrollo".
 
 ### Poema "Como aman los pobres" — Gata Cattana (Marzo 2026)

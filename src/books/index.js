@@ -47,7 +47,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             return;
         }
         const booksById = new Map(books.map((book) => [book.id, book]));
-        renderHero(booksById);
+        renderHero(booksById); 
         renderSections(booksById);
     }
 
@@ -311,12 +311,14 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             title.className = 'library-row-title';
             title.textContent = sectionData.title || 'Sección';
 
-            const subtitle = document.createElement('p');
-            subtitle.className = 'library-row-subtitle';
-            subtitle.textContent = sectionData.subtitle || 'Nuevas incorporaciones para explorar.';
-
             header.appendChild(title);
-            header.appendChild(subtitle);
+
+            if (sectionData.subtitle) {
+                const subtitle = document.createElement('p');
+                subtitle.className = 'library-row-subtitle';
+                subtitle.textContent = sectionData.subtitle;
+                header.appendChild(subtitle);
+            }
 
             const row = document.createElement('div');
             row.className = 'library-row';

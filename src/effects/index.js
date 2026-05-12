@@ -8,6 +8,8 @@ import { startCracksEffect } from './cracks/index.js';
 import { startPobresEffect } from './pobres/index.js';
 import { startEternoRetornoEffect } from './eterno-retorno/index.js';
 import { startSisyphusEffect } from './sisyphus/index.js';
+import { startLibraryParticles } from './library-atmosphere/particles.js';
+import { startCardParallax } from './library-atmosphere/card-parallax.js';
 import { state } from '../app/state.js';
 
 /**
@@ -37,6 +39,8 @@ let activeCracksCleanup = null;
 let activePobresCleanup = null;
 let activeEternoCleanup = null;
 let activeSisyphusCleanup = null;
+let activeLibraryParticlesCleanup = null;
+let activeCardParallaxCleanup = null;
 const activeEffectAudio = new Set();
 const activeEffectFadeIntervals = new Map();
 
@@ -169,7 +173,6 @@ function clearExistingEffects(nextEffects = []) {
     if (activePobresCleanup) { activePobresCleanup(); activePobresCleanup = null; }
     if (activeEternoCleanup) { activeEternoCleanup(); activeEternoCleanup = null; }
     if (activeSisyphusCleanup) { activeSisyphusCleanup(); activeSisyphusCleanup = null; }
-
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
 
@@ -499,4 +502,21 @@ export function handlePageEffects(effectString, { getAppMode }) {
     }
     // --- Sonidos puntuales integrados al sistema global de audio ---
     triggerManagedEffectSounds(effects);
+}
+
+export function startLibraryAtmosphere() {
+    stopLibraryAtmosphere();
+    activeLibraryParticlesCleanup = startLibraryParticles();
+    activeCardParallaxCleanup = startCardParallax();
+}
+
+export function stopLibraryAtmosphere() {
+    if (activeLibraryParticlesCleanup) {
+        activeLibraryParticlesCleanup();
+        activeLibraryParticlesCleanup = null;
+    }
+    if (activeCardParallaxCleanup) {
+        activeCardParallaxCleanup();
+        activeCardParallaxCleanup = null;
+    }
 }

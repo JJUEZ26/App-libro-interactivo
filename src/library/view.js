@@ -1,5 +1,5 @@
 import { getAppMode, state } from '../app/state.js';
-import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle } from '../effects/index.js';
+import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle, startLibraryAtmosphere, stopLibraryAtmosphere } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
 import { clearAudioExperienceContext, stopCurrentAudio } from '../reader/audio.js';
 import { Onboarding } from '../ui/onboarding.js';
@@ -53,6 +53,7 @@ export function switchToLibraryView() {
     clearAudioExperienceContext();
     handlePageEffects(null, { getAppMode });
     startLibraryBeetle({ getAppMode });
+    startLibraryAtmosphere();
     window.scrollTo(0, 0);
 
     // Re-render library to update progress indicators
@@ -82,6 +83,7 @@ export function switchToReaderView() {
     if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.remove('hidden');
     if (elements?.appFooter) elements.appFooter.classList.remove('hidden');
     stopLibraryBeetle();
+    stopLibraryAtmosphere();
 }
 
 /** Small helper: resolve after N ms */
@@ -177,15 +179,21 @@ export async function openBook(bookData, coverImgEl) {
     // --- STEP 3: Load story IN PARALLEL with the animation ---
     const MIN_ANIMATION_MS = 350; // Reduced from 500 — cover is already centered by then
 
-    const [storyLoaded] = await Promise.all([
-        (async () => {
-            state.currentBook = bookData;
-            if (elements?.mainTitle) elements.mainTitle.textContent = bookData.title || 'Lectura';
-            if (loadStoryRef) await loadStoryRef(bookData.storyFile);
-            return !!state.story;
-        })(),
-        delay(MIN_ANIMATION_MS)
-    ]);
+    let storyLoaded = false;
+    try {
+        [storyLoaded] = await Promise.all([
+            (async () => {
+                state.currentBook = bookData;
+                if (elements?.mainTitle) elements.mainTitle.textContent = bookData.title || 'Lectura';
+                if (loadStoryRef) await loadStoryRef(bookData.storyFile);
+                return !!state.story;
+            })(),
+            delay(MIN_ANIMATION_MS)
+        ]);
+    } catch (error) {
+        console.error('Failed to load story during book open:', error);
+        storyLoaded = false;
+    }
 
     if (!storyLoaded) {
         cleanup(overlay, clone, titleEl);
