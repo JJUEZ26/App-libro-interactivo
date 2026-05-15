@@ -272,13 +272,52 @@ export function renderPage(pageId) {
         }
     }
 
-    // Inject discoveries orb AFTER choices are in the DOM
     if (pageData.discoveries && pageData.discoveries.length > 0) {
         const authorName = pageData.discoverAuthor || '';
         renderDiscoveries(contentCenterer, pageData.discoveries, authorName, pageData.musicCredits || null);
     } else if (pageData.musicCredits) {
         // Página sin discoveries pero CON créditos musicales (ej. La Puerta)
         renderMusicCredits(contentCenterer, pageData.musicCredits);
+    }
+
+    // Botón Contextual "Deja tu huella"
+    // Solo aparece en finales reales: páginas con discoveries, musicCredits,
+    // o que tengan un choice explícito de volver a biblioteca (page === -1).
+    const isRealEnding = (pageData.discoveries && pageData.discoveries.length > 0) ||
+                         (pageData.musicCredits) ||
+                         (pageData.choices && pageData.choices.some(c => c.page === -1));
+
+    if (isRealEnding && pageData.id !== 'portada') {
+        const huellaContainer = document.createElement('div');
+        huellaContainer.className = 'canvas-contextual-container';
+
+        const btnHuella = document.createElement('button');
+        btnHuella.className = 'canvas-contextual-btn';
+        btnHuella.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            Deja tu huella
+        `;
+        btnHuella.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (document.querySelector('drawing-canvas')) return;
+            await import('../components/DrawingCanvas.js');
+            const canvas = document.createElement('drawing-canvas');
+            document.body.appendChild(canvas);
+        });
+
+        huellaContainer.appendChild(btnHuella);
+
+        // Insert alongside discoveries/credits — find the discoveries container
+        const discoveriesEl = contentCenterer.querySelector('.discoveries-container');
+        if (discoveriesEl) {
+            // Place right after the discoveries container
+            discoveriesEl.after(huellaContainer);
+        } else {
+            // No discoveries — append at the end
+            contentCenterer.appendChild(huellaContainer);
+        }
     }
 
     // =====================================================

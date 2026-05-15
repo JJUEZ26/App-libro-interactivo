@@ -25,6 +25,9 @@ import { syncCurrentAudioVolume, pauseAllAudioForBackground, resumeAudioFromBack
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
 
+    // Expose state globally for lazily-loaded components (e.g. DrawingCanvas gallery metadata)
+    window.__APP_STATE__ = state;
+
     const elements = {
         appContainer: getEl('app-container'),
         libraryView: getEl('library-view'),

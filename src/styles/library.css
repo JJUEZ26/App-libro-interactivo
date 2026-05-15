@@ -774,6 +774,82 @@ body.theme-sepia .book-aura {
 }
 
 /* ========================================
+   VOZ DEL AUTOR — BADGE & SECTION
+   ======================================== */
+
+.book-voice-badge {
+    position: absolute;
+    top: calc(var(--space-4) + var(--space-2));
+    left: calc(var(--space-4) + var(--space-2));
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: var(--font-bold);
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    background: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #4338ca 100%);
+    box-shadow:
+        0 2px 8px rgba(99, 102, 241, 0.35),
+        0 0 16px rgba(99, 102, 241, 0.15);
+    z-index: 3;
+    text-transform: none;
+    animation: voicePulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.book-voice-badge svg {
+    flex-shrink: 0;
+}
+
+@keyframes voicePulse {
+    0%, 100% { box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3), 0 0 12px rgba(99, 102, 241, 0.1); }
+    50% { box-shadow: 0 2px 12px rgba(99, 102, 241, 0.5), 0 0 24px rgba(99, 102, 241, 0.2); }
+}
+
+.book-card:hover .book-voice-badge {
+    animation-play-state: paused;
+    box-shadow:
+        0 2px 12px rgba(99, 102, 241, 0.55),
+        0 0 28px rgba(99, 102, 241, 0.25);
+}
+
+/* Section: Con la Voz del Autor */
+.library-row-section[data-section-id="poemas-voz"] .library-row-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 40%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.library-row-section[data-section-id="poemas-voz"] .library-row-title::before {
+    content: '🎧';
+    -webkit-text-fill-color: initial;
+    font-size: 1.15em;
+    filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.4));
+}
+
+.library-row-section[data-section-id="poemas-voz"] .library-row-subtitle {
+    color: rgba(129, 140, 248, 0.7);
+    font-style: italic;
+}
+
+/* Slightly special card treatment — cool border glow on hover */
+.library-row-section[data-section-id="poemas-voz"] .book-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow:
+        var(--shadow-2xl),
+        0 0 30px rgba(99, 102, 241, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
    BOOK CARD BODY
    ======================================== */
 

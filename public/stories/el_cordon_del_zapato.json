@@ -1,6 +1,7 @@
 [
   {
     "id": "inicio",
+    "bgMusic": "jazz_bukowski.mp3",
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4"
     },
@@ -19,6 +20,7 @@
   },
   {
     "id": "horror",
+    "bgMusic": "jazz_bukowski.mp3",
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4"
     },
@@ -38,6 +40,7 @@
   },
   {
     "id": "norm",
+    "bgMusic": "jazz_bukowski.mp3",
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4"
     },
@@ -55,6 +58,7 @@
   },
   {
     "id": "final",
+    "bgMusic": "jazz_bukowski.mp3",
     "bgVideo": {
       "src": "videos/humo_fondo_perfecto.mp4"
     },
@@ -62,6 +66,65 @@
     "scenes": [
       "Con un cordón de zapato que se rompe\nde cada cien cordones de zapato que se rompen,\nun hombre o una mujer o una\ncosa\nva a parar al\nmanicomio.",
       "Así que ten cuidado\nal agacharte"
+    ],
+    "choices": [
+      {
+        "text": "Conocer al autor",
+        "page": "biografia"
+      },
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "bgMusic": "jazz_bukowski.mp3",
+    "bgVideo": {
+      "src": "videos/humo_fondo_perfecto.mp4",
+      "opacity": 0.15
+    },
+    "page": 5,
+    "forceShowChoices": true,
+    "images": [],
+    "musicCredits": {
+      "title": "Jazz ambient — Gin House Blues",
+      "composer": "Bessie Smith (trad.) / arreglos de dominio público",
+      "note": "Fragmento de jazz clásico de los años 20-40, el sonido de la América que Bukowski bebió y escribió."
+    },
+    "discoverAuthor": "Charles Bukowski",
+    "discoveries": [
+      {
+        "title": "El amor es un perro del infierno",
+        "type": "poem",
+        "year": "1977",
+        "line": "Su poemario más conocido. Sexo, soledad y noches largas en Los Ángeles.",
+        "available": false
+      },
+      {
+        "title": "La senda del perdedor",
+        "type": "book",
+        "year": "1982",
+        "line": "Novela autobiográfica sobre su infancia. El origen de todo.",
+        "available": false
+      },
+      {
+        "title": "Factotum",
+        "type": "book",
+        "year": "1975",
+        "line": "Cien empleos, ninguna vocación. La vida antes de la literatura.",
+        "available": false
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--bukowski'><img src='images/bukowski_retrato.webp' class='bio-portrait' alt='Charles Bukowski'><div class='bio-badge'>1920 — 1994</div></div>",
+      "<strong class='bio-name'>Charles Bukowski</strong><span class='bio-real-name'>Heinrich Karl Bukowski</span>",
+      "Nació en Andernach, Alemania, en 1920. A los dos años su familia emigró a Los Ángeles. Su padre era violento; las palizas fueron frecuentes durante toda su infancia. A los trece descubrió el alcohol. A los veintiuno dejó de escribir y pasó una década bebiendo en habitaciones de pensión por todo Estados Unidos.",
+      "Entre 1952 y 1969 trabajó como empleado de clasificación en el servicio postal norteamericano. A los 49 años, el editor John Martin le propuso un salario fijo a cambio de que dejara el correo y se dedicara a escribir. Aceptó. Al día siguiente entregó su renuncia.",
+      "Publicó más de cuarenta libros entre novelas, cuentos y poesía. Se casó dos veces. Con Linda Lee Beighle, su segunda esposa, vivió sus años más estables. Murió de leucemia en San Pedro, California, el 9 de marzo de 1994. En su lápida hay una inscripción que dice <em>\"Don't try\"</em>.",
+      "'El cordón del zapato' pertenece a <em>\"Burning in Water, Drowning in Flame\"</em>, publicado en 1974. Es un inventario despiadado de las pequeñas miserias que desmoronan a una persona. Bukowski no habla de grandes tragedias sino de la acumulación invisible de lo ordinario — el goteo constante que ninguna coraza puede detener.",
+      "<em class='bio-quote'>\"Así que ten cuidado al agacharte.\"</em>"
     ],
     "choices": [
       {

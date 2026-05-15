@@ -757,10 +757,92 @@ body.theme-dark .choices button.choice-secondary:hover {
    Unique visual identity: Twilight garden
    ======================================== */
 
-/* --- Bécquer Title (Intro Page) --- */
+/* --- Bécquer Title (Intro Page) — Cinematic Reveal --- */
 .becquer-title {
     font-style: italic;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: becquerTitleReveal 3.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    text-shadow: 0 0 40px rgba(255, 180, 100, 0.08);
+}
+
+@keyframes becquerTitleReveal {
+    0% {
+        opacity: 0;
+        letter-spacing: 0.12em;
+        filter: blur(8px);
+        transform: translateY(20px) scale(0.96);
+    }
+    40% {
+        opacity: 0.6;
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        letter-spacing: 0.04em;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* --- "¡No volverán!" — Emotional Emphasis ---
+   These words land like a verdict. They should feel heavier,
+   warmer, and slightly luminous against the darkening sky. */
+.becquer-no-volveran {
+    display: inline;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.03em;
+    color: rgba(255, 200, 160, 0.95);
+    text-shadow:
+        0 0 20px rgba(255, 160, 80, 0.2),
+        0 0 60px rgba(200, 100, 60, 0.08);
+    animation: becquerEmphasisBreathe 4s ease-in-out 2.5s infinite;
+}
+
+/* --- "¡No te querrán!" — The Final Blow ---
+   The absolute culmination. More weight, more glow,
+   slightly larger to feel like a shout in the silence. */
+.becquer-no-querran {
+    display: inline;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.04em;
+    font-size: 1.15em;
+    color: rgba(255, 220, 190, 1);
+    text-shadow:
+        0 0 30px rgba(255, 180, 100, 0.3),
+        0 0 80px rgba(200, 120, 60, 0.12),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: becquerFinalBlow 5s ease-in-out 3s infinite;
+}
+
+@keyframes becquerEmphasisBreathe {
+    0%, 100% {
+        text-shadow:
+            0 0 20px rgba(255, 160, 80, 0.15),
+            0 0 60px rgba(200, 100, 60, 0.05);
+    }
+    50% {
+        text-shadow:
+            0 0 30px rgba(255, 160, 80, 0.25),
+            0 0 80px rgba(200, 100, 60, 0.1);
+    }
+}
+
+@keyframes becquerFinalBlow {
+    0%, 100% {
+        text-shadow:
+            0 0 30px rgba(255, 180, 100, 0.25),
+            0 0 80px rgba(200, 120, 60, 0.08);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow:
+            0 0 40px rgba(255, 180, 100, 0.35),
+            0 0 100px rgba(200, 120, 60, 0.15);
+        transform: scale(1.02);
+    }
 }
 
 /* --- Twilight text adaptation --- */
@@ -768,6 +850,46 @@ body.theme-dark .choices button.choice-secondary:hover {
 .twilight-deep_night~.page-content {
     color: rgba(220, 215, 230, 0.95);
     text-shadow: 0 0 20px rgba(180, 170, 220, 0.1);
+}
+
+/* --- Twilight-progressive verse coloring ---
+   As the poem darkens from sunset to deep night,
+   verse text should subtly warm, then cool. */
+.twilight-golden~.page-content .poem-layout .verse-line {
+    color: rgba(60, 40, 30, 0.92);
+}
+
+.twilight-sunset~.page-content .poem-layout .verse-line {
+    color: rgba(80, 50, 35, 0.9);
+    text-shadow: 0 0 15px rgba(255, 140, 50, 0.04);
+}
+
+.twilight-dusk_early~.page-content .poem-layout .verse-line {
+    color: rgba(210, 200, 220, 0.92);
+}
+
+.twilight-dusk~.page-content .poem-layout .verse-line {
+    color: rgba(215, 205, 225, 0.9);
+    text-shadow: 0 0 18px rgba(140, 100, 180, 0.06);
+}
+
+.twilight-dusk_late~.page-content .poem-layout .verse-line {
+    color: rgba(220, 210, 235, 0.9);
+    text-shadow: 0 0 20px rgba(160, 120, 200, 0.08);
+}
+
+/* Override emphasis colors in dark scenes for contrast */
+.twilight-dusk_early~.page-content .becquer-no-volveran,
+.twilight-dusk_late~.page-content .becquer-no-volveran {
+    color: rgba(255, 210, 170, 1);
+}
+
+.twilight-deep_night~.page-content .becquer-no-querran {
+    color: rgba(255, 230, 200, 1);
+    text-shadow:
+        0 0 40px rgba(255, 200, 120, 0.35),
+        0 0 100px rgba(200, 140, 80, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* --- Swallow nested state --- */

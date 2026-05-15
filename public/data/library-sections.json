@@ -10,15 +10,23 @@
       ]
     },
     {
+      "id": "poemas-voz",
+      "title": "Con la Voz del Autor",
+      "subtitle": "Poemas únicos donde escucharás la voz real del poeta recitando su propia obra.",
+      "authorVoice": true,
+      "bookIds": [
+        "jorge-luis-borges-remordimiento",
+        "ya_no_sera"
+      ]
+    },
+    {
       "id": "poemas",
       "title": "Poesía",
       "bookIds": [
-        "gata-cattana-aman-pobres",
         "pajaro-azul",
-        "el-cordon-del-zapato",
-        "jorge-luis-borges-remordimiento",
-        "ya_no_sera",
         "no-volvere-joven",
+        "gata-cattana-aman-pobres",
+        "el-cordon-del-zapato",
         "becquer-golondrinas"
       ]
     },

@@ -1,9 +1,11 @@
 // ===================================================
 // GOLONDRINAS — "Volverán las oscuras golondrinas"
-// Two modes:
-//   1. "passing"  → bird flies across, plays once, fades out
-//   2. "landing"  → bird flies down and lands on the last "!" 
-//                    character of the last verse-line
+// Modes:
+//   1. "arriving"  → flock of swallows arrive (multiple passing birds)
+//   2. "passing"   → bird flies across, plays once, fades out
+//   3. "single"    → single distant bird, smaller and slower
+//   4. "fading"    → bird flies down and lands on the last "!" 
+//                     character of the last verse-line
 // ===================================================
 
 function getContainer() {
@@ -66,42 +68,68 @@ function findExclamationPosition() {
 
 
 // --- PASSING EFFECT (bird flies across once) ---
-function createPassingEffect(overlay) {
+function createPassingEffect(overlay, { scale = 1, delay = 0, topRange = [5, 25] } = {}) {
     let destroyed = false;
 
-    const video = document.createElement('chroma-key-video');
-    video.setAttribute('src', 'videos/golondrina_vuelo.mp4');
-    // No 'loop' → plays once
-
-    const topOffset = 5 + Math.random() * 25;
-
-    video.style.cssText = `
-        position: absolute;
-        top: ${topOffset}%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30%;
-        max-width: 360px;
-        min-width: 150px;
-        height: auto;
-        opacity: 0;
-        transition: opacity 1.5s ease;
-    `;
-    overlay.appendChild(video);
-
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            if (!destroyed) video.style.opacity = '1';
-        });
-    });
-
-    video.addEventListener('videoended', () => {
+    setTimeout(() => {
         if (destroyed) return;
-        video.style.opacity = '0';
-        setTimeout(() => { if (video.parentNode) video.remove(); }, 1800);
-    });
+
+        const video = document.createElement('chroma-key-video');
+        video.setAttribute('src', 'videos/golondrina_vuelo.mp4');
+        // No 'loop' → plays once
+
+        const topOffset = topRange[0] + Math.random() * (topRange[1] - topRange[0]);
+        const baseWidth = 30 * scale;
+
+        video.style.cssText = `
+            position: absolute;
+            top: ${topOffset}%;
+            left: 50%;
+            transform: translateX(-50%) scale(${0.8 + Math.random() * 0.4});
+            width: ${baseWidth}%;
+            max-width: ${360 * scale}px;
+            min-width: ${150 * scale}px;
+            height: auto;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        `;
+        overlay.appendChild(video);
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (!destroyed) video.style.opacity = '1';
+            });
+        });
+
+        video.addEventListener('videoended', () => {
+            if (destroyed) return;
+            video.style.opacity = '0';
+            setTimeout(() => { if (video.parentNode) video.remove(); }, 1800);
+        });
+    }, delay);
 
     return () => { destroyed = true; };
+}
+
+
+// --- ARRIVING EFFECT (multiple swallows fly in, staggered) ---
+function createArrivingEffect(overlay) {
+    const cleanups = [];
+
+    // First bird: prominent, center-ish
+    cleanups.push(createPassingEffect(overlay, { scale: 1, delay: 800, topRange: [10, 20] }));
+    // Second bird: slightly higher, delayed
+    cleanups.push(createPassingEffect(overlay, { scale: 0.75, delay: 2500, topRange: [5, 15] }));
+    // Third bird: lower, even more delayed
+    cleanups.push(createPassingEffect(overlay, { scale: 0.6, delay: 4500, topRange: [20, 35] }));
+
+    return () => { cleanups.forEach(fn => fn?.()); };
+}
+
+
+// --- SINGLE EFFECT (one small distant bird) ---
+function createSingleEffect(overlay) {
+    return createPassingEffect(overlay, { scale: 0.5, delay: 1500, topRange: [15, 40] });
 }
 
 
@@ -132,6 +160,8 @@ function createLandingEffect(overlay) {
         const pos = findExclamationPosition();
         if (!pos) {
             console.warn('Could not find "!" position for landing swallow');
+            // Fallback: just show a passing bird
+            createPassingEffect(overlay, { scale: 0.7, delay: 0, topRange: [15, 30] });
             return;
         }
 
@@ -182,9 +212,13 @@ export function startSwallowsEffect(mode = 'passing') {
 
     const cleanups = [];
 
-    if (mode === 'landing' || mode === 'fading') {
+    if (mode === 'arriving') {
+        cleanups.push(createArrivingEffect(overlay));
+    } else if (mode === 'landing' || mode === 'fading') {
         // "fading" pages are the ones with "¡no volverán!" 
         cleanups.push(createLandingEffect(overlay));
+    } else if (mode === 'single') {
+        cleanups.push(createSingleEffect(overlay));
     } else {
         cleanups.push(createPassingEffect(overlay));
     }

@@ -7,7 +7,7 @@
         "delay": 1000,
         "fadeIn": true,
         "ghostEcho": true,
-        "effect": "twilight_golden",
+        "effect": "twilight_golden, swallows_arriving",
         "scenes": [
             "<h1 class='poem-title-display becquer-title'>Volverán las oscuras golondrinas</h1><span class='poem-author-display'>Gustavo Adolfo Bécquer — Rima LIII</span>"
         ],
@@ -26,9 +26,9 @@
         "volume": 0.73,
         "fadeIn": false,
         "ghostEcho": true,
-        "effect": "twilight_sunset",
+        "effect": "twilight_sunset, swallows_passing",
         "video": [
-            "videos/golondrinas_processed.mp4"
+            "videos/golondrina_vuelo.mp4"
         ],
         "scenes": [
             "Volverán las oscuras golondrinas\nen tu balcón sus nidos a colgar,",
@@ -50,7 +50,7 @@
         "effect": "twilight_dusk_early, swallows_fading",
         "scenes": [
             "Pero aquellas que el vuelo refrenaban\ntu hermosura y mi dicha a contemplar,",
-            "aquellas que aprendieron nuestros nombres...\nésas... ¡no volverán!"
+            "aquellas que aprendieron nuestros nombres...\nésas... <span class='becquer-no-volveran'>¡no volverán!</span>"
         ],
         "choices": [
             {
@@ -66,7 +66,7 @@
         "audio": "fuala_golondrinas.mp3",
         "volume": 0.80,
         "ghostEcho": true,
-        "effect": "twilight_dusk",
+        "effect": "twilight_dusk, dewdrops_shimmer",
         "loopVideo": false,
         "video": [
             "videos/madreselvas_tristes.mp4"
@@ -91,7 +91,7 @@
         "effect": "twilight_dusk_late, dewdrops_tears, swallows_fading",
         "scenes": [
             "Pero aquellas cuajadas de rocío\ncuyas gotas mirábamos temblar",
-            "y caer como lágrimas del día...\nésas... ¡no volverán!"
+            "y caer como lágrimas del día...\nésas... <span class='becquer-no-volveran'>¡no volverán!</span>"
         ],
         "choices": [
             {
@@ -106,7 +106,7 @@
         "audio": "fuala_golondrinas.mp3",
         "volume": 0.90,
         "ghostEcho": true,
-        "effect": "twilight_night, fireflies_subtle",
+        "effect": "twilight_night, fireflies_subtle, swallows_single",
         "scenes": [
             "Volverán del amor en tus oídos\nlas palabras ardientes a sonar,",
             "tu corazón de su profundo sueño\ntal vez despertará."
@@ -124,11 +124,11 @@
         "audio": "fuala_golondrinas.mp3",
         "volume": 1.0,
         "ghostEcho": true,
-        "effect": "twilight_deep_night",
+        "effect": "twilight_deep_night, swallows_fading",
         "delayedChoices": true,
         "scenes": [
             "Pero mudo y absorto y de rodillas\ncomo se adora a Dios ante su altar,",
-            "como yo te he querido..., desengáñate,\nasí... ¡no te querrán!"
+            "como yo te he querido..., desengáñate,\nasí... <span class='becquer-no-querran'>¡no te querrán!</span>"
         ],
         "choices": [
             {

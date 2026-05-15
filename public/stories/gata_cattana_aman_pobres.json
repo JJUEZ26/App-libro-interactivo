@@ -15,7 +15,8 @@
                 "text": "Leer el poema",
                 "page": "estrofa1"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa1",
@@ -30,7 +31,8 @@
                 "text": "",
                 "page": "estrofa2"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa2",
@@ -44,7 +46,8 @@
                 "text": "",
                 "page": "estrofa3"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa3",
@@ -60,7 +63,8 @@
                 "text": "",
                 "page": "estrofa4"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa4",
@@ -75,7 +79,8 @@
                 "text": "",
                 "page": "estrofa5"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa5",
@@ -91,7 +96,8 @@
                 "text": "",
                 "page": "estrofa6"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa6",
@@ -106,7 +112,8 @@
                 "text": "",
                 "page": "estrofa7"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa7",
@@ -121,7 +128,8 @@
                 "text": "",
                 "page": "estrofa8"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa8",
@@ -137,7 +145,8 @@
                 "text": "",
                 "page": "estrofa9"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "estrofa9",
@@ -152,7 +161,8 @@
                 "text": "",
                 "page": "final"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "final",
@@ -169,7 +179,8 @@
                 "text": "Sobre la autora",
                 "page": "biografia"
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     },
     {
         "id": "biografia",
@@ -218,6 +229,7 @@
                 "text": "Volver a la biblioteca",
                 "page": -1
             }
-        ]
+        ],
+        "bgMusic": "zinc_roof_nocturne.mp3"
     }
 ]

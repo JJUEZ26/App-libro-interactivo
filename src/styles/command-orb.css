@@ -235,12 +235,61 @@ body.theme-sepia .command-orb__secondary {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
+/* ---- TERTIARY ORB (LIENZO) — Always visible ---- */
+.command-orb__tertiary {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 15, 20, 0.4);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.25s ease,
+                box-shadow 0.2s ease,
+                color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    outline: none;
+    will-change: transform;
+    opacity: 0.5;
+    pointer-events: auto;
+}
+
+body.theme-light .command-orb__tertiary,
+body.theme-sepia .command-orb__tertiary {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.command-orb__tertiary:hover {
+    transform: scale(1.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.85;
+}
+
+.command-orb__tertiary:active {
+    transform: scale(0.9);
+    transition-duration: 0.08s;
+}
+
 /* ==== SECONDARY VISIBLE ==== */
 .command-orb.secondary-visible .command-orb__secondary {
     opacity: 0.85;
     transform: translateY(0) scale(1);
     pointer-events: auto;
 }
+
+/* Tertiary is always visible — no need for secondary-visible toggle */
 
 /* ==== MODE: IA ONLY ==== */
 .command-orb.mode-ia .command-orb__letter {
@@ -288,6 +337,7 @@ body.theme-sepia .command-orb.mode-ia .command-orb__letter {
 .command-orb.mode-ia .command-orb__secondary {
     display: none;
 }
+/* Tertiary (lienzo) stays visible in all modes */
 
 /* ==== MODE: AUDIO — States ==== */
 .command-orb.mode-audio .command-orb__letter {
@@ -430,6 +480,7 @@ body.theme-sepia .command-orb.mode-ia .command-orb__letter {
 .command-orb.chat-open .command-orb__secondary {
     display: none;
 }
+/* Tertiary (lienzo) stays visible even when chat is open */
 
 /* ==== MOBILE ==== */
 @media (max-width: 480px) {

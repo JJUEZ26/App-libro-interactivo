@@ -85,7 +85,7 @@
     "title": "el cordón del zapato",
     "author": "Charles Bukowski",
     "description": "no son las cosas importantes las que llevan a un hombre al manicomio...",
-    "cover": "images/bukowski_zapato_portada.png",
+    "cover": "images/bukowski_zapato_padded.webp",
     "storyFile": "stories/el_cordon_del_zapato.json",
     "type": "poem",
     "tags": [
@@ -102,6 +102,7 @@
     "author": "Jorge Luis Borges",
     "description": "He cometido el peor de los pecados que un hombre puede cometer.",
     "cover": "images/borges_remordimiento_portada.webp",
+    "objectPosition": "top center",
     "storyFile": "stories/pecado_borges.json",
     "type": "poem",
     "tags": [
@@ -109,14 +110,16 @@
       "remordimiento",
       "existencialismo",
       "introspección"
-    ]
+    ],
+    "authorVoice": true
   },
   {
     "id": "ya_no_sera",
     "title": "Ya no",
     "author": "Idea Vilariño",
     "description": "Ya no será, ya no. No viviremos juntos...",
-    "cover": "images/idea_vilarino_portada.webp",
+    "cover": "images/idea_vilarino_padded.webp",
+    "objectPosition": "top center",
     "storyFile": "stories/idea_vilarino_ya_no_sera.json",
     "type": "poem",
     "tags": [
@@ -125,7 +128,8 @@
       "pérdida",
       "melancolía"
     ],
-    "theme": "sepia"
+    "theme": "sepia",
+    "authorVoice": true
   },
   {
     "id": "no-volvere-joven",

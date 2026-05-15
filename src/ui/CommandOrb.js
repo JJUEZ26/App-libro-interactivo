@@ -35,6 +35,11 @@ export class CommandOrb {
         this.el.id = 'command-orb';
         this.el.className = 'command-orb mode-ia';
         this.el.innerHTML = `
+            <button class="command-orb__tertiary" aria-label="Lienzo de dibujo" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+            </button>
             <button class="command-orb__secondary" aria-label="Asistente de lectura IA" tabindex="0">
                 <span>G</span>
             </button>
@@ -58,6 +63,7 @@ export class CommandOrb {
 
         this.primary = this.el.querySelector('.command-orb__primary');
         this.secondary = this.el.querySelector('.command-orb__secondary');
+        this.tertiary = this.el.querySelector('.command-orb__tertiary');
         this.tooltip = this.el.querySelector('.command-orb__tooltip');
         this.core = this.el.querySelector('.command-orb__core');
 
@@ -107,6 +113,13 @@ export class CommandOrb {
             e.stopPropagation();
             e.preventDefault();
             this.handleSecondaryTap();
+        });
+
+        // — Tertiary: tap handler —
+        this.tertiary.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            this.handleTertiaryTap();
         });
 
         // — Keyboard accessibility —
@@ -162,6 +175,16 @@ export class CommandOrb {
     handleSecondaryTap() {
         this.chatFeature.togglePanel();
         this.hideSecondary();
+    }
+
+    async handleTertiaryTap() {
+        this.hideSecondary();
+        // Guard: don't open a second canvas if one is already active
+        if (document.querySelector('drawing-canvas')) return;
+        // Lazy-load and mount the Web Component
+        await import('../components/DrawingCanvas.js');
+        const canvas = document.createElement('drawing-canvas');
+        document.body.appendChild(canvas);
     }
 
     // =============================

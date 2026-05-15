@@ -371,6 +371,12 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             coverImg.alt = `Portada de ${bookData.title || 'libro'}`;
             coverImg.loading = 'lazy';
             coverImg.className = 'book-cover';
+            if (bookData.objectPosition) {
+                coverImg.style.objectPosition = bookData.objectPosition;
+            }
+            if (bookData.objectFit) {
+                coverImg.style.objectFit = bookData.objectFit;
+            }
             coverImg.onerror = function () { this.classList.add('placeholder'); this.src = ''; this.alt = 'Imagen no encontrada'; };
             coverWrapper.appendChild(coverImg);
         } else {
@@ -391,6 +397,14 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             aura.className = 'book-aura';
             aura.setAttribute('aria-hidden', 'true');
             coverWrapper.appendChild(aura);
+        }
+
+        // Author voice badge
+        if (bookData?.authorVoice && hasStory) {
+            const voiceBadge = document.createElement('span');
+            voiceBadge.className = 'book-voice-badge';
+            voiceBadge.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg> Voz del autor`;
+            coverWrapper.appendChild(voiceBadge);
         }
 
         // Progress indicator — only for novels with reading history
