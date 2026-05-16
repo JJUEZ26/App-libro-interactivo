@@ -21,6 +21,9 @@ import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
 import { handlePageEffects, pauseAllEffectAudio, resumeEffectAudio, syncEffectAudioVolume } from '../effects/index.js';
 import { syncCurrentAudioVolume, pauseAllAudioForBackground, resumeAudioFromBackground } from '../reader/audio.js';
+import { AuthService } from '../auth/AuthService.js';
+import { initAuthViews, showAuthView } from '../auth/AuthViews.js';
+import { createAvatarButton, updateAvatarButton, closeDrawer } from '../auth/UserProfile.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
@@ -33,6 +36,8 @@ export function initApp() {
         libraryView: getEl('library-view'),
         libraryHero: getEl('library-hero'),
         librarySections: getEl('library-sections'),
+        authView: getEl('auth-view'),
+        headerAvatarSlot: getEl('header-avatar-slot'),
         readerView: getEl('reader-view'),
         book: getEl('book'),
         pageWrapper: getEl('page-wrapper'),
@@ -325,9 +330,91 @@ export function initApp() {
             setCurrentTheme,
             setCurrentVolume
         });
-        switchToLibraryView();
+
+        // ── Auth System Setup ──
+        // Mount avatar button in header
+        const avatarBtn = createAvatarButton();
+        if (elements.headerAvatarSlot) {
+            elements.headerAvatarSlot.appendChild(avatarBtn);
+        }
+
+        // Initialize auth views
+        if (elements.authView) {
+            initAuthViews({
+                container: elements.authView,
+                onSuccess: () => {
+                    // After successful login/register or skip, go to library
+                    switchToLibraryFromAuth();
+                }
+            });
+        }
+
+        // Listen for auth state changes
+        AuthService.onAuthStateChange((user) => {
+            state.currentUser = user;
+            state.isAuthenticated = !!user;
+            updateAvatarButton(avatarBtn, user);
+        });
+
+        // Listen for login request from profile drawer
+        window.addEventListener('auth:show-login', () => {
+            switchToAuthView();
+        });
+
+        // Determine initial view
+        const hasSession = AuthService.isAuthenticated();
+        if (hasSession) {
+            // User is logged in — go straight to library
+            switchToLibraryView();
+        } else {
+            // Show auth screen first
+            switchToAuthView();
+        }
+
         await library.loadBooks();
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
+
+    /**
+     * Show the authentication view
+     */
+    function switchToAuthView() {
+        state.appMode = 'auth';
+        document.body.classList.remove('app-mode-library', 'app-mode-reader');
+        document.body.classList.add('app-mode-auth');
+
+        if (elements.authView) {
+            elements.authView.hidden = false;
+            elements.authView.style.display = '';
+        }
+        if (elements.libraryView) {
+            elements.libraryView.hidden = true;
+            elements.libraryView.style.display = 'none';
+        }
+        if (elements.readerView) {
+            elements.readerView.hidden = true;
+            elements.readerView.style.display = 'none';
+        }
+        // Hide reader-only controls
+        if (elements.backToLibraryBtn) elements.backToLibraryBtn.classList.add('hidden');
+        if (elements.navToggle) elements.navToggle.classList.add('hidden');
+        if (elements.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
+        if (elements.appFooter) elements.appFooter.classList.add('hidden');
+        if (elements.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
+
+        showAuthView('login');
+    }
+
+    /**
+     * Transition from auth view to library view
+     */
+    function switchToLibraryFromAuth() {
+        if (elements.authView) {
+            elements.authView.hidden = true;
+            elements.authView.style.display = 'none';
+        }
+        closeDrawer();
+        switchToLibraryView();
     }
 
     initializeApp();

@@ -1,6 +1,10 @@
 export const state = {
     appMode: 'library',
     currentBook: null,
+    // Auth state
+    currentUser: null,
+    isAuthenticated: false,
+    authView: 'login', // 'login' | 'register' | 'forgot-password'
     story: null,
     storyIndex: null,  // Map<pageId, pageData> — índice O(1)
     currentStoryId: -1,

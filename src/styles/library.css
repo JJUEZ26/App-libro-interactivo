@@ -20,6 +20,12 @@
     overflow-x: hidden;
 }
 
+/* Hide the fixed pseudo-element when library is not visible */
+#library-view[hidden]::before,
+body.app-mode-auth #library-view::before {
+    display: none !important;
+}
+
 /* Efecto de Partículas de Fondo */
 #library-view:not(.has-particle-canvas)::before {
     content: '';

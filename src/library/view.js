@@ -25,12 +25,17 @@ export function setOnLibraryReturn(callback) {
 
 export function switchToLibraryView() {
     state.appMode = 'library';
-    document.body.classList.remove('app-mode-reader', 'fullscreen-mode');
+    document.body.classList.remove('app-mode-reader', 'fullscreen-mode', 'app-mode-auth');
     document.body.classList.add('app-mode-library');
 
     if (elements?.libraryView) {
         elements.libraryView.hidden = false;
         elements.libraryView.style.display = '';
+    }
+
+    if (elements?.authView) {
+        elements.authView.hidden = true;
+        elements.authView.style.display = 'none';
     }
 
     if (elements?.readerView) {
@@ -64,12 +69,17 @@ export function switchToLibraryView() {
 
 export function switchToReaderView() {
     state.appMode = 'reader';
-    document.body.classList.remove('app-mode-library');
+    document.body.classList.remove('app-mode-library', 'app-mode-auth');
     document.body.classList.add('app-mode-reader');
 
     if (elements?.libraryView) {
         elements.libraryView.hidden = true;
         elements.libraryView.style.display = 'none';
+    }
+
+    if (elements?.authView) {
+        elements.authView.hidden = true;
+        elements.authView.style.display = 'none';
     }
 
     if (elements?.readerView) {

@@ -63,6 +63,8 @@
             </div>
 
             <div id="settings-controls">
+                <!-- User Avatar (injected by auth module) -->
+                <div id="header-avatar-slot"></div>
                 <!-- Índice / historial -->
                 <button id="nav-toggle" class="icon-btn hidden" aria-label="Índice de lectura">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -145,6 +147,9 @@
         </header>
 
         <main id="main-content">
+            <!-- VISTA AUTENTICACIÓN -->
+            <section id="auth-view" aria-label="Autenticación" hidden></section>
+
             <!-- VISTA BIBLIOTECA -->
             <section id="library-view" aria-label="Biblioteca de libros interactivos">
                 <section id="library-hero" class="library-hero" aria-label="Libro destacado"></section>
