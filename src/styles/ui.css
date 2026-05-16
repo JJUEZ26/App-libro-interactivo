@@ -193,26 +193,39 @@ body.app-mode-reader .icon-btn {
 
 .icon-btn {
     position: relative;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--color-glass-border);
-    border-radius: var(--radius-md);
-    width: 40px;
-    height: 36px;
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.11),
+            rgba(255, 255, 255, 0.035));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-full);
+    width: 42px;
+    height: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     transition: all var(--duration-fast) var(--ease-out);
-    color: var(--color-text-secondary);
+    color: rgba(232, 238, 247, 0.78);
     overflow: hidden;
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
 }
 
 .icon-btn::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg,
-            var(--color-accent-primary),
-            var(--color-accent-secondary));
+    background:
+        radial-gradient(circle at 30% 20%,
+            rgba(255, 255, 255, 0.22),
+            transparent 42%),
+        linear-gradient(135deg,
+            rgba(233, 30, 99, 0.22),
+            rgba(0, 188, 212, 0.16));
     opacity: 0;
     transition: opacity var(--duration-fast) var(--ease-out);
 }
@@ -227,10 +240,13 @@ body.app-mode-reader .icon-btn {
 }
 
 .icon-btn:hover {
-    border-color: var(--color-accent-primary);
-    color: white;
+    border-color: rgba(255, 255, 255, 0.24);
+    color: var(--color-text-primary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+    box-shadow:
+        0 16px 34px rgba(0, 0, 0, 0.24),
+        0 0 20px rgba(124, 58, 237, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .icon-btn:hover::before {
@@ -256,8 +272,46 @@ body.app-mode-reader .icon-btn {
 #settings-controls {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2);
     position: relative;
+}
+
+body.theme-light .icon-btn {
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.84),
+            rgba(255, 255, 255, 0.48));
+    border-color: rgba(15, 23, 42, 0.1);
+    color: rgba(15, 23, 42, 0.68);
+    box-shadow:
+        0 12px 28px rgba(15, 23, 42, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+body.theme-light .icon-btn:hover {
+    border-color: rgba(85, 36, 157, 0.24);
+    color: rgba(15, 23, 42, 0.9);
+    box-shadow:
+        0 16px 34px rgba(15, 23, 42, 0.14),
+        0 0 20px rgba(85, 36, 157, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+body.theme-sepia .icon-btn {
+    background:
+        linear-gradient(145deg,
+            rgba(255, 250, 238, 0.72),
+            rgba(255, 250, 238, 0.36));
+    border-color: rgba(93, 64, 55, 0.11);
+    color: rgba(93, 64, 55, 0.72);
+    box-shadow:
+        0 12px 28px rgba(93, 64, 55, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+body.theme-sepia .icon-btn:hover {
+    border-color: rgba(216, 67, 21, 0.24);
+    color: rgba(93, 64, 55, 0.92);
 }
 
 /* ========================================

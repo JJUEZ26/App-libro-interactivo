@@ -306,7 +306,7 @@
     "Exploté. Grité, vociferé, le ordené que se largara, que desapareciera, con la misma furia de quien ahuyenta del cuerpo de un inocente a un demonio. No recuerdo más de aquella noche, querido amigo. Mi cuerpo no aguantó más y me desmayé nuevamente... y esta vez, la consciencia me abandonó por completo."
   ],
   "choices": [
-    { "text": "Continuar", "page": 34 }
+    { "text": "Volver a la biblioteca", "page": -1 }
   ]
 }
 ]

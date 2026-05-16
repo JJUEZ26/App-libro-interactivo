@@ -144,7 +144,9 @@ body.fullscreen-mode .ambient-bg-video {
 .bio-badge {
     position: absolute;
     bottom: -8px;
-    right: 0;
+    left: 50%;
+    right: auto;
+    translate: -50% 0;
     font-size: 0.72rem;
     font-family: var(--font-body);
     font-weight: 400;
@@ -153,6 +155,7 @@ body.fullscreen-mode .ambient-bg-video {
     border-radius: 20px;
     backdrop-filter: blur(4px);
     white-space: nowrap;
+    max-width: calc(100vw - 2rem);
     animation: badgeFadeInBase 1s ease 2s both;
 }
 
@@ -1492,6 +1495,7 @@ body .pobres-bg-flama~.content-centerer .verse-line {
 .bio--gata .bio-badge {
     position: static;
     transform: none;
+    translate: none;
     z-index: 1;
     margin-top: 0.95rem;
     background: rgba(15, 18, 28, 0.82);

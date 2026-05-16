@@ -207,27 +207,7 @@ export function renderPage(pageId) {
                 choicesDiv.classList.add('choices-delayed');
             }
 
-            const hasExplicitRestart = pageData.choices.some(
-                (c) => c.text && c.text.toLowerCase().includes('desde el inicio')
-            );
-
             pageData.choices.forEach((choice) => {
-                if (choice.page === -1 && !hasExplicitRestart) {
-                    const restartBtn = document.createElement('button');
-                    restartBtn.textContent = "Comenzar desde el inicio";
-                    restartBtn.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        if (state.currentAudio) {
-                            state.currentAudio.pause();
-                            state.currentAudio.currentTime = 0;
-                        }
-                        if (state.story && state.story.length > 0) {
-                            goToPage(state.story[0].id);
-                        }
-                    });
-                    choicesDiv.appendChild(restartBtn);
-                }
-
                 const btn = document.createElement('button');
                 btn.textContent = choice.text;
 

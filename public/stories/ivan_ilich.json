@@ -1932,8 +1932,8 @@
     ],
     "choices": [
       {
-        "text": "Continuar",
-        "page": "p106"
+        "text": "Volver a la biblioteca",
+        "page": -1
       }
     ]
   }

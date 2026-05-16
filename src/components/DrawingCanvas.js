@@ -456,7 +456,8 @@ export class DrawingCanvas extends HTMLElement {
             meta = { bookId: s.currentBook?.id, pageId: s.currentStoryId, bookTitle: s.currentBook?.title };
         }
         const entry = saveToGallery(base64, meta);
-        this.dispatchEvent(new CustomEvent('canvas-saved', { detail: { image: base64, entry } }));
+        this.dispatchEvent(new CustomEvent('canvas-saved', { detail: { image: base64, entry }, bubbles: true, composed: true }));
+        window.dispatchEvent(new CustomEvent('profile:collections-updated'));
         this._toast('Guardado en galería ✓');
     }
 

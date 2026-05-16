@@ -793,3 +793,21 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 3. **Flujo de Decisión Elegante**: La pregunta final culmina directamente con las opciones de afirmación y rechazo usando botones limpios, continuados inmediatamente por la biografía del autor.
 4. **Biografía y Ambientación**: Cambio de la cita final a "Aquel que tiene un porqué para vivir, puede soportar casi cualquier cómo", y ralentización de las velocidades del canvas de fondo (halo rotatorio) para infundir un movimiento contemplativo sutil en la experiencia.
 5. **Ajuste de Tempo (Cierre)**: Sincronización refinada de la página final. La transición de sombreado (dimming) del texto y la aparición de las preguntas se ha adelantado de 5s a 4s para mejorar el ritmo de lectura y asegurar que las opciones sean visibles antes de que el usuario intente avanzar manualmente.
+
+### Optimización UI Autenticación (Mayo 2026)
+**Objetivo**: Mejorar el encuadre visual del sistema de inicio de sesión para dispositivos móviles y PC, garantizando la visibilidad inmediata de la opción "Explorar sin cuenta".
+
+**Implementación**:
+1. **Reducción de Dimensiones**: Ajuste de paddings (`var(--space-6)` a `var(--space-4)`), márgenes, y font-sizes (`text-2xl` a `text-xl`) en el archivo `auth.css`.
+2. **Compactación de Formularios**: Reducción del gap entre inputs, padding interno de campos y altura mínima de botones (de `48px` a `44px` y `40px` para redes sociales).
+3. **Visibilidad Garantizada**: La optimización global del espaciado vertical asegura que el botón de omitir registro (`.auth-skip-btn`) renderice siempre en la primera pantalla visible (above the fold) sin necesidad de scroll, mejorando la conversión y experiencia del usuario inicial.
+
+### Auditoría Frontend y Perfil Social Local (Mayo 2026)
+**Objetivo**: Pulir errores visibles de navegación, biografías y experiencia de usuario sin tocar backend ni alterar la identidad visual del proyecto.
+
+**Implementación**:
+1. **Integridad de Lectura**: Corrección de decisiones finales rotas en `Frankenstein`, `La muerte de Iván Ilich` y `Meditaciones`; eliminación de IDs duplicados críticos en `Meditaciones` para evitar saltos invisibles en el `Map` de páginas.
+2. **Finales Más Limpios**: Ajuste del renderer para no generar botones redundantes de reinicio cuando una página final ya ofrece volver a la biblioteca.
+3. **Biografías Mejor Encuadradas**: Centrado robusto del `bio-badge` de fechas bajo los retratos sin cambiar colores, paleta ni tratamiento autoral.
+4. **Biblioteca Más Fluida**: Consolidación del cierre de menús kebab en un único listener global y IDs únicos para gradientes SVG de progreso.
+5. **Ecosistema Social Local**: Nuevo estante personal, galería de huellas, resumen de citas/páginas/lecturas y ajustes de perfil desde el drawer de usuario, todo con persistencia local y preparado para migración futura a backend.

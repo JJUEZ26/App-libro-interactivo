@@ -314,8 +314,8 @@ export const AuthService = {
     },
 
     /**
-     * Update the current user's profile
-     * @param {{ displayName?: string, avatarUrl?: string }} updates
+     * Update the current user's profile in the mock local database.
+     * @param {{ displayName?: string, avatarUrl?: string|null }} updates
      * @returns {Promise<Object>} Updated user (sanitized)
      */
     async updateProfile(updates) {
@@ -323,7 +323,7 @@ export const AuthService = {
             const current = this.getCurrentUser();
             if (!current) throw new Error('No hay sesión activa');
 
-            if (updates.displayName) {
+            if (updates.displayName !== undefined) {
                 const nameVal = validateName(updates.displayName);
                 if (!nameVal.valid) throw new Error(nameVal.error);
             }
@@ -332,7 +332,7 @@ export const AuthService = {
             const user = db[current.email];
             if (!user) throw new Error('Usuario no encontrado');
 
-            if (updates.displayName) user.displayName = updates.displayName.trim();
+            if (updates.displayName !== undefined) user.displayName = updates.displayName.trim();
             if (updates.avatarUrl !== undefined) user.avatarUrl = updates.avatarUrl;
 
             db[current.email] = user;
@@ -347,64 +347,18 @@ export const AuthService = {
     },
 
     /**
-     * Request password reset (mock — just validates email exists)
-     * @param {string} email 
-     * @returns {Promise<{ success: boolean, message: string }>}
-     */
-    async requestPasswordReset(email) {
-        return simulateAsync(() => {
-            const emailVal = validateEmail(email);
-            if (!emailVal.valid) throw new Error(emailVal.error);
-
-            // Always return success to avoid email enumeration
-            return {
-                success: true,
-                message: 'Si existe una cuenta con ese correo, recibirás instrucciones para restablecer tu contraseña.'
-            };
-        });
-    },
-
-    /**
      * Subscribe to authentication state changes
      * @param {Function} callback — receives (user|null)
      * @returns {Function} unsubscribe function
      */
     onAuthStateChange(callback) {
         authListeners.push(callback);
-        // Immediately fire with current state
         const currentUser = this.getCurrentUser();
         try { callback(currentUser); } catch { /* noop */ }
         return () => {
             const idx = authListeners.indexOf(callback);
             if (idx !== -1) authListeners.splice(idx, 1);
         };
-    },
-
-    /**
-     * Update reading stats for the current user
-     * @param {{ booksRead?: number, pagesRead?: number, totalReadingTime?: number }} statsUpdate
-     * @returns {Promise<void>}
-     */
-    async updateStats(statsUpdate) {
-        const current = this.getCurrentUser();
-        if (!current) return;
-
-        const db = readUsersDB();
-        const user = db[current.email];
-        if (!user) return;
-
-        if (!user.stats) {
-            user.stats = { booksRead: 0, pagesRead: 0, totalReadingTime: 0, favoriteBooks: [] };
-        }
-
-        if (statsUpdate.booksRead !== undefined) user.stats.booksRead = statsUpdate.booksRead;
-        if (statsUpdate.pagesRead !== undefined) user.stats.pagesRead = statsUpdate.pagesRead;
-        if (statsUpdate.totalReadingTime !== undefined) user.stats.totalReadingTime = statsUpdate.totalReadingTime;
-
-        db[current.email] = user;
-        writeUsersDB(db);
-
-        cachedUser = sanitizeUser(user);
     },
 };
 

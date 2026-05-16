@@ -1,9 +1,35 @@
 import { loadPageHistory } from '../utils/storage.js';
 import { ShareManager } from '../utils/shareUtils.js';
+import { isShelfBook, toggleShelfBook } from '../utils/userCollections.js';
 
 export function createLibrary({ libraryHero, librarySections, openBook }) {
     let books = [];
     let sectionsConfig = null;
+    let kebabGlobalCloseBound = false;
+
+    function closeAllKebabMenus(exceptMenu = null) {
+        document.querySelectorAll('.book-kebab-menu.active').forEach((menu) => {
+            if (menu === exceptMenu) return;
+            menu.classList.remove('active');
+            const button = menu.parentElement?.querySelector('.book-kebab-btn');
+            button?.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    function ensureKebabGlobalCloseListener() {
+        if (kebabGlobalCloseBound) return;
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.book-kebab-container')) {
+                closeAllKebabMenus();
+            }
+        });
+        kebabGlobalCloseBound = true;
+    }
+
+    function setKebabOpen(button, menu, isOpen) {
+        menu.classList.toggle('active', isOpen);
+        button.setAttribute('aria-expanded', String(isOpen));
+    }
 
     async function loadBooks() {
         if (!libraryHero && !librarySections) return;
@@ -40,6 +66,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
     function renderLibrary() {
         if (!librarySections || !libraryHero) return;
+        ensureKebabGlobalCloseListener();
         libraryHero.innerHTML = '';
         librarySections.innerHTML = '';
         if (!books || books.length === 0) {
@@ -78,6 +105,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         const radius = (size - strokeWidth) / 2;
         const circumference = 2 * Math.PI * radius;
         const offset = circumference - (percent / 100) * circumference;
+        const gradientId = `progressGradient-${Math.random().toString(36).slice(2, 9)}`;
 
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', size);
@@ -100,7 +128,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         progressCircle.setAttribute('cy', size / 2);
         progressCircle.setAttribute('r', radius);
         progressCircle.setAttribute('fill', 'none');
-        progressCircle.setAttribute('stroke', 'url(#progressGradient)');
+        progressCircle.setAttribute('stroke', `url(#${gradientId})`);
         progressCircle.setAttribute('stroke-width', strokeWidth);
         progressCircle.setAttribute('stroke-linecap', 'round');
         progressCircle.setAttribute('stroke-dasharray', circumference);
@@ -111,7 +139,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         // Gradient
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
         const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-        gradient.setAttribute('id', 'progressGradient');
+        gradient.setAttribute('id', gradientId);
         gradient.setAttribute('x1', '0%');
         gradient.setAttribute('y1', '0%');
         gradient.setAttribute('x2', '100%');
@@ -146,6 +174,33 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         svg.appendChild(text);
 
         return svg;
+    }
+
+    function createShelfMenuItem(bookData, iconSize = 16, onSelected = null) {
+        const shelfItem = document.createElement('button');
+        shelfItem.className = 'kebab-menu-item';
+        shelfItem.innerHTML = `
+            <svg width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span></span>
+        `;
+
+        const label = shelfItem.querySelector('span');
+        const syncLabel = () => {
+            label.textContent = isShelfBook(bookData.id) ? 'Quitar del estante' : 'Guardar en estante';
+        };
+
+        syncLabel();
+        shelfItem.addEventListener('click', (event) => {
+            event.stopPropagation();
+            toggleShelfBook(bookData);
+            syncLabel();
+            window.dispatchEvent(new CustomEvent('profile:collections-updated'));
+            if (onSelected) onSelected();
+        });
+
+        return shelfItem;
     }
 
     function renderHero(booksById) {
@@ -224,38 +279,24 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             `;
             shareItem.addEventListener('click', (ev) => {
                 ev.stopPropagation();
-                kebabMenu.classList.remove('active'); 
-                kebabBtn.setAttribute('aria-expanded', 'false');
+                setKebabOpen(kebabBtn, kebabMenu, false);
                 ShareManager.shareBook(featuredBook.id, featuredBook.title);
             });
             
             kebabMenu.appendChild(shareItem);
+            kebabMenu.appendChild(createShelfMenuItem(featuredBook, 18, () => setKebabOpen(kebabBtn, kebabMenu, false)));
             
             // Lógica de apertura/cierre
             kebabBtn.addEventListener('click', (ev) => {
                 ev.stopPropagation();
-                document.querySelectorAll('.book-kebab-menu.active').forEach(m => {
-                    if (m !== kebabMenu) {
-                        m.classList.remove('active');
-                        m.previousElementSibling.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                
                 const isOpening = !kebabMenu.classList.contains('active');
-                kebabMenu.classList.toggle('active');
-                kebabBtn.setAttribute('aria-expanded', String(isOpening));
+                closeAllKebabMenus(kebabMenu);
+                setKebabOpen(kebabBtn, kebabMenu, isOpening);
             });
 
             kebabContainer.appendChild(kebabBtn);
             kebabContainer.appendChild(kebabMenu);
             heroActions.appendChild(kebabContainer);
-            
-            document.addEventListener('click', (ev) => {
-                if (!kebabContainer.contains(ev.target)) {
-                    kebabMenu.classList.remove('active');
-                    kebabBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
         }
 
         heroContent.appendChild(heroLabel);
@@ -493,40 +534,24 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             `;
             shareItem.addEventListener('click', (ev) => {
                 ev.stopPropagation();
-                kebabMenu.classList.remove('active'); // Cerrar menu al pulsar
-                kebabBtn.setAttribute('aria-expanded', 'false');
+                setKebabOpen(kebabBtn, kebabMenu, false);
                 ShareManager.shareBook(bookData.id, bookData.title);
             });
             
             kebabMenu.appendChild(shareItem);
+            kebabMenu.appendChild(createShelfMenuItem(bookData, 16, () => setKebabOpen(kebabBtn, kebabMenu, false)));
             
             // Lógica de apertura/cierre
             kebabBtn.addEventListener('click', (ev) => {
                 ev.stopPropagation();
-                // Cerrar todos los demás menús primero
-                document.querySelectorAll('.book-kebab-menu.active').forEach(m => {
-                    if (m !== kebabMenu) {
-                        m.classList.remove('active');
-                        m.previousElementSibling.setAttribute('aria-expanded', 'false');
-                    }
-                });
-                
                 const isOpening = !kebabMenu.classList.contains('active');
-                kebabMenu.classList.toggle('active');
-                kebabBtn.setAttribute('aria-expanded', String(isOpening));
+                closeAllKebabMenus(kebabMenu);
+                setKebabOpen(kebabBtn, kebabMenu, isOpening);
             });
 
             kebabContainer.appendChild(kebabBtn);
             kebabContainer.appendChild(kebabMenu);
             actionsArea.appendChild(kebabContainer);
-            
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener('click', (ev) => {
-                if (!kebabContainer.contains(ev.target)) {
-                    kebabMenu.classList.remove('active');
-                    kebabBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
         }
 
         body.appendChild(actionsArea);
