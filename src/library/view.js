@@ -220,6 +220,7 @@ export async function openBook(bookData, coverImgEl) {
         state.pageHistory = [state.currentStoryId];
     }
 
+    window.history.replaceState({ view: 'reader', pageId: state.currentStoryId }, '', '#reader-' + state.currentStoryId);
     switchToReaderView();
     if (goToPageRef) goToPageRef(state.currentStoryId, true);
 

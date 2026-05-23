@@ -188,7 +188,7 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const label = shelfItem.querySelector('span');
         const syncLabel = () => {
-            label.textContent = isShelfBook(bookData.id) ? 'Quitar del estante' : 'Guardar en estante';
+            label.textContent = isShelfBook(bookData.id) ? 'Quitar de guardados' : 'Guardar obra';
         };
 
         syncLabel();

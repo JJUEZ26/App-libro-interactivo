@@ -23,6 +23,7 @@
     "page": 2,
     "poemId": "vilarino_ya_no",
     "effect": "rain_subtle",
+    "bgVideo": { "src": "videos/madreselvas_tristes.mp4", "opacity": 0.45, "blendMode": "screen", "speed": 0.8 },
     "audio": "idea_vilarino_ya_no.mp3",
     "audioText": "Escucha el poema en la voz de su autora:",
     "karaokeLines": [

@@ -190,6 +190,88 @@ function injectStyles() {
             100% { opacity: 0; }
         }
 
+        /* === SÍSIFO KEYWORDS: palabras clave con brillo === */
+        .sisifo-keyword {
+            color: rgba(255, 248, 220, 1);
+            font-weight: 600;
+            text-shadow:
+                0 0 8px rgba(255, 220, 120, 0.55),
+                0 0 20px rgba(255, 200, 80, 0.25);
+            animation: sisifoKeywordPulse 3.5s ease-in-out infinite;
+            display: inline;
+        }
+
+        @keyframes sisifoKeywordPulse {
+            0%, 100% {
+                text-shadow:
+                    0 0 8px rgba(255, 220, 120, 0.55),
+                    0 0 20px rgba(255, 200, 80, 0.25);
+                color: rgba(255, 248, 220, 1);
+            }
+            50% {
+                text-shadow:
+                    0 0 14px rgba(255, 220, 120, 0.9),
+                    0 0 32px rgba(255, 200, 80, 0.5),
+                    0 0 50px rgba(255, 180, 60, 0.2);
+                color: rgba(255, 255, 240, 1);
+            }
+        }
+
+        /* === VIENTO VISUAL: partículas horizontales === */
+        .sisifo-wind-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 6;
+            overflow: hidden;
+        }
+
+        .sisifo-wind-particle {
+            position: absolute;
+            height: 1px;
+            width: var(--wind-w, 60px);
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(200, 215, 235, var(--wind-alpha, 0.35)) 30%,
+                rgba(220, 230, 248, var(--wind-alpha, 0.35)) 60%,
+                transparent 100%
+            );
+            border-radius: 1px;
+            top: var(--wind-y, 50%);
+            animation: sisifoWindBlow var(--wind-dur, 1.4s) linear var(--wind-delay, 0s) forwards;
+        }
+
+        .sisifo-wind-particle--thick {
+            height: 2px;
+            filter: blur(0.5px);
+        }
+
+        .sisifo-wind-particle--gust {
+            height: 1px;
+            width: var(--wind-w, 120px);
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(200, 215, 235, var(--wind-alpha, 0.5)) 20%,
+                rgba(220, 230, 248, var(--wind-alpha, 0.5)) 50%,
+                transparent 100%
+            );
+        }
+
+        @keyframes sisifoWindBlow {
+            from {
+                transform: translateX(-140px) translateY(0px);
+                opacity: 0;
+            }
+            8% { opacity: 1; }
+            85% { opacity: 0.7; }
+            to {
+                transform: translateX(calc(100vw + 200px)) translateY(var(--wind-drift, 4px));
+                opacity: 0;
+            }
+        }
+
         /* === SÍSIFO MODE: transparent reader === */
         body.sisifo-mode #page-wrapper {
             background-color: transparent !important;

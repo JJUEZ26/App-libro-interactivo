@@ -14,7 +14,7 @@ import {
     setNavigationDependencies
 } from '../reader/navigation.js';
 import { loadPreferences, saveVolume } from '../utils/storage.js';
-import { applyTheme, changeFontSize, cycleTheme, selectTheme, toggleFullscreen, toggleSettingsMenu } from '../ui/index.js';
+import { applyTheme, changeFontSize, selectTheme, toggleFullscreen } from '../ui/index.js';
 import { ChatFeature } from '../ui/ChatModule.js';
 import { CommandOrb } from '../ui/CommandOrb.js';
 import { getEl } from './dom.js';
@@ -23,7 +23,7 @@ import { handlePageEffects, pauseAllEffectAudio, resumeEffectAudio, syncEffectAu
 import { syncCurrentAudioVolume, pauseAllAudioForBackground, resumeAudioFromBackground } from '../reader/audio.js';
 import { AuthService } from '../auth/AuthService.js';
 import { initAuthViews, showAuthView } from '../auth/AuthViews.js';
-import { createAvatarButton, updateAvatarButton, closeDrawer } from '../auth/UserProfile.js';
+import { createAvatarButton, updateAvatarButton, closeDrawer, setProfileControls, isDrawerOpen } from '../auth/UserProfile.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
@@ -43,13 +43,6 @@ export function initApp() {
         pageWrapper: getEl('page-wrapper'),
         mainTitle: getEl('main-title'),
         backToLibraryBtn: getEl('back-to-library'),
-        increaseFontBtn: getEl('increase-font'),
-        decreaseFontBtn: getEl('decrease-font'),
-        themeSelectorBtn: getEl('theme-selector'),
-        settingsToggle: getEl('settings-toggle'),
-        settingsMenu: getEl('settings-menu'),
-        fullscreenBtn: getEl('fullscreen-btn'),
-        volumeSlider: getEl('volume-slider'),
         navToggle: getEl('nav-toggle'),
         navModal: getEl('nav-modal'),
         navClose: getEl('nav-close'),
@@ -84,15 +77,6 @@ export function initApp() {
     if (elements.backToLibraryBtn) {
         elements.backToLibraryBtn.addEventListener('click', () => {
             switchToLibraryView();
-        });
-    }
-
-    if (elements.volumeSlider) {
-        elements.volumeSlider.addEventListener('input', (event) => {
-            state.currentVolume = parseFloat(event.target.value);
-            syncCurrentAudioVolume();
-            syncEffectAudioVolume();
-            saveVolume(state.currentVolume);
         });
     }
 
@@ -187,7 +171,18 @@ export function initApp() {
         }
     });
 
-    // Advertir al cerrar pestaña si hay lectura activa con audio
+    // Navegación coherente con botón atrás
+    window.addEventListener('popstate', (event) => {
+        if (isDrawerOpen()) {
+            closeDrawer(true);
+            return;
+        }
+
+        if (state.appMode === 'reader') {
+            switchToLibraryView(false);
+        }
+    });
+
     window.addEventListener('beforeunload', (event) => {
         if (state.appMode === 'reader' && state.currentAudio && !state.currentAudio.paused) {
             event.preventDefault();
@@ -297,25 +292,23 @@ export function initApp() {
         );
     }
 
-    if (elements.increaseFontBtn) {
-        elements.increaseFontBtn.addEventListener('click', () => changeFontSize(0.1));
-    }
-    if (elements.decreaseFontBtn) {
-        elements.decreaseFontBtn.addEventListener('click', () => changeFontSize(-0.1));
-    }
-    if (elements.settingsToggle) {
-        elements.settingsToggle.addEventListener('click', () => toggleSettingsMenu(elements.settingsMenu));
-    }
-    // Theme option buttons — direct selection
-    document.querySelectorAll('.theme-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const theme = btn.dataset.theme;
-            if (theme) selectTheme(theme);
-        });
+    setProfileControls({
+        getState: () => ({
+            currentTheme: state.currentTheme,
+            fontSize: state.fontSize,
+            currentVolume: state.currentVolume,
+            isFullscreen: Boolean(document.fullscreenElement) || document.body.classList.contains('fullscreen-mode')
+        }),
+        onThemeChange: selectTheme,
+        onFontSizeChange: changeFontSize,
+        onVolumeChange: (value) => {
+            state.currentVolume = value;
+            syncCurrentAudioVolume();
+            syncEffectAudioVolume();
+            saveVolume(state.currentVolume);
+        },
+        onFullscreenToggle: toggleFullscreen
     });
-    if (elements.fullscreenBtn) {
-        elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
-    }
 
     const chatFeature = new ChatFeature();
     const commandOrb = new CommandOrb({ chatFeature });
@@ -325,7 +318,6 @@ export function initApp() {
             readerThemes: state.readerThemes,
             libraryThemes: state.libraryThemes,
             applyTheme,
-            volumeSlider: elements.volumeSlider,
             setFontSize,
             setCurrentTheme,
             setCurrentVolume
@@ -398,7 +390,6 @@ export function initApp() {
         // Hide reader-only controls
         if (elements.backToLibraryBtn) elements.backToLibraryBtn.classList.add('hidden');
         if (elements.navToggle) elements.navToggle.classList.add('hidden');
-        if (elements.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
         if (elements.appFooter) elements.appFooter.classList.add('hidden');
         if (elements.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
 

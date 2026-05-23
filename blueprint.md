@@ -811,3 +811,13 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 3. **Biografías Mejor Encuadradas**: Centrado robusto del `bio-badge` de fechas bajo los retratos sin cambiar colores, paleta ni tratamiento autoral.
 4. **Biblioteca Más Fluida**: Consolidación del cierre de menús kebab en un único listener global y IDs únicos para gradientes SVG de progreso.
 5. **Ecosistema Social Local**: Nuevo estante personal, galería de huellas, resumen de citas/páginas/lecturas y ajustes de perfil desde el drawer de usuario, todo con persistencia local y preparado para migración futura a backend.
+
+### Centro Personal Unificado (Mayo 2026)
+**Objetivo**: Unificar usuario, cuenta, configuración de lectura, estadísticas locales y galería de huellas en una sola sección para que la aplicación se perciba más terminada y menos fragmentada.
+
+**Implementación**:
+1. **Entrada Única**: Eliminado el engranaje independiente del header; el avatar abre ahora un centro personal con resumen, huellas, lectura y cuenta.
+2. **Lenguaje Más Claro**: La antigua idea de estante queda expresada como "obras guardadas", mientras la métrica principal evita "total lecturas" y muestra obras, páginas, citas y huellas.
+3. **Configuración Integrada**: Tema, tamaño de texto, volumen y pantalla completa viven dentro del panel de lectura del drawer y se conectan con las funciones reales del estado global.
+4. **Galería Prioritaria**: Las huellas aparecen como primera superficie del resumen y se pueden abrir desde la galería completa con vista previa.
+5. **Pulido Responsive**: Ajustes específicos para móvil, cache-busting de CSS y verificación en navegador para evitar overflow horizontal o pestañas apretadas.

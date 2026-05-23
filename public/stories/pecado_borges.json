@@ -23,6 +23,7 @@
     "page": 2,
     "poemId": "borges_remordimiento",
     "effect": "sepia_medium",
+    "bgVideo": { "src": "videos/humo_fondo_perfecto.mp4", "opacity": 0.5, "blendMode": "screen", "speed": 0.6 },
     "audio": "borges_el_remordimiento.mp3",
     "audioText": "Escucha el poema desde la voz de su autor:",
     "karaokeLines": [

@@ -1,9 +1,11 @@
 import { initApp } from './app/init.js';
 import './components/chroma-video.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp, { once: true });
+} else {
     initApp();
-});
+}
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 

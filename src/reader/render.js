@@ -1,4 +1,4 @@
-import { getAppMode, state } from '../app/state.js';
+﻿import { getAppMode, state } from '../app/state.js';
 import { getEternoCycle, incrementEternoCycle, resetEternoCycle } from '../effects/eterno-retorno/cycle-state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
@@ -392,8 +392,9 @@ export function renderPage(pageId) {
             const audioDecision = getCurrentBookAudioDecision();
 
             if (audioDecision === 'enabled') {
-                playPageSound(pageId, pageSoundFile, true);
-                if (pageData.karaokeLines?.length) {
+                const isVoicePoem = pageData.karaokeLines && pageData.karaokeLines.length > 0;
+                playPageSound(pageId, pageSoundFile, !isVoicePoem);
+                if (!isVoicePoem && pageData.karaokeLines?.length) {
                     startKaraokeSync();
                 }
             } else if (audioDecision === 'silent') {
@@ -497,11 +498,11 @@ function initAmbientVideo() {
 
 const CYCLE_TEXTS = [
     // Cycle 1
-    "Su castigo encarna la condición humana:\nel esfuerzo perpetuo, la lucha diaria\ncontra la gravedad de nuestras propias\nresponsabilidades.",
+    `Su <span class="sisifo-keyword">castigo</span> encarna la condición humana:<br>el <span class="sisifo-keyword">esfuerzo</span> perpetuo, la lucha diaria<br>contra la gravedad de nuestras propias <span class="sisifo-keyword">responsabilidades</span>.`,
     // Cycle 2
-    "En ese instante sutil en que el hombre\nvuelve sobre su vida, Sísifo contempla\nesa serie de actos sin vínculo\nque se convierten en su destino.",
+    `En ese instante sutil en que el <span class="sisifo-keyword">hombre</span><br>vuelve sobre su vida, Sísifo contempla<br>esa serie de actos sin vínculo<br>que se convierten en su <span class="sisifo-keyword">destino</span>.`,
     // Cycle 3 (easter egg)
-    "La lucha misma hacia las cumbres\nbasta para llenar un corazón de hombre.\n\nHay que imaginarse a Sísifo feliz.",
+    `La <span class="sisifo-keyword">lucha</span> misma hacia las <span class="sisifo-keyword">cumbres</span><br>basta para llenar un corazón de hombre.<br><br>Hay que imaginarse a Sísifo <span class="sisifo-keyword">feliz</span>.`,
 ];
 /**
  * Dynamically loads the Sisyphus widget ES module.
@@ -556,6 +557,48 @@ async function mountSisyphusGame(gameContainer, pageContentEl) {
         hint.className = 'sisifo-game-hint';
         hint.textContent = 'Mantén presionado sobre la figura para empujar la roca';
         gameContainer.appendChild(hint);
+        // Wind effect container
+        const windContainer = document.createElement('div');
+        windContainer.className = 'sisifo-wind-container';
+        gameContainer.appendChild(windContainer);
+
+        let windIntervalId = null;
+        let windActive = false;
+
+        function spawnWindParticle(intensity) {
+            const p = document.createElement('div');
+            const isGust = Math.random() < 0.28;
+            const isThick = Math.random() < 0.3;
+            p.className = 'sisifo-wind-particle' +
+                (isGust ? ' sisifo-wind-particle--gust' : '') +
+                (isThick ? ' sisifo-wind-particle--thick' : '');
+            const w = 40 + Math.random() * 160 * intensity;
+            const alpha = (0.14 + Math.random() * 0.28) * Math.min(1, intensity);
+            const dur = 0.7 + Math.random() * 1.1 / Math.max(0.3, intensity);
+            const delay = Math.random() * 0.25;
+            const yPct = 5 + Math.random() * 88;
+            const drift = (Math.random() - 0.5) * 16;
+            p.style.cssText = `--wind-w:${w.toFixed(0)}px;--wind-alpha:${alpha.toFixed(2)};` +
+                `--wind-dur:${dur.toFixed(2)}s;--wind-delay:${delay.toFixed(2)}s;` +
+                `--wind-y:${yPct.toFixed(1)}%;--wind-drift:${drift.toFixed(1)}px;`;
+            windContainer.appendChild(p);
+            setTimeout(() => p.remove(), (dur + delay + 0.4) * 1000);
+        }
+
+        function startWindEffect(intensity) {
+            if (windActive) return;
+            windActive = true;
+            const rate = Math.max(55, 300 - intensity * 240);
+            for (let i = 0; i < 5; i++) setTimeout(() => spawnWindParticle(intensity), i * 90);
+            windIntervalId = setInterval(() => spawnWindParticle(intensity), rate);
+        }
+
+        function stopWindEffect() {
+            if (!windActive) return;
+            windActive = false;
+            clearInterval(windIntervalId);
+            windIntervalId = null;
+        }
 
         // Create the overlay element (hidden by default)
         const overlay = document.createElement('div');
@@ -563,7 +606,10 @@ async function mountSisyphusGame(gameContainer, pageContentEl) {
         overlay.innerHTML = `<div class="sisifo-cycle-text"></div>`;
         gameContainer.appendChild(overlay);
 
+        const textEl = overlay.querySelector('.sisifo-cycle-text');
+
         let hasAdvancedToNextPage = false;
+        let lastSpeedMult = 1;
 
         const game = createSisyphusGame(gameContainer, {
             onCycleComplete: (cycleNumber) => {
@@ -576,7 +622,7 @@ async function mountSisyphusGame(gameContainer, pageContentEl) {
                 if (!text) return;
 
                 // Update overlay text
-                overlay.querySelector('.sisifo-cycle-text').textContent = text;
+                textEl.innerHTML = text;
 
                 // Remove existing continue button if any
                 const existingBtn = overlay.querySelector('.sisifo-continue-btn');
@@ -590,6 +636,7 @@ async function mountSisyphusGame(gameContainer, pageContentEl) {
                     btn.addEventListener('click', () => {
                         if (!hasAdvancedToNextPage && goToPage) {
                             hasAdvancedToNextPage = true;
+                            stopWindEffect();
                             goToPage('contemplacion');
                         }
                     });
@@ -609,6 +656,17 @@ async function mountSisyphusGame(gameContainer, pageContentEl) {
         });
 
         activeSisyphusWidget = game;
+
+        // Connect wind to slow-text speed segments
+        game.onProgressUpdate = (data) => {
+            if (data.isPushing && typeof lastSpeedMult === 'number' && lastSpeedMult < 0.65) {
+                const intensity = Math.min(1, (0.65 - lastSpeedMult) / 0.3);
+                startWindEffect(Math.max(0.25, intensity));
+            } else if (!data.isPushing) {
+                stopWindEffect();
+            }
+        };
+
         console.log('%c🪨 Sísifo montado en el reader', 'color:#e07a5f;font-weight:bold');
     } catch (error) {
         console.error('Error al cargar el widget de Sísifo:', error);

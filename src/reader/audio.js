@@ -1,5 +1,6 @@
 import { state } from '../app/state.js';
 import { pauseAllEffectAudio, replayManagedPageEffectSounds, resumeEffectAudio } from '../effects/index.js';
+import { requestWakeLock, releaseWakeLock } from '../utils/wakeLock.js';
 
 // =====================================
 // AUDIO PRECACHING
@@ -676,6 +677,7 @@ function applyComfortFadeIn(audio, pageData, targetVolume, { ghostEcho = false, 
 
 export function stopCurrentAudio() {
     cancelPendingAudioStart();
+    releaseWakeLock();
 
     // Limpiar el sistema fantasma primero
     cleanupGhost();
@@ -697,6 +699,7 @@ export function stopCurrentAudio() {
 export function pauseAllAudioForBackground() {
     cancelPendingAudioStart();
     clearGhostSchedulers();
+    releaseWakeLock();
 
     _isProgrammaticPause = true;
     if (state.currentAudio && !state.currentAudio.paused) {
@@ -808,12 +811,14 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
     // --- Event listeners (same for all audio) ---
     audio.addEventListener('playing', () => {
         if (audio !== state.currentAudio) return;
+        requestWakeLock();
         updatePlayButtonState(true);
         setAudioStatus('playing', getAudioDescriptor(getActivePageData())?.playingMessage || '');
     });
 
     audio.addEventListener('pause', () => {
         if (audio !== state.currentAudio || audio.ended) return;
+        releaseWakeLock();
         if (_isProgrammaticPause) return;
         updatePlayButtonState(false);
         setAudioStatus('paused', getAudioDescriptor(getActivePageData())?.pausedMessage || '');
@@ -867,6 +872,9 @@ export function toggleKaraokeAudio() {
     if (state.currentAudio.paused) {
         setCurrentBookAudioDecision('enabled', { fromUser: true });
         resumeManagedAudio(state.currentAudioPageData);
+        if (state.currentAudioPageData?.karaokeLines?.length) {
+            startKaraokeSync();
+        }
     } else {
         pauseAllAudioForBackground();
         updatePlayButtonState(false);

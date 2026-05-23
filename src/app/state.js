@@ -9,7 +9,7 @@ export const state = {
     storyIndex: null,  // Map<pageId, pageData> — índice O(1)
     currentStoryId: -1,
     pageHistory: [],
-    fontSize: 1.1,
+    fontSize: 1.2,
     currentTheme: 'dark',
     // Orden: Negro (default) → Sepia (rosado clásico) → Claro (blanco limpio)
     readerThemes: ['dark', 'sepia', 'light'],

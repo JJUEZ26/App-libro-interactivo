@@ -26,10 +26,12 @@ export function loadPreferences({
     setCurrentTheme(resolvedTheme);
     applyTheme(resolvedTheme);
 
-    if (savedVolume !== null && volumeSlider) {
+    if (savedVolume !== null) {
         const parsedVolume = parseFloat(savedVolume);
-        setCurrentVolume(parsedVolume);
-        volumeSlider.value = parsedVolume;
+        if (Number.isFinite(parsedVolume)) {
+            setCurrentVolume(parsedVolume);
+            if (volumeSlider) volumeSlider.value = parsedVolume;
+        }
     }
 }
 
