@@ -887,15 +887,17 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
    6. Libros
    7. Próximamente
 
-### Corrección del Efecto de Sangre y Sincronización Local vs Producción (Mayo 2026)
-**Objetivo**: Corregir el bug que bloquea la animación del efecto de sangre en localhost y alinear la experiencia visual y fluidez de Vercel con la de localhost.
+### Corrección y Refinamiento del Efecto de Sangre y Sincronización (Mayo 2026)
+**Objetivo**: Resolver el bloqueo de la animación en localhost, atenuar el pulso de latido y oscurecer el tono de sangre para simular una mancha de tinta húmeda y sutil (sin inundar la legibilidad ni brillar como neón).
 
 **Implementación**:
-1. **Solución del Conflicto de Especificidad**:
+1. **Atenuación de Latido (Pulsación Sutil)**:
+   - Modificar `@keyframes heartbeatPulse` reduciendo la escala del primer pulso a `1.05` (antes `1.12`) y el segundo a `1.03` (antes `1.08`) para un latido mucho más tenue, lento y orgánico.
+2. **Efecto de Mancha de Sangre Oscura**:
+   - Ajustar `@keyframes stainBlood` para transicionar el texto hacia un rojo carmesí oscuro y coagulado (`rgba(115, 18, 18, 0.95)`).
+   - Reducir el difuminado del sombreado de texto (`text-shadow` de `14px` a `5px` de radio) para eliminar el efecto de resplandor neón/linterna, logrando que la sangre parezca humedecer e impregnar los bordes de la letra sutilmente.
+3. **Solución del Conflicto de Especificidad**:
    - Modificar `public/stories/ocaso.json` para eliminar la clase redundante `verse-line` de la etiqueta interna `<span class='heartbeat-blood'>`.
    - Modificar `src/styles/poem-original.css` elevando la prioridad del selector a `.poem-layout .heartbeat-blood` y añadiendo `!important` a la propiedad `animation`.
-2. **Corrección de Keyframes**:
-   - Quitar la propiedad `color: inherit` al `0%` de `@keyframes stainBlood` en `poem-original.css` para evitar fallos de renderizado en navegadores móviles o de escritorio que impidan la animación fluida hacia el rojo sangre húmedo.
-3. **Explicación y Sincronización de Entornos (Vercel vs Localhost)**:
-   - Explicar al usuario que la diferencia de tamaño de pantalla (zoom) y fluidez se debe a que Vercel está sirviendo código compilado antiguo almacenado en el caché local del navegador mediante el Service Worker de la PWA.
-   - Una vez aplicadas las correcciones en el código local, subiremos todos los cambios pendientes a GitHub para que Vercel reconstruya el proyecto con las últimas optimizaciones y el navegador las actualice.
+4. **Sincronización en Producción**:
+   - Confirmar y subir los cambios a GitHub para que Vercel actualice el Service Worker de la PWA con la visualización óptima y fluida.
