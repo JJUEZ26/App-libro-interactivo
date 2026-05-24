@@ -866,18 +866,17 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
 ### Corrección de Versos, Latido Lento y Salpicadura de Sangre de Alta Precisión por Letra en Ocaso (Mayo 2026)
-**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica que manche de forma desigual múltiples palabras del verso final sin perder legibilidad ni deformarse por reescalados.
+**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica de letras individuales en múltiples páginas de la obra, manteniendo su proporción perfecta y responsiva.
 
 **Implementación**:
-1. **Tinción Precisa por Letras en todo el Verso (Página 5) y Corrección de Verso (Página 2)**:
-   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas de las palabras afectadas en etiquetas `span` con clases CSS dedicadas (ver detalle abajo).
-   - Modificar el verso en la página 2 de [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) de `"Esta inseguridad y esta maldad."` a `"Esta inseguridad e imposibilidad."`.
-     * **Como**: `C` (`.blood-C` a 45° diagonal, 50% tinción) y primera `o` (`.blood-o1` a 90°, 10% tinción).
-     * **amor**: `a` (`.blood-amor-a` a 90°, 10% tinción), `m` (`.blood-amor-m` a 90°, 50% tinción) y `o` (`.blood-amor-o` a 90°, 50% tinción).
-     * **queda**: `q` (`.blood-queda-q` a 90°, 85% tinción) y `e` (`.blood-queda-e` a 90°, 85% tinción).
-     * **aguardar**: Fading continuo que simula un salpicado de izquierda a derecha en las letras `a1`, `g`, `u`, `a2`, `r1`, `d` (todas con 90% de tinción, clase `.blood-aguardar-x`), `a3` (50% tinción) y `r2` (10% tinción).
-     * **otro**: `r` (`.blood-otro-r` a 90°, 90% tinción) y la última `o` (`.blood-otro-o` a 90°, 50% tinción).
-     * **amar.**: segunda `a` (`.blood-amar-a2` a 90°, 70% tinción), la `r` final y el punto `.` (ambos con tinción vertical del 40% desde abajo, clases `.blood-amar-r` y `.blood-dot` usando `linear-gradient(to top...)`).
+1. **Tinción Precisa por Letras Multi-Página ([ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json))**:
+   - **Portada (Pág. 1)**: Envolver la **O** de "Ocaso" (`.blood-title-O` a 35% de tinción inferior derecha) y la **J** de "Ju Ez" (`.blood-author-J` a 5% de tinción inferior izquierda).
+   - **Página 2**: Envolver la parte final `"b-i-l-i-d-a-d"` de `"imposibilidad."` en spans (`.blood-bottom-40` a 40% vertical desde abajo).
+   - **Página 3**:
+     * Envolver la **j** (`.blood-bottom-90` a 90% vertical desde abajo) y la tilde **á** (`.blood-accent-30` a 30% vertical desde arriba / accent) de "Ojalá".
+     * Envolver la **m** (`.blood-m-80` a 80% vertical desde abajo), la **o** (`.blood-o-top-right-20` a 20% superior derecha) y la **s** (`.blood-s-top-25` a 25% superior) de "soñamos".
+   - **Página 4**: Envolver las letras `n`, `v`, `t`, `a`, `b` de "Inevitable." con tinción al 90% vertical desde abajo (`.blood-bottom-90`).
+   - **Página 5**: Envolver las letras según el patrón ya definido (Como, amor, queda, aguardar, otro, amar.).
 2. **Latido Ultra Lento e Imperceptible (5.5s)**:
    - Mantener el ciclo de `5.5s` en `@keyframes heartbeatPulse` con escala mínima de `1.012` / `1.002` para un pulso existencial sumamente lento.
 3. **Efecto de Sangre en OKLCH Espesa y Densa**:

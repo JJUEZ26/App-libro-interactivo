@@ -264,8 +264,9 @@ body.virtual-fullscreen #app-container {
     animation: heartbeatPulse 5.5s ease-in-out infinite !important;
 }
 
-/* Propiedades comunes para las letras teñidas de sangre */
-.poem-layout .heartbeat-blood span {
+/* Propiedades comunes para todas las letras teñidas de sangre en cualquier página */
+.poem-layout span[class^="blood-"],
+.poem-layout .blood-dot {
     display: inline-block;
     vertical-align: bottom;
     -webkit-background-clip: text;
@@ -280,88 +281,19 @@ body.virtual-fullscreen #app-container {
     --blood-dark: oklch(16% 0.20 18);
     --text-white: #e6e5ec;
     
+    /* Animación estándar para páginas intermedias (se activa al cargar la página) */
+    animation: stainLetterBlood 3s cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s forwards !important;
+}
+
+/* Excepción de animación para el verso final en la página 5 (latido lento y retrasado) */
+.poem-layout .heartbeat-blood span {
     animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
 }
 
-/* Grupo 1: Tinción al 10% (borde izquierdo) */
-.poem-layout .heartbeat-blood .blood-o1,
-.poem-layout .heartbeat-blood .blood-amor-a,
-.poem-layout .heartbeat-blood .blood-aguardar-r2 {
-    background-image: 
-        linear-gradient(90deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 4%, 
-            var(--blood-dark) 8%, 
-            transparent 12%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* Grupo 2: Tinción al 50% (mitad izquierda) */
-.poem-layout .heartbeat-blood .blood-amor-m,
-.poem-layout .heartbeat-blood .blood-amor-o,
-.poem-layout .heartbeat-blood .blood-aguardar-a3,
-.poem-layout .heartbeat-blood .blood-otro-o {
-    background-image: 
-        linear-gradient(90deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 42%, 
-            var(--blood-dark) 50%, 
-            transparent 54%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* Grupo 3: Tinción al 70% */
-.poem-layout .heartbeat-blood .blood-amar-a2 {
-    background-image: 
-        linear-gradient(90deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 62%, 
-            var(--blood-dark) 70%, 
-            transparent 74%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* Grupo 4: Tinción al 85% */
-.poem-layout .heartbeat-blood .blood-queda-q,
-.poem-layout .heartbeat-blood .blood-queda-e {
-    background-image: 
-        linear-gradient(90deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 77%, 
-            var(--blood-dark) 85%, 
-            transparent 89%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* Grupo 5: Tinción al 90% */
-.poem-layout .heartbeat-blood .blood-aguardar-a1,
-.poem-layout .heartbeat-blood .blood-aguardar-g,
-.poem-layout .heartbeat-blood .blood-aguardar-u,
-.poem-layout .heartbeat-blood .blood-aguardar-a2,
-.poem-layout .heartbeat-blood .blood-aguardar-r1,
-.poem-layout .heartbeat-blood .blood-aguardar-d,
-.poem-layout .heartbeat-blood .blood-otro-r {
-    background-image: 
-        linear-gradient(90deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 82%, 
-            var(--blood-dark) 90%, 
-            transparent 94%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
+/* --- Grupos de Tinción --- */
 
 /* Letra C: Tinción al 50% con un ángulo diagonal de 45° */
-.poem-layout .heartbeat-blood .blood-C {
+.poem-layout .blood-C {
     background-image: 
         linear-gradient(45deg, 
             var(--blood-core) 0%, 
@@ -373,15 +305,184 @@ body.virtual-fullscreen #app-container {
         linear-gradient(var(--text-white), var(--text-white));
 }
 
-/* Grupo 6: Tinción al 40% desde abajo (r final y punto) */
-.poem-layout .heartbeat-blood .blood-amar-r,
-.poem-layout .heartbeat-blood .blood-dot {
+/* Título O: Tinción al 35% desde la esquina inferior derecha */
+.poem-layout .blood-title-O {
+    background-image: 
+        linear-gradient(to top left, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 27%, 
+            var(--blood-dark) 35%, 
+            transparent 39%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Autor J: Tinción al 5% desde la esquina inferior izquierda */
+.poem-layout .blood-author-J {
+    background-image: 
+        linear-gradient(to top right, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 2%, 
+            var(--blood-dark) 5%, 
+            transparent 7%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 10% (borde izquierdo) */
+.poem-layout .blood-o1,
+.poem-layout .blood-amor-a,
+.poem-layout .blood-aguardar-r2 {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 4%, 
+            var(--blood-dark) 8%, 
+            transparent 12%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 50% (mitad izquierda) */
+.poem-layout .blood-amor-m,
+.poem-layout .blood-amor-o,
+.poem-layout .blood-aguardar-a3,
+.poem-layout .blood-otro-o {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 42%, 
+            var(--blood-dark) 50%, 
+            transparent 54%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 70% (amar-a2) */
+.poem-layout .blood-amar-a2 {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 62%, 
+            var(--blood-dark) 70%, 
+            transparent 74%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 85% (queda-q, queda-e) */
+.poem-layout .blood-queda-q,
+.poem-layout .blood-queda-e {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 77%, 
+            var(--blood-dark) 85%, 
+            transparent 89%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 90% desde la izquierda (aguardar, otro) */
+.poem-layout .blood-aguardar-a1,
+.poem-layout .blood-aguardar-g,
+.poem-layout .blood-aguardar-u,
+.poem-layout .blood-aguardar-a2,
+.poem-layout .blood-aguardar-r1,
+.poem-layout .blood-aguardar-d,
+.poem-layout .blood-otro-r {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 82%, 
+            var(--blood-dark) 90%, 
+            transparent 94%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 40% vertical desde abajo */
+.poem-layout .blood-amar-r,
+.poem-layout .blood-dot,
+.poem-layout .blood-bottom-40 {
     background-image: 
         linear-gradient(to top, 
             var(--blood-core) 0%, 
             var(--blood-core) 32%, 
             var(--blood-dark) 40%, 
             transparent 44%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tinción al 90% vertical desde abajo (Inevitable y Ojalá) */
+.poem-layout .blood-bottom-90 {
+    background-image: 
+        linear-gradient(to top, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 82%, 
+            var(--blood-dark) 90%, 
+            transparent 94%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* Tilde á de Ojalá: Tinción al 30% desde arriba */
+.poem-layout .blood-accent-30 {
+    background-image: 
+        linear-gradient(to bottom, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 20%, 
+            var(--blood-dark) 30%, 
+            transparent 34%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* m de soñamos: Tinción al 80% desde abajo */
+.poem-layout .blood-m-80 {
+    background-image: 
+        linear-gradient(to top, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 72%, 
+            var(--blood-dark) 80%, 
+            transparent 84%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* o de soñamos: Tinción al 20% superior derecha */
+.poem-layout .blood-o-top-right-20 {
+    background-image: 
+        linear-gradient(to bottom left, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 12%, 
+            var(--blood-dark) 20%, 
+            transparent 24%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+}
+
+/* s de soñamos: Tinción al 25% superior (el rabito) */
+.poem-layout .blood-s-top-25 {
+    background-image: 
+        linear-gradient(to bottom, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 15%, 
+            var(--blood-dark) 25%, 
+            transparent 29%, 
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));

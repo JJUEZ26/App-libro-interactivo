@@ -5,7 +5,7 @@
     "bgMusic": "on_the_nature2.mp3",
     "effect": "twilight_sunset",
     "scenes": [
-      "<div class='poem-title-display'>Ocaso</div><div class='poem-author-display'><span class='author-signature'>Ju Ez</span></div>"
+      "<div class='poem-title-display'><span class='blood-title-O'>O</span>caso</div><div class='poem-author-display'><span class='author-signature'><span class='blood-author-J'>J</span>u Ez</span></div>"
     ],
     "choices": [
       {
@@ -21,7 +21,7 @@
     "effect": "twilight_dusk_early",
     "scenes": [
       "Ojalá no hubiéramos estado tan lastimados,\ndesearía no haber cargado con este peso acumulado.",
-      "Esta inseguridad e imposibilidad.",
+      "Esta inseguridad e imposi<span class='blood-bottom-40'>b</span><span class='blood-bottom-40'>i</span><span class='blood-bottom-40'>l</span><span class='blood-bottom-40'>i</span><span class='blood-bottom-40'>d</span><span class='blood-bottom-40'>a</span><span class='blood-bottom-40'>d</span>.",
       "Desearía haber sido más elevado\ny amarte demasiado."
     ],
     "choices": [
@@ -38,8 +38,8 @@
     "effect": "twilight_dusk, dewdrops_tears",
     "scenes": [
       "No puedo ver en ti maldad sin,\nineludiblemente, verme en ella reflejar.",
-      "Ojalá el amor hubiera bastado,\nojalá la madurez nos hubiera alcanzado y así no cometer los errores.",
-      "No rayar ni dañar este amor en el que soñamos."
+      "O<span class='blood-bottom-90'>j</span>al<span class='blood-accent-30'>á</span> el amor hubiera bastado,\nojalá la madurez nos hubiera alcanzado y así no cometer los errores.",
+      "No rayar ni dañar este amor en el que soña<span class='blood-m-80'>m</span><span class='blood-o-top-right-20'>o</span><span class='blood-s-top-25'>s</span>."
     ],
     "choices": [
       {
@@ -55,7 +55,7 @@
     "effect": "twilight_dusk_late, cracks_medium",
     "scenes": [
       "¿Es acaso que aún la iluminación no me alcanza?\n¿O es que, sencillamente, llegamos al ocaso?",
-      "Inevitable."
+      "I<span class='blood-bottom-90'>n</span>e<span class='blood-bottom-90'>v</span>i<span class='blood-bottom-90'>t</span><span class='blood-bottom-90'>a</span><span class='blood-bottom-90'>b</span>le."
     ],
     "choices": [
       {
