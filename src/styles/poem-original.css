@@ -258,18 +258,24 @@ body.virtual-fullscreen #app-container {
     font-style: italic;
     margin-top: 1.5rem;
     transform-origin: center;
-    will-change: transform, color, text-shadow;
+    will-change: transform;
     animation: 
-        heartbeatPulse 1.5s ease-in-out infinite,
+        heartbeatPulse 3.0s ease-in-out infinite !important;
+}
+
+.blood-stained {
+    display: inline-block;
+    will-change: color, text-shadow;
+    animation: 
         stainBlood 4.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
 }
 
 @keyframes heartbeatPulse {
     0% { transform: scale(1); }
-    10% { transform: scale(1.05); } /* lub (atenuado) */
-    18% { transform: scale(1.01); }
-    28% { transform: scale(1.03); } /* dub (atenuado) */
-    45% { transform: scale(1); }
+    5% { transform: scale(1.025); } /* lub (atenuado y muy lento) */
+    9% { transform: scale(1.005); }
+    14% { transform: scale(1.015); } /* dub (atenuado y muy lento) */
+    22% { transform: scale(1); }
     100% { transform: scale(1); }
 }
 

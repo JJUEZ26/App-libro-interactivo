@@ -856,48 +856,25 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
    - Se implementan reglas CSS específicas en [poem-original.css](file:///c:/App-libro-interactivo/src/styles/poem-original.css) bajo la clase `body.virtual-fullscreen` para fijar la ventana (`position: fixed`, `width: 100%`, `height: 100%`, `overflow: hidden`) y estirar el contenedor de la aplicación (`#app-container`) al viewport dinámico completo (`100dvw`, `100dvh`, `z-index: 9999`).
    - Al disparar el evento `fullscreenchange` de forma manual, la aplicación sincroniza la clase `.fullscreen-mode` en el `body`, de modo que toda la lógica de visualización Zen y ocultación de barras nativas del lector heredan automáticamente el comportamiento sin duplicación de código CSS.
 
-### Optimización del Efecto de Latido y Humedecido de Sangre en Ocaso (Mayo 2026)
-**Objetivo**: Hacer que el efecto de latido y tinción de sangre en la última línea repetida de "Ocaso" sea inmediatamente perceptible, dinámico y estéticamente superior (simulando humedad sin gotear).
-
-**Implementación**:
-1. **Sincronización Acelerada**:
-   - Reducir el inicio de la animación de tinción (`stainBlood`) a `3.5s` (0.5s después de que el verso empiece a aparecer a los 3.0s).
-   - Disminuir la duración de la tinción de `10s` a `4.5s` para que el efecto se complete totalmente a los `8s` desde el inicio de la página, encajando con el ritmo natural de lectura.
-2. **Latido Orgánico (Lub-Dub)**:
-   - Modificar `@keyframes heartbeatPulse` para simular un latido real de 75-80 lpm: una contracción principal fuerte (escala `1.12`), una contracción secundaria rápida (escala `1.08`), seguidas de una fase de reposo diastólico (escala `1`), con un periodo completo de `1.5s` infinito.
-3. **Efecto Húmedo de Sangre**:
-   - Enriquecer la tinción con una transición de color hacia un rojo sangre profundo y orgánico (`oklch(0.45 0.25 24)`).
-   - Añadir múltiples sombras de texto (`text-shadow`) para simular humedad y volumen: un halo interno de brillo húmedo (`rgba(255, 255, 255, 0.4)`) que representa el reflejo de la luz sobre el líquido, y un halo exterior rojo profundo translúcido.
-4. **Eliminación de Retardos Dobles**:
-   - Quitar la animación `fadeRepeat` redundante que mantenía el texto invisible de manera artificial en la clase `.heartbeat-blood`. El elemento ahora hereda y se muestra de forma coordinada con el desvanecimiento de su contenedor principal.
-
 ### Reestructuración del Catálogo y Hero Principal (Mayo 2026)
 **Objetivo**: Mejorar el descubrimiento de contenido promoviendo la nueva obra poética e implementando una categorización más natural.
 
 **Implementación**:
 1. **Destacado Principal (Hero)**: Se reemplazó "La Puerta" por el poema "Vaivén" (`original-vaiven`) como la obra destacada en la cabecera (Hero) de la biblioteca.
 2. **Reubicación de La Puerta**: "La Puerta" se retiró del Hero y ahora reside de manera exclusiva en su sección correspondiente de obras de autor.
-3. **Renombramiento de Sección**: La sección "Creación Propia" fue renombrada a un título más elegante: **"Escritos Originales"** (manteniendo su ID técnico intacto para no romper el CSS en cascada de `library.css`).
-4. **Nuevo Orden de Secciones**:
-   1. Poesía
-   2. Conceptos Filosóficos
-   3. Con la Voz del Autor
-   4. Escritos Originales
-   5. Novelas con bifurcaciones
-   6. Libros
-   7. Próximamente
+3. **Renombramiento de Sección**: La sección "Creación Propia" fue renombrada a "Escritos Originales".
+4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
-### Corrección y Refinamiento del Efecto de Sangre y Sincronización (Mayo 2026)
-**Objetivo**: Resolver el bloqueo de la animación en localhost, atenuar el pulso de latido y oscurecer el tono de sangre para simular una mancha de tinta húmeda y sutil (sin inundar la legibilidad ni brillar como neón).
+### Corrección de Versos, Latido Lento y Sangre Localizada en Ocaso (Mayo 2026)
+**Objetivo**: Corregir la confusión de los versos de la página 4 de "Ocaso" (reemplazando el silencio y las olas por "Inevitable. y nada mas."), enlentecer el latido a un ritmo pausado y sutil, y teñir de rojo sangre únicamente palabras clave en lugar de la frase completa para lograr una apariencia de mancha de sangre orgánica.
 
 **Implementación**:
-1. **Atenuación de Latido (Pulsación Sutil)**:
-   - Modificar `@keyframes heartbeatPulse` reduciendo la escala del primer pulso a `1.05` (antes `1.12`) y el segundo a `1.03` (antes `1.08`) para un latido mucho más tenue, lento y orgánico.
-2. **Efecto de Mancha de Sangre Oscura**:
-   - Ajustar `@keyframes stainBlood` para transicionar el texto hacia un rojo carmesí oscuro y coagulado (`rgba(115, 18, 18, 0.95)`).
-   - Reducir el difuminado del sombreado de texto (`text-shadow` de `14px` a `5px` de radio) para eliminar el efecto de resplandor neón/linterna, logrando que la sangre parezca humedecer e impregnar los bordes de la letra sutilmente.
-3. **Solución del Conflicto de Especificidad**:
-   - Modificar `public/stories/ocaso.json` para eliminar la clase redundante `verse-line` de la etiqueta interna `<span class='heartbeat-blood'>`.
-   - Modificar `src/styles/poem-original.css` elevando la prioridad del selector a `.poem-layout .heartbeat-blood` y añadiendo `!important` a la propiedad `animation`.
+1. **Contenido Corregido (Páginas 4 y 5)**:
+   - Modificar `public/stories/ocaso.json` en la página 4 para cambiar `"solo el silencio."` y `"y las Olas."` por `"Inevitable."` y `"y nada mas."`.
+   - En la página 5, envolver únicamente las palabras `"amor"`, `"vuelva"` y `"amar"` en etiquetas con la clase `.blood-stained` dentro del contenedor principal `.heartbeat-blood`.
+2. **Latido Extremadamente Lento y Suave (3.0s)**:
+   - Modificar `@keyframes heartbeatPulse` en `poem-original.css` para ralentizar el ciclo a `3.0s` y atenuar la fuerza del pulso a `1.025` de escala.
+3. **Efecto de Mancha de Sangre Localizada**:
+   - La clase `.heartbeat-blood` maneja el latido lento en la frase completa, y la nueva clase `.blood-stained` tiñe progresivamente solo las palabras clave de un rojo carmesí oscuro (`rgba(115, 18, 18, 0.95)`) con un sombreado húmedo y nítido de `5px` de difuminado.
 4. **Sincronización en Producción**:
-   - Confirmar y subir los cambios a GitHub para que Vercel actualice el Service Worker de la PWA con la visualización óptima y fluida.
+   - Confirmar y subir los cambios a GitHub para reconstruir la PWA en Vercel con los nuevos versos y el efecto localizado.
