@@ -572,3 +572,56 @@ body.virtual-fullscreen #app-container {
         background-size: 100% 100%, 100% 100%;
     }
 }
+
+/* Tinción horizontal: crece de izquierda a derecha (width) */
+@keyframes stainHorizontal {
+    0% {
+        background-size: 0% 100%, 100% 100%;
+    }
+    100% {
+        background-size: 100% 100%, 100% 100%;
+    }
+}
+
+/* Tinción vertical ascendente: crece de abajo hacia arriba (height) */
+@keyframes stainVerticalUp {
+    0% {
+        background-size: 100% 0%, 100% 100%;
+    }
+    100% {
+        background-size: 100% 100%, 100% 100%;
+    }
+}
+
+/* Tinción vertical descendente: gotea de arriba hacia abajo (height) */
+@keyframes stainVerticalDown {
+    0% {
+        background-size: 100% 0%, 100% 100%;
+    }
+    100% {
+        background-size: 100% 100%, 100% 100%;
+    }
+}
+
+/* Tinción diagonal: crece desde la esquina en ambas dimensiones */
+@keyframes stainDiagonal {
+    0% {
+        background-size: 0% 0%, 100% 100%;
+    }
+    100% {
+        background-size: 100% 100%, 100% 100%;
+    }
+}
+
+/* Tinción partida (split): dos capas crecen desde extremos opuestos hacia el centro */
+@keyframes stainSplit {
+    0% {
+        background-size: 100% 0%, 100% 0%, 100% 100%;
+    }
+    50% {
+        background-size: 100% 50%, 100% 30%, 100% 100%;
+    }
+    100% {
+        background-size: 100% 100%, 100% 100%, 100% 100%;
+    }
+}
