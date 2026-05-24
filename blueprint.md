@@ -865,16 +865,18 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 3. **Renombramiento de Sección**: La sección "Creación Propia" fue renombrada a "Escritos Originales".
 4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
-### Corrección de Versos, Latido Lento y Sangre Localizada en Ocaso (Mayo 2026)
-**Objetivo**: Corregir la confusión de los versos de la página 4 de "Ocaso" (reemplazando el silencio y las olas por "Inevitable. y nada mas."), enlentecer el latido a un ritmo pausado y sutil, y teñir de rojo sangre únicamente palabras clave en lugar de la frase completa para lograr una apariencia de mancha de sangre orgánica.
+### Corrección de Versos, Latido Lento y Salpicadura de Sangre en Ocaso (Mayo 2026)
+**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 4.5s extremadamente lento, y simular una salpicadura de sangre que manche partes de las letras sobre el texto blanco mediante máscara de recorte.
 
 **Implementación**:
 1. **Contenido Corregido (Páginas 4 y 5)**:
-   - Modificar `public/stories/ocaso.json` en la página 4 para cambiar `"solo el silencio."` y `"y las Olas."` por `"Inevitable."` y `"y nada mas."`.
-   - En la página 5, envolver únicamente las palabras `"amor"`, `"vuelva"` y `"amar"` en etiquetas con la clase `.blood-stained` dentro del contenedor principal `.heartbeat-blood`.
-2. **Latido Extremadamente Lento y Suave (3.0s)**:
-   - Modificar `@keyframes heartbeatPulse` en `poem-original.css` para ralentizar el ciclo a `3.0s` y atenuar la fuerza del pulso a `1.025` de escala.
-3. **Efecto de Mancha de Sangre Localizada**:
-   - La clase `.heartbeat-blood` maneja el latido lento en la frase completa, y la nueva clase `.blood-stained` tiñe progresivamente solo las palabras clave de un rojo carmesí oscuro (`rgba(115, 18, 18, 0.95)`) con un sombreado húmedo y nítido de `5px` de difuminado.
+   - Modificar `public/stories/ocaso.json` en la página 4 para que termine solemnemente en `"Inevitable."` (eliminando `"y nada mas."`).
+   - En la página 5, eliminar las etiquetas internas de clase `.blood-stained` para dejar la línea de texto limpia, ya que el efecto se procesará a nivel de bloque en toda la línea.
+2. **Latido Lento e Imperceptible (4.5s)**:
+   - Ralentizar el ciclo de `@keyframes heartbeatPulse` en `poem-original.css` a `4.5s` (latido diastólico ultra lento) y atenuar la escala máxima a `1.015` (lub) y `1.008` (dub).
+3. **Efecto de Salpicadura de Sangre (Masking)**:
+   - Modificar `.heartbeat-blood` agregando `-webkit-background-clip: text` y `-webkit-text-fill-color: transparent` para usar el texto como máscara.
+   - Definir un fondo compuesto por dos gradientes radiales de color carmesí oscuro (`rgba(115, 18, 18, 0.95)`) en ubicaciones específicas (28% y 75% de ancho) sobre un degradado lineal blanco de fondo.
+   - Animar el `background-size` de las salpicaduras de `0% 0%` a `100% 100%` a partir del segundo 3.5 para simular que las manchas crecen y tiñen porciones específicas de las letras.
 4. **Sincronización en Producción**:
-   - Confirmar y subir los cambios a GitHub para reconstruir la PWA en Vercel con los nuevos versos y el efecto localizado.
+   - Confirmar y subir los cambios a GitHub para reconstruir la PWA en Vercel con la experiencia final de Ocaso.

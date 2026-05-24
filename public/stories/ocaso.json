@@ -55,8 +55,7 @@
     "effect": "twilight_dusk_late, cracks_medium",
     "scenes": [
       "¿Es acaso que aún la iluminación no me alcanza?\n¿O es que, sencillamente, llegamos al ocaso?",
-      "Inevitable.",
-      "y nada mas."
+      "Inevitable."
     ],
     "choices": [
       {
@@ -76,7 +75,7 @@
       "Ni lo estarás.",
       "En los brazos de alguien más te arrullarás.",
       "Como acto de amor, solo queda aguardar que el otro vuelva a amar.",
-      "<span class='heartbeat-blood'>Como acto de <span class='blood-stained'>amor</span>, solo queda aguardar que el otro <span class='blood-stained'>vuelva</span> a <span class='blood-stained'>amar</span>.</span>"
+      "<span class='heartbeat-blood'>Como acto de amor, solo queda aguardar que el otro vuelva a amar.</span>"
     ],
     "choices": [
       {

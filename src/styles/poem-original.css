@@ -258,47 +258,41 @@ body.virtual-fullscreen #app-container {
     font-style: italic;
     margin-top: 1.5rem;
     transform-origin: center;
-    will-change: transform;
-    animation: 
-        heartbeatPulse 3.0s ease-in-out infinite !important;
-}
+    will-change: transform, background-size;
+    
+    /* Máscara de texto */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Fallback */
 
-.blood-stained {
-    display: inline-block;
-    will-change: color, text-shadow;
+    /* Fondo de sangre salpicada */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: 
+        radial-gradient(circle 120px at 28% 0%, rgba(115, 18, 18, 0.95) 0%, rgba(115, 18, 18, 0.9) 30%, transparent 70%),
+        radial-gradient(circle 90px at 75% 100%, rgba(110, 16, 16, 0.95) 0%, rgba(110, 16, 16, 0.9) 30%, transparent 70%),
+        linear-gradient(rgba(230, 225, 240, 0.9), rgba(230, 225, 240, 0.9));
+
     animation: 
+        heartbeatPulse 4.5s ease-in-out infinite !important,
         stainBlood 4.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
 }
 
 @keyframes heartbeatPulse {
     0% { transform: scale(1); }
-    5% { transform: scale(1.025); } /* lub (atenuado y muy lento) */
-    9% { transform: scale(1.005); }
-    14% { transform: scale(1.015); } /* dub (atenuado y muy lento) */
-    22% { transform: scale(1); }
+    4% { transform: scale(1.015); } /* lub (muy sutil y lento) */
+    8% { transform: scale(1.003); }
+    12% { transform: scale(1.008); } /* dub (muy sutil y lento) */
+    18% { transform: scale(1); }
     100% { transform: scale(1); }
 }
 
 @keyframes stainBlood {
     0% {
-        text-shadow: none;
-    }
-    20% {
-        color: rgba(150, 40, 40, 0.6);
-        text-shadow: 
-            0 0 2px rgba(120, 20, 20, 0.4);
-    }
-    60% {
-        color: rgba(130, 20, 20, 0.85);
-        text-shadow: 
-            0 0 4px rgba(100, 15, 15, 0.6),
-            0 0 2px rgba(100, 15, 15, 0.7),
-            0 0 1px rgba(255, 255, 255, 0.25);
+        background-size: 0% 0%, 0% 0%, 100% 100%;
     }
     100% {
-        color: rgba(115, 18, 18, 0.95); /* Rojo carmesí coagulado y oscuro (mancha) */
-        text-shadow: 
-            0 0 5px rgba(90, 8, 8, 0.75),
-            0 0 1px rgba(255, 255, 255, 0.25); /* Reflejo húmedo sutil */
+        background-size: 100% 100%, 100% 100%, 100% 100%;
     }
 }
