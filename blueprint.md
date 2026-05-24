@@ -866,31 +866,27 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
 ### Corrección de Versos, Latido Lento y Salpicadura de Sangre de Alta Precisión por Letra en Ocaso (Mayo 2026)
-**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica de letras específicas (los extremos "C" y "o" de "Como", y "a", "r" y "." de "amar.") que mantenga su proporción perfecta sin importar el tamaño o zoom de la pantalla.
+**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica que manche de forma desigual múltiples palabras del verso final sin perder legibilidad ni deformarse por reescalados.
 
 **Implementación**:
-1. **Tinción Precisa por Letras (Página 5)**:
-   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas en etiquetas `span` con clases CSS dedicadas:
-     * La **C** de "Como" (`.blood-C`).
-     * La primera **o** de "Como" (`.blood-o1`).
-     * La segunda **a** de "amar" (`.blood-a2`).
-     * La **r** de "amar" (`.blood-r`).
-     * El punto final **.** (`.blood-dot`).
+1. **Tinción Precisa por Letras en todo el Verso (Página 5)**:
+   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas de las palabras afectadas en etiquetas `span` con clases CSS dedicadas:
+     * **Como**: `C` (`.blood-C` a 45° diagonal, 50% tinción) y primera `o` (`.blood-o1` a 90°, 10% tinción).
+     * **amor**: `a` (`.blood-amor-a` a 90°, 10% tinción), `m` (`.blood-amor-m` a 90°, 50% tinción) y `o` (`.blood-amor-o` a 90°, 50% tinción).
+     * **queda**: `q` (`.blood-queda-q` a 90°, 85% tinción) y `e` (`.blood-queda-e` a 90°, 85% tinción).
+     * **aguardar**: Fading continuo que simula un salpicado de izquierda a derecha en las letras `a1`, `g`, `u`, `a2`, `r1`, `d` (todas con 90% de tinción, clase `.blood-aguardar-x`), `a3` (50% tinción) y `r2` (10% tinción).
+     * **otro**: `r` (`.blood-otro-r` a 90°, 90% tinción) y la última `o` (`.blood-otro-o` a 90°, 50% tinción).
+     * **amar.**: segunda `a` (`.blood-amar-a2` a 90°, 70% tinción), la `r` final y el punto `.` (ambos con tinción vertical del 40% desde abajo, clases `.blood-amar-r` y `.blood-dot` usando `linear-gradient(to top...)`).
 2. **Latido Ultra Lento e Imperceptible (5.5s)**:
-   - Enlentecer la animación a un ciclo de `5.5s` en `@keyframes heartbeatPulse` con una escala máxima de tan solo `1.012` / `1.002` para lograr un pulso extremadamente pausado y natural.
-3. **Efecto de Sangre en OKLCH con Doble Capa por Letra**:
-   - Definir variables de color usando `oklch`:
-     * `--blood-core: oklch(32% 0.24 25)` (rojo sangre profundo y denso)
-     * `--blood-dark: oklch(20% 0.18 20)` (borde coagulado oscuro)
+   - Mantener el ciclo de `5.5s` en `@keyframes heartbeatPulse` con escala mínima de `1.012` / `1.002` para un pulso existencial sumamente lento.
+3. **Efecto de Sangre en OKLCH Espesa y Densa**:
+   - Definir variables de color de alta saturación en OKLCH para un fluido más realista y espeso:
+     * `--blood-core: oklch(28% 0.26 24)` (rojo sangre profundo y denso)
+     * `--blood-dark: oklch(16% 0.20 18)` (bordes oscuros y coagulados)
      * `--text-white: #e6e5ec` (blanco hueso base de texto sin manchar)
-   - Aplicar degradados lineales específicos con `-webkit-background-clip: text` y una base de texto blanca sólida que asegura visibilidad antes y durante la animación:
-     * **`blood-C`**: Manchada al 50% en un ángulo de 45 grados para un patrón irregular orgánico.
-     * **`blood-o1`**: Manchada exactamente al 10% desde el extremo izquierdo.
-     * **`blood-a2`**: Manchada al 90% de su ancho.
-     * **`blood-r`**: Manchada exactamente al 10% en su extremo izquierdo.
-     * **`blood-dot`**: Manchado al 40% (intermedio entre manchado y limpio) con un ángulo de 135 grados.
-   - Animar el `background-size` de la capa de sangre de `0% 100%` a `100% 100%` a partir del segundo 3.5 para un crecimiento orgánico de la mancha.
+   - Aplicar la animación de crecimiento `stainLetterBlood` de `0% 100%` a `100% 100%` a partir del segundo 3.5.
 4. **Invalidación de Caché en Producción**:
-   - Incrementar `CACHE_NAME` a `lecturas-interactivas-cache-v14` en [service-worker.js](file:///c:/App-libro-interactivo/public/service-worker.js) para forzar a los clientes PWA a descargar la nueva versión de estilos.
-   - Incrementar el query param de estilos a `index.css?v=102` en [index.html](file:///c:/App-libro-interactivo/index.html) para asegurar la carga inmediata en browsers normales.
+   - Incrementar `CACHE_NAME` a `lecturas-interactivas-cache-v15` en [service-worker.js](file:///c:/App-libro-interactivo/public/service-worker.js) para invalidar los estilos locales antiguos.
+   - Incrementar el query param de estilos a `index.css?v=103` en [index.html](file:///c:/App-libro-interactivo/index.html).
+
 
