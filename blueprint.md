@@ -869,8 +869,9 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 **Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica que manche de forma desigual múltiples palabras del verso final sin perder legibilidad ni deformarse por reescalados.
 
 **Implementación**:
-1. **Tinción Precisa por Letras en todo el Verso (Página 5)**:
-   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas de las palabras afectadas en etiquetas `span` con clases CSS dedicadas:
+1. **Tinción Precisa por Letras en todo el Verso (Página 5) y Corrección de Verso (Página 2)**:
+   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas de las palabras afectadas en etiquetas `span` con clases CSS dedicadas (ver detalle abajo).
+   - Modificar el verso en la página 2 de [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) de `"Esta inseguridad y esta maldad."` a `"Esta inseguridad e imposibilidad."`.
      * **Como**: `C` (`.blood-C` a 45° diagonal, 50% tinción) y primera `o` (`.blood-o1` a 90°, 10% tinción).
      * **amor**: `a` (`.blood-amor-a` a 90°, 10% tinción), `m` (`.blood-amor-m` a 90°, 50% tinción) y `o` (`.blood-amor-o` a 90°, 50% tinción).
      * **queda**: `q` (`.blood-queda-q` a 90°, 85% tinción) y `e` (`.blood-queda-e` a 90°, 85% tinción).
