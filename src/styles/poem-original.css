@@ -282,7 +282,7 @@ body.virtual-fullscreen #app-container {
     --text-white: #e6e5ec;
     
     /* Animación unificada: goteo suave, fluido y orgánico */
-    animation-duration: 5.5s !important;
+    animation-duration: 8.5s !important;
     animation-delay: 3s !important;
     animation-timing-function: cubic-bezier(0.12, 0.58, 0.24, 1) !important;
     animation-fill-mode: forwards !important;
