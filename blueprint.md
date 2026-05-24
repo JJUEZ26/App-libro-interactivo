@@ -821,3 +821,81 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 3. **Configuración Integrada**: Tema, tamaño de texto, volumen y pantalla completa viven dentro del panel de lectura del drawer y se conectan con las funciones reales del estado global.
 4. **Galería Prioritaria**: Las huellas aparecen como primera superficie del resumen y se pueden abrir desde la galería completa con vista previa.
 5. **Pulido Responsive**: Ajustes específicos para móvil, cache-busting de CSS y verificación en navegador para evitar overflow horizontal o pestañas apretadas.
+
+### Integración y Estilización de Creaciones Propias (Mayo 2026)
+**Objetivo**: Consolidar y elevar las 4 obras originales del autor ("La Puerta", "La levedad del deseo", "Vaivén" y "Ocaso") mediante una identidad de autor unificada, tarjetas de biblioteca personalizadas y una cartilla biográfica inmersiva.
+
+**Detalles de la Implementación**:
+1. **Identidad del Autor ("Ju Ez")**:
+   - Firma tipográfica moderna, sobria y existencial (sans-serif uppercase con espaciado amplio y estilo itálico/inclinado "en K").
+   - Reemplazo de marcas impersonales por la rúbrica estilizada `<span class="author-signature">Ju Ez</span>` en portadas y el lector. Respaldada en los estilos modulares.
+2. **Biografía Inmersiva (Espejo "Yo")**:
+   - En lugar de retratos fotográficos, las biografías de las obras de Ju Ez muestran una superficie circular reflectante de cristal/plata (efecto *glassmorphism* con desenfoque de 16px y bordes luminosos).
+   - En el centro flota la palabra **"Yo"** en tipografía Serif de color **blanco hueso profundo** (`#f5f2eb`), con un halo de brillo que simula un espejo introspectivo.
+   - El badge biográfico inferior luce la firma cursiva `"Ju Ez"`.
+3. **Diferenciación Estética en Biblioteca**:
+   - **Efecto Glow Premium**: Las tarjetas de obras propias (`.book-card--original`) irradian un halo de luz reactivo en hover (al estilo de "La Puerta").
+   - **Separación de Género**: 
+     - **Poemas** (Vaivén, Ocaso): Lucen un badge de cristal violeta/rosa (`Poema`) con un destello a juego.
+     - **Escritos/Relatos** (La Puerta, La levedad del deseo): Lucen un badge de cristal cyan/azul (`Relato`) con un destello tecnológico a juego.
+4. **Vínculos de Estilos**:
+   - Todos los estilos viven de forma modular y limpia en [poem-original.css](file:///c:/App-libro-interactivo/src/styles/poem-original.css), cargados bajo el `@layer poems` de [index.css](file:///c:/App-libro-interactivo/src/styles/index.css).
+
+### Lógica de Cabecera y Pantalla Completa Virtual Móvil (Mayo 2026)
+**Objetivo**: Mejorar la experiencia inmersiva del lector ocultando el botón del avatar de usuario cuando se lee y mostrando en su lugar el botón de pantalla completa, e implementar un sistema de pantalla completa virtual móvil robusto para dispositivos sin soporte de Fullscreen API (como iOS Safari en iPhone) de forma paralela.
+
+**Detalles de la Implementación**:
+1. **Alternancia de Cabecera**:
+   - Al entrar al lector (`switchToReaderView`), el botón de avatar de usuario (`#header-avatar-slot`) se oculta y se muestra el botón de pantalla completa (`#fullscreen-btn`).
+   - Al volver a la biblioteca (`switchToLibraryView`), el avatar de usuario se vuelve a mostrar y se oculta el botón de pantalla completa.
+   - En la pantalla de autenticación, ambos elementos se ocultan de forma automática.
+2. **Pantalla Completa Híbrida (Nativa/Virtual)**:
+   - Se reescribe la lógica de `toggleFullscreen` en [index.js](file:///c:/App-libro-interactivo/src/ui/index.js) para detectar la falta de soporte de la API nativa de pantalla completa y dispositivos iOS.
+   - Si no hay soporte nativo, se activa la **Pantalla Completa Virtual** agregando la clase `.virtual-fullscreen` al `body` y disparando manualmente el evento `fullscreenchange` sobre el `document`.
+3. **Estilización de Pantalla Completa Virtual**:
+   - Se implementan reglas CSS específicas en [poem-original.css](file:///c:/App-libro-interactivo/src/styles/poem-original.css) bajo la clase `body.virtual-fullscreen` para fijar la ventana (`position: fixed`, `width: 100%`, `height: 100%`, `overflow: hidden`) y estirar el contenedor de la aplicación (`#app-container`) al viewport dinámico completo (`100dvw`, `100dvh`, `z-index: 9999`).
+   - Al disparar el evento `fullscreenchange` de forma manual, la aplicación sincroniza la clase `.fullscreen-mode` en el `body`, de modo que toda la lógica de visualización Zen y ocultación de barras nativas del lector heredan automáticamente el comportamiento sin duplicación de código CSS.
+
+### Optimización del Efecto de Latido y Humedecido de Sangre en Ocaso (Mayo 2026)
+**Objetivo**: Hacer que el efecto de latido y tinción de sangre en la última línea repetida de "Ocaso" sea inmediatamente perceptible, dinámico y estéticamente superior (simulando humedad sin gotear).
+
+**Implementación**:
+1. **Sincronización Acelerada**:
+   - Reducir el inicio de la animación de tinción (`stainBlood`) a `3.5s` (0.5s después de que el verso empiece a aparecer a los 3.0s).
+   - Disminuir la duración de la tinción de `10s` a `4.5s` para que el efecto se complete totalmente a los `8s` desde el inicio de la página, encajando con el ritmo natural de lectura.
+2. **Latido Orgánico (Lub-Dub)**:
+   - Modificar `@keyframes heartbeatPulse` para simular un latido real de 75-80 lpm: una contracción principal fuerte (escala `1.12`), una contracción secundaria rápida (escala `1.08`), seguidas de una fase de reposo diastólico (escala `1`), con un periodo completo de `1.5s` infinito.
+3. **Efecto Húmedo de Sangre**:
+   - Enriquecer la tinción con una transición de color hacia un rojo sangre profundo y orgánico (`oklch(0.45 0.25 24)`).
+   - Añadir múltiples sombras de texto (`text-shadow`) para simular humedad y volumen: un halo interno de brillo húmedo (`rgba(255, 255, 255, 0.4)`) que representa el reflejo de la luz sobre el líquido, y un halo exterior rojo profundo translúcido.
+4. **Eliminación de Retardos Dobles**:
+   - Quitar la animación `fadeRepeat` redundante que mantenía el texto invisible de manera artificial en la clase `.heartbeat-blood`. El elemento ahora hereda y se muestra de forma coordinada con el desvanecimiento de su contenedor principal.
+
+### Reestructuración del Catálogo y Hero Principal (Mayo 2026)
+**Objetivo**: Mejorar el descubrimiento de contenido promoviendo la nueva obra poética e implementando una categorización más natural.
+
+**Implementación**:
+1. **Destacado Principal (Hero)**: Se reemplazó "La Puerta" por el poema "Vaivén" (`original-vaiven`) como la obra destacada en la cabecera (Hero) de la biblioteca.
+2. **Reubicación de La Puerta**: "La Puerta" se retiró del Hero y ahora reside de manera exclusiva en su sección correspondiente de obras de autor.
+3. **Renombramiento de Sección**: La sección "Creación Propia" fue renombrada a un título más elegante: **"Escritos Originales"** (manteniendo su ID técnico intacto para no romper el CSS en cascada de `library.css`).
+4. **Nuevo Orden de Secciones**:
+   1. Poesía
+   2. Conceptos Filosóficos
+   3. Con la Voz del Autor
+   4. Escritos Originales
+   5. Novelas con bifurcaciones
+   6. Libros
+   7. Próximamente
+
+### Corrección del Efecto de Sangre y Sincronización Local vs Producción (Mayo 2026)
+**Objetivo**: Corregir el bug que bloquea la animación del efecto de sangre en localhost y alinear la experiencia visual y fluidez de Vercel con la de localhost.
+
+**Implementación**:
+1. **Solución del Conflicto de Especificidad**:
+   - Modificar `public/stories/ocaso.json` para eliminar la clase redundante `verse-line` de la etiqueta interna `<span class='heartbeat-blood'>`.
+   - Modificar `src/styles/poem-original.css` elevando la prioridad del selector a `.poem-layout .heartbeat-blood` y añadiendo `!important` a la propiedad `animation`.
+2. **Corrección de Keyframes**:
+   - Quitar la propiedad `color: inherit` al `0%` de `@keyframes stainBlood` en `poem-original.css` para evitar fallos de renderizado en navegadores móviles o de escritorio que impidan la animación fluida hacia el rojo sangre húmedo.
+3. **Explicación y Sincronización de Entornos (Vercel vs Localhost)**:
+   - Explicar al usuario que la diferencia de tamaño de pantalla (zoom) y fluidez se debe a que Vercel está sirviendo código compilado antiguo almacenado en el caché local del navegador mediante el Service Worker de la PWA.
+   - Una vez aplicadas las correcciones en el código local, subiremos todos los cambios pendientes a GitHub para que Vercel reconstruya el proyecto con las últimas optimizaciones y el navegador las actualice.

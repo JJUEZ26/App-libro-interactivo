@@ -30,21 +30,44 @@ function isIOS() {
 
 export function toggleFullscreen() {
     const doc = document;
-    if (isIOS()) {
-        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-        if (!isStandalone) {
-            alert("Para ver en pantalla completa real en iOS:\n\n1. Pulsa el botón 'Compartir' (cuadrado con flecha).\n2. Busca y selecciona 'Agregar a inicio'.\n\nÁbrela desde tu inicio y listo.");
-            return;
-        }
+    const isVirtual = document.body.classList.contains('virtual-fullscreen');
+
+    if (isVirtual) {
+        document.body.classList.remove('virtual-fullscreen');
+        document.dispatchEvent(new Event('fullscreenchange'));
         return;
     }
 
-    if (!doc.fullscreenElement) {
-        doc.documentElement.requestFullscreen().catch((err) => {
-            console.warn('Fullscreen API falló, activando modo CSS fallback:', err);
-            document.body.classList.toggle('fullscreen-mode');
-        });
+    const hasNativeFs = !!(doc.documentElement.requestFullscreen || 
+                           doc.documentElement.webkitRequestFullscreen || 
+                           doc.documentElement.msRequestFullscreen);
+    const useVirtual = isIOS() || !hasNativeFs;
+
+    if (useVirtual) {
+        document.body.classList.add('virtual-fullscreen');
+        document.dispatchEvent(new Event('fullscreenchange'));
+        return;
+    }
+
+    const activeNativeFs = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
+    if (!activeNativeFs) {
+        const requestFs = doc.documentElement.requestFullscreen || 
+                          doc.documentElement.webkitRequestFullscreen || 
+                          doc.documentElement.msRequestFullscreen;
+        if (requestFs) {
+            requestFs.call(doc.documentElement).catch((err) => {
+                console.warn('Native Fullscreen API failed, falling back to Virtual Fullscreen:', err);
+                document.body.classList.add('virtual-fullscreen');
+                document.dispatchEvent(new Event('fullscreenchange'));
+            });
+        } else {
+            document.body.classList.add('virtual-fullscreen');
+            document.dispatchEvent(new Event('fullscreenchange'));
+        }
     } else {
-        doc.exitFullscreen();
+        const exitFs = doc.exitFullscreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+        if (exitFs) {
+            exitFs.call(doc);
+        }
     }
 }

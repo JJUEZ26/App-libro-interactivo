@@ -1,6 +1,19 @@
 {
-  "featuredBookId": "la-puerta",
+  "featuredBookId": "original-vaiven",
   "sections": [
+    {
+      "id": "poemas",
+      "title": "Poesía",
+      "bookIds": [
+        "original-vaiven",
+        "original-ocaso",
+        "pajaro-azul",
+        "no-volvere-joven",
+        "gata-cattana-aman-pobres",
+        "el-cordon-del-zapato",
+        "becquer-golondrinas"
+      ]
+    },
     {
       "id": "filosofia",
       "title": "Conceptos Filosóficos",
@@ -20,20 +33,11 @@
       ]
     },
     {
-      "id": "poemas",
-      "title": "Poesía",
-      "bookIds": [
-        "pajaro-azul",
-        "no-volvere-joven",
-        "gata-cattana-aman-pobres",
-        "el-cordon-del-zapato",
-        "becquer-golondrinas"
-      ]
-    },
-    {
       "id": "creacion-propia",
-      "title": "Creación Propia",
+      "title": "Escritos Originales",
       "bookIds": [
+        "original-vaiven",
+        "original-ocaso",
         "la-puerta",
         "la-levedad-del-deseo"
       ]

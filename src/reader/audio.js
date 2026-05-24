@@ -191,10 +191,17 @@ function playPreparedAudio(pageData) {
  */
 export function toggleCurrentAudio() {
     const pageData = state.currentAudioPageData;
-    if (!pageData) return;
+
+    if (!pageData) {
+        _showDebugToast('⚠️ Sin audio en esta página');
+        return;
+    }
 
     const soundFile = getPageSoundFile(pageData);
-    if (!soundFile) return;
+    if (!soundFile) {
+        _showDebugToast('⚠️ No se encontró archivo: ' + JSON.stringify(pageData.bgMusic || pageData.sound || pageData.audio));
+        return;
+    }
 
     const ghostAudio = getGhostAudio();
 
@@ -208,6 +215,7 @@ export function toggleCurrentAudio() {
         pauseAllEffectAudio();
         updatePlayButtonState(false);
         setAudioStatus('paused', getAudioDescriptor(pageData)?.pausedMessage || '');
+        _showDebugToast('⏸ Audio pausado');
         return;
     }
 
@@ -218,6 +226,7 @@ export function toggleCurrentAudio() {
     if (state.currentAudio && state.currentAudioFile === soundFile) {
         const targetVolume = getPreparedAudioTargetVolume(pageData);
         state.currentAudio.volume = 0;
+        _showDebugToast('▶ Reanudando: ' + soundFile);
         state.currentAudio.play()
             .then(() => {
                 if (state.currentAudio?.src && !state.currentAudio.paused) {
@@ -226,7 +235,8 @@ export function toggleCurrentAudio() {
                     setAudioStatus('playing', getAudioDescriptor(pageData)?.playingMessage || '');
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                _showDebugToast('❌ Bloqueado: ' + err.message);
                 setAudioStatus('blocked', 'Toca para iniciar el sonido.');
             });
 
@@ -235,16 +245,34 @@ export function toggleCurrentAudio() {
         }
         resumeEffectAudio();
     } else {
+        _showDebugToast('▶ Iniciando: ' + soundFile + (state.currentAudio ? ' (reemplazando)' : ' (nuevo)'));
         playPageSound(pageData.id, soundFile, true);
     }
 
     resumeEffectAudio();
 }
 
+// Temporary visual debug toast — remove after fixing
+function _showDebugToast(msg) {
+    console.log('[Audio-Debug]', msg);
+    let toast = document.getElementById('__audio-debug-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = '__audio-debug-toast';
+        toast.style.cssText = 'position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(0,0,0,0.85);color:#0f0;font-size:13px;font-family:monospace;padding:8px 16px;border-radius:8px;pointer-events:none;transition:opacity 0.3s;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+}
+
 // Listen for CommandOrb audio tap events
 document.addEventListener('command-orb-audio-tap', () => toggleCurrentAudio());
 
 export function bindAudioExperience(pageId, pageData) {
+    console.log('[Audio] bindAudioExperience called. pageId:', pageId, 'bgMusic:', pageData?.bgMusic, 'sound:', pageData?.sound, 'audio:', pageData?.audio);
     state.currentAudioPageId = pageId;
     state.currentAudioPageData = pageData;
 

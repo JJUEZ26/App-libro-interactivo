@@ -399,6 +399,10 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
         const card = document.createElement('article');
         card.className = 'book-card';
         if (isUpcoming) card.classList.add('book-card--upcoming');
+        if (bookData?.author === 'Ju Ez') {
+            card.classList.add('book-card--original');
+            card.classList.add(`book-card--${bookData?.type || 'novel'}`);
+        }
 
         const coverWrapper = document.createElement('div');
         coverWrapper.className = 'book-cover-wrapper';
@@ -460,6 +464,14 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
             card.dataset.hasProgress = 'true';
         }
 
+        // Original work badge (Poema / Relato)
+        if (bookData?.author === 'Ju Ez' && hasStory) {
+            const originalBadge = document.createElement('span');
+            originalBadge.className = 'book-original-badge';
+            originalBadge.textContent = bookData.type === 'poem' ? 'Poema' : 'Relato';
+            coverWrapper.appendChild(originalBadge);
+        }
+
         const body = document.createElement('div');
         body.className = 'book-card-body';
         if (isUpcoming) body.classList.add('book-card-body--upcoming');
@@ -474,7 +486,11 @@ export function createLibrary({ libraryHero, librarySections, openBook }) {
 
         const authorEl = document.createElement('p');
         authorEl.className = 'book-author';
-        authorEl.textContent = bookData?.author || '';
+        if (bookData?.author === 'Ju Ez') {
+            authorEl.innerHTML = `<span class="author-signature">Ju Ez</span>`;
+        } else {
+            authorEl.textContent = bookData?.author || '';
+        }
 
         const btn = document.createElement('button');
         btn.className = 'book-open-btn';

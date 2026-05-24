@@ -201,7 +201,7 @@
   {
     "id": "la-levedad-del-deseo",
     "title": "La levedad del deseo",
-    "author": "Obra Original",
+    "author": "Ju Ez",
     "description": "Una novela contemporánea sobre la rutina, el deseo y la búsqueda de sentido en la cotidianidad urbana.",
     "cover": "images/levedad_deseo_portada.webp",
     "storyFile": "stories/la_levedad_del_deseo.json",
@@ -234,7 +234,7 @@
   {
     "id": "la-puerta",
     "title": "La Puerta",
-    "author": "Obra Original",
+    "author": "Ju Ez",
     "description": "Hay puertas que, una vez abiertas, no se pueden cerrar. Una confesión desgarradora sobre la amistad, la culpa y el peso irreversible de las palabras.",
     "cover": "images/puerta_portada.webp",
     "storyFile": "stories/la_puerta.json",
@@ -303,5 +303,35 @@
     "author": "Gustavo Adolfo Bécquer",
     "description": "La culminación del romanticismo lírico.",
     "type": "poem"
+  },
+  {
+    "id": "original-vaiven",
+    "title": "Vaivén",
+    "author": "Ju Ez",
+    "description": "La brisa roza el cuerpo que reposa al vaivén. Un poema inmersivo sobre el ser, la quietud y la irrupción del mundo.",
+    "cover": "images/vaivenportada.webp",
+    "storyFile": "stories/vaiven.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "existencialismo",
+      "quietud",
+      "original"
+    ]
+  },
+  {
+    "id": "original-ocaso",
+    "title": "Ocaso",
+    "author": "Ju Ez",
+    "description": "Ojalá el amor hubiera bastado... Un poema íntimo sobre las despedidas inevitables y la aceptación estoica del final.",
+    "cover": "images/ocaso_portada.webp",
+    "storyFile": "stories/ocaso.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "melancolía",
+      "desamor",
+      "original"
+    ]
   }
 ]

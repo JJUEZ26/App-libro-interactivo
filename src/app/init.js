@@ -38,6 +38,7 @@ export function initApp() {
         librarySections: getEl('library-sections'),
         authView: getEl('auth-view'),
         headerAvatarSlot: getEl('header-avatar-slot'),
+        fullscreenBtn: getEl('fullscreen-btn'),
         readerView: getEl('reader-view'),
         book: getEl('book'),
         pageWrapper: getEl('page-wrapper'),
@@ -77,6 +78,12 @@ export function initApp() {
     if (elements.backToLibraryBtn) {
         elements.backToLibraryBtn.addEventListener('click', () => {
             switchToLibraryView();
+        });
+    }
+
+    if (elements.fullscreenBtn) {
+        elements.fullscreenBtn.addEventListener('click', () => {
+            toggleFullscreen();
         });
     }
 
@@ -243,14 +250,14 @@ export function initApp() {
         elements.progressSlider.addEventListener('blur', () => setScrubbingState(false));
     }
 
-    document.addEventListener('fullscreenchange', () => {
-        if (document.fullscreenElement) {
+    const handleFullscreenChange = () => {
+        const isFs = !!document.fullscreenElement || document.body.classList.contains('virtual-fullscreen');
+        if (isFs) {
             document.body.classList.add('fullscreen-mode');
-            resetScrollPosition();
         } else {
             document.body.classList.remove('fullscreen-mode');
-            resetScrollPosition();
         }
+        resetScrollPosition();
         // Re-trigger effects for current page to ensure they display correctly
         // in the new fullscreen/normal context
         if (state.story && state.currentStoryId) {
@@ -259,7 +266,9 @@ export function initApp() {
                 handlePageEffects(currentPage.effect, { getAppMode: () => state.appMode });
             }
         }
-    });
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     const headerEl = getEl('app-header');
     let lastScrollTop = 0;
@@ -297,7 +306,9 @@ export function initApp() {
             currentTheme: state.currentTheme,
             fontSize: state.fontSize,
             currentVolume: state.currentVolume,
-            isFullscreen: Boolean(document.fullscreenElement) || document.body.classList.contains('fullscreen-mode')
+            isFullscreen: Boolean(document.fullscreenElement) || 
+                          document.body.classList.contains('fullscreen-mode') || 
+                          document.body.classList.contains('virtual-fullscreen')
         }),
         onThemeChange: selectTheme,
         onFontSizeChange: changeFontSize,
@@ -387,7 +398,9 @@ export function initApp() {
             elements.readerView.hidden = true;
             elements.readerView.style.display = 'none';
         }
-        // Hide reader-only controls
+        // Hide reader-only and user controls
+        if (elements.headerAvatarSlot) elements.headerAvatarSlot.classList.add('hidden');
+        if (elements.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
         if (elements.backToLibraryBtn) elements.backToLibraryBtn.classList.add('hidden');
         if (elements.navToggle) elements.navToggle.classList.add('hidden');
         if (elements.appFooter) elements.appFooter.classList.add('hidden');

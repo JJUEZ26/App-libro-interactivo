@@ -1,0 +1,118 @@
+[
+  {
+    "id": "inicio",
+    "page": 1,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "twilight_sunset",
+    "scenes": [
+      "<div class='poem-title-display'>Ocaso</div><div class='poem-author-display'><span class='author-signature'>Ju Ez</span></div>"
+    ],
+    "choices": [
+      {
+        "text": "Entrar en el ocaso",
+        "page": "lastimados"
+      }
+    ]
+  },
+  {
+    "id": "lastimados",
+    "page": 2,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "twilight_dusk_early",
+    "scenes": [
+      "Ojalá no hubiéramos estado tan lastimados,\ndesearía no haber cargado con este peso acumulado.",
+      "Esta inseguridad y esta maldad.",
+      "Desearía haber sido más elevado\ny amarte demasiado."
+    ],
+    "choices": [
+      {
+        "text": "Seguir leyendo...",
+        "page": "maldad"
+      }
+    ]
+  },
+  {
+    "id": "maldad",
+    "page": 3,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "twilight_dusk, dewdrops_tears",
+    "scenes": [
+      "No puedo ver en ti maldad sin,\nineludiblemente, verme en ella reflejar.",
+      "Ojalá el amor hubiera bastado,\nojalá la madurez nos hubiera alcanzado y así no cometer los errores.",
+      "No rayar ni dañar este amor en el que soñamos."
+    ],
+    "choices": [
+      {
+        "text": "Avanzar hacia el final...",
+        "page": "ocaso"
+      }
+    ]
+  },
+  {
+    "id": "ocaso",
+    "page": 4,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "twilight_dusk_late, cracks_medium",
+    "scenes": [
+      "¿Es acaso que aún la iluminación no me alcanza?\n¿O es que, sencillamente, llegamos al ocaso?",
+      "solo el silencio.",
+      "y las Olas."
+    ],
+    "choices": [
+      {
+        "text": "Lo único real...",
+        "page": "real"
+      }
+    ]
+  },
+  {
+    "id": "real",
+    "page": 5,
+    "bgMusic": "on_the_nature2.mp3",
+    "volume": 0.5,
+    "effect": "twilight_night, fireflies_bright",
+    "scenes": [
+      "De cualquier manera, lo único real es este momento.\nY no estás a mi lado.",
+      "Ni lo estarás.",
+      "En los brazos de alguien más te arrullarás.",
+      "Como acto de amor, solo queda aguardar que el otro vuelva a amar.",
+      "<span class='heartbeat-blood'>Como acto de amor, solo queda aguardar que el otro vuelva a amar.</span>"
+    ],
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 6,
+    "bgMusic": "on_the_nature2.mp3",
+    "volume": 0.2,
+    "effect": "twilight_deep_night",
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "discoveries": [
+      {
+        "title": "Vaivén",
+        "type": "poem",
+        "year": "2026",
+        "line": "Una meditación sobre la quietud y la disolución del observador en su entorno.",
+        "available": true,
+        "bookId": "original-vaiven"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>",
+      "<p class='bio-quote' style='text-align: center; border-left: none; padding-left: 0; margin-top: 1.5rem; margin-bottom: 2rem;'>“Una plegaria de desapego: el acto de amor supremo ya no es poseer, sino desear que encuentres la paz.”</p>",
+      "<div class='bio-credits-clean' style='text-align: center; font-size: 0.85rem; opacity: 0.5; font-family: var(--font-body), sans-serif; line-height: 1.8; margin-top: 2rem; letter-spacing: 0.05em;'><p style='margin: 0;'>Escrito por <span class='author-signature'>Ju Ez</span></p><p style='margin: 0;'>Melodía: On the Nature of Daylight — Max Richter</p></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

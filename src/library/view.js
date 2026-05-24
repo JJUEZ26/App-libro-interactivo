@@ -51,6 +51,7 @@ export function switchToLibraryView() {
     if (elements?.backToLibraryBtn) elements.backToLibraryBtn.classList.add('hidden');
     if (elements?.navToggle) elements.navToggle.classList.add('hidden');
     if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
+    if (elements?.headerAvatarSlot) elements.headerAvatarSlot.classList.remove('hidden');
     if (elements?.appFooter) elements.appFooter.classList.add('hidden');
     if (elements?.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
 
@@ -91,6 +92,7 @@ export function switchToReaderView() {
     if (elements?.backToLibraryBtn) elements.backToLibraryBtn.classList.remove('hidden');
     if (elements?.navToggle) elements.navToggle.classList.remove('hidden');
     if (elements?.fullscreenBtn) elements.fullscreenBtn.classList.remove('hidden');
+    if (elements?.headerAvatarSlot) elements.headerAvatarSlot.classList.add('hidden');
     if (elements?.appFooter) elements.appFooter.classList.remove('hidden');
     stopLibraryBeetle();
     stopLibraryAtmosphere();

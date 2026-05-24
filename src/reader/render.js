@@ -355,9 +355,11 @@ export function renderPage(pageId) {
         // — Unified audio context binding —
         const pageSoundFile = pageData.bgMusic || pageData.sound || pageData.audio || null;
 
+        console.log('[Render] Audio binding check. audioExperienceMarkup:', JSON.stringify(audioExperienceMarkup), 'pageSoundFile:', pageSoundFile, 'pageId:', pageId);
         if (audioExperienceMarkup && pageSoundFile) {
             bindAudioExperience(pageId, pageData);
         } else {
+            console.warn('[Render] Clearing audio context — audioExperienceMarkup:', audioExperienceMarkup, 'pageSoundFile:', pageSoundFile);
             clearAudioExperienceContext();
         }
 

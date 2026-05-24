@@ -1,0 +1,129 @@
+[
+  {
+    "id": "inicio",
+    "page": 1,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "effect": "twilight_golden",
+    "scenes": [
+      "<div class='poem-title-display'>Vaivén</div><div class='poem-author-display'><span class='author-signature'>Ju Ez</span></div>"
+    ],
+    "choices": [
+      {
+        "text": "Entrar en el vaivén",
+        "page": "brisa"
+      }
+    ]
+  },
+  {
+    "id": "brisa",
+    "page": 2,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "effect": "twilight_sunset",
+    "scenes": [
+      "La brisa roza el cuerpo que reposa al vaivén.",
+      "Silencio.",
+      "Las olas."
+    ],
+    "choices": [
+      {
+        "text": "Escuchar más allá...",
+        "page": "canto"
+      }
+    ]
+  },
+  {
+    "id": "canto",
+    "page": 3,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "effect": "twilight_dusk_early, fireflies_subtle",
+    "scenes": [
+      "El matemático canto de los pájaros\ny el ladrido de los perros desconocidos...",
+      "en la distancia..."
+    ],
+    "choices": [
+      {
+        "text": "De repente...",
+        "page": "bocina"
+      }
+    ]
+  },
+  {
+    "id": "bocina",
+    "page": 4,
+    "bgMusic": "",
+    "effect": "twilight_dusk, cracks_medium",
+    "scenes": [
+      "Una bocina de autobús,\nengendrando entropía,",
+      "lucha despiadadamente contra el viento\ny su melodía."
+    ],
+    "choices": [
+      {
+        "text": "Regresar a la quietud...",
+        "page": "quietud"
+      }
+    ]
+  },
+  {
+    "id": "quietud",
+    "page": 5,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "effect": "twilight_dusk_late, fireflies_bright",
+    "scenes": [
+      "Esa quietud,\nese vaivén en la hamaca,\n\nlos años cargados de pausa..."
+    ],
+    "choices": [
+      {
+        "text": "La sustancia...",
+        "page": "yo"
+      }
+    ]
+  },
+  {
+    "id": "yo",
+    "page": 6,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "volume": 0.3,
+    "effect": "twilight_night, fireflies_bright",
+    "scenes": [
+      "son los engendradores de esta sustancia.",
+      "<span class='fade-yo-1'>Yo.</span>",
+      "<span class='fade-yo-2'>Yo.</span>"
+    ],
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 7,
+    "bgMusic": "spiegel_cello_piano.m4a",
+    "volume": 0.2,
+    "effect": "twilight_deep_night",
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "discoveries": [
+      {
+        "title": "Ocaso",
+        "type": "poem",
+        "year": "2026",
+        "line": "Una meditación sobre las despedidas ineludibles y la aceptación estoica del final.",
+        "available": true,
+        "bookId": "original-ocaso"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>",
+      "<p class='bio-quote' style='text-align: center; border-left: none; padding-left: 0; margin-top: 1.5rem; margin-bottom: 2rem;'>“Un testimonio de la quietud, el instante en que el sujeto se desvanece para convertirse en la sustancia misma del mundo.”</p>",
+      "<div class='bio-credits-clean' style='text-align: center; font-size: 0.85rem; opacity: 0.5; font-family: var(--font-body), sans-serif; line-height: 1.8; margin-top: 2rem; letter-spacing: 0.05em;'><p style='margin: 0;'>Escrito por <span class='author-signature'>Ju Ez</span></p><p style='margin: 0;'>Melodía: Spiegel im Spiegel — Arvo Pärt</p></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

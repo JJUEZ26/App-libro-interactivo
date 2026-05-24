@@ -1,0 +1,299 @@
+/* ===================================================
+   ORIGINAL CREATIONS (Ju Ez) Styling & Themes
+   =================================================== */
+
+/* --- Custom Typographic Rubric / Signature (Modern Sans-Serif Italic) --- */
+.author-signature {
+    font-family: var(--font-body), sans-serif;
+    font-size: inherit;
+    font-weight: inherit;
+    font-style: italic; /* Slanted to the right "en K" */
+    letter-spacing: 0.05em;
+    color: inherit;
+    opacity: 0.95;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Adjustments for the author signature inside book cards */
+.book-author .author-signature {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    opacity: 1;
+    font-style: italic;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+}
+
+/* Apply italics ("en K") and uniform spacing to the Hero card meta as well */
+.library-hero-meta {
+    font-style: italic !important;
+    letter-spacing: 0.08em !important;
+}
+
+/* --- Biography Mirror Card ("Yo") --- */
+.bio-portrait-mirror {
+    width: clamp(140px, 34vw, 190px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    /* Dark silver/glass reflective gradient */
+    background: 
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 120%, rgba(139, 94, 60, 0.18) 0%, rgba(20, 20, 30, 0.92) 85%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 
+        0 0 35px rgba(255, 255, 255, 0.04), 
+        inset 0 0 20px rgba(255, 255, 255, 0.08), 
+        0 16px 48px rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    position: relative;
+    z-index: 3;
+    animation: bioPortraitAppearBase 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bio-portrait-mirror:hover {
+    transform: scale(1.03);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 
+        0 0 45px rgba(255, 255, 255, 0.06), 
+        inset 0 0 24px rgba(255, 255, 255, 0.12), 
+        0 20px 56px rgba(0, 0, 0, 0.75);
+}
+
+.mirror-text {
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    /* Bone White (Blanco hueso profundo) */
+    color: #f5f2eb; 
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    /* Soft mirror reflection glow */
+    text-shadow: 
+        0 0 24px rgba(245, 242, 235, 0.22),
+        0 0 2px rgba(245, 242, 235, 0.7),
+        0 8px 16px rgba(0, 0, 0, 0.55);
+    user-select: none;
+    pointer-events: none;
+    transition: text-shadow 0.6s ease;
+}
+
+.bio-portrait-mirror:hover .mirror-text {
+    text-shadow: 
+        0 0 30px rgba(245, 242, 235, 0.35),
+        0 0 4px rgba(245, 242, 235, 0.85),
+        0 8px 20px rgba(0, 0, 0, 0.65);
+}
+
+.bio--original .bio-badge {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-color, var(--color-text-primary));
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 0.18em;
+    padding: 4px 14px;
+    bottom: -12px;
+}
+
+/* --- Original Creations Book Cards (Glow & Prominence) --- */
+
+/* Base state for Ju Ez's poem cards (subtle violet twilight tint and border) */
+.book-card--original.book-card--poem {
+    background: linear-gradient(180deg, rgba(167, 139, 250, 0.04) 0%, rgba(20, 20, 30, 0.5) 100%), var(--color-glass-bg);
+    border-color: rgba(167, 139, 250, 0.16);
+    box-shadow: 
+        var(--shadow-md),
+        0 0 15px rgba(167, 139, 250, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Base state for Ju Ez's narrative/relato cards (subtle cyan/blue tint and border) */
+.book-card--original.book-card--novel {
+    background: linear-gradient(180deg, rgba(94, 140, 247, 0.04) 0%, rgba(20, 20, 30, 0.5) 100%), var(--color-glass-bg);
+    border-color: rgba(94, 140, 247, 0.16);
+    box-shadow: 
+        var(--shadow-md),
+        0 0 15px rgba(94, 140, 247, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Differentiated card glow on hover: Poema (Rose/Violet) vs Relato (Deep Cyan/Blue) */
+.book-card--original.book-card--poem:hover {
+    border-color: rgba(167, 139, 250, 0.45);
+    box-shadow: 
+        var(--shadow-2xl),
+        0 0 35px rgba(167, 139, 250, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.book-card--original.book-card--novel:hover {
+    border-color: rgba(94, 140, 247, 0.45);
+    box-shadow: 
+        var(--shadow-2xl),
+        0 0 35px rgba(94, 140, 247, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* --- Original Work Badge (Poema / Relato) --- */
+.book-original-badge {
+    position: absolute;
+    right: calc(var(--space-4) + var(--space-2));
+    top: calc(var(--space-4) + var(--space-2));
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Poema badge style */
+.book-card--poem .book-original-badge {
+    background: rgba(167, 139, 250, 0.12);
+    color: rgba(216, 180, 254, 0.95);
+    border: 1px solid rgba(167, 139, 250, 0.35);
+}
+
+/* Relato badge style */
+.book-card--novel .book-original-badge {
+    background: rgba(94, 140, 247, 0.12);
+    color: rgba(191, 219, 254, 0.95);
+    border: 1px solid rgba(94, 140, 247, 0.35);
+}
+
+/* Hide original badge in all sections except "Creación Propia" to avoid redundancy */
+.library-row-section:not([data-section-id="creacion-propia"]) .book-original-badge {
+    display: none !important;
+}
+
+/* --- Vaivén Poem Special Animations --- */
+.fade-yo-1 {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 700;
+    opacity: 0;
+    display: inline-block;
+    animation: fadeYo1 3s ease 2.0s forwards;
+}
+
+.fade-yo-2 {
+    font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0;
+    display: inline-block;
+    animation: fadeYo2 4s ease 3.8s forwards;
+    filter: blur(0.5px);
+}
+
+@keyframes fadeYo1 {
+    0% { opacity: 0; filter: blur(4px); }
+    100% { opacity: 0.85; filter: blur(0); }
+}
+
+@keyframes fadeYo2 {
+    0% { opacity: 0; filter: blur(8px); }
+    100% { opacity: 0.45; filter: blur(1px); }
+}
+
+/* --- Ocaso Poem Special Animations --- */
+.fade-repeat {
+    opacity: 0;
+    display: block;
+    font-style: italic;
+    margin-top: 1.5rem;
+    animation: fadeRepeat 3s ease 4.5s forwards;
+    filter: opacity(0.7);
+}
+
+@keyframes fadeRepeat {
+    0% { opacity: 0; filter: blur(4px); }
+    100% { opacity: 0.65; filter: blur(0); }
+}
+
+/* ===================================================
+   VIRTUAL FULLSCREEN MOBILE SYSTEM (Fallback/Parallel)
+   =================================================== */
+
+/* Lock the outer body layout when virtual fullscreen is active */
+body.virtual-fullscreen {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Force the main container to stretch and fill the dynamic viewport */
+body.virtual-fullscreen #app-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 9999;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- Heartbeat & Blood Staining Effect (Ocaso Final Verse) --- */
+.poem-layout .heartbeat-blood {
+    display: block;
+    font-style: italic;
+    margin-top: 1.5rem;
+    transform-origin: center;
+    will-change: transform, color, text-shadow;
+    animation: 
+        heartbeatPulse 1.5s ease-in-out infinite,
+        stainBlood 4.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+}
+
+@keyframes heartbeatPulse {
+    0% { transform: scale(1); }
+    10% { transform: scale(1.12); } /* lub */
+    18% { transform: scale(1.02); }
+    28% { transform: scale(1.08); } /* dub */
+    45% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes stainBlood {
+    0% {
+        text-shadow: none;
+    }
+    20% {
+        color: rgba(180, 40, 40, 0.5);
+        text-shadow: 
+            0 0 5px rgba(180, 40, 40, 0.4);
+    }
+    60% {
+        color: rgba(180, 10, 10, 0.85);
+        text-shadow: 
+            0 0 10px rgba(180, 10, 10, 0.7),
+            0 0 3px rgba(180, 10, 10, 0.8),
+            0 0 1px rgba(255, 255, 255, 0.25);
+    }
+    100% {
+        color: rgba(170, 0, 0, 1); /* Deep, moist blood crimson */
+        text-shadow: 
+            0 0 14px rgba(170, 0, 0, 0.9),
+            0 0 4px rgba(140, 0, 0, 0.95),
+            0 0 2px rgba(255, 255, 255, 0.4); /* Wet highlight reflection */
+    }
+}

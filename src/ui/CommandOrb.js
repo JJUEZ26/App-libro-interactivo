@@ -10,6 +10,7 @@
  */
 
 import { state } from '../app/state.js';
+import { toggleCurrentAudio } from '../reader/audio.js';
 
 export class CommandOrb {
     constructor({ chatFeature }) {
@@ -159,17 +160,20 @@ export class CommandOrb {
             return;
         }
 
-        if (this.mode === 'ia') {
-            // No audio → toggle chat
+        // Check if there's audio available — use state as source of truth,
+        // not the orb's local mode (which could be stale).
+        const hasAudioContext = !!(state.currentAudioPageData &&
+            (state.currentAudioPageData.bgMusic || state.currentAudioPageData.sound || state.currentAudioPageData.audio));
+
+        if (hasAudioContext) {
+            // Toggle audio directly (keeps user gesture for Safari/iOS)
+            toggleCurrentAudio();
+            // Briefly flash the secondary (so user discovers the IA)
+            this.flashSecondary();
+        } else {
+            // No audio context → toggle chat
             this.chatFeature.togglePanel();
-            return;
         }
-
-        // Audio mode → toggle audio (dispatched to audio.js)
-        document.dispatchEvent(new CustomEvent('command-orb-audio-tap'));
-
-        // Briefly flash the secondary (so user discovers the IA)
-        this.flashSecondary();
     }
 
     handleSecondaryTap() {
