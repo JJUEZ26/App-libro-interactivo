@@ -295,18 +295,48 @@ body.virtual-fullscreen #app-container {
 
 /* --- Página 1: Título y Autor --- */
 
-/* Título O: Goteo sutil al 20% desde arriba */
+/* Título O: Goteo al 15% desde la esquina superior izquierda */
 .poem-layout .blood-title-O {
     background-image: 
-        linear-gradient(to bottom, 
+        linear-gradient(135deg, 
             var(--blood-core) 0%, 
-            var(--blood-core) 14%, 
-            var(--blood-dark) 20%, 
-            transparent 24%, 
+            var(--blood-core) 10%, 
+            var(--blood-dark) 15%, 
+            transparent 19%, 
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
-    background-position: top, center;
+    background-position: top left, center;
+    background-size: 100% 0%, 100% 100%;
+    animation-name: stainVerticalDown !important;
+}
+
+/* Título S: Borde derecho manchado */
+.poem-layout .blood-title-s {
+    background-image: 
+        linear-gradient(to left, 
+            var(--blood-core) 0%, 
+            var(--blood-dark) 15%, 
+            transparent 20%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: top right, center;
+    background-size: 100% 0%, 100% 100%;
+    animation-name: stainVerticalDown !important;
+}
+
+/* Título o final: Goteo al 10% inferior derecha */
+.poem-layout .blood-title-o-end {
+    background-image: 
+        linear-gradient(315deg, 
+            var(--blood-core) 0%, 
+            var(--blood-dark) 10%, 
+            transparent 14%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: top right, center;
     background-size: 100% 0%, 100% 100%;
     animation-name: stainVerticalDown !important;
 }
@@ -445,7 +475,24 @@ body.virtual-fullscreen #app-container {
 
 /* --- Página 4: Inevitable --- */
 
-/* B de Inevitable: Goteo al 60% desde arriba (incompleta) */
+/* Letras de Inevitable: Goteo pesado al 90% desde arriba (Animación MUCHO más lenta) */
+.poem-layout .blood-inevitable-letter {
+    background-image: 
+        linear-gradient(to bottom, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 82%, 
+            var(--blood-dark) 90%, 
+            transparent 94%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: top, center;
+    background-size: 100% 0%, 100% 100%;
+    animation-name: stainVerticalDown !important;
+    animation-duration: 13.5s !important; /* Más lento para "Inevitable" */
+}
+
+/* B de Inevitable: Goteo al 60% desde arriba (Animación MUCHO más lenta) */
 .poem-layout .blood-b-inevitable {
     background-image: 
         linear-gradient(to bottom, 
@@ -459,6 +506,7 @@ body.virtual-fullscreen #app-container {
     background-position: top, center;
     background-size: 100% 0%, 100% 100%;
     animation-name: stainVerticalDown !important;
+    animation-duration: 13.5s !important; /* Más lento para "Inevitable" */
 }
 
 /* --- Página 5: Verso Final (dentro de heartbeat-blood) --- */

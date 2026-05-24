@@ -5,7 +5,7 @@
     "bgMusic": "on_the_nature2.mp3",
     "effect": "twilight_sunset",
     "scenes": [
-      "<div class='poem-title-display'><span class='blood-title-O'>O</span>caso</div><div class='poem-author-display'><span class='author-signature'><span class='blood-author-J'>J</span>u Ez</span></div>"
+      "<div class='poem-title-display'><span class='blood-title-O'>O</span>ca<span class='blood-title-s'>s</span><span class='blood-title-o-end'>o</span></div><div class='poem-author-display'><span class='author-signature'><span class='blood-author-J'>J</span>u Ez</span></div>"
     ],
     "choices": [
       {
@@ -55,7 +55,7 @@
     "effect": "twilight_dusk_late, cracks_medium",
     "scenes": [
       "¿Es acaso que aún la iluminación no me alcanza?\n¿O es que, sencillamente, llegamos al ocaso?",
-      "I<span class='blood-bottom-90'>n</span>e<span class='blood-bottom-90'>v</span>i<span class='blood-bottom-90'>t</span><span class='blood-bottom-90'>a</span><span class='blood-b-inevitable'>b</span>le."
+      "I<span class='blood-inevitable-letter'>n</span>e<span class='blood-inevitable-letter'>v</span>i<span class='blood-inevitable-letter'>t</span><span class='blood-inevitable-letter'>a</span><span class='blood-b-inevitable'>b</span>le."
     ],
     "choices": [
       {
