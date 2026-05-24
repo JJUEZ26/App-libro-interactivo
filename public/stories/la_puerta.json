@@ -184,19 +184,51 @@
         "sound": "on_the_nature2.mp3",
         "ghostEcho": true,
         "volume": 0.95,
+        "choices": [
+            {
+                "text": "Sobre el autor",
+                "page": "biografia"
+            }
+        ]
+    },
+    {
+        "id": "biografia",
+        "page": 11,
+        "sound": "on_the_nature2.mp3",
+        "ghostEcho": true,
+        "volume": 0.25,
+        "effect": "door_of_light, sfx_door_soft",
+        "forceShowChoices": true,
+        "discoverAuthor": "Ju Ez",
         "musicCredits": {
-            "title": "On the Nature of Daylight",
-            "composer": "Max Richter, 2004",
-            "note": "Una elegía moderna sobre la pérdida y la reconciliación. Su uso busca acompañar la carga emocional y la catarsis final de la historia."
+            "title": "La puerta",
+            "composer": "Melodía: On the Nature of Daylight — Max Richter. Escrito por Ju Ez."
         },
+        "discoveries": [
+            {
+                "title": "Vaivén",
+                "type": "poem",
+                "year": "2026",
+                "line": "Una meditación interactiva sobre la quietud y las despedidas ineludibles.",
+                "available": true,
+                "bookId": "original-vaiven"
+            },
+            {
+                "title": "Ocaso",
+                "type": "poem",
+                "year": "2026",
+                "line": "Una meditación sobre las despedidas ineludibles y la aceptación estoica del final.",
+                "available": true,
+                "bookId": "original-ocaso"
+            }
+        ],
+        "scenes": [
+            "<div class='bio-portrait-container bio--original' style='margin-bottom: 2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
+        ],
         "choices": [
             {
                 "text": "Volver a la biblioteca",
                 "page": -1
-            },
-            {
-                "text": "Comenzar desde el inicio",
-                "page": 0
             }
         ]
     }

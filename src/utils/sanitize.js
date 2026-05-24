@@ -10,12 +10,14 @@
 const ALLOWED_TAGS = new Set([
     'em', 'i', 'strong', 'b', 'br', 'span', 'p',
     'u', 'small', 'sub', 'sup', 'mark', 'abbr',
-    'div', 'img', 'a', 'button'
+    'div', 'img', 'a', 'button',
+    'svg', 'path', 'text', 'textPath', 'defs', 'g'
 ]);
 
 const ALLOWED_ATTRS = new Set([
     'id', 'class', 'style', 'href', 'src', 'alt', 'title',
-    'data-start', 'data-end', 'data-response', 'loading', 'aria-label'
+    'data-start', 'data-end', 'data-response', 'loading', 'aria-label',
+    'viewBox', 'd', 'fill', 'font-family', 'font-size', 'letter-spacing', 'startOffset', 'text-anchor', 'xmlns'
 ]);
 
 export function sanitizeHTML(raw) {

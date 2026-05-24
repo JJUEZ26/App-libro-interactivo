@@ -346,7 +346,7 @@ export function handlePageEffects(effectString, { getAppMode }) {
         }
     }
 
-    // --- Golondrinas (Bécquer) ---
+    // --- Golondrinas (Bécquer y Vaivén) ---
     if (effects.includes('swallows_arriving')) {
         activeSwallowsCleanup = startSwallowsEffect('arriving');
     } else if (effects.includes('swallows_nesting')) {
@@ -357,6 +357,20 @@ export function handlePageEffects(effectString, { getAppMode }) {
         activeSwallowsCleanup = startSwallowsEffect('fading');
     } else if (effects.includes('swallows_single')) {
         activeSwallowsCleanup = startSwallowsEffect('single');
+    } else if (effects.includes('tiny_swallows_mid')) {
+        activeSwallowsCleanup = startSwallowsEffect('tiny_mid');
+    } else if (effects.includes('tiny_swallows_under')) {
+        activeSwallowsCleanup = startSwallowsEffect('tiny_under');
+    }
+
+    if (effects.includes('tiny_landing')) {
+        const landingCleanup = startSwallowsEffect('tiny_landing');
+        if (activeSwallowsCleanup) {
+            const oldCleanup = activeSwallowsCleanup;
+            activeSwallowsCleanup = () => { oldCleanup(); landingCleanup(); };
+        } else {
+            activeSwallowsCleanup = landingCleanup;
+        }
     }
 
     // --- Atardecer/Noche (Bécquer) ---

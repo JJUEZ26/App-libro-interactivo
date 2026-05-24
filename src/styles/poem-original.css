@@ -266,7 +266,9 @@ body.virtual-fullscreen #app-container {
 
 /* Propiedades comunes para todas las letras teñidas de sangre en cualquier página */
 .poem-layout span[class^="blood-"],
-.poem-layout .blood-dot {
+.poem-intro-layout span[class^="blood-"],
+.poem-layout .blood-dot,
+.poem-intro-layout .blood-dot {
     display: inline-block;
     vertical-align: bottom;
     -webkit-background-clip: text;
@@ -294,67 +296,88 @@ body.virtual-fullscreen #app-container {
    ============================================================= */
 
 /* --- Página 1: Título y Autor --- */
+/* Las manchas del título son ESTÁTICAS (ya manchadas al aparecer)
+   porque la intro usa poem-intro-layout con su propia animación
+   de revelación (poemTitleReveal). No necesitan animación de goteo. */
 
-/* Título O: Goteo al 15% desde la esquina superior izquierda */
-.poem-layout .blood-title-O {
+/* Título O: Mancha al 15% esquina superior izquierda (radial sobre el trazo) */
+.poem-layout .blood-title-O,
+.poem-intro-layout .blood-title-O {
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-repeat: no-repeat;
     background-image: 
-        linear-gradient(135deg, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 10%, 
-            var(--blood-dark) 15%, 
-            transparent 19%, 
-            transparent 100%
+        radial-gradient(circle at 30% 30%, 
+            var(--blood-core, oklch(28% 0.26 24)) 0%, 
+            var(--blood-dark, oklch(16% 0.20 18)) 12%, 
+            transparent 18%
         ),
-        linear-gradient(var(--text-white), var(--text-white));
-    background-position: top left, center;
-    background-size: 100% 0%, 100% 100%;
-    animation-name: stainVerticalDown !important;
+        linear-gradient(#e6e5ec, #e6e5ec);
+    background-size: 100% 100%, 100% 100%;
+    animation: none !important;
 }
 
-/* Título S: Borde derecho manchado */
-.poem-layout .blood-title-s {
+/* Título S: Borde derecho salpicado (radial en curva derecha) */
+.poem-layout .blood-title-s,
+.poem-intro-layout .blood-title-s {
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-repeat: no-repeat;
     background-image: 
-        linear-gradient(to left, 
-            var(--blood-core) 0%, 
-            var(--blood-dark) 15%, 
-            transparent 20%, 
-            transparent 100%
+        radial-gradient(ellipse at 75% 50%, 
+            var(--blood-core, oklch(28% 0.26 24)) 0%, 
+            var(--blood-dark, oklch(16% 0.20 18)) 25%, 
+            transparent 35%
         ),
-        linear-gradient(var(--text-white), var(--text-white));
-    background-position: top right, center;
-    background-size: 100% 0%, 100% 100%;
-    animation-name: stainVerticalDown !important;
+        linear-gradient(#e6e5ec, #e6e5ec);
+    background-size: 100% 100%, 100% 100%;
+    animation: none !important;
 }
 
-/* Título o final: Goteo al 10% inferior derecha */
-.poem-layout .blood-title-o-end {
+/* Título o final: Mancha al 10% inferior derecha (radial en curva) */
+.poem-layout .blood-title-o-end,
+.poem-intro-layout .blood-title-o-end {
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-repeat: no-repeat;
     background-image: 
-        linear-gradient(315deg, 
-            var(--blood-core) 0%, 
-            var(--blood-dark) 10%, 
-            transparent 14%, 
-            transparent 100%
+        radial-gradient(circle at 75% 70%, 
+            var(--blood-core, oklch(28% 0.26 24)) 0%, 
+            var(--blood-dark, oklch(16% 0.20 18)) 12%, 
+            transparent 18%
         ),
-        linear-gradient(var(--text-white), var(--text-white));
-    background-position: top right, center;
-    background-size: 100% 0%, 100% 100%;
-    animation-name: stainVerticalDown !important;
+        linear-gradient(#e6e5ec, #e6e5ec);
+    background-size: 100% 100%, 100% 100%;
+    animation: none !important;
 }
 
-/* Autor J: Apenas un toque del 5% goteando */
-.poem-layout .blood-author-J {
+/* Autor J: Apenas un toque del 5% */
+.poem-layout .blood-author-J,
+.poem-intro-layout .blood-author-J {
+    display: inline-block;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-repeat: no-repeat;
     background-image: 
-        linear-gradient(to bottom, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 2%, 
-            var(--blood-dark) 5%, 
-            transparent 7%, 
-            transparent 100%
+        radial-gradient(circle at 50% 15%, 
+            var(--blood-core, oklch(28% 0.26 24)) 0%, 
+            var(--blood-dark, oklch(16% 0.20 18)) 15%, 
+            transparent 22%
         ),
-        linear-gradient(var(--text-white), var(--text-white));
-    background-position: top, center;
-    background-size: 100% 0%, 100% 100%;
-    animation-name: stainVerticalDown !important;
+        linear-gradient(#e6e5ec, #e6e5ec);
+    background-size: 100% 100%, 100% 100%;
+    animation: none !important;
 }
 
 /* --- Página 2: Imposibilidad --- */
@@ -700,3 +723,119 @@ body.virtual-fullscreen #app-container {
     }
 }
 
+/* =============================================================
+   EFECTOS DINÁMICOS - POEMA "VAIVÉN"
+   ============================================================= */
+
+/* 1. Física de la Hamaca (Título y frase final) */
+.poem-intro-layout .vaiven-sway-title {
+    display: inline-block;
+    /* Colgamos la hamaca desde un punto muy alto (eje Y negativo) para que la rotación cree un arco natural */
+    transform-origin: 50% -300px;
+    /* Para fluidez perfecta de péndulo:
+       Si el arranque (1/4 de ciclo) dura 1.5s, 
+       el balanceo completo (1/2 ciclo) DEBE durar 3s. */
+    animation: 
+        poemTitleReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards,
+        hammockSwayStart 1.5s ease-in-out 2.5s forwards,
+        hammockSway 3s ease-in-out 4s infinite alternate;
+}
+
+.poem-layout .vaiven-sway-imperceptible {
+    display: inline-block;
+    /* Mismo origen de péndulo que el título para que la física sea idéntica */
+    transform-origin: 50% -300px;
+    /* Arranque de 3.5s -> Balanceo de 7s (Aún más lento para mayor solemnidad) */
+    animation: 
+        hammockSwayStartSmall 3.5s ease-in-out 1.5s forwards,
+        hammockSwaySmall 7s ease-in-out 5s infinite alternate;
+}
+
+/* Animación inicial para sacar la hamaca del reposo absoluto sin saltos */
+@keyframes hammockSwayStart {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(4deg); }
+}
+
+@keyframes hammockSway {
+    0% { transform: rotate(4deg); }
+    100% { transform: rotate(-4deg); }
+}
+
+/* Animación con un arco de balanceo ligeramente más reducido para la estrofa final */
+@keyframes hammockSwayStartSmall {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(2.5deg); }
+}
+
+@keyframes hammockSwaySmall {
+    0% { transform: rotate(2.5deg); }
+    100% { transform: rotate(-2.5deg); }
+}
+
+/* 2. Olas del mar dentro del texto */
+.poem-layout .ocean-waves-text {
+    font-size: 1.4em;
+    font-weight: bold;
+    display: inline-block;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    /* Capas de olas: Azul profundo, cyan y espuma blanca */
+    background-image: 
+        radial-gradient(ellipse at center, rgba(255,255,255,0.8) 0%, transparent 40%),
+        linear-gradient(110deg, 
+            #0b2e59 0%, 
+            #004b79 25%, 
+            #0086b3 40%, 
+            #e6f7ff 48%, 
+            #0086b3 55%, 
+            #004b79 75%, 
+            #0b2e59 100%
+        );
+    background-size: 200% 200%, 300% 100%;
+    animation: oceanWavesCrash 8s linear infinite;
+}
+
+@keyframes oceanWavesCrash {
+    0% {
+        background-position: 0% 50%, 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%, 50% 0%;
+    }
+    100% {
+        background-position: 0% 50%, 100% 0%;
+    }
+}
+
+/* 4. Viento y entropía */
+.poem-layout .wind-struggle-text {
+    display: inline-block;
+    animation: windStruggle 6s ease-in-out infinite;
+}
+
+@keyframes windStruggle {
+    0%, 100% {
+        transform: skewX(0deg) translateX(0);
+        filter: blur(0);
+    }
+    10% {
+        transform: skewX(-8deg) translateX(-4px);
+        filter: blur(1px);
+    }
+    15% {
+        transform: skewX(2deg) translateX(1px);
+        filter: blur(0);
+    }
+    20% {
+        transform: skewX(-12deg) translateX(-8px);
+        filter: blur(2px);
+    }
+    25% {
+        transform: skewX(0deg) translateX(0);
+        filter: blur(0);
+    }
+}

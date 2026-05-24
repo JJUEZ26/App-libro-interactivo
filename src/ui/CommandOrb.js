@@ -110,18 +110,22 @@ export class CommandOrb {
         }, { passive: true });
 
         // — Secondary: tap handler —
-        this.secondary.addEventListener('click', (e) => {
+        const onSecondaryTap = (e) => {
             e.stopPropagation();
             e.preventDefault();
             this.handleSecondaryTap();
-        });
+        };
+        this.secondary.addEventListener('click', onSecondaryTap);
+        this.secondary.addEventListener('touchstart', onSecondaryTap, { passive: false });
 
         // — Tertiary: tap handler —
-        this.tertiary.addEventListener('click', (e) => {
+        const onTertiaryTap = (e) => {
             e.stopPropagation();
             e.preventDefault();
             this.handleTertiaryTap();
-        });
+        };
+        this.tertiary.addEventListener('click', onTertiaryTap);
+        this.tertiary.addEventListener('touchstart', onTertiaryTap, { passive: false });
 
         // — Keyboard accessibility —
         this.primary.addEventListener('keydown', (e) => {

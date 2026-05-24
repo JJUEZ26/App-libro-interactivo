@@ -92,20 +92,30 @@
     "effect": "twilight_deep_night",
     "forceShowChoices": true,
     "discoverAuthor": "Ju Ez",
+    "musicCredits": {
+      "title": "Ocaso",
+      "composer": "Melodía: On the Nature of Daylight — Max Richter. Escrito por Ju Ez."
+    },
     "discoveries": [
       {
         "title": "Vaivén",
         "type": "poem",
         "year": "2026",
-        "line": "Una meditación sobre la quietud y la disolución del observador en su entorno.",
+        "line": "Una meditación interactiva sobre la quietud y las despedidas ineludibles.",
         "available": true,
         "bookId": "original-vaiven"
+      },
+      {
+        "title": "La puerta",
+        "type": "story",
+        "year": "2026",
+        "line": "Un relato inmersivo sobre los umbrales que cruzamos y no tienen retorno.",
+        "available": true,
+        "bookId": "original-puerta"
       }
     ],
     "scenes": [
-      "<div class='bio-portrait-container bio--original'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>",
-      "<p class='bio-quote' style='text-align: center; border-left: none; padding-left: 0; margin-top: 1.5rem; margin-bottom: 2rem;'>“Una plegaria de desapego: el acto de amor supremo ya no es poseer, sino desear que encuentres la paz.”</p>",
-      "<div class='bio-credits-clean' style='text-align: center; font-size: 0.85rem; opacity: 0.5; font-family: var(--font-body), sans-serif; line-height: 1.8; margin-top: 2rem; letter-spacing: 0.05em;'><p style='margin: 0;'>Escrito por <span class='author-signature'>Ju Ez</span></p><p style='margin: 0;'>Melodía: On the Nature of Daylight — Max Richter</p></div>"
+      "<div class='bio-portrait-container bio--original' style='margin-bottom: 2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
     ],
     "choices": [
       {

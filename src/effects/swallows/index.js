@@ -13,11 +13,10 @@ function getContainer() {
 }
 
 /**
- * Find the bounding rect of the last "!" character in the poem.
- * We look for the last .verse-line in the last .stanza,
- * then use Range API to locate the exact "!" glyph.
+ * Find the bounding rect of the last occurrence of a character.
+ * We look for the last .verse-line in the last .stanza.
  */
-function findExclamationPosition() {
+function findTargetCharacterPosition(charToFind = '!') {
     const stanzas = document.querySelectorAll('.poem-layout .stanza');
     if (!stanzas.length) return null;
 
@@ -27,8 +26,8 @@ function findExclamationPosition() {
 
     const lastLine = verseLines[verseLines.length - 1];
     const textContent = lastLine.textContent;
-    const exclamIndex = textContent.lastIndexOf('!');
-    if (exclamIndex === -1) return null;
+    const targetIndex = textContent.lastIndexOf(charToFind);
+    if (targetIndex === -1) return null;
 
     // Walk through text nodes to find the one containing "!"
     const walker = document.createTreeWalker(lastLine, NodeFilter.SHOW_TEXT);
@@ -38,9 +37,9 @@ function findExclamationPosition() {
 
     while (walker.nextNode()) {
         const node = walker.currentNode;
-        if (charCount + node.length > exclamIndex) {
+        if (charCount + node.length > targetIndex) {
             targetNode = node;
-            offsetInNode = exclamIndex - charCount;
+            offsetInNode = targetIndex - charCount;
             break;
         }
         charCount += node.length;
@@ -75,7 +74,7 @@ function createPassingEffect(overlay, { scale = 1, delay = 0, topRange = [5, 25]
         if (destroyed) return;
 
         const video = document.createElement('chroma-key-video');
-        video.setAttribute('src', 'videos/golondrina_vuelo.mp4');
+        video.setAttribute('src', '/videos/golondrina_vuelo.mp4');
         // No 'loop' → plays once
 
         const topOffset = topRange[0] + Math.random() * (topRange[1] - topRange[0]);
@@ -133,51 +132,34 @@ function createSingleEffect(overlay) {
 }
 
 
-// --- LANDING EFFECT (bird lands on "!" character) ---
-function createLandingEffect(overlay) {
+// --- LANDING EFFECT (bird lands on target character) ---
+function createLandingEffect(overlay, { targetChar = '!', delay = 500, scale = 1, yOffset = 0.3 } = {}) {
     let destroyed = false;
-
-    // The video is ~8 seconds long:
-    //   0-2s: bird flies in from upper-left
-    //   2-3s: bird lands at bottom-center
-    //   3-8s: bird perches still
-    //
-    // Verse timing (0.6s stagger, 4 verses):
-    //   verse 0: 0.0s, verse 1: 0.6s, verse 2: 1.2s, verse 3: 1.8s
-    //   last verse "ésas... ¡no volverán!" appears at ~1.8s, fully visible ~3.0s
-    //
-    // Strategy: Start the video at ~0.5s (shortly after text begins).
-    // The bird will be flying during 0.5-2.5s while text is appearing,
-    // and will land around 2.5-3.5s — right when "¡no volverán!" becomes visible.
-    const delay = 500;
 
     setTimeout(() => {
         if (destroyed) return;
 
-        // We need the "!" position. Since the verse hasn't animated yet,
-        // the element exists in DOM but may be invisible (opacity:0 via animation).
-        // We can still measure its position!
-        const pos = findExclamationPosition();
+        const pos = findTargetCharacterPosition(targetChar);
         if (!pos) {
-            console.warn('Could not find "!" position for landing swallow');
+            console.warn(`Could not find "${targetChar}" position for landing swallow`);
             // Fallback: just show a passing bird
-            createPassingEffect(overlay, { scale: 0.7, delay: 0, topRange: [15, 30] });
+            createPassingEffect(overlay, { scale: 0.7 * scale, delay: 0, topRange: [15, 30] });
             return;
         }
 
         const video = document.createElement('chroma-key-video');
-        video.setAttribute('src', 'videos/golondrina_aterrizaje.mp4');
+        video.setAttribute('src', '/videos/golondrina_aterrizaje.mp4');
         // No 'loop' → plays once, bird lands and stays on last frame
 
         // Size: generous to avoid pixelation on the canvas-based chroma-key
-        const videoSize = Math.max(160, pos.charHeight * 10);
+        const videoSize = Math.max(160, pos.charHeight * 10) * scale;
 
         video.style.cssText = `
             position: absolute;
             width: ${videoSize}px;
             height: auto;
             left: ${pos.x}px;
-            bottom: ${overlay.offsetHeight - pos.y + pos.charHeight * 0.3}px;
+            bottom: ${overlay.offsetHeight - pos.y + pos.charHeight * yOffset}px;
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.3s ease-in;
@@ -197,6 +179,72 @@ function createLandingEffect(overlay) {
 }
 
 
+// --- TINY SWALLOWS (Vaivén) ---
+function createTinyEffect(overlay, position) {
+    let destroyed = false;
+    
+    // Position can be 'mid' or 'under'
+    // "muchas golondrinas" -> 12 a 15 pájaros
+    const numBirds = position === 'mid' ? 12 : 15;
+    
+    for (let i = 0; i < numBirds; i++) {
+        setTimeout(() => {
+            if (destroyed) return;
+            const bird = document.createElement('div');
+            
+            // Tamaño muy pequeño (12px a 22px)
+            const size = 12 + Math.random() * 10;
+            
+            // "mid" = pasa por el medio del texto (35% a 50%)
+            // "under" = pasa por debajo del texto (70% a 85%)
+            const topPos = position === 'mid' 
+                ? 35 + Math.random() * 15 
+                : 70 + Math.random() * 15;
+            
+            bird.style.cssText = `
+                position: absolute;
+                top: ${topPos}%;
+                left: -10vw;
+                width: ${size}px;
+                height: ${size}px;
+                background-image: url('/images/bluebird_flying.gif');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                opacity: 0.9;
+                pointer-events: none;
+                z-index: 100;
+                /* Hacemos la silueta gris oscura con un leve borde para que resalte incluso en fondos de noche */
+                filter: grayscale(1) brightness(0.4) drop-shadow(0 0 1px rgba(255,255,255,0.3));
+            `;
+            
+            overlay.appendChild(bird);
+            
+            // Velocidad más lenta y relajada (4s a 7s para cruzar la pantalla)
+            const duration = 4000 + Math.random() * 3000;
+            const yOffset = Math.random() * 80 - 40; // Oscilación en Y
+            const rotation = Math.random() * 20 - 10; // Ángulo de vuelo
+            
+            const animation = bird.animate([
+                { transform: `translateX(0vw) translateY(0px) rotate(${rotation}deg)` },
+                { transform: `translateX(120vw) translateY(${yOffset}px) rotate(${rotation}deg)` }
+            ], {
+                duration: duration,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+            
+            animation.onfinish = () => {
+                if (!destroyed && bird.parentNode) {
+                    bird.remove();
+                }
+            };
+            
+        }, i * 250 + Math.random() * 200); // Aparecen en forma de bandada con ligero retraso entre ellas
+    }
+    return () => { destroyed = true; };
+}
+
 // --- PUBLIC API ---
 export function startSwallowsEffect(mode = 'passing') {
     const overlay = document.createElement('div');
@@ -214,11 +262,16 @@ export function startSwallowsEffect(mode = 'passing') {
 
     if (mode === 'arriving') {
         cleanups.push(createArrivingEffect(overlay));
-    } else if (mode === 'landing' || mode === 'fading') {
-        // "fading" pages are the ones with "¡no volverán!" 
-        cleanups.push(createLandingEffect(overlay));
-    } else if (mode === 'single') {
-        cleanups.push(createSingleEffect(overlay));
+    } else if (mode === 'nesting') {
+        cleanups.push(createLandingEffect(overlay, { targetChar: '!', scale: 1 }));
+    } else if (mode === 'passing') {
+        cleanups.push(createPassingEffect(overlay));
+    } else if (mode === 'tiny_mid') {
+        cleanups.push(createTinyEffect(overlay, 'mid'));
+    } else if (mode === 'tiny_under') {
+        cleanups.push(createTinyEffect(overlay, 'under'));
+    } else if (mode === 'tiny_landing') {
+        cleanups.push(createLandingEffect(overlay, { targetChar: '.', delay: 1500, scale: 0.35, yOffset: -0.45 }));
     } else {
         cleanups.push(createPassingEffect(overlay));
     }

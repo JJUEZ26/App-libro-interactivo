@@ -428,8 +428,10 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
                 .catch(() => {
                     setAudioStatus('blocked', 'Toca para iniciar el sonido.');
                 });
-        } else if (!autoPlay && !existingAudio.paused) {
-            existingAudio.volume = getPreparedAudioTargetVolume(pageData);
+        } else if (!existingAudio.paused) {
+            // If it's already playing, we must ensure it smoothly fades to the NEW page's volume
+            const targetVolume = getPreparedAudioTargetVolume(pageData);
+            applyComfortFadeIn(existingAudio, pageData, targetVolume);
         }
 
         return;
