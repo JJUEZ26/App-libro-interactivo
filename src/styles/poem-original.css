@@ -258,41 +258,117 @@ body.virtual-fullscreen #app-container {
     font-style: italic;
     margin-top: 1.5rem;
     transform-origin: center;
-    will-change: transform, background-size;
+    will-change: transform;
+    color: #e6e5ec; /* Color blanco hueso base para texto no manchado */
     
-    /* Máscara de texto */
+    animation: heartbeatPulse 5.5s ease-in-out infinite !important;
+}
+
+/* Propiedades comunes para las letras teñidas de sangre */
+.poem-layout .heartbeat-blood .blood-C,
+.poem-layout .heartbeat-blood .blood-o1,
+.poem-layout .heartbeat-blood .blood-a2,
+.poem-layout .heartbeat-blood .blood-r,
+.poem-layout .heartbeat-blood .blood-dot {
+    display: inline-block;
+    vertical-align: bottom;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent; /* Fallback */
-
-    /* Fondo de sangre salpicada */
+    color: transparent;
+    will-change: background-size;
     background-repeat: no-repeat;
-    background-position: center;
-    background-image: 
-        radial-gradient(circle 120px at 28% 0%, rgba(115, 18, 18, 0.95) 0%, rgba(115, 18, 18, 0.9) 30%, transparent 70%),
-        radial-gradient(circle 90px at 75% 100%, rgba(110, 16, 16, 0.95) 0%, rgba(110, 16, 16, 0.9) 30%, transparent 70%),
-        linear-gradient(rgba(230, 225, 240, 0.9), rgba(230, 225, 240, 0.9));
+    
+    /* Variables de color: sangre carmesí densa, oscura y viva en OKLCH */
+    --blood-core: oklch(32% 0.24 25);
+    --blood-dark: oklch(20% 0.18 20);
+    --text-white: #e6e5ec;
+}
 
-    animation: 
-        heartbeatPulse 4.5s ease-in-out infinite !important,
-        stainBlood 4.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+/* C de Como: Manchada al 50% (mitad izquierda) con un ángulo orgánico de 45 grados */
+.poem-layout .heartbeat-blood .blood-C {
+    background-image: 
+        linear-gradient(45deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 42%, 
+            var(--blood-dark) 50%, 
+            transparent 54%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+}
+
+/* o de Como: Apenas manchada un 10% (borde izquierdo) */
+.poem-layout .heartbeat-blood .blood-o1 {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 4%, 
+            var(--blood-dark) 8%, 
+            transparent 12%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+}
+
+/* Segunda a de amar: Manchada al 90% (casi toda la letra) */
+.poem-layout .heartbeat-blood .blood-a2 {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 82%, 
+            var(--blood-dark) 88%, 
+            transparent 92%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+}
+
+/* r de amar: Apenas manchada un 10% (borde izquierdo) */
+.poem-layout .heartbeat-blood .blood-r {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 4%, 
+            var(--blood-dark) 8%, 
+            transparent 12%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
+}
+
+/* Punto final: Manchado al 40% (entre manchado y no) con un ángulo de 135 grados */
+.poem-layout .heartbeat-blood .blood-dot {
+    background-image: 
+        linear-gradient(135deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 28%, 
+            var(--blood-dark) 38%, 
+            transparent 42%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
 }
 
 @keyframes heartbeatPulse {
     0% { transform: scale(1); }
-    4% { transform: scale(1.015); } /* lub (muy sutil y lento) */
-    8% { transform: scale(1.003); }
-    12% { transform: scale(1.008); } /* dub (muy sutil y lento) */
+    4% { transform: scale(1.012); } /* lub sutil y lento */
+    8% { transform: scale(1.002); }
+    12% { transform: scale(1.006); } /* dub sutil y lento */
     18% { transform: scale(1); }
     100% { transform: scale(1); }
 }
 
-@keyframes stainBlood {
+@keyframes stainLetterBlood {
     0% {
-        background-size: 0% 0%, 0% 0%, 100% 100%;
+        background-size: 0% 100%, 100% 100%;
     }
     100% {
-        background-size: 100% 100%, 100% 100%, 100% 100%;
+        background-size: 100% 100%, 100% 100%;
     }
 }

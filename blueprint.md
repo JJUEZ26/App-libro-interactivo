@@ -865,18 +865,32 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 3. **Renombramiento de Sección**: La sección "Creación Propia" fue renombrada a "Escritos Originales".
 4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
-### Corrección de Versos, Latido Lento y Salpicadura de Sangre en Ocaso (Mayo 2026)
-**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 4.5s extremadamente lento, y simular una salpicadura de sangre que manche partes de las letras sobre el texto blanco mediante máscara de recorte.
+### Corrección de Versos, Latido Lento y Salpicadura de Sangre de Alta Precisión por Letra en Ocaso (Mayo 2026)
+**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica de letras específicas (los extremos "C" y "o" de "Como", y "a", "r" y "." de "amar.") que mantenga su proporción perfecta sin importar el tamaño o zoom de la pantalla.
 
 **Implementación**:
-1. **Contenido Corregido (Páginas 4 y 5)**:
-   - Modificar `public/stories/ocaso.json` en la página 4 para que termine solemnemente en `"Inevitable."` (eliminando `"y nada mas."`).
-   - En la página 5, eliminar las etiquetas internas de clase `.blood-stained` para dejar la línea de texto limpia, ya que el efecto se procesará a nivel de bloque en toda la línea.
-2. **Latido Lento e Imperceptible (4.5s)**:
-   - Ralentizar el ciclo de `@keyframes heartbeatPulse` en `poem-original.css` a `4.5s` (latido diastólico ultra lento) y atenuar la escala máxima a `1.015` (lub) y `1.008` (dub).
-3. **Efecto de Salpicadura de Sangre (Masking)**:
-   - Modificar `.heartbeat-blood` agregando `-webkit-background-clip: text` y `-webkit-text-fill-color: transparent` para usar el texto como máscara.
-   - Definir un fondo compuesto por dos gradientes radiales de color carmesí oscuro (`rgba(115, 18, 18, 0.95)`) en ubicaciones específicas (28% y 75% de ancho) sobre un degradado lineal blanco de fondo.
-   - Animar el `background-size` de las salpicaduras de `0% 0%` a `100% 100%` a partir del segundo 3.5 para simular que las manchas crecen y tiñen porciones específicas de las letras.
-4. **Sincronización en Producción**:
-   - Confirmar y subir los cambios a GitHub para reconstruir la PWA en Vercel con la experiencia final de Ocaso.
+1. **Tinción Precisa por Letras (Página 5)**:
+   - Modificar [ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json) para envolver las letras específicas en etiquetas `span` con clases CSS dedicadas:
+     * La **C** de "Como" (`.blood-C`).
+     * La primera **o** de "Como" (`.blood-o1`).
+     * La segunda **a** de "amar" (`.blood-a2`).
+     * La **r** de "amar" (`.blood-r`).
+     * El punto final **.** (`.blood-dot`).
+2. **Latido Ultra Lento e Imperceptible (5.5s)**:
+   - Enlentecer la animación a un ciclo de `5.5s` en `@keyframes heartbeatPulse` con una escala máxima de tan solo `1.012` / `1.002` para lograr un pulso extremadamente pausado y natural.
+3. **Efecto de Sangre en OKLCH con Doble Capa por Letra**:
+   - Definir variables de color usando `oklch`:
+     * `--blood-core: oklch(32% 0.24 25)` (rojo sangre profundo y denso)
+     * `--blood-dark: oklch(20% 0.18 20)` (borde coagulado oscuro)
+     * `--text-white: #e6e5ec` (blanco hueso base de texto sin manchar)
+   - Aplicar degradados lineales específicos con `-webkit-background-clip: text` y una base de texto blanca sólida que asegura visibilidad antes y durante la animación:
+     * **`blood-C`**: Manchada al 50% en un ángulo de 45 grados para un patrón irregular orgánico.
+     * **`blood-o1`**: Manchada exactamente al 10% desde el extremo izquierdo.
+     * **`blood-a2`**: Manchada al 90% de su ancho.
+     * **`blood-r`**: Manchada exactamente al 10% en su extremo izquierdo.
+     * **`blood-dot`**: Manchado al 40% (intermedio entre manchado y limpio) con un ángulo de 135 grados.
+   - Animar el `background-size` de la capa de sangre de `0% 100%` a `100% 100%` a partir del segundo 3.5 para un crecimiento orgánico de la mancha.
+4. **Invalidación de Caché en Producción**:
+   - Incrementar `CACHE_NAME` a `lecturas-interactivas-cache-v14` en [service-worker.js](file:///c:/App-libro-interactivo/public/service-worker.js) para forzar a los clientes PWA a descargar la nueva versión de estilos.
+   - Incrementar el query param de estilos a `index.css?v=102` en [index.html](file:///c:/App-libro-interactivo/index.html) para asegurar la carga inmediata en browsers normales.
+
