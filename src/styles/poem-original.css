@@ -281,18 +281,16 @@ body.virtual-fullscreen #app-container {
     --blood-dark: oklch(16% 0.20 18);
     --text-white: #e6e5ec;
     
-    /* Animación estándar para páginas intermedias (se activa al cargar la página) */
-    animation: stainLetterBlood 3s cubic-bezier(0.25, 0.8, 0.25, 1) 0.5s forwards !important;
+    /* Parámetros unificados de animación: proceso de tinción lento y gradual a 6.5s */
+    animation-duration: 6.5s !important;
+    animation-delay: 3.5s !important;
+    animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    animation-fill-mode: forwards !important;
 }
 
-/* Excepción de animación para el verso final en la página 5 (latido lento y retrasado) */
-.poem-layout .heartbeat-blood span {
-    animation: stainLetterBlood 5.5s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards !important;
-}
+/* --- Grupos de Tinción y Transición Direccional --- */
 
-/* --- Grupos de Tinción --- */
-
-/* Letra C: Tinción al 50% con un ángulo diagonal de 45° */
+/* Letra C: Tinción al 50% con un ángulo diagonal de 45° (Diagonal) */
 .poem-layout .blood-C {
     background-image: 
         linear-gradient(45deg, 
@@ -303,22 +301,26 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom left, center;
+    animation-name: stainDiagonal !important;
 }
 
-/* Título O: Tinción al 35% desde la esquina inferior derecha */
+/* Título O: Tinción al 20% superior, gotea hacia abajo (Vertical Down) */
 .poem-layout .blood-title-O {
     background-image: 
-        linear-gradient(to top left, 
+        linear-gradient(to bottom, 
             var(--blood-core) 0%, 
-            var(--blood-core) 27%, 
-            var(--blood-dark) 35%, 
-            transparent 39%, 
+            var(--blood-core) 14%, 
+            var(--blood-dark) 20%, 
+            transparent 24%, 
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: top, center;
+    animation-name: stainVerticalDown !important;
 }
 
-/* Autor J: Tinción al 5% desde la esquina inferior izquierda */
+/* Autor J: Tinción al 5% inferior izquierdo (Diagonal) */
 .poem-layout .blood-author-J {
     background-image: 
         linear-gradient(to top right, 
@@ -329,9 +331,36 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom left, center;
+    animation-name: stainDiagonal !important;
 }
 
-/* Tinción al 10% (borde izquierdo) */
+/* Imposibilidad B: Tinción dual (40% abajo, 20% arriba) que se junta al centro (Split) */
+.poem-layout .blood-b-split {
+    background-image: 
+        linear-gradient(to top, var(--blood-core) 0%, var(--blood-core) 32%, var(--blood-dark) 40%, transparent 44%, transparent 100%),
+        linear-gradient(to bottom, var(--blood-core) 0%, var(--blood-core) 14%, var(--blood-dark) 20%, transparent 24%, transparent 100%),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom, top, center;
+    animation-name: stainSplit !important;
+}
+
+/* Inevitable B: Tinción diagonal incompleta al 60% (Diagonal) */
+.poem-layout .blood-b-inevitable {
+    background-image: 
+        linear-gradient(45deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 50%, 
+            var(--blood-dark) 60%, 
+            transparent 64%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom left, center;
+    animation-name: stainDiagonal !important;
+}
+
+/* Tinción al 10% (Horizontal) */
 .poem-layout .blood-o1,
 .poem-layout .blood-amor-a,
 .poem-layout .blood-aguardar-r2 {
@@ -344,9 +373,26 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
 }
 
-/* Tinción al 50% (mitad izquierda) */
+/* Tinción al 30% Horizontal (o de soñamos) */
+.poem-layout .blood-o-soñamos {
+    background-image: 
+        linear-gradient(90deg, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 20%, 
+            var(--blood-dark) 30%, 
+            transparent 34%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
+}
+
+/* Tinción al 50% (Horizontal) */
 .poem-layout .blood-amor-m,
 .poem-layout .blood-amor-o,
 .poem-layout .blood-aguardar-a3,
@@ -360,9 +406,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
 }
 
-/* Tinción al 70% (amar-a2) */
+/* Tinción al 70% (Horizontal) */
 .poem-layout .blood-amar-a2 {
     background-image: 
         linear-gradient(90deg, 
@@ -373,9 +421,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
 }
 
-/* Tinción al 85% (queda-q, queda-e) */
+/* Tinción al 85% (queda-q, queda-e) (Horizontal) */
 .poem-layout .blood-queda-q,
 .poem-layout .blood-queda-e {
     background-image: 
@@ -387,9 +437,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
 }
 
-/* Tinción al 90% desde la izquierda (aguardar, otro) */
+/* Tinción al 90% (Horizontal) */
 .poem-layout .blood-aguardar-a1,
 .poem-layout .blood-aguardar-g,
 .poem-layout .blood-aguardar-u,
@@ -406,9 +458,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: left, center;
+    animation-name: stainHorizontal !important;
 }
 
-/* Tinción al 40% vertical desde abajo */
+/* Tinción al 40% vertical desde abajo (Vertical Up) */
 .poem-layout .blood-amar-r,
 .poem-layout .blood-dot,
 .poem-layout .blood-bottom-40 {
@@ -421,9 +475,26 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom, center;
+    animation-name: stainVerticalUp !important;
 }
 
-/* Tinción al 90% vertical desde abajo (Inevitable y Ojalá) */
+/* Tinción al 70% vertical desde abajo (m de soñamos) (Vertical Up) */
+.poem-layout .blood-70 {
+    background-image: 
+        linear-gradient(to top, 
+            var(--blood-core) 0%, 
+            var(--blood-core) 62%, 
+            var(--blood-dark) 70%, 
+            transparent 74%, 
+            transparent 100%
+        ),
+        linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom, center;
+    animation-name: stainVerticalUp !important;
+}
+
+/* Tinción al 90% vertical desde abajo (Inevitable y Ojalá) (Vertical Up) */
 .poem-layout .blood-bottom-90 {
     background-image: 
         linear-gradient(to top, 
@@ -434,9 +505,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: bottom, center;
+    animation-name: stainVerticalUp !important;
 }
 
-/* Tilde á de Ojalá: Tinción al 30% desde arriba */
+/* Tilde á de Ojalá: Tinción al 30% desde arriba (Vertical Down) */
 .poem-layout .blood-accent-30 {
     background-image: 
         linear-gradient(to bottom, 
@@ -447,35 +520,11 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: top, center;
+    animation-name: stainVerticalDown !important;
 }
 
-/* m de soñamos: Tinción al 80% desde abajo */
-.poem-layout .blood-m-80 {
-    background-image: 
-        linear-gradient(to top, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 72%, 
-            var(--blood-dark) 80%, 
-            transparent 84%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* o de soñamos: Tinción al 20% superior derecha */
-.poem-layout .blood-o-top-right-20 {
-    background-image: 
-        linear-gradient(to bottom left, 
-            var(--blood-core) 0%, 
-            var(--blood-core) 12%, 
-            var(--blood-dark) 20%, 
-            transparent 24%, 
-            transparent 100%
-        ),
-        linear-gradient(var(--text-white), var(--text-white));
-}
-
-/* s de soñamos: Tinción al 25% superior (el rabito) */
+/* s de soñamos: Tinción al 25% superior (el rabito) (Vertical Down) */
 .poem-layout .blood-s-top-25 {
     background-image: 
         linear-gradient(to bottom, 
@@ -486,6 +535,8 @@ body.virtual-fullscreen #app-container {
             transparent 100%
         ),
         linear-gradient(var(--text-white), var(--text-white));
+    background-position: top, center;
+    animation-name: stainVerticalDown !important;
 }
 
 @keyframes heartbeatPulse {

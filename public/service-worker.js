@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lecturas-interactivas-cache-v16';
+const CACHE_NAME = 'lecturas-interactivas-cache-v17';
 
 // Recursos esenciales que se cachean al instalar
 const urlsToCache = [

@@ -866,27 +866,25 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 4. **Nuevo Orden de Secciones**: Poesía, Conceptos Filosóficos, Con la Voz del Autor, Escritos Originales, Novelas con bifurcaciones, Libros, Próximamente.
 
 ### Corrección de Versos, Latido Lento y Salpicadura de Sangre de Alta Precisión por Letra en Ocaso (Mayo 2026)
-**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica de letras individuales en múltiples páginas de la obra, manteniendo su proporción perfecta y responsiva.
+**Objetivo**: Corregir la página 4 de "Ocaso" (finalizando en "Inevitable."), enlentecer el latido a un ritmo de 5.5s imperceptible, y simular una tinción de sangre realista y asimétrica de letras individuales en múltiples páginas de la obra, animando la sangre para que fluya en la dirección física de la salpicadura de forma muy gradual (6.5s).
 
 **Implementación**:
 1. **Tinción Precisa por Letras Multi-Página ([ocaso.json](file:///c:/App-libro-interactivo/public/stories/ocaso.json))**:
-   - **Portada (Pág. 1)**: Envolver la **O** de "Ocaso" (`.blood-title-O` a 35% de tinción inferior derecha) y la **J** de "Ju Ez" (`.blood-author-J` a 5% de tinción inferior izquierda).
-   - **Página 2**: Envolver la parte final `"b-i-l-i-d-a-d"` de `"imposibilidad."` en spans (`.blood-bottom-40` a 40% vertical desde abajo).
+   - **Portada (Pág. 1)**: Envolver la **O** de "Ocaso" (`.blood-title-O` a 20% vertical superior, goteando hacia abajo) y la **J** de "Ju Ez" (`.blood-author-J` a 5% diagonal inferior izquierda).
+   - **Página 2**: Envolver la primera **b** de "imposibilidad" (`.blood-b-split` con tinción dual: 40% abajo y 20% arriba, uniéndose en el centro) y `"i-l-i-d-a-d"` (`.blood-bottom-40` a 40% vertical desde abajo).
    - **Página 3**:
      * Envolver la **j** (`.blood-bottom-90` a 90% vertical desde abajo) y la tilde **á** (`.blood-accent-30` a 30% vertical desde arriba / accent) de "Ojalá".
-     * Envolver la **m** (`.blood-m-80` a 80% vertical desde abajo), la **o** (`.blood-o-top-right-20` a 20% superior derecha) y la **s** (`.blood-s-top-25` a 25% superior) de "soñamos".
-   - **Página 4**: Envolver las letras `n`, `v`, `t`, `a`, `b` de "Inevitable." con tinción al 90% vertical desde abajo (`.blood-bottom-90`).
+     * Envolver la **m** (`.blood-70` a 70% vertical desde abajo), la **o** (`.blood-o-soñamos` a 30% desde la izquierda / horizontal para fluidez con la M) y la **s** (`.blood-s-top-25` a 25% superior) de "soñamos".
+   - **Página 4**: Envolver las letras `n`, `v`, `t`, `a` (`.blood-bottom-90` a 90% vertical) y la **b** (`.blood-b-inevitable` a 60% diagonal incompleta) de "Inevitable.".
    - **Página 5**: Envolver las letras según el patrón ya definido (Como, amor, queda, aguardar, otro, amar.).
 2. **Latido Ultra Lento e Imperceptible (5.5s)**:
    - Mantener el ciclo de `5.5s` en `@keyframes heartbeatPulse` con escala mínima de `1.012` / `1.002` para un pulso existencial sumamente lento.
-3. **Efecto de Sangre en OKLCH Espesa y Densa**:
-   - Definir variables de color de alta saturación en OKLCH para un fluido más realista y espeso:
      * `--blood-core: oklch(28% 0.26 24)` (rojo sangre profundo y denso)
      * `--blood-dark: oklch(16% 0.20 18)` (bordes oscuros y coagulados)
      * `--text-white: #e6e5ec` (blanco hueso base de texto sin manchar)
    - Aplicar la animación de crecimiento `stainLetterBlood` de `0% 100%` a `100% 100%` a partir del segundo 3.5.
 4. **Invalidación de Caché en Producción**:
-   - Incrementar `CACHE_NAME` a `lecturas-interactivas-cache-v15` en [service-worker.js](file:///c:/App-libro-interactivo/public/service-worker.js) para invalidar los estilos locales antiguos.
-   - Incrementar el query param de estilos a `index.css?v=103` en [index.html](file:///c:/App-libro-interactivo/index.html).
+   - Incrementar `CACHE_NAME` a `lecturas-interactivas-cache-v17` en [service-worker.js](file:///c:/App-libro-interactivo/public/service-worker.js) para invalidar los estilos locales antiguos.
+   - Incrementar el query param de estilos a `index.css?v=105` en [index.html](file:///c:/App-libro-interactivo/index.html).
 
 
