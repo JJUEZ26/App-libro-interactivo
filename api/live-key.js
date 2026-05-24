@@ -21,12 +21,12 @@ module.exports = async (req, res) => {
         process.env.ALLOWED_ORIGIN || ''
     ].filter(Boolean);
 
-    const isAllowed = ALLOWED_ORIGINS.some(allowed => source.startsWith(allowed));
+    const isAllowed = ALLOWED_ORIGINS.some(allowed => allowed !== '' && source.startsWith(allowed));
 
-    if (!isAllowed && source) {
+    if (!isAllowed) {
         res.statusCode = 403;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'Origen no autorizado.' }));
+        res.end(JSON.stringify({ error: 'Origen no autorizado o ausente.' }));
         return;
     }
 

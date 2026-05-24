@@ -1,23 +1,45 @@
-@import url('./base.css');
-@import url('./animations.css');
-@import url('./layout.css');
-@import url('./ui.css');
-@import url('./library.css');
-@import url('./reader.css');
-@import url('./utilities.css');
-@import url('../books/pajaro-azul/styles.css');
-@import url('../effects/overlay/styles.css');
-@import url('../effects/bluebird/styles.css');
-@import url('../effects/smoke/styles.css');
-@import url('../effects/rain/styles.css');
-@import url('../effects/beetle/styles.css');
-@import url('../effects/leaves/styles.css');
-@import url('../effects/transition/styles.css');
-@import url('./poem-experience.css');
-@import url('./discoveries.css');
-@import url('./chat.css');
-@import url('./command-orb.css');
-@import url('./eterno-retorno.css');
-@import url('./onboarding.css');
-@import url('./sensory-invite.css');
-@import url('./auth.css');
+/* ================================================
+   LECTURAS INTERACTIVAS — CSS Entry Point
+   Layer declaration order defines cascade priority.
+   Later layers always win over earlier ones.
+   ================================================ */
+
+@layer reset, tokens, layout, components, library, reader, auth, poems, effects, utilities;
+
+/* --- Tokens & Reset --- */
+@import url('./base.css') layer(tokens);
+@import url('./animations.css') layer(components);
+@import url('./layout.css') layer(layout);
+
+/* --- UI Components --- */
+@import url('./ui.css') layer(components);
+@import url('./library.css') layer(library);
+@import url('./reader.css') layer(reader);
+@import url('./auth.css') layer(auth);
+
+/* --- Shared Poem System --- */
+@import url('./poem-core.css') layer(poems);
+@import url('./poet-bios.css') layer(poems);
+@import url('./poem-becquer.css') layer(poems);
+@import url('./poem-gata.css') layer(poems);
+@import url('./eterno-retorno.css') layer(poems);
+
+/* --- UI Overlays & Modals --- */
+@import url('./discoveries.css') layer(components);
+@import url('./chat.css') layer(components);
+@import url('./command-orb.css') layer(components);
+@import url('./onboarding.css') layer(components);
+@import url('./sensory-invite.css') layer(components);
+
+/* --- Visual Effects (per-effect CSS) --- */
+@import url('../books/pajaro-azul/styles.css') layer(effects);
+@import url('../effects/overlay/styles.css') layer(effects);
+@import url('../effects/bluebird/styles.css') layer(effects);
+@import url('../effects/smoke/styles.css') layer(effects);
+@import url('../effects/rain/styles.css') layer(effects);
+@import url('../effects/beetle/styles.css') layer(effects);
+@import url('../effects/leaves/styles.css') layer(effects);
+@import url('../effects/transition/styles.css') layer(effects);
+
+/* --- Utilities (always win) --- */
+@import url('./utilities.css') layer(utilities);

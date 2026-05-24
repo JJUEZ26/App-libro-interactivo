@@ -1,0 +1,353 @@
+/* ========================================
+   POEM CORE — Shared poetry layout system
+   Used by all poem experiences across the app.
+   ======================================== */
+
+/* --- Ambient Background Video --- */
+.ambient-bg-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ambient-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    will-change: opacity;
+    transform: scale(1.8);
+    transform-origin: center center;
+}
+
+.ambient-bg-wrapper[style*="screen"] .ambient-bg-video {
+    filter: contrast(2.5) brightness(1.2);
+}
+
+body.fullscreen-mode .ambient-bg-video {
+    transform: scale(1);
+}
+
+.page-content {
+    position: relative;
+}
+
+.content-centerer {
+    position: relative;
+    z-index: 2;
+}
+
+.content-centerer .choices {
+    position: relative;
+    z-index: 3;
+}
+
+/* Subtle shadow on verses so they remain legible on any video frame */
+.ambient-bg-wrapper~.content-centerer .verse-line,
+.ambient-bg-wrapper~.content-centerer p {
+    text-shadow:
+        0 0 12px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Poem Intro Layout (Title + Author + Two Choices) --- */
+.poem-intro-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.poem-intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.poem-intro-layout~.choices {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 2s forwards;
+    margin-top: 2.5rem;
+}
+
+/* --- Poem Title Display (Intro Page) --- */
+.poem-title-display {
+    font-family: var(--font-reader-title), serif;
+    font-size: clamp(2.2rem, 7vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    animation: poemTitleReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.poem-author-display {
+    display: block;
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-color);
+    opacity: 0;
+    text-align: center;
+    margin-top: 0.5rem;
+    animation: poemAuthorReveal 1.5s ease 1.2s forwards;
+}
+
+.poem-author-display::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent-color);
+    margin: 0 auto 0.8rem;
+    opacity: 0.5;
+}
+
+.poem-author-display:has(+ *) em,
+.poem-author-display em {
+    font-style: italic;
+    opacity: 0.75;
+}
+
+@keyframes poemTitleReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(8px);
+    }
+
+    60% {
+        opacity: 0.8;
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes poemAuthorReveal {
+    0% {
+        opacity: 0;
+        letter-spacing: 0.4em;
+    }
+
+    100% {
+        opacity: 0.55;
+        letter-spacing: 0.15em;
+    }
+}
+
+/* --- Primary Choice Button (Listen with Author Voice) --- */
+.choices button.choice-primary {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: 2px solid var(--accent-color);
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 18px 24px;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    animation: primaryChoicePulse 3s ease-in-out 2.5s infinite;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.1),
+        0 0 0 0 rgba(139, 94, 60, 0);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.choices button.choice-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.15),
+        0 0 30px rgba(139, 94, 60, 0.2);
+}
+
+.choices button.choice-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+@keyframes primaryChoicePulse {
+    0%, 100% {
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.1),
+            0 0 0 0 rgba(139, 94, 60, 0);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.1),
+            0 0 20px rgba(139, 94, 60, 0.15);
+    }
+}
+
+/* --- Secondary Choice Button (Read Silently) --- */
+.choices button.choice-secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid transparent;
+    font-weight: 400;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    opacity: 0.45;
+    letter-spacing: 0.03em;
+    transition: all 0.3s ease;
+}
+
+.choices button.choice-secondary:hover {
+    opacity: 0.8;
+    background: transparent;
+    color: var(--text-color);
+    border-color: rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+body.theme-dark .choices button.choice-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Enhanced Verse Reading Mode --- */
+.poem-layout .stanza {
+    gap: 0.3rem;
+}
+
+.poem-layout .verse-line {
+    font-size: clamp(1.3rem, 4vw, 1.7rem);
+    line-height: 2;
+    opacity: 0;
+    animation: verseFadeIn 1.2s ease forwards;
+}
+
+/* Stagger verse lines */
+.poem-layout .stanza:nth-child(1) .verse-line:nth-child(1) { animation-delay: 0.2s; }
+.poem-layout .stanza:nth-child(1) .verse-line:nth-child(2) { animation-delay: 0.8s; }
+.poem-layout .stanza:nth-child(1) .verse-line:nth-child(3) { animation-delay: 1.4s; }
+.poem-layout .stanza:nth-child(2) .verse-line:nth-child(1) { animation-delay: 1.8s; }
+.poem-layout .stanza:nth-child(2) .verse-line:nth-child(2) { animation-delay: 2.4s; }
+.poem-layout .stanza:nth-child(2) .verse-line:nth-child(3) { animation-delay: 3.0s; }
+.poem-layout .stanza:nth-child(3) .verse-line:nth-child(1) { animation-delay: 3.4s; }
+.poem-layout .stanza:nth-child(3) .verse-line:nth-child(2) { animation-delay: 4.0s; }
+.poem-layout .stanza:nth-child(3) .verse-line:nth-child(3) { animation-delay: 4.6s; }
+
+@keyframes verseFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+        filter: blur(4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* --- Karaoke Experience --- */
+.audio-hint {
+    font-family: var(--font-body);
+    font-style: italic;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 1s ease 0.5s forwards;
+}
+
+.karaoke-line {
+    font-family: var(--font-reader-body), serif;
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    line-height: 1.8;
+    transition:
+        opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.5s ease,
+        text-shadow 0.5s ease;
+}
+
+.karaoke-line.active {
+    opacity: 1;
+    transform: scale(1.04);
+    font-weight: 600;
+    color: var(--accent-color);
+    text-shadow: 0 0 30px rgba(139, 94, 60, 0.12);
+}
+
+.karaoke-container {
+    padding: 1rem 0 4rem;
+}
+
+.audio-controls-container {
+    padding-top: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.karaoke-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    background-color: var(--bg-color);
+    color: var(--accent-color);
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08),
+        0 0 0 4px rgba(139, 94, 60, 0.06);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: karaokePlayPulse 2.5s ease-in-out infinite;
+}
+
+.karaoke-btn:hover {
+    transform: scale(1.12);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.12),
+        0 0 0 6px rgba(139, 94, 60, 0.1);
+}
+
+@keyframes karaokePlayPulse {
+    0%, 100% {
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.08),
+            0 0 0 4px rgba(139, 94, 60, 0.06);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 15px rgba(0, 0, 0, 0.08),
+            0 0 0 8px rgba(139, 94, 60, 0.04);
+    }
+}
+
+/* --- Delayed Choices (For Poem Endings) --- */
+.choices-delayed {
+    opacity: 0;
+    visibility: hidden;
+    animation: smoothReveal 2.5s ease 3.5s forwards;
+}
+
+@keyframes smoothReveal {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(15px);
+    }
+
+    1% { visibility: visible; }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}

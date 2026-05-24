@@ -1,0 +1,210 @@
+/* ========================================
+   BÉCQUER — "Volverán las oscuras golondrinas"
+   Visual identity: Twilight garden + balcony layout
+   ======================================== */
+
+/* --- Bécquer Title: Cinematic Reveal --- */
+.becquer-title {
+    font-style: italic;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: becquerTitleReveal 3.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    text-shadow: 0 0 40px rgba(255, 180, 100, 0.08);
+}
+
+@keyframes becquerTitleReveal {
+    0% { opacity: 0; letter-spacing: 0.12em; filter: blur(8px); transform: translateY(20px) scale(0.96); }
+    40% { opacity: 0.6; filter: blur(2px); }
+    100% { opacity: 1; letter-spacing: 0.04em; filter: blur(0); transform: translateY(0) scale(1); }
+}
+
+/* --- "¡No volverán!" — Emotional Emphasis --- */
+.becquer-no-volveran {
+    display: inline;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.03em;
+    color: rgba(255, 200, 160, 0.95);
+    text-shadow: 0 0 20px rgba(255, 160, 80, 0.2), 0 0 60px rgba(200, 100, 60, 0.08);
+    animation: becquerEmphasisBreathe 4s ease-in-out 2.5s infinite;
+}
+
+/* --- "¡No te querrán!" — The Final Blow --- */
+.becquer-no-querran {
+    display: inline;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.04em;
+    font-size: 1.15em;
+    color: rgba(255, 220, 190, 1);
+    text-shadow: 0 0 30px rgba(255, 180, 100, 0.3), 0 0 80px rgba(200, 120, 60, 0.12), 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: becquerFinalBlow 5s ease-in-out 3s infinite;
+}
+
+@keyframes becquerEmphasisBreathe {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 160, 80, 0.15), 0 0 60px rgba(200, 100, 60, 0.05); }
+    50% { text-shadow: 0 0 30px rgba(255, 160, 80, 0.25), 0 0 80px rgba(200, 100, 60, 0.1); }
+}
+
+@keyframes becquerFinalBlow {
+    0%, 100% { text-shadow: 0 0 30px rgba(255, 180, 100, 0.25), 0 0 80px rgba(200, 120, 60, 0.08); transform: scale(1); }
+    50% { text-shadow: 0 0 40px rgba(255, 180, 100, 0.35), 0 0 100px rgba(200, 120, 60, 0.15); transform: scale(1.02); }
+}
+
+/* --- Twilight text adaptation --- */
+.twilight-night~.page-content,
+.twilight-deep_night~.page-content {
+    color: rgba(220, 215, 230, 0.95);
+    text-shadow: 0 0 20px rgba(180, 170, 220, 0.1);
+}
+
+/* Twilight-progressive verse coloring */
+.twilight-golden~.page-content .poem-layout .verse-line { color: rgba(60, 40, 30, 0.92); }
+.twilight-sunset~.page-content .poem-layout .verse-line { color: rgba(80, 50, 35, 0.9); text-shadow: 0 0 15px rgba(255, 140, 50, 0.04); }
+.twilight-dusk_early~.page-content .poem-layout .verse-line { color: rgba(210, 200, 220, 0.92); }
+.twilight-dusk~.page-content .poem-layout .verse-line { color: rgba(215, 205, 225, 0.9); text-shadow: 0 0 18px rgba(140, 100, 180, 0.06); }
+.twilight-dusk_late~.page-content .poem-layout .verse-line { color: rgba(220, 210, 235, 0.9); text-shadow: 0 0 20px rgba(160, 120, 200, 0.08); }
+
+.twilight-dusk_early~.page-content .becquer-no-volveran,
+.twilight-dusk_late~.page-content .becquer-no-volveran { color: rgba(255, 210, 170, 1); }
+
+.twilight-deep_night~.page-content .becquer-no-querran {
+    color: rgba(255, 230, 200, 1);
+    text-shadow: 0 0 40px rgba(255, 200, 120, 0.35), 0 0 100px rgba(200, 140, 80, 0.15), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.twilight-night~.page-content .poem-layout .verse-line,
+.twilight-deep_night~.page-content .poem-layout .verse-line { color: rgba(230, 225, 240, 0.9); }
+
+.twilight-deep_night~.page-content .poem-layout .stanza:last-child .verse-line:last-child {
+    font-weight: 600;
+    text-shadow: 0 0 25px rgba(200, 180, 255, 0.15);
+}
+
+/* Swallow nested state */
+.swallow-nested { transition: transform 2s ease-out, opacity 1s ease; }
+
+/* Firefly Animation */
+@keyframes fireflyGlow {
+    0%, 100% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    15% { opacity: 0.8; transform: translate(calc(var(--fly-drift) * 0.3), -8px) scale(1); }
+    40% { opacity: 0.4; transform: translate(calc(var(--fly-drift) * 0.6), -15px) scale(0.8); }
+    60% { opacity: 0.9; transform: translate(var(--fly-drift), -5px) scale(1.1); }
+    80% { opacity: 0.3; transform: translate(calc(var(--fly-drift) * 0.8), -12px) scale(0.7); }
+}
+
+/* Dewdrop Shimmer */
+@keyframes dewdropShimmer {
+    0%, 100% { opacity: 0; transform: translateY(0) translateX(0) scale(0.6); }
+    20% { opacity: 0.7; transform: translateY(-1vh) translateX(calc(var(--drop-sway) * 0.3)) scale(1); }
+    50% { opacity: 1; transform: translateY(calc(var(--drop-fall-distance) * 0.3)) translateX(var(--drop-sway)) scale(1.1); }
+    70% { opacity: 0.6; transform: translateY(calc(var(--drop-fall-distance) * 0.7)) translateX(calc(var(--drop-sway) * 0.5)) scale(0.9); }
+    90% { opacity: 0.2; transform: translateY(var(--drop-fall-distance)) translateX(0) scale(0.7); }
+}
+
+/* Dewdrop Fall */
+@keyframes dewdropFall {
+    0% { opacity: 0; transform: translateY(0) scale(0.4); }
+    10% { opacity: 0.9; transform: translateY(0) scale(1); }
+    15% { opacity: 1; transform: translateY(1vh) scale(1.05); }
+    100% { opacity: 0; transform: translateY(var(--drop-fall-distance)) scale(0.6); }
+}
+
+.twilight-overlay { transition: opacity 2.5s ease, background 3s ease; }
+.poem-layout .verse-line:last-child { transition: color 0.5s ease, text-shadow 0.5s ease; }
+
+/* --- Bécquer Balcony Layout (Text Left, Media Right) --- */
+.layout-poem-balcony .content-centerer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: 100%;
+    position: relative;
+}
+
+.layout-poem-balcony .images-container,
+.layout-poem-balcony .videos-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 45%;
+    margin: 0;
+    pointer-events: none;
+}
+
+.layout-poem-balcony .images-container img {
+    width: 100%; max-width: 100%; margin: 0; height: auto; object-fit: contain;
+    mix-blend-mode: multiply; opacity: 0.75;
+    filter: grayscale(100%) contrast(1.5) brightness(1.15) sepia(50%) hue-rotate(-10deg);
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%, black 70%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to left, transparent 0%, black 15%, black 70%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+    animation: balconyFadeInRight 2s ease-out forwards;
+}
+
+.layout-poem-balcony .videos-container chroma-key-video {
+    width: 100%; max-width: 100%; margin: 0; height: auto; opacity: 0.9;
+    -webkit-mask-image: linear-gradient(to left, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to left, transparent 0%, black 15%, black 85%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-composite: intersect;
+    animation: balconyFadeInRight 2s ease-out forwards;
+}
+
+.layout-poem-balcony .scenes-container {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    max-width: 55%; z-index: 2;
+}
+
+@keyframes balconyFadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 0.9; transform: translateX(0); }
+}
+
+@media (max-width: 768px) {
+    .layout-poem-balcony .content-centerer { flex-direction: column-reverse; justify-content: flex-end; padding-top: 8vh; gap: 2rem; }
+    .layout-poem-balcony .scenes-container { max-width: 100%; align-items: center; text-align: center; }
+    .layout-poem-balcony .images-container, .layout-poem-balcony .videos-container { max-width: 100%; width: 100%; justify-content: center; align-items: flex-start; margin-top: -1rem; }
+    .layout-poem-balcony .videos-container chroma-key-video,
+    .layout-poem-balcony .images-container img {
+        width: 100%; margin: 0;
+        -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 100%), linear-gradient(to left, transparent 5%, black 20%, black 80%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 5%, black 30%, black 100%), linear-gradient(to left, transparent 5%, black 20%, black 80%, transparent 100%);
+    }
+}
+
+/* --- Madreselva v2 (Chroma-key vine frame) --- */
+.layout-madreselva-v2 .content-centerer {
+    position: relative; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; min-height: 70vh; overflow: hidden;
+}
+
+.layout-madreselva-v2 .videos-container {
+    position: absolute !important; inset: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; z-index: 0; opacity: 0;
+    animation: madreselvaReveal 4s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+}
+
+.layout-madreselva-v2 .videos-container chroma-key-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+.layout-madreselva-v2 .scenes-container { position: relative; z-index: 2; text-align: center; max-width: 85%; }
+.layout-madreselva-v2 .poem-layout .verse-line { text-shadow: 0 0 20px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 0, 0, 0.2); }
+
+@keyframes madreselvaReveal {
+    0% { opacity: 0; transform: scale(1.15); filter: blur(6px); }
+    40% { opacity: 0.6; filter: blur(2px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@media (max-width: 768px) {
+    .layout-madreselva-v2 .content-centerer { min-height: 80vh; padding-top: 5vh; }
+    .layout-madreselva-v2 .videos-container { position: fixed !important; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; inset: unset; }
+    .layout-madreselva-v2 .videos-container chroma-key-video { opacity: 0.85; }
+    .layout-madreselva-v2 .scenes-container { position: relative; z-index: 10; max-width: 90%; }
+    .layout-madreselva-v2 .poem-layout .verse-line { text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6); }
+}

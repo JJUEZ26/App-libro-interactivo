@@ -1,9 +1,11 @@
-﻿import { getAppMode, state } from '../app/state.js';
+import { getAppMode, state } from '../app/state.js';
 import { getEternoCycle, incrementEternoCycle, resetEternoCycle } from '../effects/eterno-retorno/cycle-state.js';
 import { handlePageEffects } from '../effects/index.js';
 import { applyHighlightsForPage } from './highlights.js';
 import { sanitizeHTML } from '../utils/sanitize.js';
 import { renderDiscoveries, renderMusicCredits } from './discoveries.js';
+import { initAmbientVideo } from './ambient-video.js';
+import { mountSisyphusGame, destroySisyphusWidget } from './sisyphus-mount.js';
 import {
     bindAudioExperience,
     clearAudioExperienceContext,
@@ -21,7 +23,6 @@ import {
 
 let elements = null;
 let goToPage = null;
-let activeSisyphusWidget = null;
 
 export function setRenderDependencies({ elements: elementsRef, goToPage: goToPageRef }) {
     elements = elementsRef;
@@ -39,7 +40,6 @@ export function preloadNextImages(currentPageId) {
             if (nextPage.images) nextPage.images.forEach((url) => {
                 new Image().src = url;
             });
-            // Use centralized audio preloading
             const nextSound = nextPage.bgMusic || nextPage.sound || nextPage.audio;
             if (nextSound) preloadAudio(nextSound);
         }
@@ -50,10 +50,7 @@ export function renderPage(pageId) {
     if (!elements?.pageWrapper) return;
 
     // Destroy any active Sisyphus widget from previous page
-    if (activeSisyphusWidget) {
-        try { activeSisyphusWidget.destroy(); } catch (e) { /* ignore */ }
-        activeSisyphusWidget = null;
-    }
+    destroySisyphusWidget();
 
     elements.pageWrapper.querySelectorAll('.page-content').forEach((node) => node.remove());
     if (!state.story) return;
@@ -63,7 +60,6 @@ export function renderPage(pageId) {
 
     // Detectar ciclo del Eterno Retorno
     if (state.currentBook?.id === 'eterno_retorno' && pageData.id === 'portada') {
-        // Si venimos de la biografía, es un nuevo ciclo
         const prevPage = state.pageHistory[state.pageHistory.length - 2];
         if (prevPage === 'biografia') {
             incrementEternoCycle();
@@ -108,8 +104,6 @@ export function renderPage(pageId) {
         const freezeAtEnd = typeof pageData.bgVideo === 'object' && pageData.bgVideo.freezeAtEnd === true;
         const loopAttr = freezeAtEnd ? '' : 'loop';
 
-        // Native HTML5 <video> — blendMode "screen" removes black backgrounds.
-        // freezeAtEnd: video plays once and pauses on the last frame.
         contentHtml += `<div class="ambient-bg-wrapper"
             data-rate="${playRate}"
             data-opacity="${maxOpacity}"
@@ -189,9 +183,6 @@ export function renderPage(pageId) {
 
     contentCenterer.innerHTML = contentHtml;
 
-    // Renderizar descubrimientos (orbe interactivo en biografías)
-    // Placeholder removed — will inject after choices below
-
     // Renderizar opciones
     if (pageData.choices && pageData.choices.length > 0) {
         const shouldRenderChoiceButtons =
@@ -240,11 +231,7 @@ export function renderPage(pageId) {
                         }
                     }
 
-                    if (choice.page === 'pecado' || isListenChoice) {
-                        if (goToPage) goToPage(choice.page);
-                    } else if (goToPage) {
-                        goToPage(choice.page);
-                    }
+                    if (goToPage) goToPage(choice.page);
                 });
                 choicesDiv.appendChild(btn);
             });
@@ -256,13 +243,10 @@ export function renderPage(pageId) {
         const authorName = pageData.discoverAuthor || '';
         renderDiscoveries(contentCenterer, pageData.discoveries, authorName, pageData.musicCredits || null);
     } else if (pageData.musicCredits) {
-        // Página sin discoveries pero CON créditos musicales (ej. La Puerta)
         renderMusicCredits(contentCenterer, pageData.musicCredits);
     }
 
     // Botón Contextual "Deja tu huella"
-    // Solo aparece en finales reales: páginas con discoveries, musicCredits,
-    // o que tengan un choice explícito de volver a biblioteca (page === -1).
     const isRealEnding = (pageData.discoveries && pageData.discoveries.length > 0) ||
                          (pageData.musicCredits) ||
                          (pageData.choices && pageData.choices.some(c => c.page === -1));
@@ -289,20 +273,16 @@ export function renderPage(pageId) {
 
         huellaContainer.appendChild(btnHuella);
 
-        // Insert alongside discoveries/credits — find the discoveries container
         const discoveriesEl = contentCenterer.querySelector('.discoveries-container');
         if (discoveriesEl) {
-            // Place right after the discoveries container
             discoveriesEl.after(huellaContainer);
         } else {
-            // No discoveries — append at the end
             contentCenterer.appendChild(huellaContainer);
         }
     }
 
     // =====================================================
     // PAINT FIRST: Attach content to DOM immediately
-    // so the browser can render text/images without delay.
     // =====================================================
     pageContent.appendChild(contentCenterer);
     elements.pageWrapper.appendChild(pageContent);
@@ -313,31 +293,27 @@ export function renderPage(pageId) {
     if (pageData.specialContent === 'sisyphus-game') {
         const gameContainer = pageContent.querySelector('#sisyphus-game-container');
         if (gameContainer) {
-            mountSisyphusGame(gameContainer, pageContent);
+            mountSisyphusGame(gameContainer, pageContent, { goToPage });
         }
     }
 
-    // — Scrollbar auto-hide y Scroll-to-Reveal (Hide Action Bar on down-scroll) —
+    // — Scrollbar auto-hide y Scroll-to-Reveal —
     let scrollTimeout = null;
     let lastScrollY = 0;
-    
+
     pageContent.addEventListener('scroll', () => {
         const currentScrollY = pageContent.scrollTop;
 
-        // Ignorar comportamientos elásticos (bounce) en top y bottom (especial iOS)
         if (currentScrollY <= 0 || currentScrollY >= pageContent.scrollHeight - pageContent.clientHeight) {
             return;
         }
 
         pageContent.classList.add('is-scrolling');
-        
-        // Debounce mejorado con umbral más alto para pantallas táctiles
+
         if (Math.abs(currentScrollY - lastScrollY) > 15) {
             if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                // Scroll down: Hide elements
                 document.body.classList.add('is-scrolling-down');
             } else if (currentScrollY < lastScrollY) {
-                // Scroll up: Reveal elements
                 document.body.classList.remove('is-scrolling-down');
             }
             lastScrollY = currentScrollY;
@@ -351,10 +327,9 @@ export function renderPage(pageId) {
 
     // =====================================================
     // DEFER HEAVY WORK: Bind events + start audio/effects
-    // after the first paint, so the UI doesn't freeze.
     // =====================================================
     requestAnimationFrame(() => {
-        // — Bind karaoke controls (lightweight) —
+        // — Bind karaoke controls —
         const playBtn = document.getElementById('karaoke-play-btn');
         if (playBtn) {
             playBtn.addEventListener('click', (event) => {
@@ -386,8 +361,6 @@ export function renderPage(pageId) {
             clearAudioExperienceContext();
         }
 
-        // — Start audio (deferred so it doesn't block paint) —
-        // Unified path: one branch for all audio field types
         if (pageSoundFile) {
             const audioDecision = getCurrentBookAudioDecision();
 
@@ -398,12 +371,8 @@ export function renderPage(pageId) {
                     startKaraokeSync();
                 }
             } else if (audioDecision === 'silent') {
-                // User explicitly chose silence — stop any running audio
                 stopCurrentAudio();
             } else {
-                // Decision is null/undefined (prompt state).
-                // Do NOT destroy current audio — set up context so the
-                // CommandOrb toggle will work immediately when user taps.
                 playPageSound(pageId, pageSoundFile, false);
             }
         } else {
@@ -419,9 +388,7 @@ export function renderPage(pageId) {
         eternoResponses.forEach((btn) => {
             btn.addEventListener('click', (event) => {
                 event.stopPropagation();
-                // Remove selected from siblings
                 eternoResponses.forEach(b => b.classList.remove('selected'));
-                // Mark this one
                 btn.classList.add('selected');
             });
         });
@@ -437,13 +404,10 @@ export function renderPage(pageId) {
         }
 
         // — Defer even heavier work to NEXT frame —
-        // Effects, highlights, and preloading happen after content is visible
         requestAnimationFrame(() => {
             handlePageEffects(pageData.effect, { getAppMode });
             preloadNextImages(pageId);
 
-            // Highlights are the heaviest (TreeWalker + DOM mutation),
-            // so we use requestIdleCallback if available, else setTimeout
             if (typeof requestIdleCallback === 'function') {
                 requestIdleCallback(() => applyHighlightsForPage(pageId), { timeout: 300 });
             } else {
@@ -453,227 +417,6 @@ export function renderPage(pageId) {
     });
 }
 
-/**
- * Native engine for ambient background videos.
- * Supports looping (smoke) and freeze-at-end (madreselvas).
- */
-function initAmbientVideo() {
-    const wrapper = document.querySelector('.ambient-bg-wrapper');
-    if (!wrapper) return;
-
-    const playRate = parseFloat(wrapper.dataset.rate) || 0.85;
-    const maxOpacity = parseFloat(wrapper.dataset.opacity) || 0.4;
-    const shouldFreeze = wrapper.dataset.freeze === 'true';
-
-    const vid = wrapper.querySelector('.single-loop');
-    if (!vid) return;
-
-    // Apply properties immediately
-    vid.playbackRate = playRate;
-
-    // Soft fade in on load, so it doesn't pop in aggressively
-    vid.style.opacity = '0';
-    vid.style.transition = 'opacity 2.5s ease-in-out';
-
-    // Once it actually starts playing, fade it up to its max allowed opacity
-    vid.addEventListener('playing', () => {
-        vid.style.opacity = String(maxOpacity);
-    }, { once: true });
-
-    // If freezeAtEnd, pause on the very last frame so the image stays
-    if (shouldFreeze) {
-        vid.addEventListener('ended', () => {
-            // Seek to the last possible moment and pause
-            if (vid.duration) {
-                vid.currentTime = vid.duration - 0.01;
-            }
-            vid.pause();
-        }, { once: true });
-    }
-}
-
-// =====================================================
-// SISYPHUS GAME — Mount & Cycle Overlay Logic
-// =====================================================
-
-const CYCLE_TEXTS = [
-    // Cycle 1
-    `Su <span class="sisifo-keyword">castigo</span> encarna la condición humana:<br>el <span class="sisifo-keyword">esfuerzo</span> perpetuo, la lucha diaria<br>contra la gravedad de nuestras propias <span class="sisifo-keyword">responsabilidades</span>.`,
-    // Cycle 2
-    `En ese instante sutil en que el <span class="sisifo-keyword">hombre</span><br>vuelve sobre su vida, Sísifo contempla<br>esa serie de actos sin vínculo<br>que se convierten en su <span class="sisifo-keyword">destino</span>.`,
-    // Cycle 3 (easter egg)
-    `La <span class="sisifo-keyword">lucha</span> misma hacia las <span class="sisifo-keyword">cumbres</span><br>basta para llenar un corazón de hombre.<br><br>Hay que imaginarse a Sísifo <span class="sisifo-keyword">feliz</span>.`,
-];
-/**
- * Dynamically loads the Sisyphus widget ES module.
- * Uses a script[src] tag pointing to a small loader shim
- * to avoid Vite's static analysis of template literal imports.
- * Returns a Promise resolving to { createSisyphusGame }.
- */
-function loadSisyphusWidget() {
-    // If already loaded from a previous visit
-    if (window.SisyphusWidget?.createSisyphusGame) {
-        return Promise.resolve(window.SisyphusWidget);
-    }
-
-    return new Promise((resolve, reject) => {
-        // Listen for the readiness event
-        const onReady = () => {
-            window.removeEventListener('sisyphus-widget-ready', onReady);
-            resolve(window.SisyphusWidget);
-        };
-        window.addEventListener('sisyphus-widget-ready', onReady);
-
-        // Don't re-inject if script tag already exists (e.g. via back-navigation)
-        if (!document.querySelector('script[data-sisyphus-widget]')) {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.dataset.sisyphusWidget = 'true';
-            // Point to a loader shim that lives in /public/dist/
-            script.src = '/dist/sisyphus-loader.js';
-            document.head.appendChild(script);
-        }
-
-        // Fallback timeout
-        setTimeout(() => {
-            window.removeEventListener('sisyphus-widget-ready', onReady);
-            if (window.SisyphusWidget?.createSisyphusGame) {
-                resolve(window.SisyphusWidget);
-            } else {
-                reject(new Error('Timeout loading sisyphus-widget'));
-            }
-        }, 8000);
-    });
-}
-
-async function mountSisyphusGame(gameContainer, pageContentEl) {
-    try {
-        // Load the widget via script tag since Vite blocks dynamic imports from /public/
-        const widgetModule = await loadSisyphusWidget();
-        const createSisyphusGame = widgetModule.createSisyphusGame;
-
-        // Add game hint
-        const hint = document.createElement('div');
-        hint.className = 'sisifo-game-hint';
-        hint.textContent = 'Mantén presionado sobre la figura para empujar la roca';
-        gameContainer.appendChild(hint);
-        // Wind effect container
-        const windContainer = document.createElement('div');
-        windContainer.className = 'sisifo-wind-container';
-        gameContainer.appendChild(windContainer);
-
-        let windIntervalId = null;
-        let windActive = false;
-
-        function spawnWindParticle(intensity) {
-            const p = document.createElement('div');
-            const isGust = Math.random() < 0.28;
-            const isThick = Math.random() < 0.3;
-            p.className = 'sisifo-wind-particle' +
-                (isGust ? ' sisifo-wind-particle--gust' : '') +
-                (isThick ? ' sisifo-wind-particle--thick' : '');
-            const w = 40 + Math.random() * 160 * intensity;
-            const alpha = (0.14 + Math.random() * 0.28) * Math.min(1, intensity);
-            const dur = 0.7 + Math.random() * 1.1 / Math.max(0.3, intensity);
-            const delay = Math.random() * 0.25;
-            const yPct = 5 + Math.random() * 88;
-            const drift = (Math.random() - 0.5) * 16;
-            p.style.cssText = `--wind-w:${w.toFixed(0)}px;--wind-alpha:${alpha.toFixed(2)};` +
-                `--wind-dur:${dur.toFixed(2)}s;--wind-delay:${delay.toFixed(2)}s;` +
-                `--wind-y:${yPct.toFixed(1)}%;--wind-drift:${drift.toFixed(1)}px;`;
-            windContainer.appendChild(p);
-            setTimeout(() => p.remove(), (dur + delay + 0.4) * 1000);
-        }
-
-        function startWindEffect(intensity) {
-            if (windActive) return;
-            windActive = true;
-            const rate = Math.max(55, 300 - intensity * 240);
-            for (let i = 0; i < 5; i++) setTimeout(() => spawnWindParticle(intensity), i * 90);
-            windIntervalId = setInterval(() => spawnWindParticle(intensity), rate);
-        }
-
-        function stopWindEffect() {
-            if (!windActive) return;
-            windActive = false;
-            clearInterval(windIntervalId);
-            windIntervalId = null;
-        }
-
-        // Create the overlay element (hidden by default)
-        const overlay = document.createElement('div');
-        overlay.className = 'sisifo-cycle-overlay';
-        overlay.innerHTML = `<div class="sisifo-cycle-text"></div>`;
-        gameContainer.appendChild(overlay);
-
-        const textEl = overlay.querySelector('.sisifo-cycle-text');
-
-        let hasAdvancedToNextPage = false;
-        let lastSpeedMult = 1;
-
-        const game = createSisyphusGame(gameContainer, {
-            onCycleComplete: (cycleNumber) => {
-                // Hide the hint after first interaction
-                hint.classList.add('hidden');
-
-                const textIndex = Math.min(cycleNumber - 1, CYCLE_TEXTS.length - 1);
-                const text = CYCLE_TEXTS[textIndex];
-
-                if (!text) return;
-
-                // Update overlay text
-                textEl.innerHTML = text;
-
-                // Remove existing continue button if any
-                const existingBtn = overlay.querySelector('.sisifo-continue-btn');
-                if (existingBtn) existingBtn.remove();
-
-                // After cycle 2+, show the "Continue" button leading to the next page
-                if (cycleNumber >= 2) {
-                    const btn = document.createElement('button');
-                    btn.className = 'sisifo-continue-btn';
-                    btn.textContent = 'Continuar';
-                    btn.addEventListener('click', () => {
-                        if (!hasAdvancedToNextPage && goToPage) {
-                            hasAdvancedToNextPage = true;
-                            stopWindEffect();
-                            goToPage('contemplacion');
-                        }
-                    });
-                    overlay.appendChild(btn);
-                }
-
-                // Show overlay
-                overlay.classList.add('visible');
-
-                // Auto-hide after a few seconds (unless it has the continue button)
-                if (cycleNumber < 2) {
-                    setTimeout(() => {
-                        overlay.classList.remove('visible');
-                    }, 5000);
-                }
-            }
-        });
-
-        activeSisyphusWidget = game;
-
-        // Connect wind to slow-text speed segments
-        game.onProgressUpdate = (data) => {
-            if (data.isPushing && typeof lastSpeedMult === 'number' && lastSpeedMult < 0.65) {
-                const intensity = Math.min(1, (0.65 - lastSpeedMult) / 0.3);
-                startWindEffect(Math.max(0.25, intensity));
-            } else if (!data.isPushing) {
-                stopWindEffect();
-            }
-        };
-
-        console.log('%c🪨 Sísifo montado en el reader', 'color:#e07a5f;font-weight:bold');
-    } catch (error) {
-        console.error('Error al cargar el widget de Sísifo:', error);
-        gameContainer.innerHTML = `<p style="color: rgba(220,225,235,0.6); text-align: center; padding-top: 30%; font-family: Inter, sans-serif; font-size: 0.95rem;">No se pudo cargar el motor de juego.</p>`;
-    }
-}
-
 export function resetScrollPosition() {
     if (elements?.pageWrapper && elements.pageWrapper.querySelector('.page-content')) {
         elements.pageWrapper.querySelector('.page-content').scrollTop = 0;
@@ -681,7 +424,6 @@ export function resetScrollPosition() {
     if (elements?.pageWrapper) elements.pageWrapper.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    
-    // Reset Mobile Bottom Bar Visibility
+
     document.body.classList.remove('is-scrolling-down');
 }

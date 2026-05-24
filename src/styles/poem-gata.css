@@ -1,0 +1,76 @@
+/* ========================================
+   GATA CATTANA — "Como aman los pobres"
+   Raw, earthy, defiant, tender.
+   ======================================== */
+
+/* --- Title identity --- */
+.gata-title {
+    font-style: normal;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    color: #e8c9a0;
+    text-shadow: 0 0 34px rgba(180, 80, 30, 0.26), 0 2px 8px rgba(0, 0, 0, 0.58);
+}
+
+/* --- Parenthesis whispers --- */
+.gata-parenthesis {
+    display: block;
+    font-style: italic;
+    font-size: 0.84em;
+    opacity: 0;
+    letter-spacing: 0.03em;
+    margin: 0.28em 0 0.08em;
+    color: rgba(236, 216, 188, 0.72);
+    padding-inline-start: 1.2em;
+    transform: translateX(0.45em);
+    filter: blur(1.4px);
+    animation:
+        gataWhisperEntry 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards,
+        gataWhisperBreath 5.2s ease-in-out 2.2s infinite;
+}
+
+.gata-parenthesis--bright {
+    color: #efab72;
+    font-style: italic;
+    text-shadow: 0 0 18px rgba(200, 120, 40, 0.25);
+    animation:
+        gataWhisperEntry 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.28s forwards,
+        gataWhisperWarmth 4.8s ease-in-out 2s infinite;
+}
+
+@keyframes gataWhisperEntry {
+    0% { opacity: 0; transform: translateX(0.45em) translateY(0.1em); filter: blur(1.8px); }
+    65% { opacity: 0.46; }
+    100% { opacity: 0.66; transform: translateX(0) translateY(0); filter: blur(0); }
+}
+
+@keyframes gataWhisperBreath {
+    0%, 100% { opacity: 0.58; }
+    50% { opacity: 0.72; }
+}
+
+@keyframes gataWhisperWarmth {
+    0%, 100% { opacity: 0.72; text-shadow: 0 0 14px rgba(200, 120, 40, 0.18); }
+    50% { opacity: 0.84; text-shadow: 0 0 20px rgba(214, 130, 46, 0.26); }
+}
+
+/* --- Final verse: dramatic, slow reveal --- */
+.poem-layout .stanza .verse-line.gata-final-verse {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #e8c9a0;
+    text-shadow: 0 0 50px rgba(180, 60, 20, 0.4), 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* Verse text on pobres dark backgrounds */
+.pobres-overlay~.content-centerer .verse-line,
+.pobres-bg-overlay~.content-centerer .verse-line,
+body .pobres-bg-tierra~.content-centerer .verse-line,
+body .pobres-bg-flama~.content-centerer .verse-line {
+    color: rgba(240, 220, 190, 0.95);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+#app-container .pobres-bg-overlay~.content-centerer { color: rgba(235, 215, 185, 0.95); }
