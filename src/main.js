@@ -1,5 +1,10 @@
 import { initApp } from './app/init.js';
 import './components/chroma-video.js';
+import { ensureStartupStyles, scheduleMobileStyleWarmup } from './app/styleLoader.js';
+
+// Startup/auth shell first, then warm up library/reader styles in the background.
+ensureStartupStyles();
+scheduleMobileStyleWarmup();
 
 // =============================================
 // GLOBAL ERROR HANDLING

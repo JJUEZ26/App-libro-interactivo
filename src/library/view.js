@@ -1,9 +1,10 @@
 import { getAppMode, state } from '../app/state.js';
 import { handlePageEffects, startLibraryBeetle, stopLibraryBeetle, startLibraryAtmosphere, stopLibraryAtmosphere } from '../effects/index.js';
 import { loadPageHistory } from '../utils/storage.js';
-import { clearAudioExperienceContext, stopCurrentAudio } from '../reader/audio.js';
+import { clearAudioExperienceContext, clearBookAudioResources, stopCurrentAudio } from '../reader/audio.js';
 import { Onboarding } from '../ui/onboarding.js';
 import { SensoryInvite } from '../ui/sensory-invite.js';
+import { ensureLibraryStyles, ensureReaderStyles } from '../app/styleLoader.js';
 
 let elements = null;
 let loadStoryRef = null;
@@ -24,6 +25,7 @@ export function setOnLibraryReturn(callback) {
 }
 
 export function switchToLibraryView() {
+    ensureLibraryStyles();
     state.appMode = 'library';
     document.body.classList.remove('app-mode-reader', 'fullscreen-mode', 'app-mode-auth');
     document.body.classList.add('app-mode-library');
@@ -56,6 +58,7 @@ export function switchToLibraryView() {
     if (elements?.mainTitle) elements.mainTitle.textContent = 'Lecturas Interactivas';
 
     stopCurrentAudio();
+    clearBookAudioResources();
     clearAudioExperienceContext();
     handlePageEffects(null, { getAppMode });
     startLibraryBeetle({ getAppMode });
@@ -123,6 +126,8 @@ export async function openBook(bookData, coverImgEl) {
     }
 
     if (!bookData.storyFile) return;
+
+    const readerStylesReady = ensureReaderStyles();
 
     // --- STEP 1: Instant overlay ---
     const overlay = document.createElement('div');
@@ -211,6 +216,8 @@ export async function openBook(bookData, coverImgEl) {
         cleanup(overlay, clone, titleEl);
         return;
     }
+
+    await readerStylesReady;
 
     // --- STEP 4: Prepare reader UNDER the overlay ---
     const loadedHistory = loadPageHistory(state.currentBook.id);

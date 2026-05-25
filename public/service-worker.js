@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lecturas-interactivas-cache-v21';
+const CACHE_NAME = 'lecturas-interactivas-cache-v22';
 
 // Recursos esenciales que se cachean al instalar
 const urlsToCache = [
@@ -78,7 +78,7 @@ self.addEventListener('fetch', event => {
 
   // Para assets estáticos: Cache First (imágenes, audio, CSS, JS)
   if (
-    url.pathname.match(/\.(png|jpg|jpeg|gif|webp|svg|mp3|mp4|css|js|woff2?)$/i)
+    url.pathname.match(/\.(png|jpg|jpeg|gif|webp|svg|mp3|m4a|mp4|css|js|woff2?)$/i)
   ) {
     event.respondWith(
       caches.match(event.request).then(cached => {

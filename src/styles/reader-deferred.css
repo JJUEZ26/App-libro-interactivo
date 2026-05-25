@@ -1,0 +1,28 @@
+/* ================================================
+   Reader deferred CSS
+   Loaded when reader mode is needed.
+   ================================================ */
+
+@layer reset, tokens, layout, components, library, reader, auth, poems, effects, utilities;
+
+/* --- Reader-specific --- */
+@import url('./reader.css') layer(reader);
+@import url('./discoveries.css') layer(components);
+
+/* --- Poem system --- */
+@import url('./poem-core.css') layer(poems);
+@import url('./poet-bios.css') layer(poems);
+@import url('./poem-becquer.css') layer(poems);
+@import url('./poem-gata.css') layer(poems);
+@import url('./eterno-retorno.css') layer(poems);
+@import url('./poem-original.css') layer(poems);
+
+/* --- Per-effect styles --- */
+@import url('../books/pajaro-azul/styles.css') layer(effects);
+@import url('../effects/overlay/styles.css') layer(effects);
+@import url('../effects/bluebird/styles.css') layer(effects);
+@import url('../effects/smoke/styles.css') layer(effects);
+@import url('../effects/rain/styles.css') layer(effects);
+@import url('../effects/beetle/styles.css') layer(effects);
+@import url('../effects/leaves/styles.css') layer(effects);
+@import url('../effects/transition/styles.css') layer(effects);

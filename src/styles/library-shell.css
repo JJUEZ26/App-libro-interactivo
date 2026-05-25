@@ -1,0 +1,11 @@
+/* ================================================
+   Library shell CSS
+   Loaded when app enters library mode.
+   ================================================ */
+
+@layer reset, tokens, layout, components, library, reader, auth, poems, effects, utilities;
+
+@import url('./ui.css') layer(components);
+@import url('./library.css') layer(library);
+@import url('./onboarding.css') layer(components);
+@import url('./sensory-invite.css') layer(components);

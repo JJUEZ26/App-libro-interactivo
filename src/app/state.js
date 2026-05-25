@@ -27,7 +27,10 @@ export const state = {
     audioStatusMessage: '',
     audioBookDecisions: {},
     audioUserActivated: false,
-    audioVolumeTouched: false
+    audioVolumeTouched: false,
+    // Datos efímeros de sesión (juegos, puntuaciones temporales)
+    // No se persisten en localStorage — se limpian al cambiar de libro
+    ephemeral: {}
 };
 
 export const themeColors = {

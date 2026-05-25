@@ -1,0 +1,18 @@
+/* ================================================
+   Startup CSS
+   Styles needed for initial auth/library experience.
+   ================================================ */
+
+@layer reset, tokens, layout, components, library, reader, auth, poems, effects, utilities;
+
+/* --- Tokens & Reset --- */
+@import url('./base.css') layer(tokens);
+@import url('./animations.css') layer(components);
+@import url('./layout.css') layer(layout);
+
+/* --- Core Startup UI (auth + orb) --- */
+@import url('./auth.css') layer(auth);
+@import url('./command-orb.css') layer(components);
+
+/* --- Utilities --- */
+@import url('./utilities.css') layer(utilities);

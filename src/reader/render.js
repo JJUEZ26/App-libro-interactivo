@@ -115,7 +115,7 @@ export function renderPage(pageId) {
 
     if (pageData.images && pageData.images.length > 0) {
         const imgsHtml = pageData.images
-            .map((url) => `<img src="${url}" alt="Ilustración" loading="eager">`)
+            .map((url) => `<img src="${url}" alt="Ilustración" loading="lazy">`)
             .join('');
         contentHtml += `<div class="images-container">${imgsHtml}</div>`;
     }
@@ -354,18 +354,23 @@ export function renderPage(pageId) {
 
         // — Unified audio context binding —
         const pageSoundFile = pageData.bgMusic || pageData.sound || pageData.audio || null;
+        const audioDecision = getCurrentBookAudioDecision();
+        const hasActiveAudio = Boolean(state.currentAudio && state.currentAudioFile);
+        const shouldStopAudioExplicitly = pageData.stopAudio === true || audioDecision === 'silent';
+        const shouldCarryActiveAudio = !pageSoundFile && !shouldStopAudioExplicitly && hasActiveAudio;
 
         console.log('[Render] Audio binding check. audioExperienceMarkup:', JSON.stringify(audioExperienceMarkup), 'pageSoundFile:', pageSoundFile, 'pageId:', pageId);
         if (audioExperienceMarkup && pageSoundFile) {
             bindAudioExperience(pageId, pageData);
+        } else if (shouldCarryActiveAudio) {
+            // Preserve the current audio context when this page has no explicit sound.
+            if (state.commandOrb) state.commandOrb.setMode('audio');
         } else {
             console.warn('[Render] Clearing audio context — audioExperienceMarkup:', audioExperienceMarkup, 'pageSoundFile:', pageSoundFile);
             clearAudioExperienceContext();
         }
 
         if (pageSoundFile) {
-            const audioDecision = getCurrentBookAudioDecision();
-
             if (audioDecision === 'enabled') {
                 const isVoicePoem = pageData.karaokeLines && pageData.karaokeLines.length > 0;
                 playPageSound(pageId, pageSoundFile, !isVoicePoem);
@@ -377,7 +382,7 @@ export function renderPage(pageId) {
             } else {
                 playPageSound(pageId, pageSoundFile, false);
             }
-        } else {
+        } else if (shouldStopAudioExplicitly) {
             clearAudioExperienceContext();
             stopCurrentAudio();
         }

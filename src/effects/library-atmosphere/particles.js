@@ -1,20 +1,18 @@
 /**
- * Efectos de atmósfera para la biblioteca (Meta A.1)
- * Canvas de partículas reactivas al mouse.
+ * Atmosphere effects for the library view.
+ * Reactive particles with mobile/low-end safeguards.
  */
 
 export function startLibraryParticles() {
     const libraryView = document.getElementById('library-view');
     if (!libraryView) return () => {};
 
-    // Desactivar el pseudo-element estático de CSS
     libraryView.classList.add('has-particle-canvas');
 
     const canvas = document.createElement('canvas');
     canvas.id = 'library-particles-canvas';
     canvas.style.cssText = 'position: absolute; inset: 0; z-index: 0; pointer-events: none; width: 100%; height: 100%;';
-    
-    // Insertar como primer hijo para que quede de fondo real
+
     if (libraryView.firstChild) {
         libraryView.insertBefore(canvas, libraryView.firstChild);
     } else {
@@ -22,15 +20,28 @@ export function startLibraryParticles() {
     }
 
     const ctx = canvas.getContext('2d');
-    let width, height, dpr;
+    let width;
+    let height;
+    let dpr;
     let mouseX = -1000;
     let mouseY = -1000;
-    
-    // Prevenir el exceso de partículas en dispositivos que prefieren reducción de movimiento
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    // Calcular cantidad óptima según hardware
-    const particleCount = prefersReducedMotion ? 15 : (navigator.hardwareConcurrency > 4 ? 50 : 25);
+    const compactViewport = window.matchMedia('(max-width: 900px)').matches;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const effectiveType = String(connection?.effectiveType || '').toLowerCase();
+    const constrainedConnection = Boolean(connection?.saveData) || effectiveType.includes('2g') || effectiveType === '3g';
+    const deviceMemory = navigator.deviceMemory || 4;
+    const cores = navigator.hardwareConcurrency || 4;
+    const lowPowerDevice = constrainedConnection || deviceMemory <= 2 || cores <= 4;
+    const enablePointerReactivity = !prefersReducedMotion && !lowPowerDevice;
+
+    const particleCount = prefersReducedMotion
+        ? 12
+        : lowPowerDevice
+            ? (compactViewport ? 10 : 14)
+            : (cores > 6 ? 42 : 26);
+    const updateStride = lowPowerDevice ? 3 : 2;
     const particles = [];
 
     function resize() {
@@ -39,14 +50,13 @@ export function startLibraryParticles() {
         height = libraryView.clientHeight;
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-        
+
         if (particles.length === 0) {
             initParticles();
         } else {
-            // Asegurar que no queden fuera de bounds
-            particles.forEach(p => {
-                if (p.baseX > width) p.baseX = Math.random() * width;
-                if (p.baseY > height) p.baseY = Math.random() * height;
+            particles.forEach((particle) => {
+                if (particle.baseX > width) particle.baseX = Math.random() * width;
+                if (particle.baseY > height) particle.baseY = Math.random() * height;
             });
         }
     }
@@ -56,12 +66,12 @@ export function startLibraryParticles() {
             const x = Math.random() * width;
             const y = Math.random() * height;
             particles.push({
-                x: x,
-                y: y,
+                x,
+                y,
                 baseX: x,
                 baseY: y,
-                radius: 1 + Math.random() * 2,       // 1-3px (conforme al plan)
-                opacity: 0.02 + Math.random() * 0.04, // 0.02-0.06 (conforme al plan)
+                radius: 1 + Math.random() * 2,
+                opacity: 0.02 + Math.random() * 0.04,
                 currentOpacity: 0.02,
                 driftSpeed: 0.1 + Math.random() * 0.2,
                 driftAngle: Math.random() * Math.PI * 2,
@@ -70,31 +80,32 @@ export function startLibraryParticles() {
         }
     }
 
-    function onMouseMove(e) {
-        if (prefersReducedMotion) return;
+    function onMouseMove(event) {
+        if (!enablePointerReactivity) return;
         const rect = libraryView.getBoundingClientRect();
-        mouseX = (e.clientX - rect.left) * dpr;
-        mouseY = (e.clientY - rect.top) * dpr;
+        mouseX = (event.clientX - rect.left) * dpr;
+        mouseY = (event.clientY - rect.top) * dpr;
     }
 
-    function onTouchMove(e) {
-        if (prefersReducedMotion || !e.touches || e.touches.length === 0) return;
+    function onTouchMove(event) {
+        if (!enablePointerReactivity || !event.touches || event.touches.length === 0) return;
         const rect = libraryView.getBoundingClientRect();
-        mouseX = (e.touches[0].clientX - rect.left) * dpr;
-        mouseY = (e.touches[0].clientY - rect.top) * dpr;
+        mouseX = (event.touches[0].clientX - rect.left) * dpr;
+        mouseY = (event.touches[0].clientY - rect.top) * dpr;
     }
-    
+
     function onMouseLeave() {
         mouseX = -1000;
         mouseY = -1000;
     }
 
     window.addEventListener('resize', resize);
-    libraryView.addEventListener('mousemove', onMouseMove, { passive: true });
-    libraryView.addEventListener('touchmove', onTouchMove, { passive: true });
-    libraryView.addEventListener('mouseleave', onMouseLeave);
-    
-    // Primera inicialización
+    if (enablePointerReactivity) {
+        libraryView.addEventListener('mousemove', onMouseMove, { passive: true });
+        libraryView.addEventListener('touchmove', onTouchMove, { passive: true });
+        libraryView.addEventListener('mouseleave', onMouseLeave);
+    }
+
     resize();
 
     let frameCount = 0;
@@ -102,58 +113,51 @@ export function startLibraryParticles() {
 
     function updateParticles() {
         const time = performance.now() * 0.001;
-        
+
         for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            
-            // Física base de drift (movimiento sinusoidal suave)
+            const particle = particles[i];
+
             if (!prefersReducedMotion) {
-                p.x = p.baseX + Math.sin(time * p.driftSpeed + p.phase) * 15;
-                p.y = p.baseY + Math.cos(time * p.driftSpeed * 0.7 + p.phase) * 10;
+                particle.x = particle.baseX + Math.sin(time * particle.driftSpeed + particle.phase) * 15;
+                particle.y = particle.baseY + Math.cos(time * particle.driftSpeed * 0.7 + particle.phase) * 10;
             } else {
-                p.x = p.baseX;
-                p.y = p.baseY;
+                particle.x = particle.baseX;
+                particle.y = particle.baseY;
             }
 
-            // Reacción al mouse (solo si no es reduced motion)
-            if (!prefersReducedMotion) {
-                const dist = Math.hypot((p.x * dpr) - mouseX, (p.y * dpr) - mouseY);
+            if (enablePointerReactivity) {
+                const dist = Math.hypot((particle.x * dpr) - mouseX, (particle.y * dpr) - mouseY);
                 const influenceRadius = 150 * dpr;
-                
+
                 if (dist < influenceRadius) {
-                    // Repulsión magnética
                     const force = (1 - dist / influenceRadius) * 0.3;
-                    const angle = Math.atan2((p.y * dpr) - mouseY, (p.x * dpr) - mouseX);
-                    
-                    p.x += Math.cos(angle) * force * 8;
-                    p.y += Math.sin(angle) * force * 8;
-                    
-                    // Brillo momentáneo
-                    p.currentOpacity = Math.min(0.15, p.opacity + force * 0.1);
+                    const angle = Math.atan2((particle.y * dpr) - mouseY, (particle.x * dpr) - mouseX);
+
+                    particle.x += Math.cos(angle) * force * 8;
+                    particle.y += Math.sin(angle) * force * 8;
+                    particle.currentOpacity = Math.min(0.15, particle.opacity + force * 0.1);
                 } else {
-                    // Lerp suave de vuelta a la opacidad normal
-                    p.currentOpacity += (p.opacity - p.currentOpacity) * 0.05;
+                    particle.currentOpacity += (particle.opacity - particle.currentOpacity) * 0.05;
                 }
             } else {
-                p.currentOpacity = p.opacity;
+                particle.currentOpacity = particle.opacity;
             }
-            
-            // Wrap around visual si se salen del canvas
-            if (p.x < -20) p.baseX = width + 20;
-            if (p.x > width + 20) p.baseX = -20;
-            if (p.y < -20) p.baseY = height + 20;
-            if (p.y > height + 20) p.baseY = -20;
+
+            if (particle.x < -20) particle.baseX = width + 20;
+            if (particle.x > width + 20) particle.baseX = -20;
+            if (particle.y < -20) particle.baseY = height + 20;
+            if (particle.y > height + 20) particle.baseY = -20;
         }
     }
 
     function drawParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            ctx.globalAlpha = p.currentOpacity;
+            const particle = particles[i];
+            ctx.globalAlpha = particle.currentOpacity;
             ctx.beginPath();
-            ctx.arc(p.x * dpr, p.y * dpr, p.radius * dpr, 0, Math.PI * 2);
+            ctx.arc(particle.x * dpr, particle.y * dpr, particle.radius * dpr, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.fill();
         }
@@ -162,8 +166,7 @@ export function startLibraryParticles() {
 
     function render() {
         frameCount++;
-        // Solo recalcular física cada 2 frames
-        if (frameCount % 2 === 0) {
+        if (frameCount % updateStride === 0) {
             updateParticles();
         }
         drawParticles();
@@ -175,9 +178,11 @@ export function startLibraryParticles() {
     return function cleanup() {
         if (animId) cancelAnimationFrame(animId);
         window.removeEventListener('resize', resize);
-        libraryView.removeEventListener('mousemove', onMouseMove);
-        libraryView.removeEventListener('touchmove', onTouchMove);
-        libraryView.removeEventListener('mouseleave', onMouseLeave);
+        if (enablePointerReactivity) {
+            libraryView.removeEventListener('mousemove', onMouseMove);
+            libraryView.removeEventListener('touchmove', onTouchMove);
+            libraryView.removeEventListener('mouseleave', onMouseLeave);
+        }
         libraryView.classList.remove('has-particle-canvas');
         if (canvas.parentNode) {
             canvas.parentNode.removeChild(canvas);

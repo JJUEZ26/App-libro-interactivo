@@ -5,7 +5,7 @@
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0f1219",
-  "theme_color": "#1a1a2e",
+  "theme_color": "#1a1a1a",
   "orientation": "portrait",
   "categories": [
     "books",

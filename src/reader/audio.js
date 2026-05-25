@@ -79,9 +79,20 @@ function getAudioDescriptor(pageData = state.currentAudioPageData) {
     };
 }
 
+function resolvePageVolume(pageData, fallbackVolume = 1) {
+    const volume = pageData?.volume;
+    return Number.isFinite(volume) ? volume : fallbackVolume;
+}
+
+function resolvePagePlaybackRate(pageData, fallbackRate = 1) {
+    const playbackRate = pageData?.playbackRate;
+    return Number.isFinite(playbackRate) && playbackRate > 0 ? playbackRate : fallbackRate;
+}
+
 function getPreparedAudioTargetVolume(pageData = state.currentAudioPageData) {
     if (!pageData) return state.currentVolume;
-    const pageVolume = pageData.volume ?? 1;
+    const baseVolume = resolvePageVolume(pageData, state.currentAudioBaseVolume || 1);
+    const pageVolume = Number.isFinite(baseVolume) ? baseVolume : 1;
     return Math.min(state.currentVolume * pageVolume, 1);
 }
 
@@ -150,7 +161,7 @@ function resumeManagedAudio(pageData) {
     const audio = state.currentAudio;
     const targetVolume = getPreparedAudioTargetVolume(pageData);
 
-    audio.playbackRate = pageData.playbackRate ?? 1;
+    audio.playbackRate = resolvePagePlaybackRate(pageData, audio.playbackRate || 1);
     audio.volume = 0;
 
     audio.play()
@@ -193,13 +204,13 @@ export function toggleCurrentAudio() {
     const pageData = state.currentAudioPageData;
 
     if (!pageData) {
-        _showDebugToast('⚠️ Sin audio en esta página');
+        console.log('[Audio] Sin audio en esta página');
         return;
     }
 
     const soundFile = getPageSoundFile(pageData);
     if (!soundFile) {
-        _showDebugToast('⚠️ No se encontró archivo: ' + JSON.stringify(pageData.bgMusic || pageData.sound || pageData.audio));
+        console.log('[Audio] No se encontró archivo:', pageData.bgMusic || pageData.sound || pageData.audio);
         return;
     }
 
@@ -215,7 +226,7 @@ export function toggleCurrentAudio() {
         pauseAllEffectAudio();
         updatePlayButtonState(false);
         setAudioStatus('paused', getAudioDescriptor(pageData)?.pausedMessage || '');
-        _showDebugToast('⏸ Audio pausado');
+        console.log('[Audio] Audio pausado');
         return;
     }
 
@@ -226,7 +237,7 @@ export function toggleCurrentAudio() {
     if (state.currentAudio && state.currentAudioFile === soundFile) {
         const targetVolume = getPreparedAudioTargetVolume(pageData);
         state.currentAudio.volume = 0;
-        _showDebugToast('▶ Reanudando: ' + soundFile);
+        console.log('[Audio] Reanudando:', soundFile);
         state.currentAudio.play()
             .then(() => {
                 if (state.currentAudio?.src && !state.currentAudio.paused) {
@@ -236,7 +247,7 @@ export function toggleCurrentAudio() {
                 }
             })
             .catch((err) => {
-                _showDebugToast('❌ Bloqueado: ' + err.message);
+                console.log('[Audio] Bloqueado:', err.message);
                 setAudioStatus('blocked', 'Toca para iniciar el sonido.');
             });
 
@@ -245,28 +256,14 @@ export function toggleCurrentAudio() {
         }
         resumeEffectAudio();
     } else {
-        _showDebugToast('▶ Iniciando: ' + soundFile + (state.currentAudio ? ' (reemplazando)' : ' (nuevo)'));
+        console.log('[Audio] Iniciando:', soundFile, state.currentAudio ? '(reemplazando)' : '(nuevo)');
         playPageSound(pageData.id, soundFile, true);
     }
 
     resumeEffectAudio();
 }
 
-// Temporary visual debug toast — remove after fixing
-function _showDebugToast(msg) {
-    console.log('[Audio-Debug]', msg);
-    let toast = document.getElementById('__audio-debug-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = '__audio-debug-toast';
-        toast.style.cssText = 'position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(0,0,0,0.85);color:#0f0;font-size:13px;font-family:monospace;padding:8px 16px;border-radius:8px;pointer-events:none;transition:opacity 0.3s;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;';
-        document.body.appendChild(toast);
-    }
-    toast.textContent = msg;
-    toast.style.opacity = '1';
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
-}
+
 
 // Listen for CommandOrb audio tap events
 document.addEventListener('command-orb-audio-tap', () => toggleCurrentAudio());
@@ -369,6 +366,19 @@ export function stopCurrentAudio() {
     state.currentAudioBaseVolume = 1;
 }
 
+/**
+ * Libera el cache de audio precargado y datos efímeros.
+ * Llamar al volver a la biblioteca (no entre páginas).
+ */
+export function clearBookAudioResources() {
+    audioCache.forEach(audio => {
+        audio.pause();
+        audio.src = '';
+    });
+    audioCache.clear();
+    state.ephemeral = {};
+}
+
 export function pauseAllAudioForBackground() {
     cancelPendingAudioStart();
     clearGhostSchedulers();
@@ -394,15 +404,19 @@ export function resumeAudioFromBackground() {
 
 export function playPageSound(pageId, soundFileOverride = null, autoPlay = true, options = {}) {
     let soundFile = soundFileOverride;
-    let volumeMultiplier = 1;
-    let playbackRate = 1;
+    let volumeMultiplier = null;
+    let playbackRate = null;
     let pageData = null;
 
     pageData = getPageById(pageId);
     if (pageData) {
         if (!soundFile) soundFile = getPageSoundFile(pageData);
-        volumeMultiplier = pageData.volume ?? 1;
-        playbackRate = pageData.playbackRate ?? 1;
+        if (Number.isFinite(pageData.volume)) {
+            volumeMultiplier = pageData.volume;
+        }
+        if (Number.isFinite(pageData.playbackRate) && pageData.playbackRate > 0) {
+            playbackRate = pageData.playbackRate;
+        }
     }
 
     if (!soundFile) return;
@@ -410,10 +424,14 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
     // --- Same file already loaded: just update context ---
     if (state.currentAudio && state.currentAudioFile === soundFile) {
         const existingAudio = state.currentAudio;
-        state.currentAudioBaseVolume = volumeMultiplier;
+        if (volumeMultiplier !== null) {
+            state.currentAudioBaseVolume = volumeMultiplier;
+        }
         state.currentAudioPageId = pageId;
         state.currentAudioPageData = pageData;
-        existingAudio.playbackRate = playbackRate;
+        if (playbackRate !== null) {
+            existingAudio.playbackRate = playbackRate;
+        }
 
         if (autoPlay && (existingAudio.paused || existingAudio.ended)) {
             const targetVolume = getPreparedAudioTargetVolume(pageData);
@@ -451,7 +469,7 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
 
     state.currentAudio = audio;
     state.currentAudioFile = soundFile;
-    state.currentAudioBaseVolume = volumeMultiplier;
+    state.currentAudioBaseVolume = volumeMultiplier !== null ? volumeMultiplier : 1;
     state.currentAudioPageId = pageId;
     state.currentAudioPageData = pageData;
 
@@ -462,7 +480,7 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
     const isKaraoke = pageData?.karaokeLines;
     audio.loop = !isKaraoke;
     audio.volume = 0;
-    audio.playbackRate = playbackRate;
+    audio.playbackRate = playbackRate !== null ? playbackRate : 1;
 
     const getActivePageData = () => state.currentAudioPageData || pageData;
 

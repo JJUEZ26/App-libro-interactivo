@@ -1,5 +1,5 @@
 import { state } from '../app/state.js';
-import { GeminiLiveClient } from './GeminiLiveClient.js';
+import '../styles/chat.css';
 
 export class ChatFeature {
     constructor(options = {}) {
@@ -433,6 +433,7 @@ export class ChatFeature {
         }
 
         if (!this.liveClient) {
+            const { GeminiLiveClient } = await import('./GeminiLiveClient.js');
             this.liveClient = new GeminiLiveClient({
                 apiKey,
                 voiceName: this.voiceSelect.value,

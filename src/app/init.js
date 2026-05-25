@@ -15,7 +15,7 @@ import {
 } from '../reader/navigation.js';
 import { loadPreferences, saveVolume } from '../utils/storage.js';
 import { applyTheme, changeFontSize, selectTheme, toggleFullscreen } from '../ui/index.js';
-import { ChatFeature } from '../ui/ChatModule.js';
+import { LazyChatFeature } from '../ui/LazyChatFeature.js';
 import { CommandOrb } from '../ui/CommandOrb.js';
 import { getEl } from './dom.js';
 import { setCurrentTheme, setCurrentVolume, setFontSize, state } from './state.js';
@@ -24,6 +24,7 @@ import { syncCurrentAudioVolume, pauseAllAudioForBackground, resumeAudioFromBack
 import { AuthService } from '../auth/AuthService.js';
 import { initAuthViews, showAuthView } from '../auth/AuthViews.js';
 import { createAvatarButton, updateAvatarButton, closeDrawer, setProfileControls, isDrawerOpen } from '../auth/UserProfile.js';
+import { ensureLibraryStyles } from './styleLoader.js';
 
 export function initApp() {
     console.log('Iniciando Lecturas Interactivas v5.0 (Seguridad + PWA + Accesibilidad)');
@@ -71,6 +72,19 @@ export function initApp() {
         librarySections: elements.librarySections,
         openBook
     });
+    let libraryLoadPromise = null;
+
+    function ensureLibraryReady() {
+        if (libraryLoadPromise) return libraryLoadPromise;
+        libraryLoadPromise = (async () => {
+            await ensureLibraryStyles();
+            await library.loadBooks();
+        })().catch((error) => {
+            libraryLoadPromise = null;
+            throw error;
+        });
+        return libraryLoadPromise;
+    }
 
     // Register callback to re-render library when returning from reader
     setOnLibraryReturn(() => library.renderLibrary());
@@ -155,11 +169,11 @@ export function initApp() {
     }
 
     // =============================================
-    // NAVEGACIÓN POR TECLADO (Accesibilidad)
+    // NAVEGACION POR TECLADO (Accesibilidad)
     // =============================================
     document.addEventListener('keydown', (event) => {
         if (state.appMode !== 'reader' || state.isTransitioning) return;
-        // No capturar teclas si el usuario está escribiendo en un input
+        // No capturar teclas si el usuario esta escribiendo en un input
         if (event.target.closest('input, textarea, [contenteditable]')) return;
 
         switch (event.key) {
@@ -178,7 +192,7 @@ export function initApp() {
         }
     });
 
-    // Navegación coherente con botón atrás
+    // Navegacion coherente con boton atras
     window.addEventListener('popstate', (event) => {
         if (isDrawerOpen()) {
             closeDrawer(true);
@@ -197,7 +211,7 @@ export function initApp() {
         }
     });
 
-    // Pausar/reanudar audio cuando la pestaña pierde/recupera foco
+    // Pausar/reanudar audio cuando la pestana pierde/recupera foco
     let wasPlayingBeforeHidden = false;
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
@@ -321,7 +335,7 @@ export function initApp() {
         onFullscreenToggle: toggleFullscreen
     });
 
-    const chatFeature = new ChatFeature();
+    const chatFeature = new LazyChatFeature();
     const commandOrb = new CommandOrb({ chatFeature });
 
     async function initializeApp() {
@@ -334,7 +348,7 @@ export function initApp() {
             setCurrentVolume
         });
 
-        // ── Auth System Setup ──
+        // Auth System Setup
         // Mount avatar button in header
         const avatarBtn = createAvatarButton();
         if (elements.headerAvatarSlot) {
@@ -367,14 +381,16 @@ export function initApp() {
         // Determine initial view
         const hasSession = AuthService.isAuthenticated();
         if (hasSession) {
-            // User is logged in — go straight to library
+            await ensureLibraryStyles();
+            // User is logged in -> go straight to library
             switchToLibraryView();
+            void ensureLibraryReady().catch((error) => {
+                console.error('No se pudo cargar la biblioteca inicial:', error);
+            });
         } else {
             // Show auth screen first
             switchToAuthView();
         }
-
-        await library.loadBooks();
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
@@ -412,13 +428,17 @@ export function initApp() {
     /**
      * Transition from auth view to library view
      */
-    function switchToLibraryFromAuth() {
+    async function switchToLibraryFromAuth() {
+        await ensureLibraryStyles();
         if (elements.authView) {
             elements.authView.hidden = true;
             elements.authView.style.display = 'none';
         }
         closeDrawer();
         switchToLibraryView();
+        void ensureLibraryReady().catch((error) => {
+            console.error('No se pudo cargar la biblioteca tras autenticacion:', error);
+        });
     }
 
     initializeApp();

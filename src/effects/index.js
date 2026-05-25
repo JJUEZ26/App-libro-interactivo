@@ -1,16 +1,24 @@
+// =============================================
+// STATIC IMPORTS — Módulos usados en la Library View (siempre cargados)
+// =============================================
 import { initBeetle } from './beetle/index.js';
-import { startLeavesEffect } from './leaves/index.js';
-import { startTimePulseEffect } from './time-pulse/index.js';
-import { startSwallowsEffect } from './swallows/index.js';
-import { startTwilightEffect, startFirefliesEffect } from './twilight/index.js';
-import { startDewdropsEffect } from './dewdrops/index.js';
-import { startCracksEffect } from './cracks/index.js';
-import { startPobresEffect } from './pobres/index.js';
-import { startEternoRetornoEffect } from './eterno-retorno/index.js';
-import { startSisyphusEffect } from './sisyphus/index.js';
 import { startLibraryParticles } from './library-atmosphere/particles.js';
 import { startCardParallax } from './library-atmosphere/card-parallax.js';
 import { state } from '../app/state.js';
+
+// =============================================
+// DYNAMIC IMPORTS — Efectos del Reader cargados bajo demanda
+// Cada efecto solo se descarga cuando una página lo necesita.
+// =============================================
+const loadLeaves       = () => import('./leaves/index.js');
+const loadTimePulse    = () => import('./time-pulse/index.js');
+const loadSwallows     = () => import('./swallows/index.js');
+const loadTwilight     = () => import('./twilight/index.js');
+const loadDewdrops     = () => import('./dewdrops/index.js');
+const loadCracks       = () => import('./cracks/index.js');
+const loadPobres       = () => import('./pobres/index.js');
+const loadEterno       = () => import('./eterno-retorno/index.js');
+const loadSisyphus     = () => import('./sisyphus/index.js');
 
 /**
  * Returns the correct container for visual effects.
@@ -43,6 +51,21 @@ let activeLibraryParticlesCleanup = null;
 let activeCardParallaxCleanup = null;
 const activeEffectAudio = new Set();
 const activeEffectFadeIntervals = new Map();
+
+function getConnectionInfo() {
+    return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+}
+
+function shouldReduceLibraryAtmosphere() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const connection = getConnectionInfo();
+    const effectiveType = String(connection?.effectiveType || '').toLowerCase();
+    const constrainedConnection = Boolean(connection?.saveData) || effectiveType.includes('2g') || effectiveType === '3g';
+    const lowMemory = (navigator.deviceMemory || 4) <= 2;
+    const lowCores = (navigator.hardwareConcurrency || 4) <= 4;
+
+    return prefersReducedMotion || constrainedConnection || lowMemory || lowCores;
+}
 
 function canPlayManagedEffectSounds() {
     const bookId = state.currentBook?.id;
@@ -263,6 +286,7 @@ function getBeetleHideTarget() {
 
 export function startLibraryBeetle({ getAppMode }) {
     stopLibraryBeetle();
+    if (shouldReduceLibraryAtmosphere()) return;
 
     const scheduleNext = () => {
         if (getAppMode() !== 'library') return;
@@ -300,42 +324,36 @@ export function stopLibraryBeetle() {
     if (el) el.remove();
 }
 
-export function handlePageEffects(effectString, { getAppMode }) {
+export async function handlePageEffects(effectString, { getAppMode }) {
     const effects = effectString ? effectString.split(',').map(e => e.trim()) : [];
     clearExistingEffects(effects);
     if (!effectString) return;
 
-    // Efectos existentes
+    // Efectos CSS-only (síncronos, no requieren módulos)
     if (effects.includes('bluebird_pass')) startBirdEffect(getAppMode);
     if (effects.includes('smoke_overlay')) startSmokeEffect(getAppMode);
     if (effects.includes('rain_subtle')) startRainEffect(getAppMode);
 
-    // Nuevos efectos: Hojas cayendo con intensidades
-    if (effects.includes('falling_leaves_minimal')) {
-        activeLeavesCleanup = startLeavesEffect('minimal');
-    } else if (effects.includes('falling_leaves_low')) {
-        activeLeavesCleanup = startLeavesEffect('low');
-    } else if (effects.includes('falling_leaves_medium')) {
-        activeLeavesCleanup = startLeavesEffect('medium');
-    } else if (effects.includes('falling_leaves_high')) {
-        activeLeavesCleanup = startLeavesEffect('high');
-    } else if (effects.includes('falling_leaves_intense')) {
-        activeLeavesCleanup = startLeavesEffect('intense');
+    // --- Hojas cayendo (dynamic import) ---
+    const leavesMatch = effects.find(e => e.startsWith('falling_leaves_'));
+    if (leavesMatch) {
+        const intensity = leavesMatch.replace('falling_leaves_', '');
+        const { startLeavesEffect } = await loadLeaves();
+        activeLeavesCleanup = startLeavesEffect(intensity);
     }
 
-    // Pulso del tiempo con intensidades
-    if (effects.includes('time_pulse_subtle')) {
-        activeTimePulseCleanup = startTimePulseEffect('subtle');
-    } else if (effects.includes('time_pulse_medium')) {
-        activeTimePulseCleanup = startTimePulseEffect('medium');
-    } else if (effects.includes('time_pulse_strong')) {
-        activeTimePulseCleanup = startTimePulseEffect('strong');
+    // --- Pulso del tiempo (dynamic import) ---
+    const pulseMatch = effects.find(e => e.startsWith('time_pulse_'));
+    if (pulseMatch) {
+        const intensity = pulseMatch.replace('time_pulse_', '');
+        const { startTimePulseEffect } = await loadTimePulse();
+        activeTimePulseCleanup = startTimePulseEffect(intensity);
     }
 
-    // Overlay sepia con intensidades
+    // Overlay sepia (CSS-only, síncrono)
     if (effects.some(e => e.startsWith('sepia_'))) {
         const sepiaEffect = effects.find(e => e.startsWith('sepia_') && e !== 'sepia_grain');
-        const intensity = sepiaEffect ? sepiaEffect.split('_')[1] : null; // light, medium, strong
+        const intensity = sepiaEffect ? sepiaEffect.split('_')[1] : null;
         const withGrain = effects.includes('sepia_grain');
 
         if (intensity) {
@@ -346,80 +364,90 @@ export function handlePageEffects(effectString, { getAppMode }) {
         }
     }
 
-    // --- Golondrinas (Bécquer y Vaivén) ---
-    if (effects.includes('swallows_arriving')) {
-        activeSwallowsCleanup = startSwallowsEffect('arriving');
-    } else if (effects.includes('swallows_nesting')) {
-        activeSwallowsCleanup = startSwallowsEffect('nesting');
-    } else if (effects.includes('swallows_passing')) {
-        activeSwallowsCleanup = startSwallowsEffect('passing');
-    } else if (effects.includes('swallows_fading')) {
-        activeSwallowsCleanup = startSwallowsEffect('fading');
-    } else if (effects.includes('swallows_single')) {
-        activeSwallowsCleanup = startSwallowsEffect('single');
-    } else if (effects.includes('tiny_swallows_mid')) {
-        activeSwallowsCleanup = startSwallowsEffect('tiny_mid');
-    } else if (effects.includes('tiny_swallows_under')) {
-        activeSwallowsCleanup = startSwallowsEffect('tiny_under');
-    }
+    // --- Golondrinas (dynamic import) ---
+    const swallowModes = [
+        'swallows_arriving', 'swallows_nesting', 'swallows_passing',
+        'swallows_fading', 'swallows_single', 'tiny_swallows_mid', 'tiny_swallows_under'
+    ];
+    const swallowModeMap = {
+        'swallows_arriving': 'arriving', 'swallows_nesting': 'nesting',
+        'swallows_passing': 'passing', 'swallows_fading': 'fading',
+        'swallows_single': 'single', 'tiny_swallows_mid': 'tiny_mid',
+        'tiny_swallows_under': 'tiny_under'
+    };
+    const activeSwallowMode = effects.find(e => swallowModes.includes(e));
+    const needsSwallows = activeSwallowMode || effects.includes('tiny_landing');
 
-    if (effects.includes('tiny_landing')) {
-        const landingCleanup = startSwallowsEffect('tiny_landing');
-        if (activeSwallowsCleanup) {
-            const oldCleanup = activeSwallowsCleanup;
-            activeSwallowsCleanup = () => { oldCleanup(); landingCleanup(); };
-        } else {
-            activeSwallowsCleanup = landingCleanup;
+    if (needsSwallows) {
+        const { startSwallowsEffect } = await loadSwallows();
+
+        if (activeSwallowMode) {
+            activeSwallowsCleanup = startSwallowsEffect(swallowModeMap[activeSwallowMode]);
+        }
+
+        if (effects.includes('tiny_landing')) {
+            const landingCleanup = startSwallowsEffect('tiny_landing');
+            if (activeSwallowsCleanup) {
+                const oldCleanup = activeSwallowsCleanup;
+                activeSwallowsCleanup = () => { oldCleanup(); landingCleanup(); };
+            } else {
+                activeSwallowsCleanup = landingCleanup;
+            }
         }
     }
 
-    // --- Atardecer/Noche (Bécquer) ---
+    // --- Atardecer/Noche (dynamic import) ---
     const twilightEffect = effects.find(e => e.startsWith('twilight_'));
-    if (twilightEffect) {
-        const intensity = twilightEffect.replace('twilight_', '');
-        activeTwilightCleanup = startTwilightEffect(intensity);
+    const needsFireflies = effects.find(e => e.startsWith('fireflies_'));
+    if (twilightEffect || needsFireflies) {
+        const mod = await loadTwilight();
+        if (twilightEffect) {
+            const intensity = twilightEffect.replace('twilight_', '');
+            activeTwilightCleanup = mod.startTwilightEffect(intensity);
+        }
+        if (needsFireflies) {
+            const intensity = needsFireflies.replace('fireflies_', '');
+            activeFirefliesCleanup = mod.startFirefliesEffect(intensity);
+        }
     }
 
-    // --- Gotas de rocío / Lágrimas ---
-    if (effects.includes('dewdrops_shimmer')) {
-        activeDewdropsCleanup = startDewdropsEffect('shimmer');
-    } else if (effects.includes('dewdrops_tears')) {
-        activeDewdropsCleanup = startDewdropsEffect('tears');
+    // --- Gotas de rocío / Lágrimas (dynamic import) ---
+    const dewMatch = effects.find(e => e.startsWith('dewdrops_'));
+    if (dewMatch) {
+        const mode = dewMatch.replace('dewdrops_', '');
+        const { startDewdropsEffect } = await loadDewdrops();
+        activeDewdropsCleanup = startDewdropsEffect(mode);
     }
 
-    // --- Luciérnagas ---
-    if (effects.includes('fireflies_subtle')) {
-        activeFirefliesCleanup = startFirefliesEffect('subtle');
-    } else if (effects.includes('fireflies_bright')) {
-        activeFirefliesCleanup = startFirefliesEffect('bright');
-    }
-
-    // --- Grietas SVG ---
+    // --- Grietas SVG (dynamic import) ---
     const cracksEffect = effects.find(e => e.startsWith('cracks_'));
     if (cracksEffect) {
         const stage = cracksEffect.replace('cracks_', '');
-        // Guardamos el cleanup si no había uno
+        const { startCracksEffect } = await loadCracks();
         const cleanup = startCracksEffect(stage);
         if (!activeCracksCleanup) {
             activeCracksCleanup = cleanup;
         }
     }
 
-    // --- Flores en el Hormigón (Gata Cattana) ---
+    // --- Flores en el Hormigón — Gata Cattana (dynamic import) ---
     const pobresEffect = effects.find(e => e.startsWith('pobres_'));
     if (pobresEffect) {
+        const { startPobresEffect } = await loadPobres();
         activePobresCleanup = startPobresEffect(pobresEffect);
     }
 
-    // --- Eterno Retorno (Nietzsche) ---
+    // --- Eterno Retorno — Nietzsche (dynamic import) ---
     const eternoEffect = effects.find(e => e.startsWith('eterno_'));
     if (eternoEffect) {
+        const { startEternoRetornoEffect } = await loadEterno();
         activeEternoCleanup = startEternoRetornoEffect(eternoEffect);
     }
 
-    // --- Sísifo (Camus) ---
+    // --- Sísifo — Camus (dynamic import) ---
     const sisifoEffect = effects.find(e => e.startsWith('sisifo_'));
     if (sisifoEffect) {
+        const { startSisyphusEffect } = await loadSisyphus();
         activeSisyphusCleanup = startSisyphusEffect(sisifoEffect);
     }
 
@@ -520,7 +548,9 @@ export function handlePageEffects(effectString, { getAppMode }) {
 
 export function startLibraryAtmosphere() {
     stopLibraryAtmosphere();
-    activeLibraryParticlesCleanup = startLibraryParticles();
+    if (!shouldReduceLibraryAtmosphere()) {
+        activeLibraryParticlesCleanup = startLibraryParticles();
+    }
     activeCardParallaxCleanup = startCardParallax();
 }
 
