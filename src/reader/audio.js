@@ -1,7 +1,7 @@
 import { state } from '../app/state.js';
 import { pauseAllEffectAudio, replayManagedPageEffectSounds, resumeEffectAudio } from '../effects/index.js';
 import { requestWakeLock, releaseWakeLock } from '../utils/wakeLock.js';
-import { applyComfortFadeIn, cleanupGhost, clearGhostSchedulers, startGhostSystem, getGhostAudio, GHOST_MAX_VOLUME } from './ghost-echo.js';
+import { applyComfortFadeIn, cleanupGhost, clearGhostSchedulers, glideActiveAudioToVolume, startGhostSystem, getGhostAudio, GHOST_MAX_VOLUME } from './ghost-echo.js';
 import { setAudioStatus, syncAudioExperienceUI, syncCurrentAudioVolume, updatePlayButtonState } from './audio-ui-sync.js';
 
 // Re-export for consumers that import directly from audio.js
@@ -447,9 +447,11 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
                     setAudioStatus('blocked', 'Toca para iniciar el sonido.');
                 });
         } else if (!existingAudio.paused) {
-            // If it's already playing, we must ensure it smoothly fades to the NEW page's volume
+            // Same track, new page: keep continuity and only settle the target volume.
             const targetVolume = getPreparedAudioTargetVolume(pageData);
-            applyComfortFadeIn(existingAudio, pageData, targetVolume);
+            glideActiveAudioToVolume(existingAudio, targetVolume);
+            updatePlayButtonState(true);
+            setAudioStatus('playing', getAudioDescriptor(pageData)?.playingMessage || '');
         }
 
         return;

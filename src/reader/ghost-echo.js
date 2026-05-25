@@ -64,6 +64,34 @@ export function clearGhostSchedulers() {
     if (comfortFadeInterval) { clearInterval(comfortFadeInterval); comfortFadeInterval = null; }
 }
 
+export function clearComfortFadeIn() {
+    comfortFadeInterval = clearFadeInterval(comfortFadeInterval);
+    mainFadeInInterval = clearFadeInterval(mainFadeInInterval);
+}
+
+export function glideActiveAudioToVolume(audio, targetVolume, duration = SAFE_AUDIO_PRIMARY_FADE_MS) {
+    if (!audio) return;
+
+    clearComfortFadeIn();
+
+    const normalizedTarget = Math.max(0, Math.min(targetVolume, 1));
+    const currentVolume = Number.isFinite(audio.volume) ? audio.volume : normalizedTarget;
+
+    if (Math.abs(currentVolume - normalizedTarget) < 0.015) {
+        audio.volume = normalizedTarget;
+        return;
+    }
+
+    comfortFadeInterval = rampVolume(
+        audio,
+        currentVolume,
+        normalizedTarget,
+        duration,
+        () => { comfortFadeInterval = null; },
+        () => state.currentAudio
+    );
+}
+
 export function cleanupGhost() {
     clearGhostSchedulers();
     if (ghostAudio) {
@@ -216,8 +244,7 @@ function restartMainFromGhost(baseVolume) {
 export function applyComfortFadeIn(audio, pageData, targetVolume, { fadeIn = false } = {}) {
     if (!audio) return;
 
-    comfortFadeInterval = clearFadeInterval(comfortFadeInterval);
-    mainFadeInInterval = clearFadeInterval(mainFadeInInterval);
+    clearComfortFadeIn();
 
     const kind = pageData?.karaokeLines?.length ? 'voice' : 'ambient';
     const cap = kind === 'voice' ? SAFE_AUDIO_START_CAP.voice : SAFE_AUDIO_START_CAP.ambient;
