@@ -181,32 +181,79 @@
 }
 
 /* --- Vaivén Poem Special Animations --- */
-.fade-yo-1 {
-    font-size: clamp(1.6rem, 5vw, 2.2rem);
-    font-weight: 700;
-    opacity: 0;
-    display: inline-block;
-    animation: fadeYo1 3s ease 2.0s forwards;
-}
-
-.fade-yo-2 {
-    font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+.fade-io {
+    font-size: clamp(1.6rem, 5vw, 2.0rem);
     font-weight: 300;
     font-style: italic;
     opacity: 0;
     display: inline-block;
-    animation: fadeYo2 4s ease 3.8s forwards;
-    filter: blur(0.5px);
+    filter: blur(6px);
+    color: var(--color-text-secondary);
+    animation: fadeIo 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards;
 }
 
-@keyframes fadeYo1 {
-    0% { opacity: 0; filter: blur(4px); }
-    100% { opacity: 0.85; filter: blur(0); }
+@keyframes fadeIo {
+    0% { opacity: 0; filter: blur(6px); }
+    50% { opacity: 0.4; filter: blur(3px); }
+    100% { opacity: 0.6; filter: blur(1px); } /* difuminado sutil */
 }
 
-@keyframes fadeYo2 {
-    0% { opacity: 0; filter: blur(8px); }
-    100% { opacity: 0.45; filter: blur(1px); }
+/* --- Dasain Glowing Construction Effect --- */
+.poem-layout:has(.dasain-container) {
+    gap: 0.6rem !important; /* Pulls all final page lines closer together */
+}
+
+.poem-layout .verse-line:has(.dasain-container) {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.dasain-container {
+    display: inline-flex;
+    justify-content: center;
+    gap: 0.08rem; /* Letras más juntas horizontalmente */
+    margin-top: 0.1rem; /* Inmediatamente debajo de Yo. */
+    width: 100%;
+}
+
+.dasain-letter {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', var(--font-display), serif;
+    font-size: clamp(1.15rem, 3.8vw, 1.45rem); /* Más pequeña y proporcional a Yo. */
+    font-weight: 300;
+    letter-spacing: 0.08em; /* Ocupa menos espacio horizontal */
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    opacity: 0;
+    transform: translateY(6px); /* Recorrido de construcción sumamente corto */
+    filter: blur(4px);
+    animation: dasainBuild 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered delays for letters D-a-s-a-i-n (starting after 'Yo.' has faded in) */
+.dasain-letter.dasain-d  { animation-delay: 2.8s; }
+.dasain-letter.dasain-a1 { animation-delay: 3.0s; }
+.dasain-letter.dasain-s  { animation-delay: 3.2s; }
+.dasain-letter.dasain-a2 { animation-delay: 3.4s; }
+.dasain-letter.dasain-i  { animation-delay: 3.6s; }
+.dasain-letter.dasain-n  { animation-delay: 3.8s; }
+
+@keyframes dasainBuild {
+    0% {
+        opacity: 0;
+        transform: translateY(6px) scale(0.97);
+        filter: blur(4px) drop-shadow(0 0 2px rgba(255, 255, 255, 0.15));
+    }
+    60% {
+        opacity: 0.7;
+        filter: blur(1px) drop-shadow(0 0 1px rgba(255, 255, 255, 0.05));
+    }
+    100% {
+        opacity: 0.8;
+        transform: translateY(0) scale(1);
+        filter: blur(0px) drop-shadow(0 0 0px transparent);
+    }
 }
 
 /* --- Ocaso Poem Special Animations --- */

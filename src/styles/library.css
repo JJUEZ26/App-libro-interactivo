@@ -1099,49 +1099,51 @@ body.theme-sepia .book-aura {
     }
 
     .library-row {
-        grid-auto-columns: clamp(250px, 78vw, 340px);
-        gap: var(--space-5);
-        padding-bottom: var(--space-5);
+        grid-auto-columns: clamp(160px, 45vw, 240px);
+        gap: var(--space-4);
+        padding-bottom: var(--space-4);
         scroll-padding-inline: var(--space-1);
     }
 
     .library-row-section[data-section-id="filosofia"] .library-row {
-        grid-auto-columns: clamp(260px, 82vw, 360px);
+        grid-auto-columns: clamp(180px, 50vw, 260px);
     }
 
     .book-card {
-        min-height: clamp(360px, 68vh, 440px);
+        min-height: clamp(280px, 55vh, 360px);
     }
 
     .book-cover-wrapper {
-        padding: var(--space-4) var(--space-4) var(--space-3);
+        padding: var(--space-3) var(--space-3) var(--space-2);
     }
 
     .book-card-body {
-        padding: var(--space-3) var(--space-4) var(--space-4);
-        gap: var(--space-3);
+        padding: var(--space-2) var(--space-3) var(--space-3);
+        gap: var(--space-2);
     }
 
     .book-title {
-        font-size: var(--text-xl);
+        font-size: var(--text-lg);
     }
 
     .book-author {
-        font-size: var(--text-base);
+        font-size: var(--text-sm);
     }
 
     .book-card-actions {
-        margin-top: var(--space-2);
+        margin-top: auto;
     }
 
     .book-open-btn {
-        min-height: 40px;
-        padding: var(--space-2) var(--space-5);
+        min-height: 36px;
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-xs);
     }
 
     .book-kebab-btn {
-        min-width: 40px;
-        min-height: 40px;
+        min-width: 36px;
+        min-height: 36px;
+        padding: var(--space-1);
     }
 
     .library-hero-card {
