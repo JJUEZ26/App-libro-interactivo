@@ -375,7 +375,7 @@ body.app-mode-auth #library-view::before {
 .library-row {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(180px, 260px);
+    grid-auto-columns: minmax(200px, 300px);
     gap: var(--space-4);
     overflow-x: auto;
     padding-bottom: var(--space-4);
@@ -389,22 +389,6 @@ body.app-mode-auth #library-view::before {
 }
 
 /* ========================================
-   SECCIÓN: CONCEPTOS FILOSÓFICOS
-   Cards más anchas — son experiencias inmersivas, no lecturas simples
-   ======================================== */
-.library-row-section[data-section-id="filosofia"] .library-row {
-    grid-auto-columns: minmax(200px, 300px);
-}
-
-.library-row-section[data-section-id="filosofia"] .book-card {
-    min-height: clamp(360px, 48vw, 420px);
-}
-
-.library-row-section[data-section-id="filosofia"] .book-title {
-    font-size: var(--text-xl);
-}
-
-/* ========================================
    SECCIÓN: CREACIÓN PROPIA
    Estilo propio sutil — borde ligeramente diferenciado
    ======================================== */
@@ -413,17 +397,6 @@ body.app-mode-auth #library-view::before {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-}
-
-/* Modificar tamaÃ±o especÃ­fico para Novelas */
-.library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
-    grid-auto-columns: minmax(140px, 200px);
-}
-.library-row-section[data-section-id="novelas-bifurcaciones"] .book-card {
-    min-height: clamp(280px, 35vw, 320px);
-}
-.library-row-section[data-section-id="novelas-bifurcaciones"] .book-title {
-    font-size: var(--text-base);
 }
 
 .library-row::-webkit-scrollbar {
@@ -462,7 +435,7 @@ body.app-mode-auth #library-view::before {
     border: 1px solid var(--color-glass-border);
     display: flex;
     flex-direction: column;
-    min-height: clamp(340px, 45vw, 400px);
+    min-height: clamp(360px, 48vw, 420px);
     height: 100%;
     cursor: pointer;
     scroll-snap-align: start;
@@ -895,7 +868,7 @@ body.theme-sepia .book-aura {
 .book-title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     font-weight: var(--font-bold);
     line-height: var(--leading-tight);
     color: var(--color-text-primary);
@@ -1099,14 +1072,10 @@ body.theme-sepia .book-aura {
     }
 
     .library-row {
-        grid-auto-columns: clamp(160px, 45vw, 240px);
+        grid-auto-columns: clamp(180px, 50vw, 260px);
         gap: var(--space-4);
         padding-bottom: var(--space-4);
         scroll-padding-inline: var(--space-1);
-    }
-
-    .library-row-section[data-section-id="filosofia"] .library-row {
-        grid-auto-columns: clamp(180px, 50vw, 260px);
     }
 
     .book-card {
@@ -1205,19 +1174,11 @@ body.theme-sepia .book-aura {
     .library-row {
         grid-auto-columns: minmax(220px, 300px);
     }
-
-    .library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
-        grid-auto-columns: minmax(180px, 240px);
-    }
 }
 
 @media (min-width: 1024px) {
     .library-row {
         grid-auto-columns: minmax(240px, 340px);
-    }
-
-    .library-row-section[data-section-id="novelas-bifurcaciones"] .library-row {
-        grid-auto-columns: minmax(200px, 260px);
     }
 }
 

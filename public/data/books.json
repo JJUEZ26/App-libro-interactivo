@@ -305,6 +305,22 @@
     "type": "poem"
   },
   {
+    "id": "original-antes-de-que-llegues",
+    "title": "Antes de que llegues",
+    "author": "Ju Ez",
+    "description": "Una confesión interactiva. Raspa la fachada de la intimidad idealizada para descubrir la cruda realidad del encierro.",
+    "cover": "images/antes_portada.png",
+    "storyFile": "stories/antes_de_que_llegues.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "depresión",
+      "amor",
+      "original",
+      "interactivo"
+    ]
+  },
+  {
     "id": "original-vaiven",
     "title": "Vaivén",
     "author": "Ju Ez",

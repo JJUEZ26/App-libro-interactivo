@@ -128,7 +128,44 @@
             display: flex;
             flex-direction: column;
         }
-        #main-content { flex: 1; display: flex; flex-direction: column; }
+        #main-content {
+            flex: 1; display: flex; flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.25s ease-out;
+        }
+        #main-content.ready { opacity: 1; }
+
+        /* ── Splash Screen ── */
+        .app-splash {
+            position: fixed; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 0.75rem;
+            background: var(--color-bg-primary);
+            z-index: 99999;
+            transition: opacity 0.35s ease-out;
+        }
+        .app-splash.fade-out {
+            opacity: 0; pointer-events: none;
+        }
+        .splash-icon {
+            font-size: 2.5rem;
+            animation: splash-pulse 1.8s ease-in-out infinite;
+        }
+        .splash-text {
+            font-family: var(--font-display);
+            font-size: clamp(var(--text-lg), 4vw, var(--text-xl));
+            font-weight: var(--font-bold);
+            background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.01em;
+        }
+        @keyframes splash-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.12); opacity: 1; }
+        }
 
         #app-header {
             display: flex;
@@ -284,7 +321,11 @@
     <meta name="theme-color" content="#1a1a1a">
 </head>
 
-<body class="theme-dark app-mode-library">
+<body class="theme-dark">
+    <!-- Splash: visible until JS is ready -->
+    <div id="app-splash" class="app-splash" aria-hidden="true">
+        <div class="splash-text">Lecturas Interactivas</div>
+    </div>
     <div id="app-container">
         <!-- BARRA SUPERIOR -->
         <header id="app-header">

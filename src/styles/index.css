@@ -2,6 +2,15 @@
    LECTURAS INTERACTIVAS — CSS Entry Point
    Layer declaration order defines cascade priority.
    Later layers always win over earlier ones.
+
+   ⚠️  WARNING: This file is NOT used in production.
+   The app uses CSS split loading:
+     - startup.css (initial auth/library experience)
+     - library-shell.css (library mode)
+     - reader-deferred.css (reader mode)
+   
+   This file exists as a REFERENCE for all available
+   styles. Do NOT import it in production code.
    ================================================ */
 
 @layer reset, tokens, layout, components, library, reader, auth, poems, effects, utilities;

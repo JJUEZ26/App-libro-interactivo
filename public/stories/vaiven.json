@@ -18,7 +18,7 @@
     "id": "brisa",
     "page": 2,
     "bgMusic": "spiegel_cello_piano.m4a",
-    "effect": "twilight_sunset",
+    "effect": "twilight_sunset, sfx_ocean_loop",
     "scenes": [
       "la brisa roza el cuerpo que reposa al vaivén. Acompañado únicamente por;",
       "El silencio",

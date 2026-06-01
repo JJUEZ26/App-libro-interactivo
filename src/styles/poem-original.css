@@ -822,8 +822,6 @@ body.virtual-fullscreen #app-container {
 
 /* 2. Olas del mar dentro del texto */
 .poem-layout .ocean-waves-text {
-    font-size: 1.4em;
-    font-weight: bold;
     display: inline-block;
     color: transparent;
     -webkit-text-fill-color: transparent;
@@ -855,6 +853,36 @@ body.virtual-fullscreen #app-container {
     }
     100% {
         background-position: 0% 50%, 100% 0%;
+    }
+}
+
+/* 2b. Olas del mar reales encapsuladas en Canvas/Video dentro del texto */
+.poem-layout .ocean-video-text-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    max-width: 100%;
+    opacity: 0;
+    animation: fadeInWavesSVG 1.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+    animation-delay: 0.3s;
+    pointer-events: none;
+}
+
+.poem-layout .ocean-video-text-wrapper canvas {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes fadeInWavesSVG {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-4px) scale(1);
     }
 }
 

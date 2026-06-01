@@ -32,6 +32,19 @@ export function initApp() {
     // Expose state globally for lazily-loaded components (e.g. DrawingCanvas gallery metadata)
     window.__APP_STATE__ = state;
 
+    // ── Splash dismissal ──
+    function dismissSplash() {
+        const splash = document.getElementById('app-splash');
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) mainContent.classList.add('ready');
+        if (splash) {
+            splash.classList.add('fade-out');
+            splash.addEventListener('transitionend', () => splash.remove(), { once: true });
+            // Fallback removal if transitionend doesn't fire
+            setTimeout(() => splash.remove(), 500);
+        }
+    }
+
     const elements = {
         appContainer: getEl('app-container'),
         libraryView: getEl('library-view'),
@@ -348,6 +361,43 @@ export function initApp() {
             setCurrentVolume
         });
 
+        // =====================================================
+        // REACTIVE STATE SUBSCRIPTIONS
+        // Cada vez que estas propiedades cambian DESDE CUALQUIER
+        // módulo, los efectos secundarios ocurren automáticamente.
+        // Ya no hay que recordar llamar syncX() manualmente.
+        // =====================================================
+
+        // 1. Tema: aplicar clase CSS y meta-color automáticamente
+        state.on('currentTheme', (newTheme) => {
+            applyTheme(newTheme);
+        });
+
+        // 2. Tamaño de fuente: sincronizar CSS var automáticamente
+        state.on('fontSize', (newSize) => {
+            document.documentElement.style.setProperty('--font-size-dynamic', `${newSize}rem`);
+        });
+
+        // 3. Volumen: sincronizar audio principal y efectos automáticamente
+        state.on('currentVolume', () => {
+            syncCurrentAudioVolume();
+            syncEffectAudioVolume();
+        });
+
+        // 4. Modo de app: actualizar título del documento para lectores de pantalla
+        state.on('appMode', (newMode) => {
+            const modeLabels = { library: 'Biblioteca', reader: 'Leyendo', auth: 'Iniciar sesión' };
+            const suffix = modeLabels[newMode] || '';
+            document.title = suffix ? `${suffix} — Lecturas Interactivas` : 'Lecturas Interactivas';
+        });
+
+        // 5. Libro actual: limpiar datos efímeros de sesión (puntuaciones de juegos, etc.)
+        state.on('currentBook', (newBook, oldBook) => {
+            if (newBook?.id !== oldBook?.id) {
+                state.ephemeral = {};
+            }
+        });
+
         // Auth System Setup
         // Mount avatar button in header
         const avatarBtn = createAvatarButton();
@@ -383,6 +433,7 @@ export function initApp() {
         if (hasSession) {
             await ensureLibraryStyles();
             // User is logged in -> go straight to library
+            document.body.classList.add('app-mode-library');
             switchToLibraryView();
             void ensureLibraryReady().catch((error) => {
                 console.error('No se pudo cargar la biblioteca inicial:', error);
@@ -391,6 +442,9 @@ export function initApp() {
             // Show auth screen first
             switchToAuthView();
         }
+
+        // ── Reveal content & dismiss splash ──
+        dismissSplash();
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
@@ -402,18 +456,10 @@ export function initApp() {
         document.body.classList.remove('app-mode-library', 'app-mode-reader');
         document.body.classList.add('app-mode-auth');
 
-        if (elements.authView) {
-            elements.authView.hidden = false;
-            elements.authView.style.display = '';
-        }
-        if (elements.libraryView) {
-            elements.libraryView.hidden = true;
-            elements.libraryView.style.display = 'none';
-        }
-        if (elements.readerView) {
-            elements.readerView.hidden = true;
-            elements.readerView.style.display = 'none';
-        }
+        if (elements.authView) elements.authView.hidden = false;
+        if (elements.libraryView) elements.libraryView.hidden = true;
+        if (elements.readerView) elements.readerView.hidden = true;
+
         // Hide reader-only and user controls
         if (elements.headerAvatarSlot) elements.headerAvatarSlot.classList.add('hidden');
         if (elements.fullscreenBtn) elements.fullscreenBtn.classList.add('hidden');
@@ -432,7 +478,6 @@ export function initApp() {
         await ensureLibraryStyles();
         if (elements.authView) {
             elements.authView.hidden = true;
-            elements.authView.style.display = 'none';
         }
         closeDrawer();
         switchToLibraryView();

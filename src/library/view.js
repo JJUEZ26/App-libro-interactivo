@@ -30,20 +30,12 @@ export function switchToLibraryView() {
     document.body.classList.remove('app-mode-reader', 'fullscreen-mode', 'app-mode-auth');
     document.body.classList.add('app-mode-library');
 
-    if (elements?.libraryView) {
-        elements.libraryView.hidden = false;
-        elements.libraryView.style.display = '';
-    }
-
-    if (elements?.authView) {
-        elements.authView.hidden = true;
-        elements.authView.style.display = 'none';
-    }
+    if (elements?.libraryView) elements.libraryView.hidden = false;
+    if (elements?.authView) elements.authView.hidden = true;
 
     if (elements?.readerView) {
         elements.readerView.classList.remove('active');
         elements.readerView.hidden = true;
-        elements.readerView.style.display = 'none';
     }
 
     if (elements?.pageWrapper) {
@@ -76,19 +68,11 @@ export function switchToReaderView() {
     document.body.classList.remove('app-mode-library', 'app-mode-auth');
     document.body.classList.add('app-mode-reader');
 
-    if (elements?.libraryView) {
-        elements.libraryView.hidden = true;
-        elements.libraryView.style.display = 'none';
-    }
-
-    if (elements?.authView) {
-        elements.authView.hidden = true;
-        elements.authView.style.display = 'none';
-    }
+    if (elements?.libraryView) elements.libraryView.hidden = true;
+    if (elements?.authView) elements.authView.hidden = true;
 
     if (elements?.readerView) {
         elements.readerView.hidden = false;
-        elements.readerView.style.display = '';
         elements.readerView.classList.add('active');
     }
 
@@ -105,8 +89,6 @@ export function switchToReaderView() {
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
 
 /**
  * Open a book with a smooth cinematic transition.

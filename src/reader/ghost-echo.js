@@ -125,7 +125,7 @@ export function startGhostSystem(soundFile, baseVolume) {
 }
 
 function spawnGhost(soundFile, baseVolume) {
-    ghostAudio = new Audio(`sounds/${soundFile}`);
+    ghostAudio = new Audio(`/sounds/${soundFile}`);
     ghostAudio.volume = 0;
     ghostAudio.loop = true;
     ghostAudio.play().catch(err => console.warn('Ghost audio blocked:', err));

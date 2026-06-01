@@ -5,7 +5,6 @@ export async function loadStory(storyFilePath) {
         // Normalizar ruta para Vercel: asegurar que empiece con /
         const finalPath = storyFilePath.startsWith('/') ? storyFilePath : `/${storyFilePath}`;
 
-        console.log('Cargando historia desde:', finalPath);
         const response = await fetch(finalPath);
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status} cargando ${finalPath}`);

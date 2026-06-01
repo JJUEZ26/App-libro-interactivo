@@ -19,6 +19,7 @@ const loadCracks       = () => import('./cracks/index.js');
 const loadPobres       = () => import('./pobres/index.js');
 const loadEterno       = () => import('./eterno-retorno/index.js');
 const loadSisyphus     = () => import('./sisyphus/index.js');
+const loadFacade       = () => import('./facade/index.js');
 
 /**
  * Returns the correct container for visual effects.
@@ -47,6 +48,7 @@ let activeCracksCleanup = null;
 let activePobresCleanup = null;
 let activeEternoCleanup = null;
 let activeSisyphusCleanup = null;
+let activeFacadeCleanup = null;
 let activeLibraryParticlesCleanup = null;
 let activeCardParallaxCleanup = null;
 const activeEffectAudio = new Set();
@@ -126,7 +128,7 @@ export function syncEffectAudioVolume() {
 function playManagedEffectSound(soundFile, { baseVolume = 1, fadeStep = 0.01, fadeIntervalMs = 20 } = {}) {
     if (!soundFile || !canPlayManagedEffectSounds()) return null;
 
-    const audio = new Audio(`sounds/${soundFile}`);
+    const audio = new Audio(`/sounds/${soundFile}`);
     audio.__baseVolume = baseVolume;
     audio.__shouldResume = false;
     audio.volume = 0;
@@ -168,6 +170,11 @@ function triggerManagedEffectSounds(effects = []) {
         playManagedEffectSound('efectosonido_puerta.mp4', { baseVolume: 0.11, fadeStep: 0.015, fadeIntervalMs: 20 });
     } else if (effects.includes('sfx_door_soft')) {
         playManagedEffectSound('efectosonido_puerta.mp4', { baseVolume: 0.04, fadeStep: 0.006, fadeIntervalMs: 25 });
+    } else if (effects.includes('sfx_ocean_loop')) {
+        const audio = playManagedEffectSound('olas_mar.mp3', { baseVolume: 0.35, fadeStep: 0.005, fadeIntervalMs: 30 });
+        if (audio) {
+            audio.loop = true;
+        }
     }
 }
 
@@ -196,6 +203,7 @@ function clearExistingEffects(nextEffects = []) {
     if (activePobresCleanup) { activePobresCleanup(); activePobresCleanup = null; }
     if (activeEternoCleanup) { activeEternoCleanup(); activeEternoCleanup = null; }
     if (activeSisyphusCleanup) { activeSisyphusCleanup(); activeSisyphusCleanup = null; }
+    if (activeFacadeCleanup) { activeFacadeCleanup(); activeFacadeCleanup = null; }
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
 
@@ -449,6 +457,13 @@ export async function handlePageEffects(effectString, { getAppMode }) {
     if (sisifoEffect) {
         const { startSisyphusEffect } = await loadSisyphus();
         activeSisyphusCleanup = startSisyphusEffect(sisifoEffect);
+    }
+
+    // --- La Máscara (Canvas Scratch-off) (dynamic import) ---
+    const facadeEffect = effects.find(e => e === 'facade_scratch');
+    if (facadeEffect) {
+        const { startFacadeEffect } = await loadFacade();
+        activeFacadeCleanup = startFacadeEffect();
     }
 
     // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---

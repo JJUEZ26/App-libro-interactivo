@@ -43,10 +43,24 @@ export function getAuthView() {
 // View Renderers
 // ──────────────────────────────────────────
 
+/** @type {boolean} */
+let isFirstRender = true;
+
 function renderCurrentView() {
     if (!container) return;
-    container.classList.add('auth-transitioning');
 
+    // First render is INSTANT — no transition delay (avoids FOUC)
+    if (isFirstRender) {
+        isFirstRender = false;
+        switch (currentView) {
+            case 'register': renderRegister(); break;
+            default: renderLogin(); break;
+        }
+        return;
+    }
+
+    // Subsequent renders (login↔register toggle) use transition
+    container.classList.add('auth-transitioning');
     setTimeout(() => {
         switch (currentView) {
             case 'register': renderRegister(); break;
@@ -62,9 +76,6 @@ function renderLogin() {
     container.innerHTML = `
         <div class="auth-card">
             <div class="auth-card-header">
-                <div class="auth-logo" aria-hidden="true">
-                    ✨
-                </div>
                 <h2 class="auth-title">Bienvenido de vuelta</h2>
                 <p class="auth-subtitle">Inicia sesión para continuar leyendo</p>
             </div>

@@ -11,13 +11,14 @@ const ALLOWED_TAGS = new Set([
     'em', 'i', 'strong', 'b', 'br', 'span', 'p',
     'u', 'small', 'sub', 'sup', 'mark', 'abbr',
     'div', 'img', 'a', 'button',
-    'svg', 'path', 'text', 'textPath', 'defs', 'g'
+    'svg', 'path', 'text', 'textPath', 'defs', 'g', 'rect', 'mask', 'foreignObject', 'video', 'source'
 ]);
 
 const ALLOWED_ATTRS = new Set([
     'id', 'class', 'style', 'href', 'src', 'alt', 'title',
     'data-start', 'data-end', 'data-response', 'loading', 'aria-label',
-    'viewBox', 'd', 'fill', 'font-family', 'font-size', 'letter-spacing', 'startOffset', 'text-anchor', 'xmlns'
+    'viewBox', 'd', 'fill', 'font-family', 'font-size', 'letter-spacing', 'startOffset', 'text-anchor', 'xmlns',
+    'x', 'y', 'width', 'height', 'mask', 'dominant-baseline', 'autoplay', 'loop', 'muted', 'playsinline', 'crossorigin'
 ]);
 
 export function sanitizeHTML(raw) {

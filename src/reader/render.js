@@ -6,6 +6,7 @@ import { sanitizeHTML } from '../utils/sanitize.js';
 import { renderDiscoveries, renderMusicCredits } from './discoveries.js';
 import { initAmbientVideo } from './ambient-video.js';
 import { mountSisyphusGame, destroySisyphusWidget } from './sisyphus-mount.js';
+import { mountOceanTextMask, cleanupOceanTextMask } from '../effects/ocean-text-mask.js';
 import {
     bindAudioExperience,
     clearAudioExperienceContext,
@@ -51,6 +52,8 @@ export function renderPage(pageId) {
 
     // Destroy any active Sisyphus widget from previous page
     destroySisyphusWidget();
+    // Cleanup ocean video masks from previous page
+    cleanupOceanTextMask();
 
     elements.pageWrapper.querySelectorAll('.page-content').forEach((node) => node.remove());
     if (!state.story) return;
@@ -287,6 +290,9 @@ export function renderPage(pageId) {
     pageContent.appendChild(contentCenterer);
     elements.pageWrapper.appendChild(pageContent);
 
+    // Post-render: mount ocean video text mask if applicable
+    mountOceanTextMask(pageContent);
+
     // =====================================================
     // SISYPHUS GAME WIDGET — Dynamic mount
     // =====================================================
@@ -359,14 +365,12 @@ export function renderPage(pageId) {
         const shouldStopAudioExplicitly = pageData.stopAudio === true || audioDecision === 'silent';
         const shouldCarryActiveAudio = !pageSoundFile && !shouldStopAudioExplicitly && hasActiveAudio;
 
-        console.log('[Render] Audio binding check. audioExperienceMarkup:', JSON.stringify(audioExperienceMarkup), 'pageSoundFile:', pageSoundFile, 'pageId:', pageId);
         if (audioExperienceMarkup && pageSoundFile) {
             bindAudioExperience(pageId, pageData);
         } else if (shouldCarryActiveAudio) {
             // Preserve the current audio context when this page has no explicit sound.
             if (state.commandOrb) state.commandOrb.setMode('audio');
         } else {
-            console.warn('[Render] Clearing audio context — audioExperienceMarkup:', audioExperienceMarkup, 'pageSoundFile:', pageSoundFile);
             clearAudioExperienceContext();
         }
 

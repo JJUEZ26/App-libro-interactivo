@@ -1,0 +1,118 @@
+[
+  {
+    "id": 0,
+    "images": [
+      "images/antes_portada.png"
+    ],
+    "scenes": [
+      "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:2px; padding: 0 1rem; color: #fff;\">Antes de que llegues</h1>"
+    ],
+    "forceShowChoices": true,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.85,
+    "fadeIn": true,
+    "delay": 1500,
+    "choices": [
+      {
+        "text": "Entrar",
+        "page": 1
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.90,
+    "ghostEcho": true,
+    "scenes": [
+      "Ojalá la vida únicamente consistiera en esta intimidad perfecta, solo los dos en esta habitación.",
+      "Que todo lo externo e intrascendental se disolviera.",
+      "Ojalá hubiera nacido únicamente para vivir en este momento, enredado entre tu piel."
+    ],
+    "choices": [
+      {
+        "text": "Continuar",
+        "page": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.95,
+    "ghostEcho": true,
+    "scenes": [
+      "Solo quería decirte que ya compré pañitos húmedos, que la despensa está un poco más llena y que los días siguen siendo igual de oscuros.",
+      "Aún tomo pastillas para dormir y sigo perdiendo cabello...",
+      "Te extraño por las noches y los domingos en la mañana.",
+      "Que aún no quiero vivir una vida entera junto a ti, pero daría hasta lo que no tengo por compartir un momento más a tu lado, por tocar tus labios, por sentir tu aroma y tus abrazos."
+    ],
+    "choices": [
+      {
+        "text": "La llegada",
+        "page": 3
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 1.0,
+    "ghostEcho": true,
+    "effect": "facade_scratch",
+    "scenes": [
+      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Tú llegas cuando las sábanas están cambiadas. Cuando el piso está barrido. Cuando las fundas de almohadas están recién lavadas.</div>",
+      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Tú nunca has llegado cuando una capa densa ocupa el espacio. Cuando debes ver por dónde pisar, cuando hay latas en las esquinas y droga en el cenicero.</div>",
+      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Cuando las sábanas están cafés y las fundas de almohadas desprenden hedor. Tú nunca has llegado cuando el baño ha estado realmente sucio.</div>",
+      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Porque cuando vienes, todo eso ya pasó. Y estoy mejor, listo para vernos.</div>",
+      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5); font-style:italic; font-weight:bold; font-size: 1.2em; text-align: center; margin-top: 2rem;'>Tú nunca me has visto realmente mal.</div>"
+    ],
+    "delay": 3000,
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 4,
+    "sound": "spiegel_cello_piano.m4a",
+    "ghostEcho": true,
+    "volume": 0.3,
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "musicCredits": {
+      "title": "Antes de que llegues",
+      "composer": "Melodía: Spiegel im Spiegel — Arvo Pärt. Escrito por Ju Ez."
+    },
+    "discoveries": [
+      {
+        "title": "La puerta",
+        "type": "story",
+        "year": "2026",
+        "line": "Una historia sobre la pérdida, la amistad resquebrajada y las decisiones irremediables.",
+        "available": true,
+        "bookId": "original-la-puerta"
+      },
+      {
+        "title": "Vaivén",
+        "type": "poem",
+        "year": "2026",
+        "line": "Una meditación interactiva sobre la quietud y las despedidas ineludibles.",
+        "available": true,
+        "bookId": "original-vaiven"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original' style='margin-bottom: 2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

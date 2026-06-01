@@ -888,3 +888,29 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
    - Incrementar el query param de estilos a `index.css?v=105` en [index.html](file:///c:/App-libro-interactivo/index.html).
 
 
+### Auditoría de Cimientos y Estado Observable (Mayo 2026)
+**Objetivo**: Fortalecer los cimientos arquitectónicos identificados como frágiles en la auditoría interna, antes de continuar agregando features.
+
+**Hallazgos de la Auditoría**:
+- ✅ Separación de módulos: sólida
+- ✅ Cleanup de efectos visuales: bien implementado con funciones de destrucción explícitas
+- ✅ Sísifo aislado correctamente en `sisyphus-mount.js` con `destroySisyphusWidget()`
+- ✅ Dynamic imports para efectos: correcto (no se descargan hasta que se necesitan)
+- ✅ Estado efímero separado: `state.ephemeral` documentado y aislado
+- 🔴 **Grieta crítica**: `state.js` era un objeto plano mutado directamente — sin notificaciones
+
+**Implementación — Estado Observable (v2.0)**:
+1. **`state.js` reescrito con Proxy JavaScript nativo**:
+   - El objeto `state` funciona idénticamente para todos los módulos existentes (sin migración)
+   - API nueva: `state.on(key, handler)` / `state.off(key, handler)` / `state.once(key, handler)`
+   - Las mutaciones directas (`state.X = valor`) siguen funcionando y ahora disparan notificaciones automáticamente
+
+2. **Suscripciones reactivas en `init.js`**:
+   - `currentTheme` → `applyTheme()` automático (ya no requiere llamada manual)
+   - `fontSize` → sincroniza `--font-size-dynamic` CSS var automáticamente
+   - `currentVolume` → sincroniza audio principal y efectos automáticamente
+   - `appMode` → actualiza `document.title` para lectores de pantalla (accesibilidad)
+   - `currentBook` → limpia `state.ephemeral` automáticamente al cambiar de libro
+
+3. **Limpieza de código de producción**:
+   - Eliminados `console.log/warn` de debug en `render.js` y `story.js` que se disparaban en cada cambio de página

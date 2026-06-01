@@ -310,7 +310,7 @@ export function preloadAudio(soundFile) {
         audioCache.delete(oldest);
     }
 
-    const audio = new Audio(`sounds/${soundFile}`);
+    const audio = new Audio(`/sounds/${soundFile}`);
     audio.preload = 'auto';
     audio.load();
     audioCache.set(soundFile, audio);
@@ -465,7 +465,7 @@ export function playPageSound(pageId, soundFileOverride = null, autoPlay = true,
         audioCache.delete(soundFile);
         audio.currentTime = 0;
     } else {
-        audio = new Audio(`sounds/${soundFile}`);
+        audio = new Audio(`/sounds/${soundFile}`);
         audio.preload = 'auto';
     }
 
