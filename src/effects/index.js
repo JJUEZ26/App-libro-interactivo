@@ -20,6 +20,7 @@ const loadPobres       = () => import('./pobres/index.js');
 const loadEterno       = () => import('./eterno-retorno/index.js');
 const loadSisyphus     = () => import('./sisyphus/index.js');
 const loadFacade       = () => import('./facade/index.js');
+const loadOlmo         = () => import('./olmo/index.js');
 
 /**
  * Returns the correct container for visual effects.
@@ -49,6 +50,7 @@ let activePobresCleanup = null;
 let activeEternoCleanup = null;
 let activeSisyphusCleanup = null;
 let activeFacadeCleanup = null;
+let activeOlmoCleanup = null;
 let activeLibraryParticlesCleanup = null;
 let activeCardParallaxCleanup = null;
 const activeEffectAudio = new Set();
@@ -204,11 +206,14 @@ function clearExistingEffects(nextEffects = []) {
     if (activeEternoCleanup) { activeEternoCleanup(); activeEternoCleanup = null; }
     if (activeSisyphusCleanup) { activeSisyphusCleanup(); activeSisyphusCleanup = null; }
     if (activeFacadeCleanup) { activeFacadeCleanup(); activeFacadeCleanup = null; }
+    const keepOlmo = nextEffects.some(e => e.startsWith('olmo_tree_'));
+    if (!keepOlmo && activeOlmoCleanup) { activeOlmoCleanup(); activeOlmoCleanup = null; }
     const keepCracks = nextEffects.some(e => e.startsWith('cracks_'));
     if (!keepCracks && activeCracksCleanup) { activeCracksCleanup(); activeCracksCleanup = null; }
 
     // Single combined querySelectorAll for all effect elements (merged 3 calls → 1)
     const cracksQuery = keepCracks ? '' : ', #cracks-overlay';
+    const olmoQuery = keepOlmo ? '' : ', #olmo-overlay';
     const allEffectElements = document.querySelectorAll(
         '.flying-bird, .effect-overlay, .leaves-effect-overlay, .time-pulse-overlay, ' +
         '.sepia-overlay, .swallows-effect-overlay, .twilight-overlay, .dewdrops-overlay, ' +
@@ -217,7 +222,7 @@ function clearExistingEffects(nextEffects = []) {
         '.pobres-overlay, .pobres-bg-overlay, ' +
         '.eterno-bg-overlay, .eterno-spiral-canvas, .eterno-particles, ' +
         '.sisifo-bg-overlay, .sisifo-stars, .sisifo-particles, ' +
-        '.door-light-overlay, .door-choices-cinematic' + cracksQuery
+        '.door-light-overlay, .door-choices-cinematic' + cracksQuery + olmoQuery
     );
     allEffectElements.forEach(el => el.remove());
 }
@@ -332,7 +337,7 @@ export function stopLibraryBeetle() {
     if (el) el.remove();
 }
 
-export async function handlePageEffects(effectString, { getAppMode }) {
+export async function handlePageEffects(effectString, { getAppMode, pageData } = {}) {
     const effects = effectString ? effectString.split(',').map(e => e.trim()) : [];
     clearExistingEffects(effects);
     if (!effectString) return;
@@ -463,7 +468,15 @@ export async function handlePageEffects(effectString, { getAppMode }) {
     const facadeEffect = effects.find(e => e === 'facade_scratch');
     if (facadeEffect) {
         const { startFacadeEffect } = await loadFacade();
-        activeFacadeCleanup = startFacadeEffect();
+        activeFacadeCleanup = startFacadeEffect(pageData?.facade || pageData?.effectOptions?.facade || {});
+    }
+
+    // --- Olmo Animado — Peras del olmo (dynamic import) ---
+    const olmoEffect = effects.find(e => e.startsWith('olmo_tree_'));
+    if (olmoEffect) {
+        const stage = olmoEffect.replace('olmo_tree_', '');
+        const { startOlmoEffect } = await loadOlmo();
+        activeOlmoCleanup = startOlmoEffect(stage);
     }
 
     // --- Luz Enceguecedora (La Puerta) — Efecto cinemático ---

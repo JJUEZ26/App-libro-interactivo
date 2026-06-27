@@ -118,29 +118,30 @@ body.app-mode-auth #library-view::before {
     }
 }
 
-/* Efecto de brillo animado en el hero */
+/* Efecto de brillo animado en el hero — lightweight version */
 .library-hero-card::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.03) 50%,
-            transparent 70%);
-    animation: heroShine 3s ease-in-out infinite;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.025) 50%,
+            transparent 100%);
+    animation: heroShine 4s ease-in-out infinite;
     pointer-events: none;
+    will-change: transform;
 }
 
 @keyframes heroShine {
     0% {
-        transform: translateX(-100%) translateY(-100%);
+        transform: translateX(0);
     }
 
     100% {
-        transform: translateX(100%) translateY(100%);
+        transform: translateX(200%);
     }
 }
 
@@ -379,7 +380,7 @@ body.app-mode-auth #library-view::before {
     gap: var(--space-4);
     overflow-x: auto;
     padding-bottom: var(--space-4);
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     align-items: stretch;
 
@@ -423,9 +424,7 @@ body.app-mode-auth #library-view::before {
 
 .book-card {
     position: relative;
-    background: var(--color-glass-bg);
-    backdrop-filter: var(--backdrop-blur);
-    -webkit-backdrop-filter: var(--backdrop-blur);
+    background: oklch(20% 0.02 240 / 0.92);
     color: var(--color-text-primary);
     border-radius: var(--radius-xl);
     overflow: hidden;
@@ -444,8 +443,11 @@ body.app-mode-auth #library-view::before {
     width: 100%;
     max-width: 100%;
 
-    /* Transiciones suaves */
-    transition: all var(--duration-normal) var(--ease-out-expo);
+    /* Transiciones suaves — only specific props for scroll perf */
+    transition:
+        transform var(--duration-normal) var(--ease-out-expo),
+        box-shadow var(--duration-normal) var(--ease-out-expo),
+        border-color var(--duration-normal) var(--ease-out-expo);
 
     /* AnimaciÃ³n de entrada */
     opacity: 0;

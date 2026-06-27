@@ -914,3 +914,53 @@ Este blueprint es un **documento vivo**. Se actualizará conforme implementemos 
 
 3. **Limpieza de código de producción**:
    - Eliminados `console.log/warn` de debug en `render.js` y `story.js` que se disparaban en cada cambio de página
+
+---
+
+## 🛌 PLAN CORRECCIÓN ENCUADRE Y COMPARACIÓN VERTICAL - ANTES DE QUE LLEGUES (Junio 2026)
+
+### Contexto y Problema
+El escalado de 115% ("soft-cover") de las imágenes de fondo en móviles altos provocaba que el fondo CSS se repitiese en mosaico (duplicación de imagen en la parte inferior) y se desalinease del canvas. El usuario prefiere manejarse con el zoom de estilo `cover` original para la versión horizontal y crear una versión alternativa con imágenes optimizadas nativamente para orientación vertical (9:16) para que se visualicen correctamente en móviles.
+
+### Plan de Acción
+1. **Assets**: Copiar las imágenes verticales generadas desde el cerebro al directorio `public/images/`:
+   - `public/images/antes_clean_portrait.png`
+   - `public/images/antes_dirty_portrait.png`
+2. **Lógica del Efecto**:
+   - Refactorizar `src/effects/facade/index.js` para recibir opciones y cargar las imágenes correspondientes (`isPortrait` flag).
+   - Reemplazar la escala de 115% por un algoritmo limpio de tipo `cover` matemático que ajuste tanto el canvas como el fondo CSS.
+   - Configurar el fondo CSS con `background-size: cover`, `background-repeat: no-repeat` y la posición alineada.
+3. **Estructura de la Historia**:
+   - Modificar `public/stories/antes_de_que_llegues.json` para añadir una página de comparación (ID `4`) con el efecto vertical, insertada entre la página horizontal (ID `3`) y la biografía.
+4. **Registro de Efectos**:
+    - Modificar `src/effects/index.js` para mapear el nuevo efecto `facade_scratch_portrait` y pasárselo al importador de fachada.
+
+## 🛌 PLAN QUITAR BOTÓN SOBRE EL AUTOR Y AJUSTAR TEXTO - ANTES DE QUE LLEGUES (Junio 2026)
+
+### Contexto y Problema
+En el poema "Antes de que llegues", el usuario ha solicitado quitar el botón "Sobre el autor" del final del poema, permitiendo que el texto se haga más grande. Adicionalmente, se desea que el último párrafo ("Tú nunca me has visto realmente mal.") se muestre como un párrafo normal (sin el centrado y estilo destacado que tenía con la clase `facade-verse--emphasis`).
+
+### Plan de Acción
+1. **Estructura de la Historia (`public/stories/antes_de_que_llegues.json`)**:
+   - En la página con ID `1`, vaciar la lista de `choices` (`"choices": []`) para quitar el botón "Sobre el autor".
+   - En la misma página, modificar el último verso en el array `scenes`: de `<div class='facade-verse facade-verse--emphasis'>Tú nunca me has visto realmente mal.</div>` a `<div class='facade-verse'>Tú nunca me has visto realmente mal.</div>`.
+2. **Estilos de Fachada (`src/effects/facade/styles.css`)**:
+   - Incrementar los valores de `font-size` para la clase `.facade-verse` tanto en la configuración general como en el media query para dispositivos móviles (`@media (max-width: 620px)`), haciendo que el texto se vea más grande y aproveche el espacio liberado por la eliminación del botón.
+
+## 📖 ACTUALIZACIÓN DE PROSA Y ESTRUCTURA - ANTES DE QUE LLEGUES (Junio 2026) ✅
+
+### Contexto y Problema
+El usuario ha solicitado actualizar el poema "Antes de que llegues" para utilizar una nueva estructura y modificaciones en la prosa, respetando el formato de tipo poema (saltos de línea y estrofas) y eliminando la versión antigua.
+
+### Implementación y Cambios Realizados
+1. **Estructura de la Historia (`public/stories/antes_de_que_llegues.json`)** [COMPLETADO]:
+   - Se reemplazaron las escenas en la página con ID `1` por la nueva estructura de 6 estrofas en formato HTML:
+     - Estrofa 1: *Tú llegas cuando las sábanas están limpias...*
+     - Estrofa 2: *Tú nunca has llegado / cuando una capa densa ocupa el espacio...*
+     - Estrofa 3: *Cuando tú llegas, / ya no hay manchas cafés...*
+     - Estrofa 4: *Cuando tú llegas, / el baño ya no es / un pantano a evitar.*
+     - Estrofa 5: *Porque cuando tú llegas, / todo eso ya pasó.* (con la clase `facade-verse--dim`)
+     - Estrofa 6: *Todo parece limpio. / Hasta yo. / Ya estoy mejor. / Listo para vernos. / Nunca antes.*
+   - Cada estrofa utiliza etiquetas `<br>` para saltos de línea internos y se envuelve en divs con la clase CSS correspondiente.
+2. **Estilos de Fachada (`src/effects/facade/styles.css`)** [VERIFICADO]:
+   - Se verificaron los retrasos de animación (`animation-delay`) para los elementos hijo de `.facade-verse`, los cuales ya cuentan con soporte para hasta 8 elementos (adecuado para las 6 estrofas), garantizando una entrada progresiva fluida.

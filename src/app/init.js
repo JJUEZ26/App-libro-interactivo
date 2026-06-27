@@ -290,7 +290,7 @@ export function initApp() {
         if (state.story && state.currentStoryId) {
             const currentPage = state.story.find(p => p.id === state.currentStoryId);
             if (currentPage && currentPage.effect) {
-                handlePageEffects(currentPage.effect, { getAppMode: () => state.appMode });
+                handlePageEffects(currentPage.effect, { getAppMode: () => state.appMode, pageData: currentPage });
             }
         }
     };

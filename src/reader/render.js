@@ -160,15 +160,22 @@ export function renderPage(pageId) {
                 .join('');
             contentHtml += `<div class="scenes-container poem-intro-layout">${introHtml}</div>`;
         } else {
+            const hasFacadeVerses = pageData.scenes.some((scene) => scene.includes('facade-verse'));
             const isPoetry = pageData.scenes.some(s => s.includes('\n')) ||
                 pageData.scenes.every(s => s.replace(/<[^>]+>/g, '').length < 80);
 
-            if (isPoetry && !pageData.scenes.some(s => s.includes('<img'))) {
+            if (hasFacadeVerses) {
+                const scenesHtml = pageData.scenes
+                    .map((scene) => sanitizeHTML(scene))
+                    .join('');
+                contentHtml += `<div class="scenes-container facade-scenes">${scenesHtml}</div>`;
+            } else if (isPoetry && !pageData.scenes.some(s => s.includes('<img'))) {
                 let verseIndex = 0;
+                const baseDelay = pageData.lineDelay !== undefined ? pageData.lineDelay : 0.6;
                 const stanzasHtml = pageData.scenes.map((scene) => {
                     const lines = scene.split('\n');
                     const linesHtml = lines.map((line) => {
-                        const delay = verseIndex * 0.6;
+                        const delay = verseIndex * baseDelay;
                         verseIndex++;
                         return `<span class="verse-line fade-in-text" style="animation-delay: ${delay}s">${sanitizeHTML(line)}</span>`;
                     }).join('');
@@ -416,7 +423,7 @@ export function renderPage(pageId) {
 
         // — Defer even heavier work to NEXT frame —
         requestAnimationFrame(() => {
-            handlePageEffects(pageData.effect, { getAppMode });
+            handlePageEffects(pageData.effect, { getAppMode, pageData });
             preloadNextImages(pageId);
 
             if (typeof requestIdleCallback === 'function') {

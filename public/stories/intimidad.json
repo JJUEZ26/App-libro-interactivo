@@ -1,0 +1,79 @@
+[
+  {
+    "id": 0,
+    "images": [
+      "images/intimidad_perfecta_portada.webp"
+    ],
+    "scenes": [
+      "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:2px; padding: 0 1rem; color: #fff;\">Intimidad Perfecta</h1>"
+    ],
+    "forceShowChoices": true,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.85,
+    "fadeIn": true,
+    "delay": 1500,
+    "choices": [
+      {
+        "text": "Entrar",
+        "page": 1
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.90,
+    "ghostEcho": true,
+    "scenes": [
+      "Ojalá la vida únicamente consistiera en esta intimidad perfecta, solo los dos en esta habitación.",
+      "Que todo lo externo e intrascendental se disolviera.",
+      "Ojalá hubiera nacido únicamente para vivir en este momento, enredado entre tu piel."
+    ],
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 2,
+    "sound": "spiegel_cello_piano.m4a",
+    "ghostEcho": true,
+    "volume": 0.3,
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "musicCredits": {
+      "title": "Intimidad Perfecta",
+      "composer": "Melodía: Spiegel im Spiegel — Arvo Pärt. Escrito por Ju Ez."
+    },
+    "discoveries": [
+      {
+        "title": "Los domingos en la mañana",
+        "type": "poem",
+        "year": "2026",
+        "line": "Una confesión doméstica sobre la ausencia y el deseo de compartir un momento más.",
+        "available": true,
+        "bookId": "original-domingos-manana"
+      },
+      {
+        "title": "Antes de que llegues",
+        "type": "poem",
+        "year": "2026",
+        "line": "Raspa la fachada de la intimidad idealizada para descubrir la cruda realidad del encierro.",
+        "available": true,
+        "bookId": "original-antes-de-que-llegues"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original' style='margin-bottom: 2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

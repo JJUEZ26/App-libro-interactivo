@@ -2,7 +2,7 @@
   {
     "id": 0,
     "images": [
-      "images/antes_portada.png"
+      "images/antes_dirty.webp"
     ],
     "scenes": [
       "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:2px; padding: 0 1rem; color: #fff;\">Antes de que llegues</h1>"
@@ -22,62 +22,41 @@
   {
     "id": 1,
     "sound": "spiegel_cello_piano.m4a",
-    "volume": 0.90,
-    "ghostEcho": true,
-    "scenes": [
-      "Ojalá la vida únicamente consistiera en esta intimidad perfecta, solo los dos en esta habitación.",
-      "Que todo lo externo e intrascendental se disolviera.",
-      "Ojalá hubiera nacido únicamente para vivir en este momento, enredado entre tu piel."
-    ],
-    "choices": [
-      {
-        "text": "Continuar",
-        "page": 2
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "sound": "spiegel_cello_piano.m4a",
-    "volume": 0.95,
-    "ghostEcho": true,
-    "scenes": [
-      "Solo quería decirte que ya compré pañitos húmedos, que la despensa está un poco más llena y que los días siguen siendo igual de oscuros.",
-      "Aún tomo pastillas para dormir y sigo perdiendo cabello...",
-      "Te extraño por las noches y los domingos en la mañana.",
-      "Que aún no quiero vivir una vida entera junto a ti, pero daría hasta lo que no tengo por compartir un momento más a tu lado, por tocar tus labios, por sentir tu aroma y tus abrazos."
-    ],
-    "choices": [
-      {
-        "text": "La llegada",
-        "page": 3
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "sound": "spiegel_cello_piano.m4a",
     "volume": 1.0,
     "ghostEcho": true,
     "effect": "facade_scratch",
+    "pageClass": "facade-page",
+    "forceShowChoices": true,
+    "facade": {
+      "cleanImage": "images/antes_clean.webp",
+      "dirtyImage": "images/antes_dirty.webp",
+      "focus": { "x": 0.5, "y": 0.3 },
+      "tint": { "clean": 0.22, "dirty": 0.3 },
+      "brush": { "radius": 20, "jitter": 4, "step": 7 },
+      "gesture": { "threshold": 14, "dominance": 1.28, "wheelFactor": 0.95 }
+    },
     "scenes": [
-      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Tú llegas cuando las sábanas están cambiadas. Cuando el piso está barrido. Cuando las fundas de almohadas están recién lavadas.</div>",
-      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Tú nunca has llegado cuando una capa densa ocupa el espacio. Cuando debes ver por dónde pisar, cuando hay latas en las esquinas y droga en el cenicero.</div>",
-      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Cuando las sábanas están cafés y las fundas de almohadas desprenden hedor. Tú nunca has llegado cuando el baño ha estado realmente sucio.</div>",
-      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);'>Porque cuando vienes, todo eso ya pasó. Y estoy mejor, listo para vernos.</div>",
-      "<div style='color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5); font-style:italic; font-weight:bold; font-size: 1.2em; text-align: center; margin-top: 2rem;'>Tú nunca me has visto realmente mal.</div>"
+      "<div class='facade-verse'>Tú llegas cuando las sábanas están limpias.<br><br>El piso ha sido barrido<br>y las fundas de almohada<br>conservan aún<br>el olor del detergente.<br><br>No llegas antes.</div>",
+      "<div class='facade-verse'>Tú nunca has llegado<br>cuando una capa densa ocupa el espacio,<br><br>cuando hay que mirar el suelo<br>antes de pisar,<br><br>y en las esquinas hay latas<br>y en el cenicero hay restos.</div>",
+      "<div class='facade-verse'>Cuando tú llegas,<br>ya no hay manchas cafés<br>sobre las sábanas,<br>ni hedor<br>en las fundas de almohada.</div>",
+      "<div class='facade-verse'>Cuando tú llegas,<br>el baño ya no es<br>un pantano a evitar.</div>",
+      "<div class='facade-verse facade-verse--dim'>Porque cuando tú llegas,<br>todo eso ya pasó.</div>",
+      "<div class='facade-verse'>Todo parece limpio,<br>Incluso yo.</div>",
+      "<div class='facade-verse'>Y ya estoy mejor.</div>",
+      "<div class='facade-verse facade-verse--closing'>Listo para vernos.<br><br>Nunca antes.</div>"
     ],
     "delay": 3000,
+    "delayedChoices": true,
     "choices": [
       {
-        "text": "Sobre el autor",
+        "text": "Continuar",
         "page": "biografia"
       }
     ]
   },
   {
     "id": "biografia",
-    "page": 4,
+    "page": 2,
     "sound": "spiegel_cello_piano.m4a",
     "ghostEcho": true,
     "volume": 0.3,

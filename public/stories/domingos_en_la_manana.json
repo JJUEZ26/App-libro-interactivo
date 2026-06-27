@@ -1,0 +1,81 @@
+[
+  {
+    "id": 0,
+    "images": [
+      "images/domingos_en_la_manana_portada.webp"
+    ],
+    "scenes": [
+      "<h1 style=\"text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; letter-spacing:2px; padding:0 1rem; color:#fff;\">Los domingos en la mañana</h1>"
+    ],
+    "forceShowChoices": true,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.78,
+    "fadeIn": true,
+    "delay": 1500,
+    "choices": [
+      {
+        "text": "Entrar",
+        "page": 1
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "sound": "spiegel_cello_piano.m4a",
+    "volume": 0.9,
+    "ghostEcho": true,
+    "lineDelay": 2.8,
+    "scenes": [
+      "Solo quería decirte que ya compré pañitos húmedos, que la despensa está un poco más llena y que los días siguen siendo igual de oscuros.",
+      "Aún tomo pastillas para dormir y sigo perdiendo cabello...",
+      "Te extraño por las noches y los domingos en la mañana.",
+      "Que aún no quiero vivir una vida entera junto a ti, pero daría hasta lo que no tengo por compartir un momento más a tu lado, por tocar tus labios, por sentir tu aroma y tus abrazos."
+    ],
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 2,
+    "sound": "spiegel_cello_piano.m4a",
+    "ghostEcho": true,
+    "volume": 0.3,
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "musicCredits": {
+      "title": "Los domingos en la mañana",
+      "composer": "Melodía: Spiegel im Spiegel — Arvo Pärt. Escrito por Ju Ez."
+    },
+    "discoveries": [
+      {
+        "title": "Intimidad Perfecta",
+        "type": "poem",
+        "year": "2026",
+        "line": "Un instante en el que todo lo externo se disuelve entre dos cuerpos.",
+        "available": true,
+        "bookId": "original-intimidad"
+      },
+      {
+        "title": "Antes de que llegues",
+        "type": "poem",
+        "year": "2026",
+        "line": "Raspa la fachada de la intimidad idealizada para descubrir la cruda realidad del encierro.",
+        "available": true,
+        "bookId": "original-antes-de-que-llegues"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original' style='margin-bottom:2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

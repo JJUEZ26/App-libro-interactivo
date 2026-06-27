@@ -204,8 +204,15 @@ export async function openBook(bookData, coverImgEl) {
     // --- STEP 4: Prepare reader UNDER the overlay ---
     const loadedHistory = loadPageHistory(state.currentBook.id);
     if (loadedHistory && loadedHistory.length > 0) {
-        state.pageHistory = loadedHistory;
-        state.currentStoryId = state.pageHistory[state.pageHistory.length - 1];
+        let lastId = loadedHistory[loadedHistory.length - 1];
+        if (state.story.some(p => p.id === lastId)) {
+            state.pageHistory = loadedHistory;
+            state.currentStoryId = lastId;
+        } else {
+            // Book structure changed and saved page no longer exists
+            state.currentStoryId = state.story[0].id;
+            state.pageHistory = [state.currentStoryId];
+        }
     } else {
         state.currentStoryId = state.story[0].id;
         state.pageHistory = [state.currentStoryId];

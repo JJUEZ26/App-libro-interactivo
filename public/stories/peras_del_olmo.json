@@ -1,0 +1,88 @@
+[
+  {
+    "id": "inicio",
+    "page": 1,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "olmo_tree_lush",
+    "scenes": [
+      "<div class='poem-title-display'><span style='font-family: var(--font-display); font-style: italic;'>Peras del olmo</span></div><div class='poem-author-display'><span class='author-signature'>Ju Ez</span></div>"
+    ],
+    "choices": [
+      {
+        "text": "Comenzar",
+        "page": "estrofa1"
+      }
+    ]
+  },
+  {
+    "id": "estrofa1",
+    "page": 2,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "olmo_tree_withering",
+    "lineDelay": 2.5,
+    "scenes": [
+      "No se le puede pedir peras al olmo...",
+      "No se le debe pedir peras al olmo...",
+      "¡No esperes peras del olmo!",
+      "El olmo no da peras...",
+      "¿Por qué sigues esperando?"
+    ],
+    "choices": [
+      {
+        "text": "Sombra...",
+        "page": "estrofa2"
+      }
+    ]
+  },
+  {
+    "id": "estrofa2",
+    "page": 3,
+    "bgMusic": "on_the_nature2.mp3",
+    "effect": "olmo_tree_withered",
+    "lineDelay": 2.5,
+    "scenes": [
+      "El olmo es hermoso y brinda una sombra acogedora,",
+      "pero tú quieres peras.",
+      "Y el olmo peras, ya sabemos que no da.",
+      "Solo tienes que aceptarlo."
+    ],
+    "choices": [
+      {
+        "text": "Sobre el autor",
+        "page": "biografia"
+      }
+    ]
+  },
+  {
+    "id": "biografia",
+    "page": 4,
+    "bgMusic": "on_the_nature2.mp3",
+    "volume": 0.2,
+    "effect": "twilight_deep_night",
+    "forceShowChoices": true,
+    "discoverAuthor": "Ju Ez",
+    "musicCredits": {
+      "title": "Peras del olmo",
+      "composer": "Escrito por Ju Ez."
+    },
+    "discoveries": [
+      {
+        "title": "Vaivén",
+        "type": "poem",
+        "year": "2026",
+        "line": "Una meditación interactiva sobre la quietud y las despedidas ineludibles.",
+        "available": true,
+        "bookId": "original-vaiven"
+      }
+    ],
+    "scenes": [
+      "<div class='bio-portrait-container bio--original' style='margin-bottom: 2rem;'><div class='bio-portrait bio-portrait-mirror'><span class='mirror-text'>Yo</span></div><div class='bio-badge'>Ju Ez</div></div>"
+    ],
+    "choices": [
+      {
+        "text": "Volver a la biblioteca",
+        "page": -1
+      }
+    ]
+  }
+]

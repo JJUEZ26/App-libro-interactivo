@@ -121,6 +121,7 @@
         }
 
         [hidden], .hidden { display: none !important; }
+        .modal-overlay { opacity: 0; pointer-events: none; position: fixed; inset: 0; }
 
         #app-container {
             min-height: 100vh;
@@ -176,9 +177,10 @@
             top: 0;
             z-index: var(--z-sticky);
             border-bottom: 1px solid var(--color-glass-border);
-            background: var(--color-glass-bg);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
+            background: oklch(15% 0.02 240 / 0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            will-change: transform;
         }
         .header-left { display: flex; align-items: center; gap: var(--space-3); }
         #main-title {

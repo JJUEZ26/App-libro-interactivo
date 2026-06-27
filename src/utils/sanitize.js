@@ -10,6 +10,7 @@
 const ALLOWED_TAGS = new Set([
     'em', 'i', 'strong', 'b', 'br', 'span', 'p',
     'u', 'small', 'sub', 'sup', 'mark', 'abbr',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     'div', 'img', 'a', 'button',
     'svg', 'path', 'text', 'textPath', 'defs', 'g', 'rect', 'mask', 'foreignObject', 'video', 'source'
 ]);

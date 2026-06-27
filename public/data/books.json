@@ -305,11 +305,25 @@
     "type": "poem"
   },
   {
+    "id": "original-intimidad",
+    "title": "Intimidad Perfecta",
+    "author": "Ju Ez",
+    "description": "Ojalá la vida únicamente consistiera en esta intimidad perfecta...",
+    "cover": "images/intimidad_perfecta_portada.webp",
+    "storyFile": "stories/intimidad.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "melancolía",
+      "original"
+    ]
+  },
+  {
     "id": "original-antes-de-que-llegues",
     "title": "Antes de que llegues",
     "author": "Ju Ez",
     "description": "Una confesión interactiva. Raspa la fachada de la intimidad idealizada para descubrir la cruda realidad del encierro.",
-    "cover": "images/antes_portada.png",
+    "cover": "images/antes_dirty.webp",
     "storyFile": "stories/antes_de_que_llegues.json",
     "type": "poem",
     "tags": [
@@ -347,6 +361,35 @@
       "poesía",
       "melancolía",
       "desamor",
+      "original"
+    ]
+  },
+  {
+    "id": "original-peras-olmo",
+    "title": "Peras del olmo",
+    "author": "Ju Ez",
+    "description": "El olmo es hermoso y brinda una sombra acogedora, pero tú quieres peras...",
+    "cover": "images/peras_olmo_portada.webp",
+    "storyFile": "stories/peras_del_olmo.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "aceptación",
+      "original"
+    ]
+  },
+  {
+    "id": "original-domingos-manana",
+    "title": "Los domingos en la mañana",
+    "author": "Ju Ez",
+    "description": "Los días siguen siendo igual de oscuros, pero la despensa está un poco más llena.",
+    "cover": "images/domingos_en_la_manana_portada.webp",
+    "storyFile": "stories/domingos_en_la_manana.json",
+    "type": "poem",
+    "tags": [
+      "poesía",
+      "melancolía",
+      "ausencia",
       "original"
     ]
   }

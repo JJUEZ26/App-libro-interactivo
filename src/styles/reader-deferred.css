@@ -26,3 +26,4 @@
 @import url('../effects/beetle/styles.css') layer(effects);
 @import url('../effects/leaves/styles.css') layer(effects);
 @import url('../effects/transition/styles.css') layer(effects);
+@import url('../effects/facade/styles.css') layer(effects);
