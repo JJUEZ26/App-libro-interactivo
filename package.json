@@ -1,6 +1,6 @@
 {
     "name": "app-libro-interactivo",
-    "version": "1.0.0",
+    "version": "2.1.0",
     "description": "Novela Interactiva de misterio y terror",
     "main": "index.html",
     "scripts": {

@@ -56,14 +56,36 @@ const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname
 // con la carga inicial de la página.
 // =============================================
 if ('serviceWorker' in navigator && !isLocalhost && import.meta.env.PROD) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(reg => {
-                console.log('Service Worker registrado:', reg.scope);
-            })
-            .catch(err => {
-                console.warn('Service Worker no se pudo registrar:', err);
-            });
+    let isReloadingForUpdate = false;
+    let serviceWorkerRegistration = null;
+
+    // Cuando una nueva versión toma el control, recargar una sola vez para que
+    // HTML, datos y recursos visuales pertenezcan todos al mismo despliegue.
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (isReloadingForUpdate) return;
+        isReloadingForUpdate = true;
+        window.location.reload();
+    });
+
+    window.addEventListener('load', async () => {
+        try {
+            serviceWorkerRegistration = await navigator.serviceWorker.register(
+                '/service-worker.js',
+                { updateViaCache: 'none' }
+            );
+            await serviceWorkerRegistration.update();
+            console.log('Service Worker registrado:', serviceWorkerRegistration.scope);
+        } catch (err) {
+            console.warn('Service Worker no se pudo registrar:', err);
+        }
+    });
+
+    // Las PWA pueden permanecer abiertas durante días. Al volver a primer plano,
+    // comprobar si Vercel ya publicó una versión nueva.
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            serviceWorkerRegistration?.update().catch(() => {});
+        }
     });
 } else if ('serviceWorker' in navigator && isLocalhost) {
     window.addEventListener('load', async () => {
