@@ -2,7 +2,8 @@
   {
     "id": "inicio",
     "page": 1,
-    "bgMusic": "on_the_nature2.mp3",
+    "bgMusic": "olafur_arnalds_near_light.m4a",
+    "volume": 0.25,
     "effect": "olmo_tree_lush",
     "scenes": [
       "<div class='poem-title-display'><span style='font-family: var(--font-display); font-style: italic;'>Peras del olmo</span></div><div class='poem-author-display'><span class='author-signature'>Ju Ez</span></div>"
@@ -17,14 +18,13 @@
   {
     "id": "estrofa1",
     "page": 2,
-    "bgMusic": "on_the_nature2.mp3",
+    "bgMusic": "olafur_arnalds_near_light.m4a",
+    "volume": 0.25,
     "effect": "olmo_tree_withering",
-    "lineDelay": 2.5,
+    "lineDelay": 1.8,
     "scenes": [
-      "No se le puede pedir peras al olmo...",
-      "No se le debe pedir peras al olmo...",
-      "¡No esperes peras del olmo!",
-      "El olmo no da peras...",
+      "No le pidas peras al olmo.\nNo se le debe pedir peras al olmo.",
+      "¡No!, no esperes peras del olmo.\nNunca las obtendrás.",
       "¿Por qué sigues esperando?"
     ],
     "choices": [
@@ -37,14 +37,14 @@
   {
     "id": "estrofa2",
     "page": 3,
-    "bgMusic": "on_the_nature2.mp3",
+    "bgMusic": "olafur_arnalds_near_light.m4a",
+    "volume": 0.25,
     "effect": "olmo_tree_withered",
-    "lineDelay": 2.5,
+    "lineDelay": 1.8,
     "scenes": [
-      "El olmo es hermoso y brinda una sombra acogedora,",
-      "pero tú quieres peras.",
-      "Y el olmo peras, ya sabemos que no da.",
-      "Solo tienes que aceptarlo."
+      "El olmo es hermoso\ny su sombra, acogedora.\nPara quien busque sombra\nserá perfecto.",
+      "Pero tú necesitas peras...",
+      "y el olmo es solo un olmo."
     ],
     "choices": [
       {
@@ -56,14 +56,14 @@
   {
     "id": "biografia",
     "page": 4,
-    "bgMusic": "on_the_nature2.mp3",
+    "bgMusic": "olafur_arnalds_near_light.m4a",
     "volume": 0.2,
     "effect": "twilight_deep_night",
     "forceShowChoices": true,
     "discoverAuthor": "Ju Ez",
     "musicCredits": {
-      "title": "Peras del olmo",
-      "composer": "Escrito por Ju Ez."
+      "title": "Near Light",
+      "composer": "Melodía: Ólafur Arnalds. Escrito por Ju Ez."
     },
     "discoveries": [
       {

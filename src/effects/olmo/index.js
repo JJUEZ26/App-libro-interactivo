@@ -3,11 +3,157 @@
  *
  * Una única ilustración SVG permanece montada durante las tres páginas para que
  * los estados lush → withering → withered sean una transformación real y no tres
- * imágenes desconectadas. La animación usa únicamente CSS (transform + opacity),
+ * imágenes desconectadas. Las transiciones y el flujo continuo de hojas usan CSS,
  * sin timers ni trabajo continuo en el hilo principal.
  */
 
 const STAGES = new Set(['lush', 'withering', 'withered']);
+const MOBILE_READER_QUERY = '(max-width: 700px)';
+const DEFAULT_PRESERVE_ASPECT_RATIO = 'xMidYMax meet';
+const MOBILE_PRESERVE_ASPECT_RATIO = 'xMidYMid slice';
+const OLMO_LAYOUT_STYLE_ID = 'olmo-layout-style';
+
+const OLMO_LAYOUT_STYLES = `
+  body.olmo-reader-active #page-wrapper {
+    background: #111a20;
+  }
+
+  body.olmo-reader-active #page-wrapper .poem-title-display,
+  body.olmo-reader-active #page-wrapper .poem-author-display,
+  body.olmo-reader-active #page-wrapper .verse-line {
+    color: rgba(244, 241, 231, .96);
+    text-shadow:
+      0 1px 4px rgba(4, 9, 13, .72),
+      0 0 16px rgba(4, 9, 13, .42);
+  }
+
+  @media (max-width: 700px) {
+    body.olmo-reader-active #page-wrapper > .page-content,
+    body.olmo-reader-active #page-wrapper > .page-content .content-centerer {
+      position: relative;
+      z-index: 2;
+    }
+
+    body.olmo-reader-active #page-wrapper .poem-title-display,
+    body.olmo-reader-active #page-wrapper .poem-author-display,
+    body.olmo-reader-active #page-wrapper .poem-layout,
+    body.olmo-reader-active #page-wrapper .choices {
+      position: relative;
+      z-index: 3;
+    }
+  }
+
+  @media (max-width: 380px) {
+    body.olmo-reader-active #main-title {
+      font-size: 1.1rem !important;
+      letter-spacing: -.02em !important;
+      white-space: nowrap !important;
+    }
+
+    body.olmo-reader-active #app-version {
+      display: none !important;
+    }
+  }
+
+  body.olmo-reader-active.fullscreen-mode {
+    overflow: hidden !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #app-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #app-footer {
+    display: none !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #app-header {
+    position: fixed !important;
+    inset: 0 0 auto !important;
+    z-index: 10020 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #app-header .header-left,
+  body.olmo-reader-active.fullscreen-mode #header-avatar-slot,
+  body.olmo-reader-active.fullscreen-mode #nav-toggle {
+    display: none !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #settings-controls {
+    position: fixed !important;
+    top: calc(env(safe-area-inset-top) + 12px) !important;
+    right: calc(env(safe-area-inset-right) + 12px) !important;
+    display: block !important;
+    pointer-events: none !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #fullscreen-btn {
+    display: inline-flex !important;
+    width: 44px !important;
+    height: 44px !important;
+    border: 1px solid rgba(244, 241, 231, .2) !important;
+    background: rgba(10, 17, 22, .42) !important;
+    color: rgba(244, 241, 231, .82) !important;
+    opacity: .72 !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    pointer-events: auto !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #main-content,
+  body.olmo-reader-active.fullscreen-mode #reader-view,
+  body.olmo-reader-active.fullscreen-mode #book-container,
+  body.olmo-reader-active.fullscreen-mode #book,
+  body.olmo-reader-active.fullscreen-mode #page-wrapper {
+    min-height: 0 !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #main-content,
+  body.olmo-reader-active.fullscreen-mode #reader-view {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #book-container {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left) !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #book,
+  body.olmo-reader-active.fullscreen-mode #page-wrapper,
+  body.olmo-reader-active.fullscreen-mode .page-content {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  body.olmo-reader-active.fullscreen-mode #page-wrapper {
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+`;
 
 const EDGE_LEAVES = [
     [285, 356, -34, 1.05], [306, 324, -12, .86], [272, 292, -58, .92],
@@ -56,6 +202,7 @@ const FOLIAGE_CLUSTERS = [
     [802, 426, 98, 56, 16], [727, 452, 98, 54, 16],
     [645, 456, 102, 52, 16], [560, 455, 105, 54, 17],
     [478, 439, 101, 56, 16], [405, 409, 98, 58, 16],
+    [392, 462, 82, 42, 15], [808, 462, 82, 42, 15],
     [345, 369, 94, 60, 16], [462, 324, 96, 62, 17],
     [553, 294, 105, 65, 18], [647, 296, 105, 65, 18],
     [739, 326, 100, 62, 17]
@@ -74,7 +221,7 @@ function createFoliageMarkup() {
     };
 
     return FOLIAGE_CLUSTERS.flatMap(([cx, cy, rx, ry, count], clusterIndex) => {
-        const renderedCount = Math.ceil(count * .72);
+        const renderedCount = Math.ceil(count * .9);
         return Array.from({ length: renderedCount }, (_, leafIndex) => {
             const angle = leafIndex * 2.399963 + random() * .52;
             const radius = Math.sqrt((leafIndex + .55) / renderedCount);
@@ -93,18 +240,46 @@ function createFoliageMarkup() {
 
 const foliageMarkup = createFoliageMarkup();
 
-const fallingLeafMarkup = FALLING_LEAVES.map(([x, y, drift, duration, delay, scale], index) => (
-    `<use class="olmo-falling-leaf fall-tone-${index % 4}" href="#olmo-leaf"
-          transform="translate(${x} ${y}) scale(${scale})"
-          style="--drift:${drift}px;--drift-mid:${drift * .52}px;--drift-back:${drift * -.2}px;--fall-duration:${duration}s;--fall-delay:${delay}s" />`
-)).join('');
+const fallingLeafMarkup = FALLING_LEAVES.map(
+    ([x, y, drift, duration, delay, scale], index) => {
+        const fallDuration = duration * 1.75;
+        const fallOffset = -((delay + index * 1.37) % fallDuration);
+
+        return `<use class="olmo-falling-leaf fall-tone-${index % 4}" href="#olmo-leaf"
+                     transform="translate(${x} ${y}) scale(${scale})"
+                     style="--drift:${drift}px;--drift-mid:${drift * .52}px;--drift-back:${drift * -.2}px;--fall-duration:${fallDuration.toFixed(1)}s;--fall-offset:${fallOffset.toFixed(1)}s" />`;
+    }
+).join('');
+
+function createFallenLeafMarkup(count, seed, yStart, yDepth) {
+    let state = seed;
+    const random = () => {
+        state = (state * 1664525 + 1013904223) >>> 0;
+        return state / 4294967296;
+    };
+
+    return Array.from({ length: count }, (_, index) => {
+        const x = 205 + random() * 790;
+        const y = yStart + Math.pow(random(), .72) * yDepth;
+        const rotation = -75 + random() * 150;
+        const scale = .62 + random() * .52;
+        const leaf = index % 4 === 0 ? 'olmo-small-leaf' : 'olmo-leaf';
+
+        return `<use class="olmo-ground-leaf ground-tone-${index % 5}"
+                     href="#${leaf}"
+                     transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rotation.toFixed(1)}) scale(${scale.toFixed(2)})" />`;
+    }).join('');
+}
+
+const fallenLeafMarkup = createFallenLeafMarkup(76, 271828, 754, 76);
+const fallenDenseMarkup = createFallenLeafMarkup(54, 314159, 770, 74);
 
 const SVG_SCENE = `
 <svg id="olmo-scene" class="olmo-scene" viewBox="0 0 1200 900"
      preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
      role="img" aria-labelledby="olmo-title olmo-description">
   <title id="olmo-title">Un olmo bajo la luna</title>
-  <desc id="olmo-description">El olmo pierde lentamente sus hojas mientras el paisaje se transforma en noche.</desc>
+  <desc id="olmo-description">El olmo pierde lentamente sus hojas mientras el paisaje conserva una luz suave de otoño.</desc>
 
   <defs>
     <radialGradient id="olmo-day-sky" cx="52%" cy="43%" r="75%">
@@ -143,12 +318,13 @@ const SVG_SCENE = `
 
   <style>
     .olmo-scene {
+      --fall-stream-opacity: .2;
       display: block;
       width: 100%;
       height: 100%;
       overflow: visible;
-      opacity: .45;
-      transition: opacity 5.8s ease;
+      opacity: .60;
+      transition: opacity 5s ease;
     }
 
     .olmo-sky-day,
@@ -166,10 +342,12 @@ const SVG_SCENE = `
     .olmo-crown-front,
     .olmo-foliage,
     .olmo-edge-leaves,
-    .olmo-fallen-leaves {
-      transition-duration: 6.4s;
-      transition-timing-function: cubic-bezier(.22, .61, .36, 1);
-      transition-property: opacity, fill, stroke, transform;
+    .olmo-fallen-leaves,
+    .olmo-fallen-dense,
+    .olmo-fall-stream {
+      transition-duration: 7s;
+      transition-timing-function: cubic-bezier(.37, 0, .2, 1);
+      transition-property: opacity, fill, stroke, transform, filter;
     }
 
     .olmo-sky-day { opacity: 1; }
@@ -182,7 +360,15 @@ const SVG_SCENE = `
     .olmo-ground-light { fill: #61705e; opacity: .24; }
     .olmo-grass { fill: none; stroke: #657561; opacity: .52; }
     .olmo-wood { fill: url(#olmo-trunk-paint); stroke: #0d141a; }
-    .olmo-wood-detail { fill: none; stroke: #3b474b; opacity: .42; }
+    .olmo-wood-detail { fill: none; }
+    .olmo-branch-detail {
+      stroke: #151e25;
+      opacity: .94;
+    }
+    .olmo-bark-detail {
+      stroke: #465259;
+      opacity: .38;
+    }
 
     .olmo-crown-back {
       fill: #263b36;
@@ -209,12 +395,13 @@ const SVG_SCENE = `
     }
     .olmo-foliage {
       opacity: 1;
+      filter: none;
       transform-origin: 600px 330px;
     }
     .olmo-foliage-leaf {
       transform-box: fill-box;
       transform-origin: center;
-      transition: opacity 5.4s ease, fill 5.8s ease;
+      transition: opacity 8s cubic-bezier(.37, 0, .2, 1);
     }
     .foliage-tone-0 { fill: #203b32; }
     .foliage-tone-1 { fill: #31513d; }
@@ -223,129 +410,188 @@ const SVG_SCENE = `
     .olmo-edge-leaf {
       transform-box: fill-box;
       transform-origin: center;
-      transition: opacity 4.8s ease, fill 5.4s ease;
+      transition: opacity 8s cubic-bezier(.37, 0, .2, 1);
     }
 
     .olmo-falling-leaf {
       fill: #9b7d43;
+      stroke: #4a351f;
+      stroke-width: .8;
+      filter: drop-shadow(0 2px 2px rgba(20, 13, 7, .35));
       opacity: 0;
       transform-box: fill-box;
       transform-origin: center;
-      will-change: transform, opacity;
+      animation: olmo-leaf-fall var(--fall-duration) var(--fall-offset)
+                 cubic-bezier(.34, .15, .58, .92) infinite;
     }
     .fall-tone-1 { fill: #795a36; }
-    .fall-tone-2 { fill: #ad8845; }
-    .fall-tone-3 { fill: #60523a; }
-    .olmo-fallen-leaves { fill: #665038; opacity: 0; }
-
-    /* La frustración: el volumen se rompe por capas y deja ver la anatomía. */
-    .olmo-scene.olmo-withering { opacity: .38; }
-    .olmo-withering .olmo-sky-day { opacity: .5; }
-    .olmo-withering .olmo-sky-night { opacity: .58; }
-    .olmo-withering .olmo-horizon {
-      opacity: .14;
-      transform: translateY(18px) scale(.97);
+    .fall-tone-2 { fill: #c49342; }
+    .fall-tone-3 { fill: #76513a; }
+    .olmo-fallen-leaves,
+    .olmo-fallen-dense {
+      opacity: 0;
+      filter: drop-shadow(0 2px 1px rgba(8, 9, 9, .38));
     }
-    .olmo-withering .olmo-moon { fill: #d7d0bc; opacity: .58; }
-    .olmo-withering .olmo-moon-halo { opacity: .38; }
-    .olmo-withering .olmo-ground-light { fill: #655f49; opacity: .16; }
-    .olmo-withering .olmo-grass { stroke: #6f644d; opacity: .3; }
+    .olmo-ground-leaf {
+      stroke: rgba(48, 33, 20, .82);
+      stroke-width: .7;
+    }
+    .ground-tone-0 { fill: #b98235; }
+    .ground-tone-1 { fill: #84502f; }
+    .ground-tone-2 { fill: #c29a4c; }
+    .ground-tone-3 { fill: #6f5936; }
+    .ground-tone-4 { fill: #9a6a36; }
+    .olmo-fall-stream { opacity: var(--fall-stream-opacity); }
+
+    .foliage-drop-0 { transition-delay: .3s; }
+    .foliage-drop-1 { transition-delay: 1s; }
+    .foliage-drop-2 { transition-delay: 1.8s; }
+    .foliage-drop-3 { transition-delay: 2.5s; }
+    .foliage-drop-4 { transition-delay: 3.2s; }
+    .foliage-drop-5 { transition-delay: 4s; }
+    .leaf-delay-0 { transition-delay: .4s; }
+    .leaf-delay-1 { transition-delay: 1.2s; }
+    .leaf-delay-2 { transition-delay: 2s; }
+    .leaf-delay-3 { transition-delay: 2.8s; }
+    .leaf-delay-4 { transition-delay: 3.4s; }
+    .leaf-delay-5 { transition-delay: 4.2s; }
+
+    /* La frustración: el follaje se calienta y adelgaza sin apagar el paisaje. */
+    .olmo-scene.olmo-withering {
+      --fall-stream-opacity: .92;
+      opacity: .56;
+    }
+    .olmo-withering .olmo-sky-day { opacity: .94; }
+    .olmo-withering .olmo-sky-night { opacity: .12; }
+    .olmo-withering .olmo-horizon {
+      opacity: .27;
+      transform: translateY(6px) scale(.99);
+    }
+    .olmo-withering .olmo-moon { fill: #e4dcc5; opacity: .76; }
+    .olmo-withering .olmo-moon-halo { opacity: .56; }
+    .olmo-withering .olmo-ground-light { fill: #756c4e; opacity: .21; }
+    .olmo-withering .olmo-grass { stroke: #7d704f; opacity: .42; }
     .olmo-withering .olmo-crown-back {
-      fill: #4e4937;
-      opacity: .34;
-      transform: translateY(34px) scale(.91);
+      fill: #53513a;
+      opacity: .58;
+      transform: translateY(10px) scale(.98);
     }
     .olmo-withering .olmo-crown-middle {
-      fill: #66563a;
-      opacity: .48;
-      transform: translateY(22px) scale(.94);
+      fill: #6e5f3d;
+      opacity: .52;
+      transform: translateY(7px) scale(.985);
     }
     .olmo-withering .olmo-crown-front {
-      fill: #3f3c30;
+      fill: #494535;
       opacity: .42;
-      transform: translateY(15px) scale(.96);
+      transform: translateY(4px) scale(.99);
     }
     .olmo-withering .olmo-foliage {
-      opacity: .72;
-      transform: translateY(13px) scale(.97);
+      opacity: .92;
+      filter: sepia(.7) saturate(.9) hue-rotate(-10deg);
+      transform: translateY(4px) scale(.99);
     }
-    .olmo-withering .olmo-foliage-leaf { fill: #8b713f; }
-    .olmo-withering .foliage-tone-1 { fill: #6d5b39; }
-    .olmo-withering .foliage-tone-2 { fill: #a47d3f; }
-    .olmo-withering .foliage-tone-3 { fill: #514a36; }
-    .olmo-withering .foliage-drop-0 { opacity: .04; }
-    .olmo-withering .foliage-drop-1 { opacity: .16; }
-    .olmo-withering .foliage-drop-2 { opacity: .28; }
-    .olmo-withering .foliage-drop-3 { opacity: .42; }
-    .olmo-withering .foliage-drop-4 { opacity: .56; }
-    .olmo-withering .foliage-drop-5 { opacity: .68; }
-    .olmo-withering .olmo-edge-leaves { fill: #9a7740; opacity: .5; }
+    .olmo-withering .foliage-drop-0 { opacity: .2; }
+    .olmo-withering .foliage-drop-1 { opacity: .34; }
+    .olmo-withering .foliage-drop-2 { opacity: .48; }
+    .olmo-withering .foliage-drop-3 { opacity: .62; }
+    .olmo-withering .foliage-drop-4 { opacity: .72; }
+    .olmo-withering .foliage-drop-5 { opacity: .82; }
+    .olmo-withering .olmo-edge-leaves { fill: #a17b40; opacity: .68; }
     .olmo-withering .leaf-delay-0,
-    .olmo-withering .leaf-delay-3 { opacity: .1; }
-    .olmo-withering .leaf-delay-1 { opacity: .32; }
-    .olmo-withering .olmo-fallen-leaves { opacity: .38; transition-delay: 3.4s; }
-    .olmo-withering .olmo-falling-leaf {
-      animation: olmo-leaf-fall var(--fall-duration) var(--fall-delay)
-                 cubic-bezier(.28, .45, .52, .96) both;
-    }
+    .olmo-withering .leaf-delay-3 { opacity: .28; }
+    .olmo-withering .leaf-delay-1,
+    .olmo-withering .leaf-delay-4 { opacity: .46; }
+    .olmo-withering .leaf-delay-2,
+    .olmo-withering .leaf-delay-5 { opacity: .62; }
+    .olmo-withering .olmo-fallen-leaves { opacity: .56; transition-delay: 1.2s; }
+    .olmo-withering .olmo-fallen-dense { opacity: .28; transition-delay: 3s; }
 
-    /* La aceptación: quedan la estructura desnuda del olmo y la noche. */
-    .olmo-scene.olmo-withered { opacity: .25; }
-    .olmo-withered .olmo-sky-day { opacity: 0; }
-    .olmo-withered .olmo-sky-night { opacity: 1; }
-    .olmo-withered .olmo-horizon {
-      opacity: .04;
-      transform: translateY(32px) scale(.94);
+    /* La aceptación: solo queda el esqueleto — ramas desnudas y hojas en el suelo. */
+    .olmo-scene.olmo-withered {
+      --fall-stream-opacity: .12;
+      opacity: .56;
     }
-    .olmo-withered .olmo-moon { fill: #d9dbe0; opacity: .42; }
-    .olmo-withered .olmo-moon-halo { opacity: .2; }
-    .olmo-withered .olmo-ground { fill: #0c1117; }
-    .olmo-withered .olmo-ground-light { opacity: .04; }
-    .olmo-withered .olmo-grass { stroke: #2e3740; opacity: .14; }
-    .olmo-withered .olmo-wood { filter: saturate(.45) brightness(.72); }
-    .olmo-withered .olmo-wood-detail { stroke: #48505a; opacity: .26; }
+    .olmo-withered .olmo-sky-day { opacity: .72; }
+    .olmo-withered .olmo-sky-night { opacity: .38; }
+    .olmo-withered .olmo-horizon {
+      opacity: .14;
+      transform: translateY(10px) scale(.98);
+    }
+    .olmo-withered .olmo-moon { fill: #ded9ca; opacity: .62; }
+    .olmo-withered .olmo-moon-halo { opacity: .38; }
+    .olmo-withered .olmo-ground { fill: #141a20; }
+    .olmo-withered .olmo-ground-light { fill: #5d5744; opacity: .08; }
+    .olmo-withered .olmo-grass { stroke: #625a45; opacity: .22; }
+    .olmo-withered .olmo-wood { filter: saturate(.72) brightness(.92); }
+    .olmo-withered .olmo-branch-detail {
+      stroke: #172027;
+      opacity: 1;
+    }
+    .olmo-withered .olmo-bark-detail {
+      stroke: #4b575d;
+      opacity: .44;
+    }
     .olmo-withered .olmo-crown-back {
+      fill: #494538;
       opacity: 0;
-      transform: translateY(92px) scale(.7);
+      transform: translateY(24px) scale(.94);
     }
     .olmo-withered .olmo-crown-middle {
+      fill: #5e5038;
       opacity: 0;
-      transform: translateY(78px) scale(.75);
+      transform: translateY(18px) scale(.95);
     }
     .olmo-withered .olmo-crown-front {
+      fill: #413d34;
       opacity: 0;
-      transform: translateY(62px) scale(.8);
+      transform: translateY(12px) scale(.96);
     }
     .olmo-withered .olmo-edge-leaves {
+      fill: #8e7140;
       opacity: 0;
-      transform: translateY(70px) scale(.82);
+      transform: translateY(18px) scale(.95);
     }
     .olmo-withered .olmo-foliage {
       opacity: 0;
-      transform: translateY(76px) scale(.82);
+      filter: sepia(.85) saturate(.58) brightness(.92);
+      transform: translateY(18px) scale(.95);
     }
-    .olmo-withered .olmo-fallen-leaves { opacity: .58; }
+    .olmo-withered .foliage-drop-0 { opacity: 0; }
+    .olmo-withered .foliage-drop-1 { opacity: 0; }
+    .olmo-withered .foliage-drop-2 { opacity: 0; }
+    .olmo-withered .foliage-drop-3 { opacity: 0; }
+    .olmo-withered .foliage-drop-4 { opacity: 0; }
+    .olmo-withered .foliage-drop-5 { opacity: 0; }
+    .olmo-withered .leaf-delay-0,
+    .olmo-withered .leaf-delay-3 { opacity: 0; }
+    .olmo-withered .leaf-delay-1,
+    .olmo-withered .leaf-delay-4 { opacity: 0; }
+    .olmo-withered .leaf-delay-2,
+    .olmo-withered .leaf-delay-5 { opacity: 0; }
+    .olmo-withered .olmo-fallen-leaves { opacity: .94; }
+    .olmo-withered .olmo-fallen-dense { opacity: .88; transition-delay: .7s; }
 
     @keyframes olmo-leaf-fall {
       0% {
         opacity: 0;
-        translate: 0 0;
-        rotate: 0deg;
+        translate: 0 -18px;
+        rotate: -8deg;
       }
-      8% { opacity: .92; }
+      10% { opacity: .9; }
       28% {
-        translate: var(--drift-mid) 155px;
-        rotate: 112deg;
+        translate: var(--drift-mid) 145px;
+        rotate: 104deg;
       }
       57% {
-        translate: var(--drift-back) 340px;
-        rotate: 238deg;
+        translate: var(--drift-back) 332px;
+        rotate: 226deg;
       }
-      84% { opacity: .72; }
+      84% { opacity: .62; }
       100% {
         opacity: 0;
-        translate: var(--drift) 590px;
-        rotate: 410deg;
+        translate: var(--drift) 610px;
+        rotate: 392deg;
       }
     }
 
@@ -356,7 +602,8 @@ const SVG_SCENE = `
         transition-duration: .01ms !important;
         transition-delay: 0s !important;
       }
-      .olmo-withering .olmo-falling-leaf { opacity: .38; }
+      .olmo-fall-stream { opacity: .18; }
+      .olmo-falling-leaf { opacity: .32; }
     }
   </style>
 
@@ -392,6 +639,10 @@ const SVG_SCENE = `
     C1083 792 1014 796 892 782 C731 764 589 765 447 783
     C291 803 150 786 0 811 Z" />
 
+  <!-- La hojarasca queda bajo las raíces para que el árbol conserve peso y apoyo. -->
+  <g class="olmo-fallen-leaves" aria-hidden="true">${fallenLeafMarkup}</g>
+  <g class="olmo-fallen-dense" aria-hidden="true">${fallenDenseMarkup}</g>
+
   <!-- Esqueleto completo: tronco y ramas permanecen visibles en los tres estados. -->
   <g class="olmo-wood" stroke-linejoin="round">
     <path stroke-width="3" d="
@@ -401,63 +652,78 @@ const SVG_SCENE = `
       C618 275 625 306 627 341 C629 376 620 410 631 447
       C643 487 668 522 674 566 C682 617 669 665 675 716
       C680 760 695 793 727 824
-      C694 818 667 823 646 842 C628 858 615 872 601 888
-      C589 870 571 853 550 840 C526 824 500 818 470 824 Z" />
+      C699 818 673 823 650 835 C631 846 618 855 603 862
+      C586 855 570 846 551 837 C529 825 502 821 470 824 Z" />
 
     <!-- Grandes ramas con dos bordes: gruesas en la unión y finas en la punta. -->
-    <path d="M548 494 C509 459 464 433 407 412 C357 393 310 374 266 344
-             C315 363 362 375 415 392 C473 411 523 436 567 466 Z" />
-    <path d="M533 561 C487 526 437 504 376 492 C323 482 273 474 225 452
-             C278 464 329 462 382 472 C445 482 501 505 551 535 Z" />
+    <path d="M548 494 C509 459 464 433 407 412 C371 399 342 387 314 369
+             C350 381 383 389 419 400 C474 418 523 440 567 466 Z" />
+    <path d="M533 561 C489 529 444 508 400 498 C381 493 365 488 351 482
+             C382 486 409 486 438 492 C483 502 520 516 551 535 Z" />
     <path d="M560 413 C533 370 500 334 456 303 C418 277 380 254 346 219
              C386 247 425 263 466 289 C514 319 549 353 577 392 Z" />
     <path d="M570 353 C552 307 535 271 503 231 C479 201 455 174 434 139
              C463 171 493 194 517 222 C550 260 570 298 587 337 Z" />
-    <path d="M587 307 C577 260 581 216 590 175 C598 143 607 116 615 88
-             C617 122 613 151 609 181 C603 225 607 265 603 307 Z" />
+    <path d="M587 307 C577 260 581 218 590 181 C596 154 603 130 611 109
+             C614 139 612 159 608 185 C603 227 607 266 603 307 Z" />
 
-    <path d="M653 494 C692 458 738 432 795 411 C845 392 892 371 940 337
-             C895 373 849 391 803 409 C745 431 696 458 634 525 Z" />
-    <path d="M667 561 C714 525 765 502 826 490 C879 479 930 468 980 441
-             C934 474 885 490 833 508 C775 527 720 551 650 596 Z" />
+    <path d="M653 494 C692 458 738 432 795 411 C830 398 860 384 887 365
+             C854 381 824 391 790 404 C741 423 695 453 634 525 Z" />
+    <path d="M667 561 C711 528 757 507 801 497 C820 492 836 487 849 481
+             C819 485 791 485 763 492 C718 502 681 516 650 596 Z" />
     <path d="M641 413 C669 369 702 333 747 302 C785 276 826 252 865 217
              C837 253 797 282 756 311 C711 343 674 378 624 443 Z" />
     <path d="M631 353 C650 307 669 270 702 231 C729 200 758 173 784 139
              C760 178 733 206 711 236 C680 277 660 313 614 379 Z" />
 
     <!-- Raíces que anclan el volumen a la pradera. -->
-    <path d="M540 814 C502 829 457 838 400 837 C359 836 326 831 290 819
-             C340 818 383 808 427 796 C471 784 507 786 552 801 Z" />
-    <path d="M650 809 C694 821 737 828 789 824 C833 821 865 812 901 797
-             C857 803 814 797 769 787 C721 777 687 782 646 797 Z" />
+    <path d="M552 760 C522 772 493 791 459 810 C437 822 415 831 391 836
+             C420 845 448 838 468 827 C499 811 524 797 551 791
+             C560 782 560 771 552 760 Z" />
+    <path d="M535 804 C514 817 495 830 470 839 C449 847 431 849 411 846
+             C436 857 463 855 484 848 C511 839 533 829 553 818 Z" />
+    <path d="M650 757 C681 770 710 788 744 804 C769 816 794 824 821 826
+             C793 838 765 833 741 822 C711 808 683 795 650 789
+             C642 779 642 767 650 757 Z" />
+    <path d="M667 801 C688 813 708 826 733 835 C754 842 774 844 795 840
+             C771 852 744 852 721 845 C695 836 673 826 648 814 Z" />
   </g>
 
   <!-- Ramas secundarias y ramillas: ritmo irregular, bifurcaciones naturales. -->
   <g class="olmo-wood-detail" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M410 416 C365 377 331 337 303 290 M342 359 C300 340 270 316 238 282
-             M375 494 C330 518 294 539 247 546 M319 484 C279 458 247 436 214 402
-             M458 299 C415 302 377 296 336 280 M404 278 C381 246 360 220 334 195" stroke-width="11" />
-    <path d="M303 290 C276 259 260 226 244 190 M303 290 C265 282 229 269 194 243
-             M238 282 C215 249 200 220 188 185 M247 546 C211 565 178 575 139 581
-             M214 402 C177 386 148 363 117 330 M336 280 C300 251 274 217 253 179
-             M334 195 C313 168 303 140 292 111" stroke-width="6" />
-    <path d="M794 413 C839 373 874 334 905 288 M853 365 C890 343 925 315 955 279
-             M826 488 C870 506 911 527 958 531 M888 476 C922 451 951 425 982 389
-             M746 298 C788 302 829 295 867 275 M799 278 C825 245 848 216 875 184" stroke-width="11" />
-    <path d="M905 288 C932 254 950 221 965 183 M905 288 C944 278 978 260 1011 235
-             M955 279 C979 247 994 215 1006 180 M958 531 C999 546 1032 553 1073 555
-             M982 389 C1019 370 1048 346 1078 312 M867 275 C901 245 926 211 946 174
-             M875 184 C897 155 909 128 920 99" stroke-width="6" />
-    <path d="M506 224 C478 210 449 206 418 209 M587 173 C558 151 538 128 520 96
-             M702 227 C732 210 761 205 795 207 M615 171 C642 148 659 124 676 91" stroke-width="7" />
+    <path class="olmo-branch-detail" d="
+             M410 416 C373 384 342 350 316 315
+             M390 492 C371 499 356 508 344 517
+             M458 299 C421 300 389 291 356 275
+             M404 278 C385 251 367 230 348 211" stroke-width="10" />
+    <path class="olmo-branch-detail" d="
+             M316 315 C293 286 278 258 266 231
+             M316 315 C292 309 272 301 255 290
+             M356 275 C330 251 309 224 294 198
+             M348 211 C332 189 321 168 313 144" stroke-width="5" />
+    <path class="olmo-branch-detail" d="
+             M794 413 C831 381 861 347 886 312
+             M810 489 C829 496 844 505 857 514
+             M746 298 C784 299 817 290 850 273
+             M798 278 C817 251 835 229 855 210" stroke-width="10" />
+    <path class="olmo-branch-detail" d="
+             M886 312 C910 283 925 255 938 228
+             M886 312 C910 306 930 297 947 286
+             M850 273 C876 248 896 221 911 195
+             M855 210 C872 188 883 166 891 142" stroke-width="5" />
+    <path class="olmo-branch-detail" d="
+             M506 224 C478 212 451 208 423 211
+             M587 174 C563 157 546 136 532 115
+             M702 227 C731 212 759 207 789 210
+             M615 172 C638 154 654 134 668 112" stroke-width="7" />
 
     <!-- Surcos de corteza; pocos, largos y quebrados. -->
-    <path d="M535 741 C551 681 542 620 552 565 C560 518 578 475 581 428
+    <path class="olmo-bark-detail" d="M535 741 C551 681 542 620 552 565 C560 518 578 475 581 428
              M575 824 C566 753 577 687 572 629 C568 584 579 544 590 508
              M626 815 C643 745 632 677 639 616 C645 566 630 521 621 481
-             M604 736 C596 682 609 625 600 573" stroke-width="4" opacity=".72" />
-    <path d="M548 602 C564 608 575 607 588 598 M617 676 C631 681 643 679 652 670
-             M568 520 C580 526 591 525 601 516" stroke-width="3" opacity=".48" />
+             M604 736 C596 682 609 625 600 573" stroke-width="4" />
+    <path class="olmo-bark-detail" d="M548 602 C564 608 575 607 588 598 M617 676 C631 681 643 679 652 670
+             M568 520 C580 526 591 525 601 516" stroke-width="3" opacity=".72" />
   </g>
 
   <!-- Sombras discontinuas bajo el follaje. Los huecos siguen el dibujo de las ramas. -->
@@ -509,17 +775,7 @@ const SVG_SCENE = `
   <g class="olmo-edge-leaves">${edgeLeafMarkup}</g>
 
   <!-- Hojas que se desprenden: todas existen desde el inicio, sin crear nodos en runtime. -->
-  <g aria-hidden="true">${fallingLeafMarkup}</g>
-  <g class="olmo-fallen-leaves" aria-hidden="true">
-    <use href="#olmo-leaf" transform="translate(270 768) rotate(12) scale(.7)" />
-    <use href="#olmo-leaf" transform="translate(328 755) rotate(-18) scale(.62)" />
-    <use href="#olmo-leaf" transform="translate(389 768) rotate(29) scale(.72)" />
-    <use href="#olmo-leaf" transform="translate(462 748) rotate(-6) scale(.56)" />
-    <use href="#olmo-leaf" transform="translate(714 751) rotate(18) scale(.62)" />
-    <use href="#olmo-leaf" transform="translate(817 766) rotate(-22) scale(.68)" />
-    <use href="#olmo-leaf" transform="translate(892 749) rotate(32) scale(.58)" />
-    <use href="#olmo-leaf" transform="translate(958 762) rotate(-8) scale(.65)" />
-  </g>
+  <g class="olmo-fall-stream" aria-hidden="true">${fallingLeafMarkup}</g>
 
   <!-- Hierba de primer plano, discreta para no competir con el poema. -->
   <g class="olmo-grass" stroke-width="4" stroke-linecap="round">
@@ -543,6 +799,56 @@ function applyStage(svg, stage) {
     svg.classList.toggle('olmo-withered', stage === 'withered');
 }
 
+function ensureLayoutStyles() {
+    const existingStyle = document.getElementById(OLMO_LAYOUT_STYLE_ID);
+    if (existingStyle) {
+        if (existingStyle.textContent !== OLMO_LAYOUT_STYLES) {
+            existingStyle.textContent = OLMO_LAYOUT_STYLES;
+        }
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = OLMO_LAYOUT_STYLE_ID;
+    style.textContent = OLMO_LAYOUT_STYLES;
+    document.head.appendChild(style);
+}
+
+function syncOverlayLayout(overlay, svg, mediaQuery) {
+    const pageWrapper = document.getElementById('page-wrapper');
+    const isFullscreen = document.body.classList.contains('fullscreen-mode') ||
+        document.body.classList.contains('virtual-fullscreen') ||
+        Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    const useReaderCanvas = (mediaQuery.matches || isFullscreen) && pageWrapper;
+
+    if (useReaderCanvas) {
+        if (overlay.parentElement !== pageWrapper) pageWrapper.appendChild(overlay);
+        Object.assign(overlay.style, {
+            position: 'absolute',
+            inset: '0',
+            width: '100%',
+            height: '100%',
+            zIndex: '1'
+        });
+        svg.setAttribute(
+            'preserveAspectRatio',
+            mediaQuery.matches ? MOBILE_PRESERVE_ASPECT_RATIO : DEFAULT_PRESERVE_ASPECT_RATIO
+        );
+        return;
+    }
+
+    const appContainer = document.getElementById('app-container') || document.body;
+    if (overlay.parentElement !== appContainer) appContainer.appendChild(overlay);
+    Object.assign(overlay.style, {
+        position: 'fixed',
+        inset: '0',
+        width: '100vw',
+        height: '100vh',
+        zIndex: '1'
+    });
+    svg.setAttribute('preserveAspectRatio', DEFAULT_PRESERVE_ASPECT_RATIO);
+}
+
 /**
  * Monta o actualiza la escena.
  *
@@ -551,6 +857,9 @@ function applyStage(svg, stage) {
  */
 export function startOlmoEffect(stage = 'lush') {
     const nextStage = normalizeStage(stage);
+    ensureLayoutStyles();
+    document.body.classList.add('olmo-reader-active');
+
     const container = document.getElementById('app-container') || document.body;
     let overlay = document.getElementById('olmo-overlay');
     let isNew = false;
@@ -561,12 +870,8 @@ export function startOlmoEffect(stage = 'lush') {
         overlay.id = 'olmo-overlay';
         overlay.setAttribute('aria-hidden', 'true');
         Object.assign(overlay.style, {
-            position: 'fixed',
             inset: '0',
-            width: '100vw',
-            height: '100vh',
             pointerEvents: 'none',
-            zIndex: '1',
             opacity: '0',
             overflow: 'hidden',
             transition: 'opacity 2.2s ease-out',
@@ -578,6 +883,29 @@ export function startOlmoEffect(stage = 'lush') {
 
     const svg = overlay.querySelector('#olmo-scene');
     if (!svg) return () => overlay?.remove();
+
+    if (overlay._removeOlmoLayoutListener) {
+        overlay._removeOlmoLayoutListener();
+    }
+
+    const mediaQuery = window.matchMedia(MOBILE_READER_QUERY);
+    const handleLayoutChange = () => syncOverlayLayout(overlay, svg, mediaQuery);
+    handleLayoutChange();
+
+    if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleLayoutChange);
+    } else {
+        mediaQuery.addListener(handleLayoutChange);
+    }
+
+    overlay._removeOlmoLayoutListener = () => {
+        if (mediaQuery.removeEventListener) {
+            mediaQuery.removeEventListener('change', handleLayoutChange);
+        } else {
+            mediaQuery.removeListener(handleLayoutChange);
+        }
+        delete overlay._removeOlmoLayoutListener;
+    };
 
     const previousStage = overlay.dataset.stage;
     overlay.dataset.stage = nextStage;
@@ -595,6 +923,8 @@ export function startOlmoEffect(stage = 'lush') {
     }
 
     return () => {
+        overlay._removeOlmoLayoutListener?.();
+        document.body.classList.remove('olmo-reader-active');
         const current = document.getElementById('olmo-overlay');
         if (current) current.remove();
     };
