@@ -140,10 +140,12 @@ function m(e) {
 	}
 	function o(r) {
 		if (!t.unlocked || !t.context) return;
-		let i = l(r.rockSpeed ?? 0, 0, 4.5), a = l(r.ascentProgress ?? 0, 0, 1), o = !!r.isPushing, s = l(r.moodImpact ?? 0, 0, 1), c = l((i - .08) / 1.9, 0, 1), u = l((i - .08) / 1.55, 0, 1), d = o ? 1 : 0, f = l(e.masterGain * (.92 + d * .16 + s * .08), 0, 1), p = e.windGain * (.62 + a * .56) * (.9 + c * .34) * (o ? 1.08 : .92), m = e.frictionGain * ((o ? .3 : .06) + u * (o ? .9 : .44)), h = e.breathGain * (o ? .72 + u * .5 : .11), g = e.enableSampleLayer && t.samplesReady ? e.sampleBlend : 0, _ = 1 - g;
-		n(t.masterGainNode, f, .24), n(t.windGainNode, p * _, .18), n(t.frictionGainNode, m * _, .12), n(t.breathGainNode, h, .16), n(t.windSampleGainNode, p * g, .22), n(t.frictionSampleGainNode, m * g, .16);
-		let v = t.context.currentTime;
-		t.windHighPassNode.frequency.setTargetAtTime(46 + a * 58, v, .2), t.windLowPassNode.frequency.setTargetAtTime(260 + a * 420 + s * 130, v, .2), t.frictionBandPassNode.frequency.setTargetAtTime(110 + i * 132, v, .12), t.frictionBandPassNode.Q.setTargetAtTime(1.08 + u * 2, v, .12), t.frictionLowPassNode.frequency.setTargetAtTime(430 + i * 210 + (o ? 50 : 0), v, .14), t.breathFilterNode.frequency.setTargetAtTime(170 + (o ? 180 : 90) + u * 110, v, .2), t.breathOsc && t.breathOsc.frequency.setTargetAtTime(90 + u * 38 + (o ? 16 : 0), v, .2);
+		let i = l(r.rockSpeed ?? 0, 0, 4.5), a = l(r.ascentProgress ?? 0, 0, 1), o = !!r.isPushing, s = l(r.moodImpact ?? 0, 0, 1), c = !!r.isWindActive, u = l((i - .08) / 1.9, 0, 1), d = l((i - .08) / 1.55, 0, 1), f = o ? 1 : 0, p = l(e.masterGain * (.92 + f * .16 + s * .08), 0, 1), m = e.windGain * (.62 + a * .56) * (.9 + u * .34) * (o ? 1.08 : .92);
+		c && (m *= 2.8);
+		let h = e.frictionGain * ((o ? .3 : .06) + d * (o ? .9 : .44)), g = e.breathGain * (o ? .72 + d * .5 : .11), _ = e.enableSampleLayer && t.samplesReady ? e.sampleBlend : 0, v = 1 - _;
+		n(t.masterGainNode, p, .24), n(t.windGainNode, m * v, .18), n(t.frictionGainNode, h * v, .12), n(t.breathGainNode, g, .16), n(t.windSampleGainNode, m * _, .22), n(t.frictionSampleGainNode, h * _, .16);
+		let y = t.context.currentTime, b = c ? 800 + a * 600 : 260 + a * 420 + s * 130;
+		t.windHighPassNode.frequency.setTargetAtTime(c ? 30 : 46 + a * 58, y, .2), t.windLowPassNode.frequency.setTargetAtTime(b, y, .2), t.frictionBandPassNode.frequency.setTargetAtTime(110 + i * 132, y, .12), t.frictionBandPassNode.Q.setTargetAtTime(1.08 + d * 2, y, .12), t.frictionLowPassNode.frequency.setTargetAtTime(430 + i * 210 + (o ? 50 : 0), y, .14), t.breathFilterNode.frequency.setTargetAtTime(170 + (o ? 180 : 90) + d * 110, y, .2), t.breathOsc && t.breathOsc.frequency.setTargetAtTime(90 + d * 38 + (o ? 16 : 0), y, .2);
 	}
 	function s(n) {
 		if (!t.unlocked || !t.context || !t.impactGainNode) return;
@@ -299,97 +301,164 @@ function T(e, t) {
 }
 //#endregion
 //#region src/games/sisyphus/input-controller.js
-function E(e) {
-	let { canvas: t, render: n, queryPoint: r, sisyphus: i, camera: a, cameraDrag: o, audioCueController: s, runtimeQualityController: c, GAME_STATE: l, CAMERA_BEHAVIOR: u, CAMERA_DRAG_THRESHOLD: d, CAMERA_PAN_SENSITIVITY: f, getIsPushing: p, setIsPushing: m, getGameState: h, setGameState: g, getFreePanZoom: _, setCameraBehavior: v, wakeBodies: y, beginCameraDrag: b, stopCameraDrag: x, storeFreePanTarget: S, cycleUserZoomInput: C, cycleVisualStyle: w, setQualityHintUntil: T } = e, E = 0, D = {
+var E = Object.freeze({
+	PLAIN: "plain",
+	SLOPE: "slope",
+	WIND: "wind",
+	FATIGUE: "fatigue",
+	SUMMIT: "summit"
+});
+function D(e) {
+	let { canvas: t, render: n, queryPoint: r, sisyphus: i, camera: a, cameraDrag: o, audioCueController: s, runtimeQualityController: c, GAME_STATE: l, CAMERA_BEHAVIOR: u, CAMERA_DRAG_THRESHOLD: d, CAMERA_PAN_SENSITIVITY: f, getIsPushing: p, setIsPushing: m, getGameState: h, setGameState: g, getFreePanZoom: _, setCameraBehavior: v, wakeBodies: y, beginCameraDrag: b, stopCameraDrag: x, storeFreePanTarget: S, cycleUserZoomInput: C, cycleVisualStyle: w, setQualityHintUntil: T, triggerStumble: D, getAscentProgress: O, isWindActive: k } = e, A = 0, ee = {
 		x: 0,
 		y: 0
-	};
-	function O(e) {
+	}, j = !1, te = !1, M = !1, N = 0, ne = 0, P = 0, F = 1, I = 1, L = 0, R = 0, re = 0, ie = 0, ae = null, oe = Math.PI / 2;
+	Math.PI * .38;
+	function se() {
+		let e = typeof O == "function" ? O() : 0;
+		return e < .15 ? E.PLAIN : e < .35 ? E.SLOPE : e < .55 ? E.WIND : e < .75 ? E.FATIGUE : E.SUMMIT;
+	}
+	function z(e, t, n) {
+		return Math.max(t, Math.min(n, e));
+	}
+	function ce(e, t, n) {
+		return e + (t - e) * n;
+	}
+	function le() {
+		return M || j || te;
+	}
+	function ue() {
+		j = !1, te = !1, M = !1;
+	}
+	function de() {
+		N = 0, ne = 0, P = 0, F = 1, I = 1, L = 0, R = 0, M = !1, re = 0, ie = 0, m(!1);
+	}
+	function fe(e) {
+		let t = h();
+		if (t !== ae && (t === l.WAITING ? (ue(), de()) : t !== l.PLAYING && m(!1), ae = t), !(t !== l.PLAYING && t !== l.WAITING)) {
+			if (!le()) {
+				m(!1), R = 0, N = 0, ne = 0, P = 0, F = 1, I = 1, L = ce(L, 0, z(e * .004, 0, .16));
+				return;
+			}
+			if (t === l.WAITING) {
+				g(l.PLAYING);
+				return;
+			}
+			t === l.PLAYING && (re += e, R += e, N = 0, ne = 0, P = 0, F = 1, I = 1, L = typeof k == "function" && k() ? .18 : .08, m(!0), y());
+		}
+	}
+	function B(e) {
 		return e.touches && e.touches[0] ? e.touches[0] : e.changedTouches && e.changedTouches[0] ? e.changedTouches[0] : e;
 	}
-	function k(e) {
-		let r = t.getBoundingClientRect(), i = O(e), a = (i.clientX - r.left) / r.width, o = (i.clientY - r.top) / r.height, s = n.bounds;
+	function pe(e) {
+		let r = t.getBoundingClientRect(), i = B(e), a = (i.clientX - r.left) / r.width, o = (i.clientY - r.top) / r.height, s = n.bounds;
 		return {
 			x: s.min.x + a * (s.max.x - s.min.x),
 			y: s.min.y + o * (s.max.y - s.min.y)
 		};
 	}
-	function ee(e, t) {
-		return r(e, t).length > 0;
+	function me(e, t) {
+		return typeof r == "function" && r(e, t).length > 0;
 	}
-	function A(e) {
+	function he(e) {
 		let t = i.bounds;
-		return e.x >= t.min.x - 24 && e.x <= t.max.x + 24 && e.y >= t.min.y - 24 && e.y <= t.max.y + 24;
+		return e.x >= t.min.x - 34 && e.x <= t.max.x + 34 && e.y >= t.min.y - 34 && e.y <= t.max.y + 34;
 	}
-	function j(e) {
-		p() || o.active || (t.style.cursor = ee([i], e) || A(e) ? "grab" : "default");
+	function ge(e) {
+		p() || o.active || (t.style.cursor = me([i], e) || he(e) ? "grab" : "default");
 	}
-	function M(e) {
+	function _e(e) {
 		if (!o.active || p()) return;
 		e.preventDefault();
-		let n = O(e), r = n.clientX - o.startClientX, i = n.clientY - o.startClientY;
+		let n = B(e), r = n.clientX - o.startClientX, i = n.clientY - o.startClientY;
 		if (!o.moved && Math.hypot(r, i) < d) return;
-		o.moved = !0, E = 0, v(u.FREE_PAN);
+		o.moved = !0, v(u.FREE_PAN);
 		let a = Math.max(_(window.innerHeight > window.innerWidth), .001);
 		S(o.startCameraX - r * f / a, o.startCameraY - i * f / a, _(window.innerHeight > window.innerWidth)), t.style.cursor = "grabbing";
 	}
-	function N(e) {
-		e.preventDefault(), s.unlock();
-		let n = k(e), r = ee([i], n) || A(n), o = h(), c = o === l.PLAYING || o === l.WAITING;
-		if (r && c) {
-			if (o === l.WAITING && i.render.opacity < .5) return;
-			o === l.WAITING && g(l.PLAYING), E = 0, x(), v(u.FOCUS_SISYPHUS), y(), m(!0), t.style.cursor = "grabbing";
+	function ve(e) {
+		let n = t.getBoundingClientRect();
+		z(((e.clientX - n.left) / n.width - .5) * 2, -1, 1) * oe * .86, M = !0;
+	}
+	function ye(e) {
+		e && (ve(e), v(u.FOCUS_SISYPHUS), x(), s.unlock());
+	}
+	function V(e) {
+		ye(e), h() === l.WAITING && g(l.PLAYING), y(), t.style.cursor = "grabbing";
+	}
+	function be(e) {
+		e.preventDefault();
+		let n = B(e), r = pe(e), o = h(), s = me([i], r) || he(r), c = o === l.PLAYING || o === l.WAITING;
+		if (o === l.WAITING && s && i.render.opacity < .5) return;
+		let u = Date.now(), d = Math.hypot(n.clientX - ee.x, n.clientY - ee.y);
+		if (!s && A > 0 && u - A < 320 && d < 26) {
+			A = 0, x(), C(), t.style.cursor = "default";
 			return;
 		}
-		let d = O(e), f = Date.now(), p = Math.hypot(d.clientX - D.x, d.clientY - D.y);
-		if (E > 0 && f - E < 320 && p < 26) {
-			E = 0, x(), C(), t.style.cursor = "default";
+		if (A = u, ee = {
+			x: n.clientX,
+			y: n.clientY
+		}, c && s) {
+			A = 0, V(n);
 			return;
 		}
-		E = f, D = {
-			x: d.clientX,
-			y: d.clientY
-		}, b(d.clientX, d.clientY), S(a.x, a.y, _(window.innerHeight > window.innerWidth));
+		b(n.clientX, n.clientY), S(a.x, a.y, _(window.innerHeight > window.innerWidth));
 	}
-	function P(e) {
-		e.preventDefault(), m(!1), x(), j(k(e));
+	function xe(e) {
+		e.preventDefault(), ue(), m(!1), x(), ge(pe(e));
 	}
-	function F(e) {
-		if (o.active) {
-			M(e);
+	function H(e) {
+		if (o.active && !p()) {
+			_e(e);
 			return;
 		}
-		j(k(e));
+		if (M && (e.buttons > 0 || e.touches && e.touches.length > 0)) {
+			ye(B(e));
+			return;
+		}
+		ge(pe(e));
 	}
-	function I(e) {
+	function Se(e) {
+		if (e.repeat) return;
 		let t = (e.key || "").toLowerCase();
-		if (t === "c") {
-			C();
-			return;
-		}
-		if (t === "v") {
-			w();
-			return;
-		}
-		if (t === "q") {
-			let t;
-			e.shiftKey ? (c.clearForcedTier(), t = `${c.getSnapshot().tier.toUpperCase()} (AUTO)`) : t = `${c.cycleTier().toUpperCase()} (BLOQUEADA)`, T(performance.now() + 1400), console.log(`%cCalidad visual: ${t}`, "color:#9bd1ff;font-weight:bold");
+		if ((t === "arrowleft" || t === "a" || t === "arrowright" || t === "d") && e.preventDefault(), t === "arrowleft" || t === "a" ? (j = !0, te = !1, v(u.FOCUS_SISYPHUS), x(), h() === l.WAITING && g(l.PLAYING), y(), s.unlock()) : (t === "arrowright" || t === "d") && (te = !0, j = !1, v(u.FOCUS_SISYPHUS), x(), h() === l.WAITING && g(l.PLAYING), y(), s.unlock()), t === "c" && C(), t === "v" && w(), t === "q") {
+			let t = e.shiftKey ? `${c.getSnapshot().tier.toUpperCase()} (AUTO)` : `${c.cycleTier().toUpperCase()} (BLOQUEADA)`;
+			e.shiftKey && c.clearForcedTier(), T(performance.now() + 1400), console.log(`%cCalidad visual: ${t}`, "color:#9bd1ff;font-weight:bold");
 		}
 	}
-	function L() {
-		t.addEventListener("mousedown", N), t.addEventListener("touchstart", N, { passive: !1 }), t.addEventListener("mousemove", F), t.addEventListener("touchmove", F, { passive: !1 }), t.addEventListener("mouseup", P), t.addEventListener("touchend", P, { passive: !1 }), t.addEventListener("touchcancel", P), t.addEventListener("mouseleave", P), window.addEventListener("keydown", I);
+	function U(e) {
+		let t = (e.key || "").toLowerCase();
+		(t === "arrowleft" || t === "a" || t === "arrowright" || t === "d") && e.preventDefault(), (t === "arrowleft" || t === "a") && (j = !1), (t === "arrowright" || t === "d") && (te = !1), le() || m(!1);
 	}
-	function R() {
-		t.removeEventListener("mousedown", N), t.removeEventListener("touchstart", N), t.removeEventListener("mousemove", F), t.removeEventListener("touchmove", F), t.removeEventListener("mouseup", P), t.removeEventListener("touchend", P), t.removeEventListener("touchcancel", P), t.removeEventListener("mouseleave", P), window.removeEventListener("keydown", I);
+	function W() {
+		t.addEventListener("mousedown", be), t.addEventListener("touchstart", be, { passive: !1 }), t.addEventListener("mousemove", H), t.addEventListener("touchmove", H, { passive: !1 }), t.addEventListener("mouseup", xe), t.addEventListener("touchend", xe, { passive: !1 }), t.addEventListener("touchcancel", xe), t.addEventListener("mouseleave", xe), window.addEventListener("keydown", Se), window.addEventListener("keyup", U);
+	}
+	function G() {
+		t.removeEventListener("mousedown", be), t.removeEventListener("touchstart", be), t.removeEventListener("mousemove", H), t.removeEventListener("touchmove", H), t.removeEventListener("mouseup", xe), t.removeEventListener("touchend", xe), t.removeEventListener("touchcancel", xe), t.removeEventListener("mouseleave", xe), window.removeEventListener("keydown", Se), window.removeEventListener("keyup", U);
 	}
 	return Object.freeze({
-		register: L,
-		destroy: R
+		register: W,
+		destroy: G,
+		update: fe,
+		getBalanceState: () => ({
+			playerAngle: P,
+			targetAngle: N,
+			desiredTargetAngle: ne,
+			alignmentScore: F,
+			tractionScore: I,
+			strainScore: L,
+			isInputHeld: le(),
+			isPushing: p(),
+			phase: se(),
+			recoveryGraceMs: ie
+		}),
+		getCurrentPhase: se,
+		getComboCount: () => 0
 	});
 }
 //#endregion
 //#region src/games/sisyphus/scene-renderer.js
-var D = {
+var O = {
 	skyTop: "#171c31",
 	skyMid: "#29314d",
 	skyHaze: "#5d6874",
@@ -405,8 +474,8 @@ var D = {
 	groundTop: "#707883",
 	groundBottom: "#515862",
 	haze: "rgba(208, 214, 224, 0.08)"
-}, O = Math.PI * 2;
-function k(e) {
+}, k = Math.PI * 2;
+function A(e) {
 	let { LOGICAL_W: t, LOGICAL_H: n, SURF_Y: r, PEAK_A_X: i, PEAK_A_Y: a, PEAK_B_X: o, PEAK_B_Y: s, RIGHT_DESCENT_MID_X: c, RIGHT_DESCENT_MID_Y: u, RIGHT_DESCENT_LOW_X: d, RIGHT_DESCENT_LOW_Y: f, RIGHT_FACE_BASE_X: p, slopeYAt: m, terrainYAt: h, TERRAIN_SURFACE_POINTS: g } = e, _ = [{
 		x: 18,
 		y: r + 16
@@ -491,7 +560,7 @@ function k(e) {
 		y: 18 + x() * 210,
 		radius: .5 + x() * 1.5,
 		alpha: .12 + x() * .55,
-		phase: x() * O,
+		phase: x() * k,
 		pulse: .45 + x() * 1.4,
 		glow: n % 7 == 0,
 		cross: n % 13 == 0,
@@ -503,7 +572,7 @@ function k(e) {
 			drift: 48,
 			speed: 12e-5,
 			alpha: .07,
-			phase: x() * O,
+			phase: x() * k,
 			parallax: .1
 		},
 		{
@@ -512,7 +581,7 @@ function k(e) {
 			drift: 78,
 			speed: 9e-5,
 			alpha: .09,
-			phase: x() * O,
+			phase: x() * k,
 			parallax: .16
 		},
 		{
@@ -521,7 +590,7 @@ function k(e) {
 			drift: 60,
 			speed: 6e-5,
 			alpha: .07,
-			phase: x() * O,
+			phase: x() * k,
 			parallax: .22
 		}
 	], w = Array.from({ length: 28 }, () => ({
@@ -529,7 +598,7 @@ function k(e) {
 		y: 64 + x() * 150,
 		radius: .7 + x() * 2.4,
 		alpha: .018 + x() * .045,
-		phase: x() * O,
+		phase: x() * k,
 		drift: 8 + x() * 24
 	}));
 	function T(e, t, n = !0) {
@@ -540,12 +609,12 @@ function k(e) {
 	function E(e, t, n, r = 1) {
 		e.save(), e.globalAlpha = r, T(e, t), e.fillStyle = n, e.fill(), e.restore();
 	}
-	function k(e) {
+	function D(e) {
 		return e.map((e, t) => `${t === 0 ? "M" : "L"} ${e.x.toFixed(1)} ${e.y.toFixed(1)}`).join(" ") + " Z";
 	}
 	function A() {
 		if (typeof Image > "u") return null;
-		let e = k(y), t = `
+		let e = D(y), t = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 160 1180 580">
   <defs>
     <linearGradient id="base" x1="170" y1="220" x2="900" y2="700" gradientUnits="userSpaceOnUse">
@@ -593,57 +662,60 @@ function k(e) {
 		return n.decoding = "async", n.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(t)}`, n;
 	}
 	let j = A();
-	function M(e, t) {
+	function te(e, t) {
 		e.save();
 		for (let n of S) {
 			let r = .52 + .48 * Math.sin(t * .0013 * n.pulse + n.phase), i = n.alpha * r, a = n.hue === 220 ? 200 : n.hue === 30 ? 255 : 244, o = n.hue === 220 ? 220 : n.hue === 30 ? 230 : 236, s = n.hue === 220 ? 255 : n.hue === 30 ? 200 : 212;
-			if (e.fillStyle = `rgba(${a}, ${o}, ${s}, ${i.toFixed(3)})`, e.beginPath(), e.arc(n.x, n.y, n.radius, 0, O), e.fill(), n.cross) {
+			if (e.fillStyle = `rgba(${a}, ${o}, ${s}, ${i.toFixed(3)})`, e.beginPath(), e.arc(n.x, n.y, n.radius, 0, k), e.fill(), n.cross) {
 				let t = n.radius * 6;
 				e.strokeStyle = `rgba(${a}, ${o}, ${s}, ${(i * .3).toFixed(3)})`, e.lineWidth = .6, e.beginPath(), e.moveTo(n.x - t, n.y), e.lineTo(n.x + t, n.y), e.moveTo(n.x, n.y - t), e.lineTo(n.x, n.y + t), e.stroke();
 			}
 			if (n.glow) {
 				let t = e.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius * 5.5);
-				t.addColorStop(0, `rgba(${a}, ${o}, ${s}, ${(i * .22).toFixed(3)})`), t.addColorStop(.5, `rgba(${a}, ${o}, ${s}, ${(i * .06).toFixed(3)})`), t.addColorStop(1, `rgba(${a}, ${o}, ${s}, 0)`), e.fillStyle = t, e.beginPath(), e.arc(n.x, n.y, n.radius * 5.5, 0, O), e.fill();
+				t.addColorStop(0, `rgba(${a}, ${o}, ${s}, ${(i * .22).toFixed(3)})`), t.addColorStop(.5, `rgba(${a}, ${o}, ${s}, ${(i * .06).toFixed(3)})`), t.addColorStop(1, `rgba(${a}, ${o}, ${s}, 0)`), e.fillStyle = t, e.beginPath(), e.arc(n.x, n.y, n.radius * 5.5, 0, k), e.fill();
 			}
 		}
 		e.restore();
 	}
-	function N(e, n, r, i, a) {
+	function M(e, n, r, i, a, o = 0, s = !1) {
 		e.save();
+		let c = (s ? 6 : 1) + o * 1.5, u = 1 + o * .8 + (s ? .4 : 0);
 		for (let o of C) {
-			let s = Math.sin(a * o.speed + o.phase) * o.drift, c = n * o.parallax, l = e.createLinearGradient(0, o.y, 0, o.y + o.height);
-			l.addColorStop(0, "rgba(226, 231, 239, 0)"), l.addColorStop(.45, `rgba(226, 231, 239, ${(o.alpha * r.mistAlphaMultiplier * (1 + i.sceneFx.hazeBoost)).toFixed(3)})`), l.addColorStop(1, "rgba(226, 231, 239, 0)"), e.fillStyle = l, e.fillRect(-1400 + s + c, o.y, t + 2800, o.height);
+			let d = Math.sin(a * o.speed * c + o.phase) * o.drift * (s ? 2 : 1), f = n * o.parallax, p = e.createLinearGradient(0, o.y, 0, o.y + o.height);
+			p.addColorStop(0, "rgba(226, 231, 239, 0)");
+			let m = o.alpha * r.mistAlphaMultiplier * (1 + i.sceneFx.hazeBoost) * u;
+			p.addColorStop(.45, `rgba(226, 231, 239, ${l(m, 0, .4).toFixed(3)})`), p.addColorStop(1, "rgba(226, 231, 239, 0)"), e.fillStyle = p, e.fillRect(-1400 + d + f, o.y, t + 2800, o.height);
 		}
 		e.restore();
 	}
-	function P(e, t, n) {
+	function N(e, t, n) {
 		e.save(), e.globalCompositeOperation = "screen";
 		for (let r of w) {
 			let i = Math.sin(n * 18e-5 + r.phase) * r.drift, a = .65 + .35 * Math.sin(n * 42e-5 + r.phase * 1.7), o = r.alpha * a * (1 + t.sceneFx.glowBoost), s = e.createRadialGradient(r.x + i, r.y, 0, r.x + i, r.y, r.radius * 7);
-			s.addColorStop(0, `rgba(224, 232, 242, ${o.toFixed(3)})`), s.addColorStop(1, "rgba(224, 232, 242, 0)"), e.fillStyle = s, e.beginPath(), e.arc(r.x + i, r.y, r.radius * 7, 0, O), e.fill();
+			s.addColorStop(0, `rgba(224, 232, 242, ${o.toFixed(3)})`), s.addColorStop(1, "rgba(224, 232, 242, 0)"), e.fillStyle = s, e.beginPath(), e.arc(r.x + i, r.y, r.radius * 7, 0, k), e.fill();
 		}
 		let r = e.createLinearGradient(610, 72, 900, 252);
 		r.addColorStop(0, "rgba(210, 224, 240, 0)"), r.addColorStop(.44, `rgba(210, 224, 240, ${(.035 + t.sceneFx.glowBoost * .045).toFixed(3)})`), r.addColorStop(1, "rgba(210, 224, 240, 0)"), e.fillStyle = r, e.fillRect(520, 42, 460, 250), e.restore();
 	}
-	function F(e, r, i, a, o) {
-		let s = e.createLinearGradient(0, 0, 0, n);
-		s.addColorStop(0, "#111728"), s.addColorStop(.18, "#151c2e"), s.addColorStop(.42, D.skyTop), s.addColorStop(.62, D.skyMid), s.addColorStop(1, D.skyHaze), e.fillStyle = s, e.fillRect(-1e3, 0, t + 2e3, n + 1e3), M(e, o);
-		let c = i.moonRadius, l = 1 + a.sceneFx.glowBoost, u = e.createRadialGradient(840, 112, c * .5, 840, 112, 320 * i.moonGlowScale * l);
-		u.addColorStop(0, `rgba(240, 216, 162, ${(.06 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(.3, `rgba(230, 210, 170, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(.7, `rgba(180, 200, 230, ${(.015 * i.moonGlowAlpha).toFixed(3)})`), u.addColorStop(1, "rgba(180, 200, 230, 0)"), e.fillStyle = u, e.fillRect(-1e3, -1e3, t + 2e3, n + 2e3);
-		let d = e.createRadialGradient(840, 112, c * .8, 840, 112, 160 * i.moonGlowScale * l);
-		d.addColorStop(0, `rgba(248, 228, 180, ${(.22 * i.moonGlowAlpha * l).toFixed(3)})`), d.addColorStop(.35, `rgba(240, 216, 162, ${(.1 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(.7, `rgba(240, 216, 162, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), d.addColorStop(1, "rgba(240, 216, 162, 0)"), e.fillStyle = d, e.fillRect(540, -188, 600, 600), P(e, a, o), e.save(), e.globalAlpha = i.moonAlpha, e.beginPath(), e.arc(840, 112, c, 0, O), e.clip();
-		let f = e.createRadialGradient(840 - c * .3, 112 - c * .25, 0, 840, 112, c);
-		f.addColorStop(0, "#fae8c4"), f.addColorStop(.5, "#f0d8a2"), f.addColorStop(.85, "#dfc78a"), f.addColorStop(1, "#c8b070"), e.fillStyle = f, e.fillRect(840 - c, 112 - c, c * 2, c * 2), e.globalAlpha = i.moonAlpha * .12, e.fillStyle = "#8a7a52", e.beginPath(), e.ellipse(840 - c * .15, 112 + c * .1, c * .3, c * .2, -.3, 0, O), e.fill(), e.beginPath(), e.ellipse(840 + c * .2, 112 - c * .2, c * .15, c * .18, .4, 0, O), e.fill(), e.globalAlpha = i.moonAlpha * .45;
-		let p = c * .65, m = e.createRadialGradient(840 + p, 112 + c * .1, c * .1, 840 + p, 112 + c * .1, c * 1.3);
-		m.addColorStop(0, "rgba(15, 20, 35, 0.7)"), m.addColorStop(.5, "rgba(15, 20, 35, 0.3)"), m.addColorStop(1, "rgba(15, 20, 35, 0)"), e.fillStyle = m, e.fillRect(840 - c, 112 - c, c * 2, c * 2), e.restore();
-		let h = e.createLinearGradient(0, 240, 0, n);
-		if (h.addColorStop(0, "rgba(255, 255, 255, 0)"), h.addColorStop(1, D.haze), e.fillStyle = h, e.fillRect(-1e3, 240, t + 2e3, n), i.hazeAlphaBoost > 0) {
+	function ne(e, r, i, a, o, s = 0, c = !1) {
+		let l = Math.floor(s * 15), u = e.createLinearGradient(0, 0, 0, n);
+		u.addColorStop(0, `rgb(${17 - l}, ${23 - l}, ${40 - l})`), u.addColorStop(.18, `rgb(${21 - l}, ${28 - l}, ${46 - l})`), u.addColorStop(.42, O.skyTop), u.addColorStop(.62, O.skyMid), u.addColorStop(1, O.skyHaze), e.fillStyle = u, e.fillRect(-1e3, 0, t + 2e3, n + 1e3), te(e, o);
+		let d = i.moonRadius, f = 1 + a.sceneFx.glowBoost, p = e.createRadialGradient(840, 112, d * .5, 840, 112, 320 * i.moonGlowScale * f);
+		p.addColorStop(0, `rgba(240, 216, 162, ${(.06 * i.moonGlowAlpha).toFixed(3)})`), p.addColorStop(.3, `rgba(230, 210, 170, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), p.addColorStop(.7, `rgba(180, 200, 230, ${(.015 * i.moonGlowAlpha).toFixed(3)})`), p.addColorStop(1, "rgba(180, 200, 230, 0)"), e.fillStyle = p, e.fillRect(-1e3, -1e3, t + 2e3, n + 2e3);
+		let m = e.createRadialGradient(840, 112, d * .8, 840, 112, 160 * i.moonGlowScale * f);
+		m.addColorStop(0, `rgba(248, 228, 180, ${(.22 * i.moonGlowAlpha * f).toFixed(3)})`), m.addColorStop(.35, `rgba(240, 216, 162, ${(.1 * i.moonGlowAlpha).toFixed(3)})`), m.addColorStop(.7, `rgba(240, 216, 162, ${(.03 * i.moonGlowAlpha).toFixed(3)})`), m.addColorStop(1, "rgba(240, 216, 162, 0)"), e.fillStyle = m, e.fillRect(540, -188, 600, 600), N(e, a, o), e.save(), e.globalAlpha = i.moonAlpha, e.beginPath(), e.arc(840, 112, d, 0, k), e.clip();
+		let h = e.createRadialGradient(840 - d * .3, 112 - d * .25, 0, 840, 112, d);
+		h.addColorStop(0, "#fae8c4"), h.addColorStop(.5, "#f0d8a2"), h.addColorStop(.85, "#dfc78a"), h.addColorStop(1, "#c8b070"), e.fillStyle = h, e.fillRect(840 - d, 112 - d, d * 2, d * 2), e.globalAlpha = i.moonAlpha * .12, e.fillStyle = "#8a7a52", e.beginPath(), e.ellipse(840 - d * .15, 112 + d * .1, d * .3, d * .2, -.3, 0, k), e.fill(), e.beginPath(), e.ellipse(840 + d * .2, 112 - d * .2, d * .15, d * .18, .4, 0, k), e.fill(), e.globalAlpha = i.moonAlpha * .45;
+		let g = d * .65, _ = e.createRadialGradient(840 + g, 112 + d * .1, d * .1, 840 + g, 112 + d * .1, d * 1.3);
+		_.addColorStop(0, "rgba(15, 20, 35, 0.7)"), _.addColorStop(.5, "rgba(15, 20, 35, 0.3)"), _.addColorStop(1, "rgba(15, 20, 35, 0)"), e.fillStyle = _, e.fillRect(840 - d, 112 - d, d * 2, d * 2), e.restore();
+		let v = e.createLinearGradient(0, 240, 0, n);
+		if (v.addColorStop(0, "rgba(255, 255, 255, 0)"), v.addColorStop(1, O.haze), e.fillStyle = v, e.fillRect(-1e3, 240, t + 2e3, n), i.hazeAlphaBoost > 0) {
 			let r = e.createLinearGradient(0, 210, 0, n);
 			r.addColorStop(0, "rgba(246, 240, 224, 0)"), r.addColorStop(1, `rgba(246, 240, 224, ${(i.hazeAlphaBoost + a.sceneFx.hazeBoost).toFixed(3)})`), e.fillStyle = r, e.fillRect(-1e3, 210, t + 2e3, n);
 		}
-		N(e, r, i, a, o);
+		M(e, r, i, a, o, s, c);
 	}
-	function I(e, r, i, a, o, s) {
+	function P(e, r, i, a, o, s) {
 		e.save(), e.translate(r * .18 * a.distantParallaxMultiplier, i * .04);
 		let c = e.createLinearGradient(0, 230, 0, 460);
 		c.addColorStop(0, "rgba(216, 226, 239, 0)"), c.addColorStop(.52, `rgba(216, 226, 239, ${(.055 + o.sceneFx.hazeBoost * .08).toFixed(3)})`), c.addColorStop(1, "rgba(216, 226, 239, 0)"), e.fillStyle = c, e.fillRect(-220, 230, t + 440, 240), E(e, [
@@ -683,7 +755,7 @@ function k(e) {
 				x: 940,
 				y: n + 20
 			}
-		], D.farMountain, a.distantMountainAlpha), E(e, [
+		], O.farMountain, a.distantMountainAlpha), E(e, [
 			{
 				x: -40,
 				y: n + 20
@@ -720,17 +792,17 @@ function k(e) {
 				x: 940,
 				y: n + 20
 			}
-		], D.farMountainShadow, .9 * a.distantMountainAlpha);
+		], O.farMountainShadow, .9 * a.distantMountainAlpha);
 		let l = e.createLinearGradient(0, 288, 0, 418);
 		l.addColorStop(0, "rgba(230, 236, 244, 0)"), l.addColorStop(.5, `rgba(230, 236, 244, ${(.04 + o.sceneFx.hazeBoost * .07).toFixed(3)})`), l.addColorStop(1, "rgba(230, 236, 244, 0)"), e.fillStyle = l;
 		let u = Math.sin(s * 8e-5) * 36;
 		e.fillRect(-260 + u, 286, t + 520, 150), e.restore();
 	}
-	function L(e, l, d) {
+	function F(e, l, d) {
 		let f = e.createLinearGradient(640, 40, t, n);
 		f.addColorStop(0, "#5a6473"), f.addColorStop(.52, "#465061"), f.addColorStop(1, "#2b3442"), E(e, v, f, .98);
 		let m = e.createLinearGradient(140, 170, 640, n);
-		m.addColorStop(0, D.mountainLight), m.addColorStop(.45, D.mountainBase), m.addColorStop(1, D.mountainShadow), E(e, y, m, j?.complete ? .34 : 1), e.save(), T(e, y), e.clip(), j?.complete && j.naturalWidth > 0 && e.drawImage(j, -100, 160, 1180, 580);
+		m.addColorStop(0, O.mountainLight), m.addColorStop(.45, O.mountainBase), m.addColorStop(1, O.mountainShadow), E(e, y, m, j?.complete ? .34 : 1), e.save(), T(e, y), e.clip(), j?.complete && j.naturalWidth > 0 && e.drawImage(j, -100, 160, 1180, 580);
 		let g = e.createLinearGradient(0, n, t * .78, 120);
 		g.addColorStop(0, "rgba(26, 31, 41, 0.42)"), g.addColorStop(.55, "rgba(26, 31, 41, 0.12)"), g.addColorStop(1, "rgba(255, 255, 255, 0.08)"), e.fillStyle = g, e.fillRect(-60, 0, t + 120, n + 180);
 		let b = e.createRadialGradient(i - 36, a + 18, 12, i - 36, a + 18, 168);
@@ -817,17 +889,17 @@ function k(e) {
 		}
 		e.stroke(), e.restore();
 	}
-	function R(e) {
+	function I(e) {
 		let i = e.createLinearGradient(0, r, 0, n + 1e3);
-		i.addColorStop(0, D.groundTop), i.addColorStop(1, D.groundBottom), E(e, b, i), e.strokeStyle = "rgba(228, 233, 240, 0.08)", e.lineWidth = 1, e.beginPath(), e.moveTo(-1e3, r), e.lineTo(t + 1e3, r), e.stroke();
+		i.addColorStop(0, O.groundTop), i.addColorStop(1, O.groundBottom), E(e, b, i), e.strokeStyle = "rgba(228, 233, 240, 0.08)", e.lineWidth = 1, e.beginPath(), e.moveTo(-1e3, r), e.lineTo(t + 1e3, r), e.stroke();
 	}
-	function te(e, t, n, r, i, a) {
+	function L(e, t, n, r, i, a) {
 		let o = h(t.position.x), s = l(o - t.bounds.max.y, -12, 90), c = (1 + l(s * .012, -.08, .75)) * a.contactShadow.spreadMul, u = i * a.contactShadow.alphaMul * (1 - l(s / 120, 0, .72));
-		e.save(), e.translate(t.position.x + 16, o + 10), e.rotate(-.16), e.scale(c, 1 / c), e.fillStyle = `rgba(10, 14, 22, ${u.toFixed(3)})`, e.beginPath(), e.ellipse(0, 0, n + s * .1, r + s * .04, 0, 0, O), e.fill(), e.restore();
+		e.save(), e.translate(t.position.x + 16, o + 10), e.rotate(-.16), e.scale(c, 1 / c), e.fillStyle = `rgba(10, 14, 22, ${u.toFixed(3)})`, e.beginPath(), e.ellipse(0, 0, n + s * .1, r + s * .04, 0, 0, k), e.fill(), e.restore();
 	}
-	function ne(e, r, i) {
-		let a = i ? i.fogAlphaMul : 1, o = e.createLinearGradient(0, 172, 0, n + 80);
-		o.addColorStop(0, `rgba(236, 228, 208, ${(r.fog.nearAlpha * .4 * a).toFixed(3)})`), o.addColorStop(r.fog.depthBias, `rgba(228, 217, 196, ${(r.fog.farAlpha * .55 * a).toFixed(3)})`), o.addColorStop(1, `rgba(30, 37, 52, ${(r.fog.farAlpha * a).toFixed(3)})`), e.fillStyle = o, e.fillRect(-1200, 170, t + 2400, n);
+	function R(e, r, i, a = 0, o = !1) {
+		let s = (i ? i.fogAlphaMul : 1) * (1 + a * .6 + (o ? .3 : 0)), c = e.createLinearGradient(0, 172, 0, n + 80);
+		c.addColorStop(0, `rgba(236, 228, 208, ${l(r.fog.nearAlpha * .4 * s, 0, 1).toFixed(3)})`), c.addColorStop(r.fog.depthBias, `rgba(228, 217, 196, ${l(r.fog.farAlpha * .55 * s, 0, 1).toFixed(3)})`), c.addColorStop(1, `rgba(30, 37, 52, ${l(r.fog.farAlpha * s, 0, 1).toFixed(3)})`), e.fillStyle = c, e.fillRect(-1200, 170, t + 2400, n);
 	}
 	function re(e, t) {
 		e.save();
@@ -835,34 +907,34 @@ function k(e) {
 			let t = n.alpha * n.life;
 			if (t <= 0) continue;
 			let r = e.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius);
-			r.addColorStop(0, `rgba(244, 232, 210, ${t.toFixed(3)})`), r.addColorStop(1, "rgba(244, 232, 210, 0)"), e.fillStyle = r, e.beginPath(), e.arc(n.x, n.y, n.radius, 0, O), e.fill();
+			r.addColorStop(0, `rgba(244, 232, 210, ${t.toFixed(3)})`), r.addColorStop(1, "rgba(244, 232, 210, 0)"), e.fillStyle = r, e.beginPath(), e.arc(n.x, n.y, n.radius, 0, k), e.fill();
 		}
 		e.restore();
 	}
 	function ie(e, t) {
-		let { viewMinX: n, viewMinY: r, visualProfile: i, layerProfile: a, sceneTime: o, qualityProfile: s, rock: c, sisyphus: l, dustParticles: u, drawRock: d, drawSisyphus: f } = t, p = {
-			sky: () => F(e, n, i, a, o),
-			distant: () => I(e, n, r, i, a, o),
+		let { viewMinX: n, viewMinY: r, visualProfile: i, layerProfile: a, sceneTime: o, qualityProfile: s, rock: c, sisyphus: l, dustParticles: u, drawRock: d, drawSisyphus: f, ascentProgress: p = 0, windActive: m = !1 } = t, h = {
+			sky: () => ne(e, n, i, a, o, p, m),
+			distant: () => P(e, n, r, i, a, o),
 			mountain: () => {
-				L(e, a, o), R(e);
+				F(e, a, o), I(e);
 			},
 			gameplay: () => {},
 			fx: () => {
-				te(e, c, 11.4, 3.2, .28, a), te(e, l, 5.7, 2.1, .18, a), d(e), f(e), re(e, u);
+				L(e, c, 11.4, 3.2, .28, a), L(e, l, 5.7, 2.1, .18, a), d(e), f(e), re(e, u);
 			},
 			grade: () => {
-				ne(e, a, s);
+				R(e, a, s, p, m);
 			}
 		};
 		for (let e of a.stack) {
-			let t = p[e];
+			let t = h[e];
 			t && t();
 		}
 	}
 	return {
 		drawSceneLayers: ie,
-		drawDepthFog: ne,
-		drawProjectedShadow: te,
+		drawDepthFog: R,
+		drawProjectedShadow: L,
 		drawDustParticles: re
 	};
 }
@@ -874,8 +946,8 @@ function ee() {
 }
 //#endregion
 //#region src/games/sisyphus/rock-renderer.js
-var A = Math.PI * 2;
-function j({ createSeededRandom: e }) {
+var j = Math.PI * 2;
+function te({ createSeededRandom: e }) {
 	let t = null, n = null, r = null;
 	function i(e) {
 		if (n && r === e) return n;
@@ -944,13 +1016,13 @@ function j({ createSeededRandom: e }) {
 			let e = document.createElement("canvas");
 			return e.width = n, e.height = n, e;
 		})(), i = r.getContext("2d"), a = e(42995), o = i.createRadialGradient(t * .62, t * .32, 0, t, t, t * 1.05);
-		o.addColorStop(0, "#7a8d9e"), o.addColorStop(.2, "#657a8c"), o.addColorStop(.45, "#4d5e6c"), o.addColorStop(.7, "#3a4854"), o.addColorStop(1, "#1e2830"), i.fillStyle = o, i.beginPath(), i.arc(t, t, t, 0, A), i.fill(), i.save(), i.beginPath(), i.arc(t, t, t, 0, A), i.clip();
+		o.addColorStop(0, "#7a8d9e"), o.addColorStop(.2, "#657a8c"), o.addColorStop(.45, "#4d5e6c"), o.addColorStop(.7, "#3a4854"), o.addColorStop(1, "#1e2830"), i.fillStyle = o, i.beginPath(), i.arc(t, t, t, 0, j), i.fill(), i.save(), i.beginPath(), i.arc(t, t, t, 0, j), i.clip();
 		let s = {
 			x: t - 2.5,
 			y: t + 1.5
 		};
 		for (let e = 0; e < 11; e++) {
-			let n = -Math.PI * .95 + e / 11 * A + (a() - .5) * .16, r = -Math.PI * .95 + (e + 1) / 11 * A + (a() - .5) * .16, o = (n + r) * .5, c = t * (.17 + a() * .16), l = t * (.76 + a() * .2), u = t * (.76 + a() * .2), d = {
+			let n = -Math.PI * .95 + e / 11 * j + (a() - .5) * .16, r = -Math.PI * .95 + (e + 1) / 11 * j + (a() - .5) * .16, o = (n + r) * .5, c = t * (.17 + a() * .16), l = t * (.76 + a() * .2), u = t * (.76 + a() * .2), d = {
 				x: t + Math.cos(n) * l,
 				y: t + Math.sin(n) * l
 			}, f = {
@@ -964,12 +1036,12 @@ function j({ createSeededRandom: e }) {
 		}
 		i.restore();
 		for (let e = 0; e < 18; e++) {
-			let e = a() * A, n = a() * t * .8, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = 6 + a() * 14, c = a() > .4, l = i.createRadialGradient(r, o, 0, r, o, s);
-			c ? (l.addColorStop(0, `rgba(18, 24, 32, ${(.08 + a() * .12).toFixed(2)})`), l.addColorStop(1, "rgba(18, 24, 32, 0)")) : (l.addColorStop(0, `rgba(140, 160, 180, ${(.04 + a() * .06).toFixed(2)})`), l.addColorStop(1, "rgba(140, 160, 180, 0)")), i.fillStyle = l, i.beginPath(), i.arc(r, o, s, 0, A), i.fill();
+			let e = a() * j, n = a() * t * .8, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = 6 + a() * 14, c = a() > .4, l = i.createRadialGradient(r, o, 0, r, o, s);
+			c ? (l.addColorStop(0, `rgba(18, 24, 32, ${(.08 + a() * .12).toFixed(2)})`), l.addColorStop(1, "rgba(18, 24, 32, 0)")) : (l.addColorStop(0, `rgba(140, 160, 180, ${(.04 + a() * .06).toFixed(2)})`), l.addColorStop(1, "rgba(140, 160, 180, 0)")), i.fillStyle = l, i.beginPath(), i.arc(r, o, s, 0, j), i.fill();
 		}
-		i.save(), i.beginPath(), i.arc(t, t, t, 0, A), i.clip();
+		i.save(), i.beginPath(), i.arc(t, t, t, 0, j), i.clip();
 		for (let e = 0; e < 14; e++) {
-			let n = a() * A, r = a() * t * .85, o = t + Math.cos(n) * r, s = t + Math.sin(n) * r, c = 10 + a() * t * .9, l = n + (a() - .5) * 2.4, u = o + Math.cos(l) * c, d = s + Math.sin(l) * c, f = e % 3 == 0;
+			let n = a() * j, r = a() * t * .85, o = t + Math.cos(n) * r, s = t + Math.sin(n) * r, c = 10 + a() * t * .9, l = n + (a() - .5) * 2.4, u = o + Math.cos(l) * c, d = s + Math.sin(l) * c, f = e % 3 == 0;
 			i.beginPath(), i.moveTo(o, s);
 			let p = o + (a() - .5) * 18, m = s + (a() - .5) * 18;
 			i.quadraticCurveTo(p, m, u, d), f ? (i.strokeStyle = `rgba(10, 14, 22, ${(.35 + a() * .25).toFixed(2)})`, i.lineWidth = 1 + a() * 1.2) : e % 3 == 1 ? (i.strokeStyle = `rgba(160, 180, 200, ${(.06 + a() * .07).toFixed(2)})`, i.lineWidth = .4 + a() * .5) : (i.strokeStyle = `rgba(30, 38, 48, ${(.15 + a() * .15).toFixed(2)})`, i.lineWidth = .6 + a() * .7), i.stroke();
@@ -998,22 +1070,22 @@ function j({ createSeededRandom: e }) {
 			}
 		}
 		for (let e = 0; e < 13; e++) {
-			let e = a() * A, n = t * (.82 + a() * .13), r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = e + Math.PI * .5, c = 2.2 + a() * 3.2;
+			let e = a() * j, n = t * (.82 + a() * .13), r = t + Math.cos(e) * n, o = t + Math.sin(e) * n, s = e + Math.PI * .5, c = 2.2 + a() * 3.2;
 			i.save(), i.translate(r, o), i.rotate(s), i.fillStyle = `rgba(3, 6, 12, ${(.13 + a() * .18).toFixed(3)})`, i.beginPath(), i.moveTo(-c * .9, 0), i.lineTo(c * .7, -c * .42), i.lineTo(c * .5, c * .48), i.closePath(), i.fill(), a() > .42 && (i.strokeStyle = `rgba(205, 222, 235, ${(.035 + a() * .04).toFixed(3)})`, i.lineWidth = .55, i.beginPath(), i.moveTo(-c * .65, -c * .08), i.lineTo(c * .55, -c * .32), i.stroke()), i.restore();
 		}
 		let c = Math.round(t * t * 2.2);
 		for (let e = 0; e < c; e++) {
-			let e = a() * A, n = Math.sqrt(a()) * t * .97, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n;
+			let e = a() * j, n = Math.sqrt(a()) * t * .97, r = t + Math.cos(e) * n, o = t + Math.sin(e) * n;
 			i.fillStyle = a() > .55 ? `rgba(190, 210, 230, ${(.02 + a() * .04).toFixed(2)})` : `rgba(8, 12, 20, ${(.04 + a() * .07).toFixed(2)})`, i.fillRect(r, o, 1, 1);
 		}
 		let l = i.createRadialGradient(t, t, t * .55, t, t, t);
-		return l.addColorStop(0, "rgba(0, 0, 0, 0)"), l.addColorStop(.7, "rgba(0, 0, 0, 0)"), l.addColorStop(1, "rgba(0, 0, 0, 0.3)"), i.fillStyle = l, i.beginPath(), i.arc(t, t, t, 0, A), i.fill(), i.restore(), r;
+		return l.addColorStop(0, "rgba(0, 0, 0, 0)"), l.addColorStop(.7, "rgba(0, 0, 0, 0)"), l.addColorStop(1, "rgba(0, 0, 0, 0.3)"), i.fillStyle = l, i.beginPath(), i.arc(t, t, t, 0, j), i.fill(), i.restore(), r;
 	}
 	function o(e, n, r) {
 		let o = r;
 		t ||= a(o);
 		let s = n.position.x, c = n.position.y, l = n.angle;
-		e.save(), e.translate(s, c), e.save(), e.shadowColor = "rgba(4, 8, 16, 0.65)", e.shadowBlur = 14, e.shadowOffsetX = 4, e.shadowOffsetY = 5, e.beginPath(), e.arc(0, 0, o, 0, A), e.fillStyle = "#1e2830", e.fill(), e.restore(), e.save(), e.beginPath(), e.arc(0, 0, o, 0, A), e.clip(), e.rotate(l), e.drawImage(t, -o, -o, o * 2, o * 2), e.rotate(-l);
+		e.save(), e.translate(s, c), e.save(), e.shadowColor = "rgba(4, 8, 16, 0.65)", e.shadowBlur = 14, e.shadowOffsetX = 4, e.shadowOffsetY = 5, e.beginPath(), e.arc(0, 0, o, 0, j), e.fillStyle = "#1e2830", e.fill(), e.restore(), e.save(), e.beginPath(), e.arc(0, 0, o, 0, j), e.clip(), e.rotate(l), e.drawImage(t, -o, -o, o * 2, o * 2), e.rotate(-l);
 		let u = e.createRadialGradient(0, 0, o * .15, 0, 0, o);
 		u.addColorStop(0, "rgba(0, 0, 0, 0)"), u.addColorStop(.5, "rgba(0, 0, 0, 0)"), u.addColorStop(.8, "rgba(0, 0, 0, 0.25)"), u.addColorStop(1, "rgba(0, 0, 0, 0.6)"), e.fillStyle = u, e.fillRect(-o, -o, o * 2, o * 2);
 		let d = e.createLinearGradient(0, -o, 0, o);
@@ -1021,7 +1093,7 @@ function j({ createSeededRandom: e }) {
 		let f = -o * .42, p = -o * .48, m = e.createRadialGradient(f, p, 0, f, p, o * 1.15);
 		m.addColorStop(0, "rgba(210, 230, 248, 0.28)"), m.addColorStop(.25, "rgba(200, 225, 248, 0.14)"), m.addColorStop(.55, "rgba(200, 225, 248, 0.04)"), m.addColorStop(1, "rgba(200, 225, 248, 0)"), e.fillStyle = m, e.fillRect(-o, -o, o * 2, o * 2);
 		let h = -o * .32, g = -o * .36, _ = e.createRadialGradient(h, g, 0, h, g, o * .3);
-		_.addColorStop(0, "rgba(240, 248, 255, 0.12)"), _.addColorStop(.5, "rgba(220, 235, 248, 0.04)"), _.addColorStop(1, "rgba(220, 235, 248, 0)"), e.fillStyle = _, e.fillRect(-o, -o, o * 2, o * 2), e.restore(), e.beginPath(), e.arc(0, 0, o - .5, 0, A), e.strokeStyle = "rgba(10, 16, 24, 0.2)", e.lineWidth = 1, e.stroke(), e.save(), e.rotate(l * .65);
+		_.addColorStop(0, "rgba(240, 248, 255, 0.12)"), _.addColorStop(.5, "rgba(220, 235, 248, 0.04)"), _.addColorStop(1, "rgba(220, 235, 248, 0)"), e.fillStyle = _, e.fillRect(-o, -o, o * 2, o * 2), e.restore(), e.beginPath(), e.arc(0, 0, o - .5, 0, j), e.strokeStyle = "rgba(10, 16, 24, 0.2)", e.lineWidth = 1, e.stroke(), e.save(), e.rotate(l * .65);
 		let v = i(o - 1.15);
 		e.strokeStyle = "rgba(215, 230, 240, 0.085)", e.lineWidth = .85, e.stroke(v), e.globalCompositeOperation = "multiply", e.strokeStyle = "rgba(4, 8, 14, 0.26)", e.lineWidth = 1.25, e.stroke(v), e.restore(), e.restore();
 	}
@@ -1034,19 +1106,19 @@ var M = Math.PI * 2, N = Object.freeze({
 	shadow: "#080c14",
 	skin: "#1a2536"
 });
-function P({ GAME_STATE: e, PEAK_A_X: t }) {
+function ne({ GAME_STATE: e, PEAK_A_X: t }) {
 	function n(e, t) {
-		let { sisyphusBody: n, gameState: i, lastGameState: a, stateTransitionTimer: o, STATE_TRANSITION_MAX: s, isPushing: c, sceneTime: u } = t, d = l(n.render.opacity, 0, 1);
-		if (!(d <= .005)) if (o > 0 && a) {
-			let t = l(o / s, 0, 1), f = 1 - t;
-			t > .01 && r(e, a, d * t, n, c, u), f > .01 && r(e, i, d * f, n, c, u);
-		} else r(e, i, d, n, c, u);
+		let { sisyphusBody: n, gameState: i, lastGameState: a, stateTransitionTimer: o, STATE_TRANSITION_MAX: s, isPushing: c, sceneTime: u, balanceState: d = null, windActive: f = !1 } = t, p = l(n.render.opacity, 0, 1);
+		if (!(p <= .005)) if (o > 0 && a) {
+			let t = l(o / s, 0, 1), m = 1 - t;
+			t > .01 && r(e, a, p * t, n, c, u, d, f), m > .01 && r(e, i, p * m, n, c, u, d, f);
+		} else r(e, i, p, n, c, u, d, f);
 	}
-	function r(t, n, r, i, a, o) {
+	function r(t, n, r, i, a, o, s, c) {
 		if (r <= .005) return;
 		t.save(), t.globalAlpha = r, t.translate(i.position.x, i.position.y), t.scale(1 / 2.8, 1 / 2.8), t.lineCap = "round", t.lineJoin = "round";
-		let s = i.position.x;
-		n === e.PLAYING ? d(t, s, a, o) : n === e.SUMMIT || n === e.SIS_DESCENDING ? f(t, o) : p(t, o), t.restore();
+		let l = i.position.x;
+		n === e.PLAYING ? d(t, l, a, o, s, c) : n === e.SUMMIT || n === e.SIS_DESCENDING ? f(t, o) : p(t, o), t.restore();
 	}
 	function i(e, t, n, r) {
 		if (!(t.length < 2)) {
@@ -1074,79 +1146,75 @@ function P({ GAME_STATE: e, PEAK_A_X: t }) {
 	function u(e, t, n) {
 		e.save(), e.fillStyle = "rgba(0,0,0,0.25)", e.beginPath(), e.ellipse(t, 22.5, n, 2, 0, 0, M), e.fill(), e.restore();
 	}
-	function d(e, n, r, d) {
-		let f = r ? 1 + .005 * Math.sin(d * .006) : 1;
-		e.scale(f, f), u(e, 0, 8);
-		let p = l(Math.sin(n * .364) + Math.sin(n * .588) * .3, -1, 1), m = Math.abs(p);
-		r && .5 + .5 * Math.sin(d * .011);
-		let h = -m * .5;
-		p * .2, p * .008;
-		let g = -1 + p * .4, _ = 1.5, v = 8 + h, y = Math.max(0, p), b = Math.max(0, -p), x = g + p * 3, S = 21 - y * _, C = (g + x) * .5 + 2.5 + b * 1.5, w = (v + S) * .5 - y * 1.5, T = Math.max(0, -p), E = Math.max(0, p), D = g - p * 3, O = 21 - T * _, k = (g + D) * .5 + 2.5 + E * 1.5, ee = (v + O) * .5 - T * 1.5;
-		x < D ? (c(e, x, S + 1, .88), i(e, [
+	function d(e, n, r, d, f, p) {
+		let m = r ? l(f?.strainScore ?? .22, 0, 1) : 0, h = l(f?.alignmentScore ?? 1, 0, 1), g = l(m + (p ? .18 : 0), 0, 1), _ = r ? 1 + (.004 + g * .01) * Math.sin(d * (.006 + g * .004)) : 1;
+		e.scale(_, _), u(e, 0, 8);
+		let v = l(Math.sin(n * .364) + Math.sin(n * .588) * .3, -1, 1), y = Math.abs(v), b = r ? .5 + .5 * Math.sin(d * (.011 + g * .006)) : 0, x = -y * (.45 + g * .35), S = v * (.18 + g * .1) - (1 - h) * .35, C = v * .008 - g * .035, w = -1 + v * .35 - g * .35, T = 1.5, E = 8 + x, D = Math.max(0, v), O = Math.max(0, -v), k = w + v * 3, A = 21 - D * T, ee = (w + k) * .5 + 2.5 + O * 1.5, j = (E + A) * .5 - D * 1.5, te = Math.max(0, -v), M = Math.max(0, v), N = w - v * 3, ne = 21 - te * T, P = (w + N) * .5 + 2.5 + M * 1.5, F = (E + ne) * .5 - te * 1.5;
+		k < N ? (c(e, k, A + 1, .88), i(e, [
 			{
-				x: g,
-				y: v
+				x: w,
+				y: E
 			},
 			{
-				x: C,
-				y: w
-			},
-			{
-				x,
-				y: S
-			}
-		], 4, !1), c(e, D, O + 1, .92), i(e, [
-			{
-				x: g,
-				y: v
+				x: ee,
+				y: j
 			},
 			{
 				x: k,
-				y: ee
+				y: A
+			}
+		], 4, !1), c(e, N, ne + 1, .92), i(e, [
+			{
+				x: w,
+				y: E
 			},
 			{
-				x: D,
-				y: O
-			}
-		], 4, !1)) : (c(e, D, O + 1, .88), i(e, [
+				x: P,
+				y: F
+			},
 			{
-				x: g,
-				y: v
+				x: N,
+				y: ne
+			}
+		], 4, !1)) : (c(e, N, ne + 1, .88), i(e, [
+			{
+				x: w,
+				y: E
+			},
+			{
+				x: P,
+				y: F
+			},
+			{
+				x: N,
+				y: ne
+			}
+		], 4, !1), c(e, k, A + 1, .92), i(e, [
+			{
+				x: w,
+				y: E
+			},
+			{
+				x: ee,
+				y: j
 			},
 			{
 				x: k,
-				y: ee
-			},
-			{
-				x: D,
-				y: O
-			}
-		], 4, !1), c(e, x, S + 1, .92), i(e, [
-			{
-				x: g,
-				y: v
-			},
-			{
-				x: C,
-				y: w
-			},
-			{
-				x,
-				y: S
+				y: A
 			}
 		], 4, !1));
-		let A = l(n / t, 0, 1), j = A * .08, M = A * 1.2, N = r ? 1 + A * 2 : 0;
-		e.save(), e.rotate(j), a(e, [
+		let I = l(n / t, 0, 1), L = I * .08 + g * .08, R = I * 1.2 + g * 1.6, re = r ? 1 + I * 2 + g * 2.4 + b * g * .6 : 0;
+		e.save(), e.translate(S, 0), e.rotate(L + C), a(e, [
 			{
 				x: 9,
-				y: -12 + N + M * .4
+				y: -12 + re + R * .4
 			},
 			{
 				x: 3,
-				y: -6 + M * .2
+				y: -6 + R * .2
 			},
 			{
-				x: -4 - A * 1.5,
+				x: -4 - I * 1.5,
 				y: 6
 			},
 			{
@@ -1159,35 +1227,35 @@ function P({ GAME_STATE: e, PEAK_A_X: t }) {
 			},
 			{
 				x: 11,
-				y: -6.5 + N * .3 + M * .3
+				y: -6.5 + re * .3 + R * .3
 			}
 		]), i(e, [
 			{
 				x: 2,
-				y: 1
+				y: 1 + g * .6
 			},
 			{
-				x: 9,
-				y: -2
+				x: 9 + g * 1.3,
+				y: -2 - g * .6
 			},
 			{
-				x: 14,
-				y: -3.5
+				x: 14 + g * 1.6,
+				y: -3.5 - g * .5
 			}
-		], 3.2, !1), s(e, 14.4, -3.7, 2), i(e, [
+		], 3.2, !1), s(e, 14.4 + g * 1.6, -3.7 - g * .5, 2), i(e, [
 			{
 				x: 6,
-				y: -7
+				y: -7 + g * .4
 			},
 			{
-				x: 11,
-				y: -11
+				x: 11 + g * 1.1,
+				y: -11 - g * .9
 			},
 			{
-				x: 14.5,
-				y: -13
+				x: 14.5 + g * 1.8,
+				y: -13 - g * 1
 			}
-		], 3.2, !1), s(e, 14.8, -13.2, 1.8), o(e, 9, -15 + M * .3 + (r ? .5 : 0), 6, -.28 - A * .06), e.restore();
+		], 3.2, !1), s(e, 14.8 + g * 1.8, -13.2 - g * 1, 1.8), o(e, 9 + g * .6, -15 + R * .3 + (r ? .5 : 0) + g * .8, 6, -.28 - I * .06 - g * .08), e.restore();
 	}
 	function f(e, t) {
 		let n = 1 + .008 * Math.sin(t * .0025);
@@ -1347,29 +1415,29 @@ function P({ GAME_STATE: e, PEAK_A_X: t }) {
 }
 //#endregion
 //#region src/core/visual/visual-layer-profile.js
-var F = Object.freeze({
+var P = Object.freeze({
 	SKY: "sky",
 	DISTANT: "distant",
 	MOUNTAIN: "mountain",
 	GAMEPLAY: "gameplay",
 	FX: "fx",
 	GRADE: "grade"
-}), I = Object.freeze({
+}), F = Object.freeze({
 	SOBRIO: "sobrio_tragico",
 	EXPRESIONISTA: "expresionista_absurdo"
-}), L = Object.freeze({
+}), I = Object.freeze({
 	WAITING: "waiting",
 	ASCENT: "ascent",
 	IMPACT: "impact",
 	DESCENT: "descent"
-}), R = Object.freeze([
-	F.SKY,
-	F.DISTANT,
-	F.MOUNTAIN,
-	F.GAMEPLAY,
-	F.FX,
-	F.GRADE
-]), te = [
+}), L = Object.freeze([
+	P.SKY,
+	P.DISTANT,
+	P.MOUNTAIN,
+	P.GAMEPLAY,
+	P.FX,
+	P.GRADE
+]), R = [
 	"id",
 	"style",
 	"mood",
@@ -1380,9 +1448,9 @@ var F = Object.freeze({
 	"contactShadow",
 	"sceneFx"
 ];
-function ne(e) {
+function re(e) {
 	if (!e || typeof e != "object") throw TypeError("VisualLayerProfile must be an object.");
-	for (let t of te) if (!(t in e)) throw TypeError(`VisualLayerProfile missing key "${t}".`);
+	for (let t of R) if (!(t in e)) throw TypeError(`VisualLayerProfile missing key "${t}".`);
 	if (!Array.isArray(e.stack) || e.stack.length === 0) throw TypeError(`VisualLayerProfile "${e.id}" needs a non-empty "stack".`);
 	return Object.freeze({
 		...e,
@@ -1394,7 +1462,7 @@ function ne(e) {
 		sceneFx: Object.freeze({ ...e.sceneFx })
 	});
 }
-function re(e, t) {
+function ie(e, t) {
 	if (!Array.isArray(e) || e.length === 0) throw TypeError("VisualLayerCatalog requires a non-empty profile array.");
 	let n = /* @__PURE__ */ new Map();
 	for (let t of e) n.set(t.id, t);
@@ -1410,46 +1478,46 @@ function re(e, t) {
 		}
 	});
 }
-function ie(e, t) {
+function ae(e, t) {
 	return `${e}::${t}`;
 }
 //#endregion
 //#region src/core/visual/runtime-quality-controller.js
-var z = Object.freeze({
+var oe = Object.freeze({
 	HIGH: "high",
 	MEDIUM: "medium",
 	LOW: "low"
-}), ae = Object.freeze([
-	z.HIGH,
-	z.MEDIUM,
-	z.LOW
-]), oe = Object.freeze({
-	[z.HIGH]: Object.freeze({
+}), se = Object.freeze([
+	oe.HIGH,
+	oe.MEDIUM,
+	oe.LOW
+]), z = Object.freeze({
+	[oe.HIGH]: Object.freeze({
 		fogAlphaMul: 1,
 		grainDensityMul: 1,
 		grainAlphaMul: 1,
 		overlayOpacityMul: 1
 	}),
-	[z.MEDIUM]: Object.freeze({
+	[oe.MEDIUM]: Object.freeze({
 		fogAlphaMul: .86,
 		grainDensityMul: .74,
 		grainAlphaMul: .82,
 		overlayOpacityMul: .9
 	}),
-	[z.LOW]: Object.freeze({
+	[oe.LOW]: Object.freeze({
 		fogAlphaMul: .68,
 		grainDensityMul: .48,
 		grainAlphaMul: .64,
 		overlayOpacityMul: .8
 	})
 });
-function B(e) {
-	let t = ae.indexOf(e);
+function ce(e) {
+	let t = se.indexOf(e);
 	return t >= 0 ? t : 0;
 }
-function se(e = {}) {
+function le(e = {}) {
 	let t = !!e.isMobile, n = {
-		tier: e.initialTier || (t ? z.MEDIUM : z.HIGH),
+		tier: e.initialTier || (t ? oe.MEDIUM : oe.HIGH),
 		fpsSmoothed: e.initialFps || 60,
 		badMs: 0,
 		goodMs: 0,
@@ -1467,21 +1535,21 @@ function se(e = {}) {
 		return e - n.lastTierChangeAt >= r.minHoldMs;
 	}
 	function a() {
-		let e = B(n.tier);
-		e < ae.length - 1 && (n.tier = ae[e + 1], n.lastTierChangeAt = performance.now());
+		let e = ce(n.tier);
+		e < se.length - 1 && (n.tier = se[e + 1], n.lastTierChangeAt = performance.now());
 	}
 	function o() {
-		let e = B(n.tier);
-		e > 0 && (n.tier = ae[e - 1], n.lastTierChangeAt = performance.now());
+		let e = ce(n.tier);
+		e > 0 && (n.tier = se[e - 1], n.lastTierChangeAt = performance.now());
 	}
 	function s(e, t = !1) {
-		oe[e] && (n.tier = e, n.badMs = 0, n.goodMs = 0, n.lastTierChangeAt = performance.now(), n.forcedTier = t ? e : null);
+		z[e] && (n.tier = e, n.badMs = 0, n.goodMs = 0, n.lastTierChangeAt = performance.now(), n.forcedTier = t ? e : null);
 	}
 	function c() {
 		n.forcedTier = null, n.lastTierChangeAt = performance.now();
 	}
 	function u() {
-		let e = ae[(B(n.tier) + 1) % ae.length];
+		let e = se[(ce(n.tier) + 1) % se.length];
 		return s(e, !0), e;
 	}
 	function d(e) {
@@ -1491,7 +1559,7 @@ function se(e = {}) {
 		return u < r.demoteThreshold ? (n.badMs += t, n.goodMs = Math.max(0, n.goodMs - t * .5)) : u > r.promoteThreshold ? (n.goodMs += t, n.badMs = Math.max(0, n.badMs - t * .5)) : (n.badMs = Math.max(0, n.badMs - t * .35), n.goodMs = Math.max(0, n.goodMs - t * .35)), n.badMs >= r.demoteHoldMs && i(c) && (a(), n.badMs = 0, n.goodMs = 0), n.goodMs >= r.promoteHoldMs && i(c) && (o(), n.badMs = 0, n.goodMs = 0), n.fpsSmoothed = l(n.fpsSmoothed, 1, 240), p();
 	}
 	function f() {
-		return oe[n.tier];
+		return z[n.tier];
 	}
 	function p() {
 		return {
@@ -1512,7 +1580,7 @@ function se(e = {}) {
 }
 //#endregion
 //#region src/games/sisyphus/game.js
-var ce = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
+var ue = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 	(function(n, r) {
 		typeof e == "object" && typeof t == "object" ? t.exports = r() : typeof define == "function" && define.amd ? define("Matter", [], r) : typeof e == "object" ? e.Matter = r() : n.Matter = r();
 	})(e, function() {
@@ -2743,12 +2811,12 @@ var ce = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 							for (b = 0; b < g.length; b++) {
 								var k = g[b];
 								for (x = b + 1; x < g.length; x++) {
-									var ee = g[x];
-									if (s.overlaps(k.bounds, ee.bounds)) {
-										var A = k.vertices, j = ee.vertices;
-										for (S = 0; S < k.vertices.length; S++) for (w = 0; w < ee.vertices.length; w++) {
-											var M = c.magnitudeSquared(c.sub(A[(S + 1) % A.length], j[w])), N = c.magnitudeSquared(c.sub(A[S], j[(w + 1) % j.length]));
-											M < O && N < O && (A[S].isInternal = !0, j[w].isInternal = !0);
+									var A = g[x];
+									if (s.overlaps(k.bounds, A.bounds)) {
+										var ee = k.vertices, j = A.vertices;
+										for (S = 0; S < k.vertices.length; S++) for (w = 0; w < A.vertices.length; w++) {
+											var te = c.magnitudeSquared(c.sub(ee[(S + 1) % ee.length], j[w])), M = c.magnitudeSquared(c.sub(ee[S], j[(w + 1) % j.length]));
+											te < O && M < O && (ee[S].isInternal = !0, j[w].isInternal = !0);
 										}
 									}
 								}
@@ -3098,25 +3166,25 @@ var ce = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 						for (p = 0; p < u; p++) {
 							var h = e[p];
 							if (!(!h.isActive || h.isSensor)) {
-								var g = h.collision, _ = g.parentA, v = g.parentB, y = g.normal.x, b = g.normal.y, x = g.tangent.x, S = g.tangent.y, C = h.inverseMass, w = h.friction * h.frictionStatic * c, T = h.contacts, E = h.contactCount, D = 1 / E, O = _.position.x - _.positionPrev.x, k = _.position.y - _.positionPrev.y, ee = _.angle - _.anglePrev, A = v.position.x - v.positionPrev.x, j = v.position.y - v.positionPrev.y, M = v.angle - v.anglePrev;
+								var g = h.collision, _ = g.parentA, v = g.parentB, y = g.normal.x, b = g.normal.y, x = g.tangent.x, S = g.tangent.y, C = h.inverseMass, w = h.friction * h.frictionStatic * c, T = h.contacts, E = h.contactCount, D = 1 / E, O = _.position.x - _.positionPrev.x, k = _.position.y - _.positionPrev.y, A = _.angle - _.anglePrev, ee = v.position.x - v.positionPrev.x, j = v.position.y - v.positionPrev.y, te = v.angle - v.anglePrev;
 								for (m = 0; m < E; m++) {
-									var N = T[m], P = N.vertex, F = P.x - _.position.x, I = P.y - _.position.y, L = P.x - v.position.x, R = P.y - v.position.y, te = O - I * ee, ne = k + F * ee, re = A - R * M, ie = j + L * M, z = te - re, ae = ne - ie, oe = y * z + b * ae, B = x * z + S * ae, se = h.separation + oe, ce = Math.min(se, 1);
-									ce = se < 0 ? 0 : ce;
-									var V = ce * w;
-									B < -V || B > V ? (f = B > 0 ? B : -B, d = h.friction * (B > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = B, f = l);
-									var le = F * b - I * y, ue = L * b - R * y, de = D / (C + _.inverseInertia * le * le + v.inverseInertia * ue * ue), fe = (1 + h.restitution) * oe * de;
-									if (d *= de, oe < o) N.normalImpulse = 0;
+									var M = T[m], N = M.vertex, ne = N.x - _.position.x, P = N.y - _.position.y, F = N.x - v.position.x, I = N.y - v.position.y, L = O - P * A, R = k + ne * A, re = ee - I * te, ie = j + F * te, ae = L - re, oe = R - ie, se = y * ae + b * oe, z = x * ae + S * oe, ce = h.separation + se, le = Math.min(ce, 1);
+									le = ce < 0 ? 0 : le;
+									var ue = le * w;
+									z < -ue || z > ue ? (f = z > 0 ? z : -z, d = h.friction * (z > 0 ? 1 : -1) * i, d < -f ? d = -f : d > f && (d = f)) : (d = z, f = l);
+									var de = ne * b - P * y, fe = F * b - I * y, B = D / (C + _.inverseInertia * de * de + v.inverseInertia * fe * fe), pe = (1 + h.restitution) * se * B;
+									if (d *= B, se < o) M.normalImpulse = 0;
 									else {
-										var H = N.normalImpulse;
-										N.normalImpulse += fe, N.normalImpulse > 0 && (N.normalImpulse = 0), fe = N.normalImpulse - H;
+										var me = M.normalImpulse;
+										M.normalImpulse += pe, M.normalImpulse > 0 && (M.normalImpulse = 0), pe = M.normalImpulse - me;
 									}
-									if (B < -s || B > s) N.tangentImpulse = 0;
+									if (z < -s || z > s) M.tangentImpulse = 0;
 									else {
-										var pe = N.tangentImpulse;
-										N.tangentImpulse += d, N.tangentImpulse < -f && (N.tangentImpulse = -f), N.tangentImpulse > f && (N.tangentImpulse = f), d = N.tangentImpulse - pe;
+										var he = M.tangentImpulse;
+										M.tangentImpulse += d, M.tangentImpulse < -f && (M.tangentImpulse = -f), M.tangentImpulse > f && (M.tangentImpulse = f), d = M.tangentImpulse - he;
 									}
-									var U = y * fe + x * d, W = b * fe + S * d;
-									_.isStatic || _.isSleeping || (_.positionPrev.x += U * _.inverseMass, _.positionPrev.y += W * _.inverseMass, _.anglePrev += (F * W - I * U) * _.inverseInertia), v.isStatic || v.isSleeping || (v.positionPrev.x -= U * v.inverseMass, v.positionPrev.y -= W * v.inverseMass, v.anglePrev -= (L * W - R * U) * v.inverseInertia);
+									var ge = y * pe + x * d, _e = b * pe + S * d;
+									_.isStatic || _.isSleeping || (_.positionPrev.x += ge * _.inverseMass, _.positionPrev.y += _e * _.inverseMass, _.anglePrev += (ne * _e - P * ge) * _.inverseInertia), v.isStatic || v.isSleeping || (v.positionPrev.x -= ge * v.inverseMass, v.positionPrev.y -= _e * v.inverseMass, v.anglePrev -= (F * _e - I * ge) * v.inverseInertia);
 								}
 							}
 						}
@@ -4006,8 +4074,8 @@ var ce = /* @__PURE__ */ c((/* @__PURE__ */ o(((e, t) => {
 			})
 		]);
 	});
-})))(), 1), V = "./assets/";
-function le(e) {
+})))(), 1), de = "./assets/";
+function fe(e) {
 	if (typeof e != "string" || e.trim().length === 0) return null;
 	try {
 		return new URL(e, document.baseURI).toString();
@@ -4015,10 +4083,10 @@ function le(e) {
 		return e;
 	}
 }
-function ue() {
-	if (typeof document > "u") return V;
+function B() {
+	if (typeof document > "u") return de;
 	let e = document.currentScript;
-	if (e?.src) return new URL(V, e.src).toString();
+	if (e?.src) return new URL(de, e.src).toString();
 	let t = Array.from(document.scripts || []).reverse().find((e) => {
 		if (!e.src) return !1;
 		try {
@@ -4028,17 +4096,17 @@ function ue() {
 			return e.src.includes("sisyphus-widget");
 		}
 	});
-	return t?.src ? new URL(V, t.src).toString() : new URL(V, document.baseURI).toString();
+	return t?.src ? new URL(de, t.src).toString() : new URL(de, document.baseURI).toString();
 }
-function de(e) {
-	return le(e.assetBaseUrl) || ue();
+function pe(e) {
+	return fe(e.assetBaseUrl) || B();
 }
-function fe(e, t = {}) {
-	let { Engine: n, Render: r, Runner: i, Bodies: a, Body: o, Composite: s, Events: c, Query: l, Sleeping: u, Vertices: d } = ce.default, f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight, g = 1e3, _ = 1020, b = Math.hypot(700, 312);
-	700 / b, -(312 / b);
-	let S = Math.hypot(20, 80);
-	20 / S, 80 / S;
-	let C = .082, D = {
+function me(e, t = {}) {
+	let { Engine: n, Render: r, Runner: i, Bodies: a, Body: o, Composite: s, Events: c, Query: l, Sleeping: u, Vertices: d } = ue.default, f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight, g = () => Math.min(window.devicePixelRatio || 1, 2), _ = 1e3, b = 1020, S = Math.hypot(700, 312);
+	700 / S, -(312 / S);
+	let C = Math.hypot(20, 80);
+	20 / C, 80 / C;
+	let E = .082, O = {
 		bg: "transparent",
 		rock: "#c79a68",
 		rockEdge: "#8b6543",
@@ -4046,35 +4114,48 @@ function fe(e, t = {}) {
 		sisyphusEdge: "#9c4635"
 	};
 	Math.PI * 2;
-	function O(e, t, n) {
+	function k(e, t, n) {
 		return Math.max(t, Math.min(e, n));
 	}
 	function ee(e, t, n) {
 		if (e === t) return n < e ? 0 : 1;
-		let r = O((n - e) / (t - e), 0, 1);
+		let r = k((n - e) / (t - e), 0, 1);
 		return r * r * (3 - 2 * r);
 	}
-	function A(e) {
+	function j(e) {
 		let t = e >>> 0;
 		return function() {
 			return t = t * 1664525 + 1013904223 >>> 0, t / 4294967296;
 		};
 	}
-	let M = A(20260315), N = [], F = 0, te = 0, z = 0, ae = 0, oe = 0, B = 0, V = Object.freeze({
+	let M = j(20260315), N = [], P = 0, R = 0, oe = 0, se = 0, z = 0, ce = 0, de = 0, fe = 0, B = !1, me = Object.freeze([
+		Object.freeze({
+			progress: .32,
+			durationMs: 5200
+		}),
+		Object.freeze({
+			progress: .62,
+			durationMs: 5800
+		}),
+		Object.freeze({
+			progress: .84,
+			durationMs: 6500
+		})
+	]), he = 0, ge = 0, _e = [], ve = !1, ye = 0, V = Object.freeze({
 		PLAYING: "playing",
 		SUMMIT: "summit",
 		SIS_DESCENDING: "sis_descending",
 		WAITING: "waiting"
-	}), le = null, ue = 0, fe = 450, H = Object.freeze({
+	}), be = null, xe = 0, H = Object.freeze({
 		OVERVIEW: "overview",
 		FREE_PAN: "free_pan",
 		FOCUS_SISYPHUS: "focus_sisyphus"
-	}), pe = Object.freeze({
+	}), Se = Object.freeze({
 		OVERVIEW: H.OVERVIEW,
 		FOCUS_SISYPHUS: H.FOCUS_SISYPHUS
 	}), U = {
 		behavior: H.OVERVIEW,
-		presetId: pe.OVERVIEW,
+		presetId: Se.OVERVIEW,
 		freePanX: 900 / 2,
 		freePanY: 560 / 2
 	}, W = {
@@ -4085,19 +4166,19 @@ function fe(e, t = {}) {
 		x: 900 / 2,
 		y: 560 / 2,
 		zoom: 1
-	}, me = {
+	}, Ce = {
 		active: !1,
 		moved: !1,
 		startClientX: 0,
 		startClientY: 0,
 		startCameraX: 900 / 2,
 		startCameraY: 560 / 2
-	}, he = Object.freeze({
+	}, we = Object.freeze({
 		minX: -20,
-		maxX: _ + 24,
+		maxX: b + 24,
 		minY: 24,
 		maxY: 548
-	}), ge = Object.freeze({
+	}), Te = Object.freeze({
 		moonGlowScale: 1,
 		moonGlowAlpha: 1,
 		moonAlpha: .9,
@@ -4106,7 +4187,7 @@ function fe(e, t = {}) {
 		hazeAlphaBoost: 0,
 		distantParallaxMultiplier: 1,
 		distantMountainAlpha: 1
-	}), _e = Object.freeze({
+	}), Ee = Object.freeze({
 		moonGlowScale: 1.08,
 		moonGlowAlpha: 1.2,
 		moonAlpha: .92,
@@ -4115,7 +4196,7 @@ function fe(e, t = {}) {
 		hazeAlphaBoost: .06,
 		distantParallaxMultiplier: 1.08,
 		distantMountainAlpha: .95
-	}), ve = Object.freeze({
+	}), De = Object.freeze({
 		moonGlowScale: .9,
 		moonGlowAlpha: .84,
 		moonAlpha: .78,
@@ -4124,7 +4205,7 @@ function fe(e, t = {}) {
 		hazeAlphaBoost: .03,
 		distantParallaxMultiplier: .92,
 		distantMountainAlpha: .82
-	}), ye = m(p({
+	}), Oe = m(p({
 		masterGain: .26,
 		windGain: .15,
 		frictionGain: .2,
@@ -4136,29 +4217,29 @@ function fe(e, t = {}) {
 			wind: "",
 			friction: ""
 		}
-	})), be = v(), xe = 0, Se = I.SOBRIO, Ce = 0, we = 0, Te = 0, Ee = 60, De = se({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
+	})), ke = v(), Ae = 0, je = F.SOBRIO, Me = 0, Ne = 0, Pe = 0, Fe = 60, Ie = le({ isMobile: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) }), K = Object.freeze({
 		FAR: "far",
 		MID: "mid",
 		CLOSE: "close"
-	}), Oe = { level: K.FAR }, ke = Object.freeze({ DEFAULT: "default" }), Ae = Object.freeze({ [ke.DEFAULT]: Object.freeze({
+	}), Le = { level: K.FAR }, Re = Object.freeze({ DEFAULT: "default" }), ze = Object.freeze({ [Re.DEFAULT]: Object.freeze({
 		transform: "translate3d(0, 0, 0) scaleX(1) scaleY(1)",
 		transformOrigin: "50% 50%"
-	}) }), je = ke.DEFAULT;
-	function Me(e) {
+	}) }), Be = Re.DEFAULT;
+	function Ve(e) {
 		if (e === H.OVERVIEW) {
-			$e(pe.OVERVIEW);
+			ct(Se.OVERVIEW);
 			return;
 		}
 		if (e === H.FOCUS_SISYPHUS) {
-			$e(pe.FOCUS_SISYPHUS);
+			ct(Se.FOCUS_SISYPHUS);
 			return;
 		}
 		U.behavior = e;
 	}
-	function Ne(e) {
-		return Fe(e);
+	function He(e) {
+		return We(e);
 	}
-	function Pe(e) {
+	function Ue(e) {
 		return e ? {
 			[K.FAR]: 2.016,
 			[K.MID]: 2.688,
@@ -4169,37 +4250,37 @@ function fe(e, t = {}) {
 			[K.CLOSE]: 3.248
 		};
 	}
-	function Fe(e) {
-		let t = Pe(e);
-		return t[Oe.level] || t[K.FAR];
+	function We(e) {
+		let t = Ue(e);
+		return t[Le.level] || t[K.FAR];
 	}
-	function Ie(e) {
-		let t = Pe(e), n = Object.values(t);
+	function Ge(e) {
+		let t = Ue(e), n = Object.values(t);
 		return {
 			min: Math.min(...n) - .06,
 			max: Math.max(...n) + .18
 		};
 	}
-	function Le(e) {
+	function Ke(e) {
 		return e === K.FAR ? "LEJANO" : e === K.MID ? "MEDIO" : "CERCANO";
 	}
-	function Re() {
-		if (Oe.level === K.FAR) {
-			Oe.level = K.MID;
+	function qe() {
+		if (Le.level === K.FAR) {
+			Le.level = K.MID;
 			return;
 		}
-		if (Oe.level === K.MID) {
-			Oe.level = K.CLOSE;
+		if (Le.level === K.MID) {
+			Le.level = K.CLOSE;
 			return;
 		}
-		Oe.level = K.FAR;
+		Le.level = K.FAR;
 	}
-	function ze() {
-		Re(), Me(H.FREE_PAN);
-		let e = Fe(window.innerHeight > window.innerWidth);
-		He(W.x, W.y, e), B = performance.now() + 1200, console.log(`%cZoom activo: ${Le(Oe.level)}`, "color:#a2d2ff;font-weight:bold");
+	function Je() {
+		qe(), Ve(H.FREE_PAN);
+		let e = We(window.innerHeight > window.innerWidth);
+		Ze(W.x, W.y, e), fe = performance.now() + 1200, console.log(`%cZoom activo: ${Ke(Le.level)}`, "color:#a2d2ff;font-weight:bold");
 	}
-	function Be(e, t = he) {
+	function Ye(e, t = we) {
 		let n = Math.max(e, .001), r = f / n, i = h / n, a = t.minX + r / 2, o = t.maxX - r / 2, s = t.minY + i / 2, c = t.maxY - i / 2;
 		if (a > o) {
 			let e = (t.minX + t.maxX) / 2;
@@ -4216,93 +4297,93 @@ function fe(e, t = {}) {
 			maxY: c
 		};
 	}
-	function Ve(e, t, n, r = he) {
-		let i = Be(n, r);
+	function Xe(e, t, n, r = we) {
+		let i = Ye(n, r);
 		return {
-			x: O(e, i.minX, i.maxX),
-			y: O(t, i.minY, i.maxY)
+			x: k(e, i.minX, i.maxX),
+			y: k(t, i.minY, i.maxY)
 		};
 	}
-	function He(e, t, n) {
-		let r = Ve(e, t, n, he);
+	function Ze(e, t, n) {
+		let r = Xe(e, t, n, we);
 		return U.freePanX = r.x, U.freePanY = r.y, r;
 	}
-	function Ue(e, t) {
-		me.active = !0, me.moved = !1, me.startClientX = e, me.startClientY = t, me.startCameraX = W.x, me.startCameraY = W.y;
+	function Qe(e, t) {
+		Ce.active = !0, Ce.moved = !1, Ce.startClientX = e, Ce.startClientY = t, Ce.startCameraX = W.x, Ce.startCameraY = W.y;
 	}
-	function We() {
-		me.active = !1, me.moved = !1;
+	function $e() {
+		Ce.active = !1, Ce.moved = !1;
 	}
-	function Ge() {
-		return O((Z.position.x - pn) / Math.max(1, fn - pn), 0, 1);
+	function et() {
+		return k((X.position.x - wn) / Math.max(1, Cn - wn), 0, 1);
 	}
-	function Ke() {
-		let e = Q.position, t = Z.position;
+	function tt() {
+		let e = Z.position, t = X.position, n = window.innerHeight > window.innerWidth, r = (e.x + t.x) / 2, i = (e.y + t.y) / 2, a = Math.abs(t.x - e.x), o = Math.abs(t.y - e.y), s = et(), c = Math.max(nn(Z), nn(X)), l = Q === V.PLAYING && vn;
 		return {
 			sisCenter: e,
 			rockCenter: t,
-			portraitView: window.innerHeight > window.innerWidth,
-			duoCenterX: (e.x + t.x) / 2,
-			duoCenterY: (e.y + t.y) / 2,
-			distanceX: Math.abs(t.x - e.x),
-			distanceY: Math.abs(t.y - e.y),
-			ascentProgress: Ge(),
-			duoSpeed: Math.max(Kt(Q), Kt(Z)),
-			leadX: O(Q.velocity.x * 68 + Z.velocity.x * 34, -90, 110),
-			leadY: O(Q.velocity.y * 24 + Z.velocity.y * 16, -54, 62)
+			portraitView: n,
+			duoCenterX: r,
+			duoCenterY: i,
+			distanceX: a,
+			distanceY: o,
+			ascentProgress: s,
+			duoSpeed: c,
+			leadX: l ? oe : k(Z.velocity.x * 68 + X.velocity.x * 34, -90, 110),
+			leadY: l ? se : k(Z.velocity.y * 24 + X.velocity.y * 16, -54, 62)
 		};
 	}
-	function qe(e) {
-		let t = Fe(e.portraitView);
-		return $ === V.WAITING ? {
-			x: pn - 10,
-			y: 480,
+	function nt(e) {
+		let t = We(e.portraitView);
+		return Q === V.WAITING ? {
+			x: wn + 100,
+			y: 370,
 			zoom: t
 		} : {
-			x: e.duoCenterX + 30 + e.leadX + e.ascentProgress * 10,
-			y: e.duoCenterY - 31.4 + e.leadY * .15 - e.ascentProgress * 10,
+			x: e.duoCenterX + 18 + e.leadX + e.ascentProgress * 10,
+			y: e.duoCenterY - 30 + e.leadY * .15 - e.ascentProgress * 28,
 			zoom: t
 		};
 	}
-	function Je(e) {
+	function rt(e) {
 		return {
 			x: e.duoCenterX + e.leadX * .22,
 			y: e.duoCenterY - 24 + e.leadY * .18,
-			zoom: Fe(e.portraitView)
+			zoom: We(e.portraitView)
 		};
 	}
-	let Ye = T({
-		[pe.OVERVIEW]: w({
-			id: pe.OVERVIEW,
+	let it = T({
+		[Se.OVERVIEW]: w({
+			id: Se.OVERVIEW,
 			behavior: H.OVERVIEW,
 			followMode: "duo_overview",
-			boundsResolver: () => he,
+			boundsResolver: () => we,
 			lerpSpeed: .08,
-			targetResolver: qe,
-			visualProfile: ge,
+			targetResolver: nt,
+			visualProfile: Te,
 			zoomMinResolver: (e) => e.portraitView ? 1.736 : 1.568,
 			zoomMaxResolver: (e) => e.portraitView ? 3.024 : 3.36
 		}),
-		[pe.FOCUS_SISYPHUS]: w({
-			id: pe.FOCUS_SISYPHUS,
+		[Se.FOCUS_SISYPHUS]: w({
+			id: Se.FOCUS_SISYPHUS,
 			behavior: H.FOCUS_SISYPHUS,
 			followMode: "duo_focus",
-			boundsResolver: () => he,
+			boundsResolver: () => we,
 			lerpSpeed: .12,
-			targetResolver: Je,
-			visualProfile: ge,
+			targetResolver: rt,
+			visualProfile: Te,
 			zoomMinResolver: (e) => e.portraitView ? 2.016 : 1.792,
 			zoomMaxResolver: (e) => e.portraitView ? 4.424 : 4.2
 		})
-	}, pe.OVERVIEW), Xe = Object.freeze({
+	}, Se.OVERVIEW), at = Object.freeze({
 		[V.SUMMIT]: w({
 			id: "state::summit",
 			behavior: H.OVERVIEW,
 			followMode: "state_summit",
-			boundsResolver: () => he,
+			boundsResolver: () => we,
 			lerpSpeed: .09,
-			targetResolver: ft,
-			visualProfile: _e,
+			targetResolver: xt,
+			visualProfile: Ee,
 			zoomMinResolver: () => 1.568,
 			zoomMaxResolver: () => 3.36
 		}),
@@ -4310,30 +4391,19 @@ function fe(e, t = {}) {
 			id: "state::descending",
 			behavior: H.OVERVIEW,
 			followMode: "state_descending",
-			boundsResolver: () => he,
+			boundsResolver: () => we,
 			lerpSpeed: .1,
-			targetResolver: pt,
-			visualProfile: ve,
+			targetResolver: St,
+			visualProfile: De,
 			zoomMinResolver: () => 1.568,
 			zoomMaxResolver: () => 3.08
-		}),
-		[V.WAITING]: w({
-			id: "state::waiting",
-			behavior: H.OVERVIEW,
-			followMode: "state_waiting",
-			boundsResolver: () => he,
-			lerpSpeed: .009,
-			targetResolver: qe,
-			visualProfile: ve,
-			zoomMinResolver: () => 1.568,
-			zoomMaxResolver: () => 3.36
 		})
-	}), Ze = re([
-		ne({
-			id: ie(I.SOBRIO, L.WAITING),
-			style: I.SOBRIO,
-			mood: L.WAITING,
-			stack: R,
+	}), ot = ie([
+		re({
+			id: ae(F.SOBRIO, I.WAITING),
+			style: F.SOBRIO,
+			mood: I.WAITING,
+			stack: L,
 			grade: {
 				washAlpha: .08,
 				vignetteAlpha: .36,
@@ -4358,11 +4428,11 @@ function fe(e, t = {}) {
 				glowBoost: .06
 			}
 		}),
-		ne({
-			id: ie(I.SOBRIO, L.ASCENT),
-			style: I.SOBRIO,
-			mood: L.ASCENT,
-			stack: R,
+		re({
+			id: ae(F.SOBRIO, I.ASCENT),
+			style: F.SOBRIO,
+			mood: I.ASCENT,
+			stack: L,
 			grade: {
 				washAlpha: .09,
 				vignetteAlpha: .4,
@@ -4387,11 +4457,11 @@ function fe(e, t = {}) {
 				glowBoost: .1
 			}
 		}),
-		ne({
-			id: ie(I.SOBRIO, L.IMPACT),
-			style: I.SOBRIO,
-			mood: L.IMPACT,
-			stack: R,
+		re({
+			id: ae(F.SOBRIO, I.IMPACT),
+			style: F.SOBRIO,
+			mood: I.IMPACT,
+			stack: L,
 			grade: {
 				washAlpha: .12,
 				vignetteAlpha: .5,
@@ -4416,11 +4486,11 @@ function fe(e, t = {}) {
 				glowBoost: .16
 			}
 		}),
-		ne({
-			id: ie(I.SOBRIO, L.DESCENT),
-			style: I.SOBRIO,
-			mood: L.DESCENT,
-			stack: R,
+		re({
+			id: ae(F.SOBRIO, I.DESCENT),
+			style: F.SOBRIO,
+			mood: I.DESCENT,
+			stack: L,
 			grade: {
 				washAlpha: .07,
 				vignetteAlpha: .34,
@@ -4445,11 +4515,11 @@ function fe(e, t = {}) {
 				glowBoost: .05
 			}
 		}),
-		ne({
-			id: ie(I.EXPRESIONISTA, L.WAITING),
-			style: I.EXPRESIONISTA,
-			mood: L.WAITING,
-			stack: R,
+		re({
+			id: ae(F.EXPRESIONISTA, I.WAITING),
+			style: F.EXPRESIONISTA,
+			mood: I.WAITING,
+			stack: L,
 			grade: {
 				washAlpha: .11,
 				vignetteAlpha: .44,
@@ -4474,11 +4544,11 @@ function fe(e, t = {}) {
 				glowBoost: .18
 			}
 		}),
-		ne({
-			id: ie(I.EXPRESIONISTA, L.ASCENT),
-			style: I.EXPRESIONISTA,
-			mood: L.ASCENT,
-			stack: R,
+		re({
+			id: ae(F.EXPRESIONISTA, I.ASCENT),
+			style: F.EXPRESIONISTA,
+			mood: I.ASCENT,
+			stack: L,
 			grade: {
 				washAlpha: .13,
 				vignetteAlpha: .56,
@@ -4503,11 +4573,11 @@ function fe(e, t = {}) {
 				glowBoost: .24
 			}
 		}),
-		ne({
-			id: ie(I.EXPRESIONISTA, L.IMPACT),
-			style: I.EXPRESIONISTA,
-			mood: L.IMPACT,
-			stack: R,
+		re({
+			id: ae(F.EXPRESIONISTA, I.IMPACT),
+			style: F.EXPRESIONISTA,
+			mood: I.IMPACT,
+			stack: L,
 			grade: {
 				washAlpha: .16,
 				vignetteAlpha: .64,
@@ -4532,11 +4602,11 @@ function fe(e, t = {}) {
 				glowBoost: .3
 			}
 		}),
-		ne({
-			id: ie(I.EXPRESIONISTA, L.DESCENT),
-			style: I.EXPRESIONISTA,
-			mood: L.DESCENT,
-			stack: R,
+		re({
+			id: ae(F.EXPRESIONISTA, I.DESCENT),
+			style: F.EXPRESIONISTA,
+			mood: I.DESCENT,
+			stack: L,
 			grade: {
 				washAlpha: .1,
 				vignetteAlpha: .48,
@@ -4561,40 +4631,40 @@ function fe(e, t = {}) {
 				glowBoost: .14
 			}
 		})
-	], ie(I.SOBRIO, L.ASCENT));
-	function Qe(e) {
-		return Ye.get(e);
+	], ae(F.SOBRIO, I.ASCENT));
+	function st(e) {
+		return it.get(e);
 	}
-	function $e(e) {
-		let t = Qe(e);
+	function ct(e) {
+		let t = st(e);
 		U.presetId = t.id, U.behavior = t.behavior;
 	}
-	function et() {
-		return Qe(U.presetId);
+	function lt() {
+		return st(U.presetId);
 	}
-	function tt() {
-		return Xe[$] || null;
+	function ut() {
+		return at[Q] || null;
 	}
-	function nt() {
-		return tt() || et();
+	function dt() {
+		return ut() || lt();
 	}
-	function rt(e) {
-		if (U.behavior === H.FREE_PAN) return he;
-		let t = nt();
-		return t.boundsResolver ? t.boundsResolver(e) : he;
+	function ft(e) {
+		if (U.behavior === H.FREE_PAN) return we;
+		let t = dt();
+		return t.boundsResolver ? t.boundsResolver(e) : we;
 	}
-	function it() {
-		return U.behavior === H.FREE_PAN ? ge : nt().visualProfile || ge;
+	function pt() {
+		return U.behavior === H.FREE_PAN ? Te : dt().visualProfile || Te;
 	}
-	function at() {
-		return $ === V.SUMMIT ? L.IMPACT : $ === V.SIS_DESCENDING ? L.DESCENT : $ === V.WAITING ? L.WAITING : Te > .2 ? L.IMPACT : L.ASCENT;
+	function mt() {
+		return Q === V.SUMMIT ? I.IMPACT : Q === V.SIS_DESCENDING ? I.DESCENT : Q === V.WAITING ? I.WAITING : Pe > .2 ? I.IMPACT : I.ASCENT;
 	}
-	function ot() {
-		let e = at();
-		return Ze.getByStyleAndMood(Se, e);
+	function ht() {
+		let e = mt();
+		return ot.getByStyleAndMood(je, e);
 	}
-	function st(e) {
-		let t = Ie(e.portraitView), n = tt();
+	function gt(e) {
+		let t = Ge(e.portraitView), n = ut();
 		if (n) {
 			let t = n.zoomMinResolver(e), r = n.zoomMaxResolver(e);
 			return {
@@ -4603,69 +4673,69 @@ function fe(e, t = {}) {
 			};
 		}
 		if (U.behavior === H.FREE_PAN) return t;
-		let r = nt(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
+		let r = dt(), i = Math.max(t.min, r.zoomMinResolver(e)), a = Math.min(t.max, r.zoomMaxResolver(e));
 		return {
 			min: i,
 			max: Math.max(i + .02, a)
 		};
 	}
-	function ct() {
-		return ke.DEFAULT;
+	function _t() {
+		return Re.DEFAULT;
 	}
-	function lt(e) {
-		if (je === e) return;
-		let t = Ae[e] || Ae[ke.DEFAULT];
-		je = e;
-		for (let e of [J, xt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
+	function vt(e) {
+		if (Be === e) return;
+		let t = ze[e] || ze[Re.DEFAULT];
+		Be = e;
+		for (let e of [At, jt]) e.style.transformOrigin = t.transformOrigin, e.style.transform = t.transform;
 	}
-	function ut() {
-		ze();
+	function yt() {
+		Je();
 	}
-	function dt() {
-		Se = Se === I.SOBRIO ? I.EXPRESIONISTA : I.SOBRIO, Ce = performance.now() + 1400, console.log(`%cEstilo visual: ${Se}`, "color:#f9d29d;font-weight:bold");
+	function bt() {
+		je = je === F.SOBRIO ? F.EXPRESIONISTA : F.SOBRIO, Me = performance.now() + 1400, console.log(`%cEstilo visual: ${je}`, "color:#f9d29d;font-weight:bold");
 	}
-	function ft(e) {
-		let t = Kt(Z);
+	function xt(e) {
+		let t = nn(X);
 		return e.rockCenter.x >= 932 ? {
 			x: 912,
 			y: 116,
 			zoom: 2.128
 		} : {
-			x: e.rockCenter.x + O(Z.velocity.x * 62, -120, 60),
-			y: e.rockCenter.y - 118 + O(Z.velocity.y * 18, -48, 42),
-			zoom: O((e.portraitView ? 2.464 : 2.184) - t * .084, 1.624, 2.632)
+			x: e.rockCenter.x + k(X.velocity.x * 62, -120, 60),
+			y: e.rockCenter.y - 118 + k(X.velocity.y * 18, -48, 42),
+			zoom: k((e.portraitView ? 2.464 : 2.184) - t * .084, 1.624, 2.632)
 		};
 	}
-	function pt(e) {
-		let t = ee(pn + 70, 820, e.sisCenter.x);
+	function St(e) {
+		let t = ee(wn + 70, 820, e.sisCenter.x);
 		return {
-			x: Ft(pn + 96, e.sisCenter.x + 42, t),
-			y: Ft(368, e.sisCenter.y - 110, t),
-			zoom: Ft(e.portraitView ? 2.576 : 2.352, e.portraitView ? 2.8 : 2.52, t)
+			x: Gt(wn + 96, e.sisCenter.x + 42, t),
+			y: Gt(368, e.sisCenter.y - 110, t),
+			zoom: Gt(e.portraitView ? 2.576 : 2.352, e.portraitView ? 2.8 : 2.52, t)
 		};
 	}
-	function mt() {
-		let e = Ke();
+	function Ct() {
+		let e = tt();
 		if (U.behavior === H.FREE_PAN) {
-			let t = Ne(e.portraitView), n = He(U.freePanX, U.freePanY, t);
+			let t = He(e.portraitView), n = Ze(U.freePanX, U.freePanY, t);
 			G.x = n.x, G.y = n.y, G.zoom = t;
 		} else {
-			let t = nt();
+			let t = dt();
 			Object.assign(G, t.targetResolver(e));
 		}
-		let t = st(e);
-		G.zoom = O(G.zoom, t.min, t.max);
-		let n = Ve(G.x, G.y, G.zoom, rt(e));
-		G.x = n.x, G.y = n.y, lt(ct());
+		let t = gt(e);
+		G.zoom = k(G.zoom, t.min, t.max);
+		let n = Xe(G.x, G.y, G.zoom, ft(e));
+		G.x = n.x, G.y = n.y, vt(_t());
 	}
-	function ht() {
-		return me.active ? .34 : U.behavior === H.FREE_PAN ? .22 : nt().lerpSpeed;
+	function wt() {
+		return Ce.active ? .34 : U.behavior === H.FREE_PAN ? .22 : dt().lerpSpeed;
 	}
-	function gt(e) {
-		let t = e / 16.6667, n = 1 - (1 - ht()) ** t;
+	function Tt(e) {
+		let t = e / 16.6667, n = 1 - (1 - wt()) ** t;
 		W.x += (G.x - W.x) * n, W.y += (G.y - W.y) * n, W.zoom += (G.zoom - W.zoom) * n;
-		let i = 16 * te * te, a = F * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = f / W.zoom, l = h / W.zoom;
-		r.lookAt(X, {
+		let i = 16 * R * R, a = P * .018, o = Math.sin(a * 1.7 + .6) * i, s = Math.cos(a * 2.1 + 1.1) * i * .68, c = f / W.zoom, l = h / W.zoom;
+		r.lookAt(Y, {
 			min: {
 				x: W.x + o - c / 2,
 				y: W.y + s - l / 2
@@ -4680,69 +4750,69 @@ function fe(e, t = {}) {
 		TERRAIN: 1,
 		SISYPHUS: 2,
 		ROCK: 4
-	}), _t = q.SISYPHUS | q.ROCK, vt = q.TERRAIN | q.ROCK, yt = q.TERRAIN | q.SISYPHUS, bt = q.TERRAIN, J = document.createElement("canvas");
-	J.id = "scene-canvas", J.setAttribute("aria-hidden", "true"), J.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0;pointer-events:none;", e.appendChild(J);
-	let xt = document.createElement("canvas");
-	xt.id = "game-canvas", xt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(xt);
-	let St = J.getContext("2d");
-	async function Ct() {
+	}), Et = q.SISYPHUS | q.ROCK, Dt = q.TERRAIN | q.ROCK, Ot = q.TERRAIN | q.SISYPHUS, kt = q.TERRAIN, At = document.createElement("canvas");
+	At.id = "scene-canvas", At.setAttribute("aria-hidden", "true"), At.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0;pointer-events:none;", e.appendChild(At);
+	let jt = document.createElement("canvas");
+	jt.id = "game-canvas", jt.style.cssText = "position:absolute;inset:0;display:block;width:100%;height:100%;z-index:1;background:transparent;", e.appendChild(jt);
+	let Mt = At.getContext("2d");
+	async function Nt() {
 		try {
-			let e = de(t);
+			let e = pe(t);
 			if (!e) return;
-			await y(be, new URL("./overlays/manifest.json", e)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
+			await y(ke, new URL("./overlays/manifest.json", e)), console.log("%cOverlays externos cargados", "color:#cfe8b3;font-weight:bold");
 		} catch (e) {
 			console.warn("No se pudo cargar el manifiesto de overlays externos.", e);
 		}
 	}
-	for (let e of [J, xt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
-	let Y = n.create({ gravity: {
+	for (let e of [At, jt]) e.style.transition = "transform 360ms cubic-bezier(0.22, 1, 0.36, 1)", e.style.transform = "translate3d(0, 0, 0) scaleX(1) scaleY(1)", e.style.transformOrigin = "50% 50%";
+	let J = n.create({ gravity: {
 		x: 0,
 		y: 1
-	} }), X = r.create({
-		canvas: xt,
-		engine: Y,
+	} }), Y = r.create({
+		canvas: jt,
+		engine: J,
 		options: {
 			width: f,
 			height: h,
 			wireframes: !1,
-			background: D.bg,
-			pixelRatio: window.devicePixelRatio || 1
+			background: O.bg,
+			pixelRatio: g()
 		}
-	}), wt = a.rectangle(900 / 2, 540, 1020, 40, {
+	}), Pt = a.rectangle(900 / 2, 540, 1020, 40, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: _t
+			mask: Et
 		},
 		render: { visible: !1 },
 		label: "ground"
-	}), Tt = a.rectangle(-60 / 2, 560 / 2, 60, 560, {
+	}), Ft = a.rectangle(-60 / 2, 560 / 2, 60, 560, {
 		isStatic: !0,
 		restitution: .1,
 		friction: .1,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: _t
+			mask: Et
 		},
 		render: { visible: !1 },
 		label: "wall-left"
-	}), Et = a.rectangle(930, 560 / 2, 60, 560, {
+	}), It = a.rectangle(930, 560 / 2, 60, 560, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: _t
+			mask: Et
 		},
 		render: { visible: !1 },
 		label: "wall-right"
-	}), Dt = a.rectangle(900 / 2, -60 / 2, 1020, 60, {
+	}), Lt = a.rectangle(900 / 2, -60 / 2, 1020, 60, {
 		isStatic: !0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: _t
+			mask: Et
 		},
 		render: { visible: !1 },
 		label: "wall-top"
-	}), Ot = a.rectangle(40, 660, 150, 20, {
+	}), Rt = a.rectangle(40, 660, 150, 20, {
 		isStatic: !0,
 		angle: 0,
 		restitution: 0,
@@ -4753,22 +4823,22 @@ function fe(e, t = {}) {
 		},
 		render: { visible: !1 },
 		label: "bumper"
-	}), kt = [
+	}), zt = [
 		{
 			x: 140,
 			y: 520
 		},
 		{
 			x: 170,
-			y: Pt(170)
+			y: Wt(170)
 		},
 		{
 			x: 310,
-			y: Pt(310)
+			y: Wt(310)
 		},
 		{
 			x: 470,
-			y: Pt(470)
+			y: Wt(470)
 		},
 		{
 			x: 840,
@@ -4787,61 +4857,61 @@ function fe(e, t = {}) {
 			y: 300
 		},
 		{
-			x: g,
+			x: _,
 			y: 520
 		},
 		{
-			x: _,
+			x: b,
 			y: 520
 		}
-	], At = [
+	], Bt = [
 		{
 			x: 132,
 			y: 780
 		},
-		...kt,
+		...zt,
 		{
-			x: _ + 28,
+			x: b + 28,
 			y: 780
 		}
-	], jt = d.centre(At), Mt = At.map((e) => ({
-		x: e.x - jt.x,
-		y: e.y - jt.y
-	})), Nt = a.fromVertices(jt.x, jt.y, [Mt], {
+	], Vt = d.centre(Bt), Ht = Bt.map((e) => ({
+		x: e.x - Vt.x,
+		y: e.y - Vt.y
+	})), Ut = a.fromVertices(Vt.x, Vt.y, [Ht], {
 		isStatic: !0,
 		friction: .1,
 		restitution: 0,
 		collisionFilter: {
 			category: q.TERRAIN,
-			mask: _t
+			mask: Et
 		},
 		render: { visible: !1 },
 		label: "mountain"
 	}, !0);
-	function Pt(e) {
+	function Wt(e) {
 		return 520 - (e - 140) / 700 * 312;
 	}
-	function Ft(e, t, n) {
+	function Gt(e, t, n) {
 		return e + (t - e) * n;
 	}
-	function It(e, t, n, r, i) {
-		return r === t ? n : Ft(n, i, (e - t) / (r - t));
+	function Kt(e, t, n, r, i) {
+		return r === t ? n : Gt(n, i, (e - t) / (r - t));
 	}
-	function Lt(e) {
-		let t = kt[0];
+	function qt(e) {
+		let t = zt[0];
 		if (e <= t.x) return t.y;
-		for (let t = 1; t < kt.length; t += 1) {
-			let n = kt[t - 1], r = kt[t];
-			if (e <= r.x) return It(e, n.x, n.y, r.x, r.y);
+		for (let t = 1; t < zt.length; t += 1) {
+			let n = zt[t - 1], r = zt[t];
+			if (e <= r.x) return Kt(e, n.x, n.y, r.x, r.y);
 		}
-		return kt[kt.length - 1].y;
+		return zt[zt.length - 1].y;
 	}
-	function Rt() {
+	function Jt() {
 		f = e.clientWidth || window.innerWidth, h = e.clientHeight || window.innerHeight;
-		let t = window.devicePixelRatio || 1;
-		J.width = f * t, J.height = h * t, J.style.width = `${f}px`, J.style.height = `${h}px`, X.options.width = f, X.options.height = h, X.options.pixelRatio = t, X.canvas.width = f * t, X.canvas.height = h * t, X.canvas.style.width = `${f}px`, X.canvas.style.height = `${h}px`, He(U.freePanX, U.freePanY, Ne(h > f));
+		let t = g();
+		At.width = f * t, At.height = h * t, At.style.width = `${f}px`, At.style.height = `${h}px`, Y.options.width = f, Y.options.height = h, Y.options.pixelRatio = t, Y.canvas.width = f * t, Y.canvas.height = h * t, Y.canvas.style.width = `${f}px`, Y.canvas.style.height = `${h}px`, Ze(U.freePanX, U.freePanY, He(h > f));
 	}
-	let zt = k({
+	let Yt = A({
 		LOGICAL_W: 900,
 		LOGICAL_H: 560,
 		SURF_Y: 520,
@@ -4851,78 +4921,84 @@ function fe(e, t = {}) {
 		PEAK_B_Y: 206,
 		RIGHT_DESCENT_MID_X: 980,
 		RIGHT_DESCENT_MID_Y: 300,
-		RIGHT_DESCENT_LOW_X: g,
+		RIGHT_DESCENT_LOW_X: _,
 		RIGHT_DESCENT_LOW_Y: 520,
-		RIGHT_FACE_BASE_X: _,
-		slopeYAt: Pt,
-		terrainYAt: Lt,
-		TERRAIN_SURFACE_POINTS: kt
-	}), Bt = j({ createSeededRandom: A });
-	function Vt(e) {
-		Bt.drawRock(e, Z, nn);
+		RIGHT_FACE_BASE_X: b,
+		slopeYAt: Wt,
+		terrainYAt: qt,
+		TERRAIN_SURFACE_POINTS: zt
+	}), Xt = te({ createSeededRandom: j });
+	function Zt(e) {
+		Xt.drawRock(e, X, pn);
 	}
-	let Ht = P({
+	let Qt = ne({
 		GAME_STATE: V,
 		PEAK_A_X: 840
 	});
-	function Ut(e) {
-		Ht.drawSisyphus(e, {
-			sisyphusBody: Q,
-			gameState: $,
-			lastGameState: le,
-			stateTransitionTimer: ue,
-			STATE_TRANSITION_MAX: fe,
-			isPushing: cn,
-			sceneTime: F
+	function $t(e) {
+		let t = typeof $?.getBalanceState == "function" ? $.getBalanceState() : null;
+		Qt.drawSisyphus(e, {
+			sisyphusBody: Z,
+			gameState: Q,
+			lastGameState: be,
+			stateTransitionTimer: xe,
+			STATE_TRANSITION_MAX: 450,
+			isPushing: vn,
+			sceneTime: P,
+			balanceState: t,
+			windActive: B
 		});
 	}
-	function Wt() {
-		let e = X.bounds.min.x, t = X.bounds.min.y, n = it(), r = ot();
-		St.save(), St.setTransform(1, 0, 0, 1, 0, 0), St.clearRect(0, 0, J.width, J.height);
-		let i = window.devicePixelRatio || 1;
-		St.setTransform(i, 0, 0, i, 0, 0), St.scale(W.zoom, W.zoom), St.translate(-e, -t), zt.drawSceneLayers(St, {
+	function en() {
+		let e = Y.bounds.min.x, t = Y.bounds.min.y, n = pt(), r = ht();
+		Mt.save(), Mt.setTransform(1, 0, 0, 1, 0, 0), Mt.clearRect(0, 0, At.width, At.height);
+		let i = g();
+		Mt.setTransform(i, 0, 0, i, 0, 0), Mt.scale(W.zoom, W.zoom), Mt.translate(-e, -t), Yt.drawSceneLayers(Mt, {
 			viewMinX: e,
 			viewMinY: t,
 			visualProfile: n,
 			layerProfile: r,
-			sceneTime: F,
-			qualityProfile: De.getProfile(),
-			rock: Z,
-			sisyphus: Q,
+			sceneTime: P,
+			qualityProfile: Ie.getProfile(),
+			rock: X,
+			sisyphus: Z,
 			dustParticles: N,
-			drawRock: Vt,
-			drawSisyphus: Ut
-		}), St.restore();
+			drawRock: Zt,
+			drawSisyphus: $t,
+			ascentProgress: et(),
+			windActive: B,
+			balanceState: typeof $?.getBalanceState == "function" ? $.getBalanceState() : null
+		}), Mt.restore();
 	}
-	function Gt() {
-		u.set(Q, !1), u.set(Z, !1);
+	function tn() {
+		u.set(Z, !1), u.set(X, !1);
 	}
-	function Kt(e) {
+	function nn(e) {
 		return Math.hypot(e.velocity.x, e.velocity.y);
 	}
-	function qt(e) {
+	function rn(e) {
 		o.setVelocity(e, {
 			x: 0,
 			y: 0
 		}), o.setAngularVelocity(e, 0);
 	}
-	function Jt(e) {
-		te = O(te + e, 0, 1);
+	function an(e) {
+		R = k(R + e, 0, 1);
 	}
-	function Yt(e, t, n, r = 1) {
-		let i = O(n, .08, .6), a = Math.max(3, Math.round(5 + i * 14));
-		for (let n = 0; n < a; n += 1) N.push({
+	function on(e, t, n, r = 1, i = {}) {
+		let a = k(n, .08, .6), o = k(i.sizeScale ?? 1, .2, 1), s = k(i.densityScale ?? 1, .2, 1), c = k(i.alphaScale ?? 1, .2, 1), l = k(i.decayScale ?? 1, 1, 2), u = Math.max(i.minimumParticles ?? 3, Math.round((5 + a * 14) * s));
+		for (let n = 0; n < u; n += 1) N.push({
 			x: e,
-			y: t - M() * 10,
-			vx: r * (.18 + M() * 1.1) + (M() - .5) * .75,
-			vy: -(.3 + M() * 1.5) * i * 2.2,
-			radius: (3 + M() * 7 * i) / 2.8,
-			alpha: .08 + M() * .14,
-			decay: .012 + M() * .02,
+			y: t - M() * 10 * o,
+			vx: (r * (.18 + M() * 1.1) + (M() - .5) * .75) * o,
+			vy: -(.3 + M() * 1.5) * a * 2.2 * o,
+			radius: (3 + M() * 7 * a) * o,
+			alpha: (.08 + M() * .14) * c,
+			decay: (.012 + M() * .02) * l,
 			life: 1
 		});
 	}
-	function Xt(e) {
+	function sn(e) {
 		let t = e / 16.6667;
 		for (let e = N.length - 1; e >= 0; --e) {
 			let n = N[e];
@@ -4933,48 +5009,55 @@ function fe(e, t = {}) {
 			n.x += n.vx * t, n.y += n.vy * t, n.vx *= .985, n.vy = n.vy * .97 + .02 * t, n.radius *= .994;
 		}
 	}
-	function Zt() {
-		if (!cn) return;
-		let e = Y.timing.timestamp;
-		if (e - z < 90) return;
-		let t = Math.max(Kt(Q), Kt(Z));
-		t < .42 || (z = e, Yt(Q.position.x - 2.1, Lt(Q.position.x) - .7, O(t * .18, .1, .28), -1));
+	function cn() {
+		if (!vn) return;
+		let e = J.timing.timestamp;
+		if (e - z < 170) return;
+		let t = Math.max(nn(Z), nn(X)), n = (typeof $?.getBalanceState == "function" ? $.getBalanceState() : null)?.strainScore ?? 0;
+		t < .015 && n < .04 || (z = e, on(Z.position.x - 6, qt(Z.position.x) - 2, k(.08 + t * .45 + n * .08, .08, .18), -1, {
+			sizeScale: .38,
+			densityScale: .42,
+			alphaScale: .55,
+			decayScale: 1.35,
+			minimumParticles: 2
+		}));
 	}
-	function Qt() {
-		if (!cn || $ !== V.PLAYING) return;
-		let e = Y.timing.timestamp;
-		if (e - ae < 110) return;
-		ae = e;
-		let t = Q.position.x - 1.4, n = Lt(Q.position.x) - .3;
-		for (let e = 0; e < 2; e += 1) N.push({
-			x: t + (M() - .5) * 5,
+	function ln() {
+		if (!vn || Q !== V.PLAYING) return;
+		let e = J.timing.timestamp;
+		if (e - ce < 150) return;
+		ce = e;
+		let t = Z.position.x - 4, n = qt(Z.position.x) - 1;
+		for (let e = 0; e < 1; e += 1) N.push({
+			x: t + (M() - .5) * 3,
 			y: n,
-			vx: -(.08 + M() * .3),
-			vy: -(.04 + M() * .18),
-			radius: 1 + M() * 1,
-			alpha: .04 + M() * .04,
-			decay: .028 + M() * .022,
+			vx: -(.05 + M() * .18),
+			vy: -(.03 + M() * .11),
+			radius: .65 + M() * .7,
+			alpha: .025 + M() * .025,
+			decay: .038 + M() * .025,
 			life: 1
 		});
 	}
-	function $t() {
-		if (!cn || Kt(Q) < .85) return;
-		let e = Y.timing.timestamp;
-		if (e - oe < 2e3) return;
-		oe = e;
-		let t = Q.position.x + 2.5, n = Lt(Q.position.x) - 13.5;
+	function un() {
+		let e = (typeof $?.getBalanceState == "function" ? $.getBalanceState() : null)?.strainScore ?? 0;
+		if (!vn || e < .42) return;
+		let t = J.timing.timestamp, n = B ? 850 : 1350;
+		if (t - de < n) return;
+		de = t;
+		let r = Z.position.x + 7, i = qt(Z.position.x) - 38;
 		N.push({
-			x: t + (M() - .5) * 3,
-			y: n,
-			vx: (M() - .5) * .15,
-			vy: -(.08 + M() * .12),
-			radius: 3 + M() * 2,
-			alpha: .03 + M() * .02,
+			x: r + (M() - .5) * 3,
+			y: i,
+			vx: (M() - .5) * .18 - (B ? .12 : 0),
+			vy: -(.08 + M() * .14),
+			radius: 2.4 + M() * 2.6 + e * 1.2,
+			alpha: .028 + M() * .025 + e * .018,
 			decay: .008 + M() * .006,
 			life: 1
 		});
 	}
-	function en(e, t) {
+	function dn(e, t) {
 		let n = e.collision && e.collision.supports && e.collision.supports[0];
 		return n ? {
 			x: n.x,
@@ -4984,13 +5067,13 @@ function fe(e, t = {}) {
 			y: t.position.y
 		};
 	}
-	function tn(e) {
-		Q.collisionFilter.mask = e ? vt : bt, Z.collisionFilter.mask = e ? yt : bt;
+	function fn(e) {
+		Z.collisionFilter.mask = e ? Dt : kt, X.collisionFilter.mask = e ? Ot : kt;
 	}
-	let nn = 10, rn = {
+	let pn = 10, mn = {
 		x: 110,
 		y: 509
-	}, Z = a.circle(rn.x, rn.y, 10, {
+	}, X = a.circle(mn.x, mn.y, 10, {
 		restitution: 0,
 		friction: .6,
 		frictionStatic: 1,
@@ -4998,7 +5081,7 @@ function fe(e, t = {}) {
 		density: .1,
 		collisionFilter: {
 			category: q.ROCK,
-			mask: yt
+			mask: Ot
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -5006,10 +5089,10 @@ function fe(e, t = {}) {
 			lineWidth: 0
 		},
 		label: "rock"
-	}), an = 7.8, on = 15.7, sn = {
-		x: Math.max(16, 100 - an / 2 - 2),
-		y: 520 - on / 2 - 1
-	}, Q = a.rectangle(sn.x, sn.y, an, on, {
+	}), hn = 7.8, gn = 15.7, _n = {
+		x: Math.max(16, 100 - hn / 2 - 2),
+		y: 520 - gn / 2 - 1
+	}, Z = a.rectangle(_n.x, _n.y, hn, gn, {
 		restitution: 0,
 		friction: .8,
 		frictionStatic: .8,
@@ -5018,7 +5101,7 @@ function fe(e, t = {}) {
 		chamfer: { radius: 2 },
 		collisionFilter: {
 			category: q.SISYPHUS,
-			mask: vt
+			mask: Dt
 		},
 		render: {
 			fillStyle: "rgba(0,0,0,0)",
@@ -5028,93 +5111,105 @@ function fe(e, t = {}) {
 		},
 		label: "sisyphus"
 	});
-	s.add(Y.world, [
-		wt,
-		Tt,
-		Et,
-		Dt,
-		Ot,
-		Nt,
-		Z,
-		Q
+	s.add(J.world, [
+		Pt,
+		Ft,
+		It,
+		Lt,
+		Rt,
+		Ut,
+		X,
+		Z
 	]);
-	let cn = !1, ln = 0, $ = V.PLAYING, un = 0, dn = 0, fn = 830, pn = 170;
-	function mn() {
-		let e = Z.position.x < 200 && Z.position.y > 498, t = Kt(Z) < .14 && Math.abs(Z.angularVelocity) < .08;
+	let vn = !1, yn = 0, Q = V.PLAYING, bn = 0, xn = 0, Sn = performance.now(), Cn = 830, wn = 170;
+	function Tn() {
+		let e = X.position.x < 200 && X.position.y > 498, t = nn(X) < .14 && Math.abs(X.angularVelocity) < .08;
 		return e && t;
 	}
-	function hn(e) {
-		if ($ !== e) {
-			if (le = $, fe = e === V.WAITING ? 1800 : 450, ue = fe, $ = e, e === V.PLAYING) {
-				We(), o.setStatic(Q, !1), o.setStatic(Z, !1), tn(!0), un = 0, Gt();
+	function En(e) {
+		if (Q !== e) {
+			if (be = Q, xe = 450, Q = e, e === V.PLAYING) {
+				$e(), o.setStatic(Z, !1), o.setStatic(X, !1), fn(!0), bn = 0, he = 0, ge = 0, B = !1, Sn = performance.now(), tn();
 				return;
 			}
 			if (e === V.SUMMIT) {
-				cn = !1, We(), xt.style.cursor = "default", tn(!1), o.setStatic(Q, !1), qt(Q), o.setStatic(Q, !0), o.setStatic(Z, !1), o.setVelocity(Z, {
+				vn = !1, $e(), jt.style.cursor = "default", fn(!1), o.setStatic(Z, !1), rn(Z), o.setStatic(Z, !0), o.setStatic(X, !1), o.setVelocity(X, {
 					x: -1.25,
 					y: -.18
-				}), Gt(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
+				}), tn(), console.log("%cTope alcanzado: La roca regresa rodando por su peso", "color:#d4a373;font-weight:bold");
 				return;
 			}
 			if (e === V.SIS_DESCENDING) {
-				We(), tn(!1), o.setStatic(Q, !0), qt(Q), un = Y.timing.timestamp + 9500, console.log("%cSisifo mira hacia abajo pensando...", "color:#8d99ae");
+				$e(), fn(!1), o.setStatic(Z, !1), tn(), bn = J.timing.timestamp + 4e3, console.log("%cSisifo desciende lentamente por 4s...", "color:#8d99ae");
 				return;
 			}
 			if (e === V.WAITING) {
-				if (cn = !1, We(), Me(H.OVERVIEW), xt.style.cursor = "default", dn += 1, typeof t.onCycleComplete == "function") try {
-					t.onCycleComplete(dn);
+				if (vn = !1, $e(), Ve(H.OVERVIEW), jt.style.cursor = "default", xn += 1, typeof t.onCycleComplete == "function") try {
+					t.onCycleComplete(xn);
 				} catch (e) {
 					console.warn("onCycleComplete error:", e);
 				}
-				tn(!1), o.setStatic(Q, !1), qt(Q);
-				let e = Z.position.x - 10 - an / 2 - 2;
+				fn(!1), o.setStatic(Z, !1), rn(Z);
+				let e = X.position.x - 10 - hn / 2 - 2;
 				if (e < 16) {
 					e = 16;
-					let t = e + an / 2 + 2 + 10;
-					o.setPosition(Z, {
+					let t = e + hn / 2 + 2 + 10;
+					o.setPosition(X, {
 						x: t,
-						y: Z.position.y
+						y: X.position.y
 					});
 				}
-				520 - on / 2 - 1, o.setPosition(Q, {
+				520 - gn / 2 - 1, o.setPosition(Z, {
 					x: e,
 					y: 511.15
-				}), o.setAngle(Q, 0), o.setStatic(Q, !0), qt(Z), Gt(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
+				}), o.setAngle(Z, 0), o.setStatic(Z, !0), rn(X), tn(), console.log("%cHaz clic en Sisifo para subir de nuevo", "color:#e07a5f;font-weight:bold");
 			}
 		}
 	}
-	let gn = E({
-		canvas: xt,
-		render: X,
+	let $ = D({
+		canvas: jt,
+		render: Y,
 		queryPoint: l.point,
-		sisyphus: Q,
+		sisyphus: Z,
 		camera: W,
-		cameraDrag: me,
-		audioCueController: ye,
-		runtimeQualityController: De,
+		cameraDrag: Ce,
+		audioCueController: Oe,
+		runtimeQualityController: Ie,
 		GAME_STATE: V,
 		CAMERA_BEHAVIOR: H,
 		CAMERA_DRAG_THRESHOLD: 5,
 		CAMERA_PAN_SENSITIVITY: 1.08,
-		getIsPushing: () => cn,
+		getIsPushing: () => vn,
 		setIsPushing: (e) => {
-			cn = e, e || (ln = 0);
+			vn = e, e || (yn = 0);
 		},
-		getGameState: () => $,
-		setGameState: hn,
-		getFreePanZoom: Ne,
-		setCameraBehavior: Me,
-		wakeBodies: Gt,
-		beginCameraDrag: Ue,
-		stopCameraDrag: We,
-		storeFreePanTarget: He,
-		cycleUserZoomInput: ut,
-		cycleVisualStyle: dt,
+		getGameState: () => Q,
+		setGameState: En,
+		getFreePanZoom: He,
+		setCameraBehavior: Ve,
+		wakeBodies: tn,
+		beginCameraDrag: Qe,
+		stopCameraDrag: $e,
+		storeFreePanTarget: Ze,
+		cycleUserZoomInput: yt,
+		cycleVisualStyle: bt,
 		setQualityHintUntil: (e) => {
-			we = e;
-		}
+			Ne = e;
+		},
+		triggerStumble: (e = {}) => {
+			let t = k(e.strain ?? .55, 0, 1), n = e.windActive ? 1 : 0;
+			o.setVelocity(Z, {
+				x: Z.velocity.x * .18 - .018 * (.8 + n),
+				y: Z.velocity.y
+			}), o.setVelocity(X, {
+				x: X.velocity.x * (.58 + n * .12),
+				y: X.velocity.y
+			}), on(Z.position.x - 4, qt(Z.position.x) - 2, .16 + t * .24, -1), Pe = Math.max(Pe, .18 + t * .24), an(.18 + t * .24 + n * .08);
+		},
+		getAscentProgress: et,
+		isWindActive: () => B
 	});
-	gn.register(), c.on(Y, "collisionStart", (e) => {
+	$.register(), c.on(J, "collisionStart", (e) => {
 		for (let t of e.pairs) {
 			if (![t.bodyA.label, t.bodyB.label].includes("rock")) continue;
 			let e = t.bodyA.label === "rock" ? t.bodyB : t.bodyA;
@@ -5122,15 +5217,15 @@ function fe(e, t = {}) {
 				"ground",
 				"mountain",
 				"wall-left"
-			].includes(e.label)) continue;
-			let n = t.bodyA.label === "rock" ? t.bodyA : t.bodyB, r = O((Math.hypot(n.velocity.x - e.velocity.x, n.velocity.y - e.velocity.y) - 1.45) / 6, 0, 1);
+			].includes(e.label) || Q === V.PLAYING && e.label === "mountain") continue;
+			let n = t.bodyA.label === "rock" ? t.bodyA : t.bodyB, r = k((Math.hypot(n.velocity.x - e.velocity.x, n.velocity.y - e.velocity.y) - 1.45) / 6, 0, 1);
 			if (r < .08) continue;
-			let i = en(t, n), a = n.velocity.x < 0 ? -1 : 1;
-			Yt(i.x, i.y, .16 + r * .32, a), Jt(r * (e.label === "wall-left" ? .18 : .11)), Te = Math.max(Te, r), ye.triggerImpact(r);
+			let i = dn(t, n), a = n.velocity.x < 0 ? -1 : 1;
+			on(i.x, i.y, .16 + r * .32, a), an(r * (e.label === "wall-left" ? .18 : .11)), Pe = Math.max(Pe, r), Oe.triggerImpact(r);
 		}
 	});
-	function _n(e) {
-		let t = X.canvas.width, n = X.canvas.height, r = ot(), i = De.getSnapshot(), a = i.profile, o = O((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = O(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = O((r.grain.baseAlpha + xe * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
+	function Dn(e) {
+		let t = Y.canvas.width, n = Y.canvas.height, r = ht(), i = Ie.getSnapshot(), a = i.profile, o = k((r.grade.washAlpha + r.grade.contrastLift * .1) * (.92 + a.fogAlphaMul * .08), .02, .26), s = k(r.grade.vignetteAlpha, .2, .75), c = Math.max(0, Math.round(r.grain.density * a.grainDensityMul)), l = k((r.grain.baseAlpha + Ae * r.grain.motionBoost) * a.grainAlphaMul, 0, .16);
 		e.save(), e.setTransform(1, 0, 0, 1, 0, 0);
 		let u = e.createLinearGradient(0, 0, 0, n);
 		u.addColorStop(0, `rgba(252, 241, 212, ${(o * .5).toFixed(3)})`), u.addColorStop(.15, `rgba(252, 241, 212, ${(o * .2).toFixed(3)})`), u.addColorStop(.45, `rgba(252, 241, 212, ${(o * .08).toFixed(3)})`), u.addColorStop(1, `rgba(8, 10, 16, ${(o * .84).toFixed(3)})`), e.fillStyle = u, e.fillRect(0, 0, t, n);
@@ -5138,54 +5233,94 @@ function fe(e, t = {}) {
 		if (d.addColorStop(0, "rgba(0, 0, 0, 0)"), d.addColorStop(.72, `rgba(7, 10, 16, ${(s * .34).toFixed(3)})`), d.addColorStop(1, `rgba(4, 6, 10, ${s.toFixed(3)})`), e.fillStyle = d, e.fillRect(0, 0, t, n), c > 0 && l > 0) {
 			e.globalAlpha = l;
 			for (let r = 0; r < c; r += 1) {
-				let i = (r * 137 + Math.floor(F * .6)) % t, a = (r * 211 + Math.floor(F * .35)) % n, o = 1 + r % 3;
+				let i = (r * 137 + Math.floor(P * .6)) % t, a = (r * 211 + Math.floor(P * .35)) % n, o = 1 + r % 3;
 				e.fillStyle = r % 5 == 0 ? "rgba(255, 255, 255, 0.7)" : "rgba(12, 16, 24, 0.7)", e.fillRect(i, a, o, o);
 			}
 		}
-		if (x(e, be, "grade", {
+		if (x(e, ke, "grade", {
 			width: t,
 			height: n,
-			timeMs: F,
-			viewMinX: X.bounds.min.x,
-			viewMinY: X.bounds.min.y,
+			timeMs: P,
+			viewMinX: Y.bounds.min.x,
+			viewMinY: Y.bounds.min.y,
 			overlayOpacityMultiplier: a.overlayOpacityMul
-		}), performance.now() < B) {
-			let t = Le(Oe.level);
+		}), performance.now() < fe) {
+			let t = Ke(Le.level);
 			e.globalAlpha = .9, e.fillStyle = "rgba(14, 18, 26, 0.64)", e.fillRect(24, 24, 168, 34), e.fillStyle = "rgba(226, 232, 242, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ZOOM: ${t}`, 36, 41);
 		}
-		performance.now() < Ce && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${Se.toUpperCase()}`, 36, 83)), performance.now() < we && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125)), e.restore();
+		performance.now() < Me && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 66, 290, 34), e.fillStyle = "rgba(246, 231, 203, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`ESTILO: ${je.toUpperCase()}`, 36, 83)), performance.now() < Ne && (e.globalAlpha = .9, e.fillStyle = "rgba(18, 22, 30, 0.64)", e.fillRect(24, 108, 220, 34), e.fillStyle = "rgba(198, 231, 255, 0.95)", e.font = "600 14px system-ui, sans-serif", e.textBaseline = "middle", e.fillText(`CALIDAD: ${i.tier.toUpperCase()}`, 36, 125));
+		let f = $.getComboCount();
+		if (f > 5) {
+			e.save(), e.setTransform(1, 0, 0, 1, 0, 0);
+			let r = (.03 + k((f - 5) / 25, 0, 1) * .1).toFixed(3), i = e.createRadialGradient(t * .5, n * .5, Math.min(t, n) * .25, t * .5, n * .5, Math.max(t, n) * .7);
+			i.addColorStop(0, "rgba(0, 0, 0, 0)"), i.addColorStop(.7, `rgba(212, 175, 55, ${(r * .4).toFixed(4)})`), i.addColorStop(1, `rgba(212, 175, 55, ${r})`), e.fillStyle = i, e.fillRect(0, 0, t, n), e.restore();
+		}
+		if (_e.length > 0) {
+			e.save();
+			let t = window.devicePixelRatio || 1;
+			e.setTransform(t, 0, 0, t, 0, 0), e.scale(W.zoom, W.zoom), e.translate(-Y.bounds.min.x, -Y.bounds.min.y);
+			for (let t of _e) e.globalAlpha = t.alpha * t.life, e.strokeStyle = "rgba(220, 230, 255, 0.85)", e.lineWidth = 1.2, e.beginPath(), e.moveTo(t.x, t.y), e.lineTo(t.x + t.length, t.y - .5), e.stroke();
+			e.restore();
+		}
+		B && (e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.globalAlpha = .5 + Math.sin(P * .012) * .2, e.fillStyle = "rgba(160, 190, 240, 0.12)", e.fillRect(0, 0, t, n), e.restore()), e.restore();
 	}
-	c.on(Y, "beforeUpdate", () => {
-		let e = Y.timing.lastDelta || 16.6667;
-		F += e, te = Math.max(0, te - e * .0011), Te = Math.max(0, Te - e * .0014), ue > 0 && (ue = Math.max(0, ue - e)), Xt(e), Ee = De.update(e).fpsSmoothed;
-		let t = O(Kt(Z) / 2.2, 0, 1), n = O(Kt(Q) / 2, 0, 1);
-		if (xe = Ft(xe, O(Math.max(t, n) + Te * .3, 0, 1), .1), ye.update({
-			rockSpeed: Kt(Z),
-			ascentProgress: Ge(),
-			isPushing: cn,
-			moodImpact: Te
-		}), typeof bn.onProgressUpdate == "function" && bn.onProgressUpdate({
-			progress: Ge(),
-			gameState: $,
-			cycleCount: dn,
-			isPushing: cn
-		}), mt(), gt(e), Z.position.x < 500 && Z.position.y > 470 && Z.velocity.y < -.1 && o.setVelocity(Z, {
-			x: Z.velocity.x,
-			y: Z.velocity.y * .05
-		}), Z.position.x < 34 && Z.velocity.x < -.07 && (o.setVelocity(Z, {
+	c.on(J, "beforeUpdate", () => {
+		let e = J.timing.lastDelta || 16.6667, t = performance.now(), n = k(t - Sn, 0, 250), r = n / 16.6667;
+		Sn = t, P += n, R = Math.max(0, R - n * .0011), Pe = Math.max(0, Pe - n * .0014), xe > 0 && (xe = Math.max(0, xe - n)), sn(n), typeof $?.update == "function" && $.update(n, P), Fe = Ie.update(e).fpsSmoothed;
+		let i = k(nn(X) / 2.2, 0, 1), a = k(nn(Z) / 2, 0, 1);
+		Ae = Gt(Ae, k(Math.max(i, a) + Pe * .3, 0, 1), .1), Oe.update({
+			rockSpeed: nn(X),
+			ascentProgress: et(),
+			isPushing: vn,
+			moodImpact: Pe,
+			isWindActive: B
+		}), typeof An.onProgressUpdate == "function" && An.onProgressUpdate({
+			progress: et(),
+			gameState: Q,
+			cycleCount: xn,
+			isPushing: vn
+		});
+		let s = et(), c = me[he];
+		c && vn && Q === V.PLAYING && s >= c.progress && (ge = t + c.durationMs, he += 1);
+		let l = ve || t < ye;
+		if (B = Q === V.PLAYING && (l || t < ge), B && Math.random() < Math.min(1, .75 * Math.max(1, r))) {
+			let e = f / Math.max(W.zoom, .1), t = h / Math.max(W.zoom, .1);
+			_e.push({
+				x: W.x + e / 2 + 20,
+				y: W.y - t / 2 + Math.random() * t,
+				vx: -(8.5 + Math.random() * 6),
+				vy: (Math.random() - .5) * 1.2,
+				alpha: .15 + Math.random() * .25,
+				life: 1,
+				decay: .012 + Math.random() * .008,
+				length: 40 + Math.random() * 60
+			});
+		}
+		for (let e = _e.length - 1; e >= 0; e--) {
+			let t = _e[e];
+			if (t.life -= t.decay * (n / 16.667), t.life <= 0) {
+				_e.splice(e, 1);
+				continue;
+			}
+			t.x += t.vx * (n / 16.667), t.y += t.vy * (n / 16.667);
+		}
+		if (Ct(), Tt(n), X.position.x < 500 && X.position.y > 470 && X.velocity.y < -.1 && o.setVelocity(X, {
+			x: X.velocity.x,
+			y: X.velocity.y * .05
+		}), X.position.x < 34 && X.velocity.x < -.07 && (o.setVelocity(X, {
 			x: .21,
-			y: Z.velocity.y
-		}), o.setAngularVelocity(Z, .007)), $ !== V.PLAYING && Math.abs(Z.velocity.x) < .1 && Math.abs(Z.angularVelocity) > .018 && o.setAngularVelocity(Z, Z.angularVelocity * .85), $ !== V.PLAYING && Z.position.y > 505 && Z.position.x > 50 && Math.abs(Z.velocity.x) < .05 && (o.setVelocity(Z, {
+			y: X.velocity.y
+		}), o.setAngularVelocity(X, .007)), Q !== V.PLAYING && Math.abs(X.velocity.x) < .1 && Math.abs(X.angularVelocity) > .018 && o.setAngularVelocity(X, X.angularVelocity * .85), Q !== V.PLAYING && X.position.y > 505 && X.position.x > 50 && Math.abs(X.velocity.x) < .05 && (o.setVelocity(X, {
 			x: 0,
-			y: Z.velocity.y
-		}), o.setAngularVelocity(Z, 0)), $ === V.PLAYING) {
-			if (Q.position.x >= 830) {
-				hn(V.SUMMIT);
+			y: X.velocity.y
+		}), o.setAngularVelocity(X, 0)), Q === V.PLAYING) {
+			if (Z.position.x >= 830) {
+				En(V.SUMMIT);
 				return;
 			}
-			if (!cn) return;
+			if (!vn) return;
 			function e(e, t) {
-				let n = e.position.x, r = t / 2, i = Lt(n - r), a = Lt(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
+				let n = e.position.x, r = t / 2, i = qt(n - r), a = qt(n + r), o = r * 2, s = a - i, c = Math.hypot(o, s);
 				return c === 0 ? {
 					x: 1,
 					y: 0
@@ -5194,55 +5329,62 @@ function fe(e, t = {}) {
 					y: s / c
 				};
 			}
-			let t = e(Q, an), n = e(Z, 20);
+			let t = e(Z, hn), n = e(X, 20);
 			{
-				Gt(), ln = Math.min(ln + 1, 90);
-				let e = .2 + ln / 90 * .8, r = Ge(), i = 1;
-				r >= .35 && r < .55 ? i = .85 : r >= .55 && r < .75 ? i = .7 : r >= .75 && r < .94 && (i = .45);
-				let a = .073 * e * i, s = .066 * e * i, c = Y.gravity.y * (Y.gravity.scale ?? .001), l = .95;
-				o.applyForce(Q, Q.position, {
+				tn(), yn = Math.min(yn + r, 90);
+				let e = .2 + yn / 90 * .8, i = et(), a = 1;
+				i >= .35 && i < .55 ? a = .85 : i >= .55 && i < .75 ? a = .7 : i >= .75 && i < .94 && (a = .45);
+				let s = .073 * e * a, c = .066 * e * a, l = J.gravity.y * (J.gravity.scale ?? .001), u = .95;
+				o.applyForce(Z, Z.position, {
 					x: 0,
-					y: -Q.mass * c * l
+					y: -Z.mass * l * u
+				}), o.applyForce(X, X.position, {
+					x: 0,
+					y: -X.mass * l * u
 				}), o.applyForce(Z, Z.position, {
-					x: 0,
-					y: -Z.mass * c * l
-				}), o.applyForce(Q, Q.position, {
-					x: t.x * C * .08 * e * i,
-					y: t.y * C * .08 * e * i
-				}), Zt(), Qt(), $t(), o.setVelocity(Q, {
-					x: t.x * a,
-					y: t.y * a
-				}), o.setVelocity(Z, {
-					x: n.x * s,
-					y: n.y * s
+					x: t.x * E * .08 * e * a,
+					y: t.y * E * .08 * e * a
+				}), cn(), ln(), un(), oe = k(t.x * s * 68 + n.x * c * 34, -90, 110), se = k(t.y * s * 24 + n.y * c * 16, -54, 62), o.setVelocity(Z, {
+					x: t.x * s * r,
+					y: t.y * s * r
+				}), o.setVelocity(X, {
+					x: n.x * c * r,
+					y: n.y * c * r
 				});
 			}
-		} else $ === V.SUMMIT ? mn() && hn(V.SIS_DESCENDING) : $ === V.SIS_DESCENDING ? Y.timing.timestamp >= un && (Q.render.opacity = Math.max(0, Q.render.opacity - .009), Q.render.opacity <= 0 && (qt(Z), hn(V.WAITING))) : $ === V.WAITING && (Q.render.opacity < 1 && (Q.render.opacity = Math.min(1, Q.render.opacity + .003)), u.set(Q, !1));
-	}), c.on(X, "afterRender", () => {
-		let e = X.context;
-		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, X.canvas.width, X.canvas.height), e.restore(), Wt(), _n(e);
+		} else Q === V.SUMMIT ? Tn() ? bn === 0 ? (bn = J.timing.timestamp + 3e3, console.log("%c⏳ Roca en base. Sísifo contempla 3s...", "color:#8d99ae")) : J.timing.timestamp >= bn && (Z.render.opacity = Math.max(0, Z.render.opacity - .033), Z.render.opacity <= 0 && (rn(X), En(V.WAITING))) : bn = 0 : Q === V.WAITING && (Z.render.opacity < 1 && (Z.render.opacity = Math.min(1, Z.render.opacity + .006)), u.set(Z, !1));
+	}), c.on(Y, "afterRender", () => {
+		let e = Y.context;
+		e.save(), e.setTransform(1, 0, 0, 1, 0, 0), e.clearRect(0, 0, Y.canvas.width, Y.canvas.height), e.restore(), en(), Dn(e);
 	});
-	let vn = getComputedStyle(e).position;
-	(vn === "static" || vn === "") && (e.style.position = "relative"), e.style.overflow = "hidden", Rt(), window.addEventListener("resize", Rt), Ct();
-	let yn = i.create();
-	r.run(X), i.run(yn, Y), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca.");
-	let bn = {
+	let On = getComputedStyle(e).position;
+	(On === "static" || On === "") && (e.style.position = "relative"), e.style.overflow = "hidden", Jt(), Ct(), W.x = G.x, W.y = G.y, W.zoom = G.zoom, Tt(0), window.addEventListener("resize", Jt), Nt();
+	let kn = i.create();
+	Sn = performance.now(), r.run(Y), i.run(kn, J), console.log("%c🪨 Sísifo — listo", "color:#e07a5f;font-size:14px;font-weight:bold"), console.log("Haz clic y mantén sobre Sísifo para empujar la roca.");
+	let An = {
 		destroy() {
-			r.stop(X), i.stop(yn), c.off(X), c.off(Y), typeof gn?.destroy == "function" && gn.destroy(), window.removeEventListener("resize", Rt), J.remove(), xt.remove(), s.clear(Y.world), n.clear(Y), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
+			r.stop(Y), i.stop(kn), c.off(Y), c.off(J), typeof $?.destroy == "function" && $.destroy(), window.removeEventListener("resize", Jt), At.remove(), jt.remove(), s.clear(J.world), n.clear(J), console.log("%c🪨 Sísifo — destruido", "color:#999;font-size:12px");
 		},
-		getState: () => $,
-		getCycleCount: () => dn,
-		getAscentProgress: Ge,
+		getState: () => Q,
+		getCycleCount: () => xn,
+		getAscentProgress: et,
+		getBalanceState: () => typeof $?.getBalanceState == "function" ? $.getBalanceState() : null,
 		getPerformance: () => ({
-			fpsApprox: Ee,
-			motionIntensity: xe,
-			currentVisualMood: at(),
-			currentVisualStyle: Se,
-			qualityTier: De.getSnapshot().tier
+			fpsApprox: Fe,
+			motionIntensity: Ae,
+			currentVisualMood: mt(),
+			currentVisualStyle: je,
+			qualityTier: Ie.getSnapshot().tier
 		}),
+		setWindState: (e) => {
+			ve = !!e;
+		},
+		triggerWindEvent: (e = 5e3) => {
+			ye = performance.now() + e;
+		},
 		onProgressUpdate: null
 	};
-	return bn;
+	return An;
 }
 //#endregion
-export { fe as createSisyphusGame };
+export { me as createSisyphusGame };

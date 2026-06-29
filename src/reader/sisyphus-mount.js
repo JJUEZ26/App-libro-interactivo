@@ -158,6 +158,7 @@ export async function mountSisyphusGame(gameContainer, pageContentEl, { goToPage
         let lastSpeedMult = 1;
 
         const game = createSisyphusGame(gameContainer, {
+            assetBaseUrl: '/dist/assets/',
             onCycleComplete: (cycleNumber) => {
                 hint.classList.add('hidden');
 
